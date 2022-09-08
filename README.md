@@ -1,5 +1,9 @@
 # 코드스테이츠 39기 38팀 Main-Project
 
+## 프로젝트 문서 보관소
+
+[<img width="150" src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=Notion&logoColor=white">](https://www.notion.so/38836ceabfda41c9973fdf28d1b53c1b?v=f9c70228004940f4b6f6caa4fa7ef6d2)
+
 ## 팀원 소개
 
 | FE 양희준                                                                                                                           | FE 김재원                                                                                                                                 | BE 유태형                                                                                                                             | BE 김나율                                                                                                                             | BE 임수인                                                                                                                             |
