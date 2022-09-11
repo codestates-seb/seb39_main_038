@@ -17,7 +17,7 @@ phases:
 artifacts:
   files:
     - build/libs/*.jar
-    - .scripts/**
+    - scripts/**
     - .appspec.yml
     - main-38-deploy.zip
   discard-paths: yes
