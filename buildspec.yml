@@ -19,5 +19,5 @@ artifacts:
     - build/libs/*.jar
     - scripts/**
     - .appspec.yml
-    - main-38-deploy.zip
+#    - main-38-deploy.zip
   discard-paths: yes
