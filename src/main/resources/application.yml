@@ -1,7 +1,7 @@
 spring:
   config:
     import:
-      - db-config.yml
+      - classpath:db-config.yml
   jpa:
     hibernate:
       ddl-auto: create
