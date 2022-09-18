@@ -2,6 +2,7 @@ const path = require('path');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 
 module.exports = {
   mode: 'development',
@@ -41,6 +42,7 @@ module.exports = {
       filename: 'index.html',
     }),
     new MiniCssExtractPlugin(),
+    new Dotenv(),
   ],
   devServer: {
     historyApiFallback: true,
