@@ -5,6 +5,7 @@ const ROUTE = {
   IDINQUIRY: { PATH: 'idinquiry' },
   PWINQUIRY: { PATH: 'pwinquiry' },
   FOODLIST: { PATH: 'foodlist' },
+  BASKET: { PATH: 'BASKET', NAME: '장바구니' },
 };
 
 export { ROUTE };
