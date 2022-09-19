@@ -16,12 +16,12 @@ function App() {
     <React.Suspense fallback={<Spinner />}>
       <GlobalNav />
       <Routes>
-        <Route path={ROUTE.HOME_PATH} element={<Home />} />
-        <Route path={ROUTE.LOGIN_PATH} element={<Login />} />
-        <Route path={ROUTE.REGISTER_PATH} element={<Register />} />
-        <Route path={ROUTE.IDINQUIRY_PATH} element={<IdInquiry />} />
-        <Route path={ROUTE.PWINQUIRY_PATH} element={<PwInquiry />} />
-        <Route path={ROUTE.FOODLIST_PATH} element={<FoodList />} />
+        <Route path={ROUTE.HOME.PATH} element={<Home />} />
+        <Route path={ROUTE.LOGIN.PATH} element={<Login />} />
+        <Route path={ROUTE.REGISTER.PATH} element={<Register />} />
+        <Route path={ROUTE.IDINQUIRY.PATH} element={<IdInquiry />} />
+        <Route path={ROUTE.PWINQUIRY.PATH} element={<PwInquiry />} />
+        <Route path={ROUTE.FOODLIST.PATH} element={<FoodList />} />
       </Routes>
     </React.Suspense>
   );
