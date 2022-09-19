@@ -3,6 +3,7 @@ package com.main_39.Spring.member.controller;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.main_39.Spring.dto.SingleResponseDto;
+import com.main_39.Spring.member.dto.CodeDto;
 import com.main_39.Spring.member.dto.KakaoProfile;
 import com.main_39.Spring.member.dto.LocalDto;
 import com.main_39.Spring.member.dto.OAuthToken;
@@ -84,10 +85,10 @@ public class MemberController {
 
     //프론트엔드로 code 전달 받으면 유저정보 저장, token 발송
     @PostMapping("/login/oauth2/code/kakao")
-    public ResponseEntity kakaoCallback(@RequestParam String code){ //Data를 리턴해주는 컨트롤러 함수
+    public ResponseEntity kakaoCallback(@RequestBody CodeDto codeDto){ //Data를 리턴해주는 컨트롤러 함수
 
         //code -> 토큰
-        OAuthToken oauthToken = memberService.getToken(code);
+        OAuthToken oauthToken = memberService.getToken(codeDto.getCode());
         //토큰 -> 사용자 정보
         KakaoProfile kakaoProfile = memberService.getKaKaoProfile(oauthToken);
         //profile -> entity
