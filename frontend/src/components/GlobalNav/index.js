@@ -20,7 +20,7 @@ function GlobalNav() {
       <Link to={ROUTE.PWINQUIRY_PATH}>
         <button type="button">PwInquiry</button>
       </Link>
-      <Link to={ROUTE.LOGIN_PATH}>
+      <Link to={ROUTE.FOODLIST_PATH}>
         <button type="button">FoodList</button>
       </Link>
     </div>
