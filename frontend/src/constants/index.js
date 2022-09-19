@@ -1,3 +1,5 @@
 import { ROUTE } from './route';
+import { COLOR } from './color';
+import { SCREEN } from './screen';
 
-export { ROUTE };
+export { ROUTE, COLOR, SCREEN };
