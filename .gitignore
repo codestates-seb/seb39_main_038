@@ -5,6 +5,8 @@ build
 node_modules
 # etc
 DS_store
+# env
+.env
 
 # Back-End
 HELP.md
