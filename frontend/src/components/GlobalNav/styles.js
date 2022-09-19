@@ -25,14 +25,19 @@ const NavLogo = styled.h1`
   }
 `;
 
-const LoginButton = styled.button`
+const ButtonInner = styled.div`
+  display: flex;
+  gap: 0px 10px;
+`;
+
+const NavButton = styled.button`
   width: 150px;
   height: 40px;
   border-radius: 2px;
-  border: 1px solid #fae57c;
+  border: 1px solid ${({ color }) => color};
   background-color: transparent;
   font-size: 18px;
-  color: ${COLOR.YELLOW};
+  color: ${({ color }) => color};
 
   @media all and (max-width: ${SCREEN.MOBILE}) {
     width: 120px;
@@ -40,4 +45,4 @@ const LoginButton = styled.button`
   }
 `;
 
-export { NavContainer, NavWrapper, NavLogo, LoginButton };
+export { NavContainer, NavWrapper, NavLogo, ButtonInner, NavButton };
