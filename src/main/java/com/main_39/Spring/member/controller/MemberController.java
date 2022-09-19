@@ -89,13 +89,16 @@ public class MemberController {
 
         //code -> 토큰
         OAuthToken oauthToken = memberService.getToken(codeDto.getCode());
+        log.info("코드 -> 토큰 바꾸기 성공");
         //토큰 -> 사용자 정보
         KakaoProfile kakaoProfile = memberService.getKaKaoProfile(oauthToken);
+        log.info("토큰 -> 사용자 정보 바꾸기 성공");
         //profile -> entity
         Kakao kakao = memberMapper.kakaoProfileToKakao(kakaoProfile,oauthToken);
 
         //DB에 저장
         Kakao posted = memberService.createKakao(kakao);
+        log.info("DB저장 성공");
 
         //JWT 생성
         String token = JWT.create()
@@ -104,6 +107,8 @@ public class MemberController {
                 .withClaim("access_token",oauthToken.getAccess_token())
                 .withExpiresAt(new Date(System.currentTimeMillis() + (6*60*60*1000))) //토큰 시간 : 카카오 6시간과 일치시킴
                 .sign(Algorithm.HMAC512(SECRET_KEY));
+
+        log.info("JWT 성공");
 
         //헤더에 access토큰,refresh토큰,id토큰(혹시 모름),만료시간 넣어 리턴
         MultiValueMap<String,String> headers = new LinkedMultiValueMap<>();
