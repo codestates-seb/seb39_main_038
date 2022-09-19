@@ -83,7 +83,7 @@ public class MemberController {
 
 
     //프론트엔드로 code 전달 받으면 유저정보 저장, token 발송
-    @GetMapping("/login/oauth2/code/kakao")
+    @PostMapping("/login/oauth2/code/kakao")
     public ResponseEntity kakaoCallback(@RequestParam String code){ //Data를 리턴해주는 컨트롤러 함수
 
         //code -> 토큰
