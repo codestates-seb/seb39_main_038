@@ -1,10 +1,10 @@
 const ROUTE = {
-  HOME_PATH: '/',
-  LOGIN_PATH: 'login',
-  REGISTER_PATH: 'register',
-  IDINQUIRY_PATH: 'idinquiry',
-  PWINQUIRY_PATH: 'pwinquiry',
-  FOODLIST_PATH: 'foodlist',
+  HOME: { PATH: '/' },
+  LOGIN: { PATH: 'login', NAME: '로그인' },
+  REGISTER: { PATH: 'register' },
+  IDINQUIRY: { PATH: 'idinquiry' },
+  PWINQUIRY: { PATH: 'pwinquiry' },
+  FOODLIST: { PATH: 'foodlist' },
 };
 
 export { ROUTE };
