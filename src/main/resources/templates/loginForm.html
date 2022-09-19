@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>로그인 페이지</title>
+</head>
+<body>
+<h1>로그인 페이지</h1>
+<hr />
+<form action="/login" method="post">
+    <input type="text" name="username" placeholder="Username" /><br />
+    <input type="password" name="password" placeholder="Password" /><br />
+    <button>로그인</button>
+<!--    <a href="/oauth2/authorization/kakao"><img src="/image/kakao_login_medium_wide.png"></a>-->
+    <a href="https://kauth.kakao.com/oauth/authorize?client_id=704ec763b63cc0eb75e0f897b8f91ed0&redirect_uri=http://localhost:8080/login/oauth2/code/kakao&response_type=code"><img src="/image/kakao_login_medium_wide.png"></a>
+
+</form>
+<a href="join">회원가입</a>
+</body>
+</html>
