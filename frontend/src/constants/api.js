@@ -1,3 +1,5 @@
+const { API_HOST } = process.env;
+
 const KAKAO_API = {
   NAME: '카카오 로그인',
   CLIENT_ID: process.env.KAKAO_REST_API_KEY,
@@ -11,4 +13,8 @@ const KAKAO_API = {
   },
 };
 
-export { KAKAO_API };
+const API_URI = {
+  KAKAO_LOGIN: `${API_HOST}/login/oauth2/code/kakao`,
+};
+
+export { KAKAO_API, API_URI };
