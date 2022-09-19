@@ -1,0 +1,30 @@
+### POST 테스트
+POST http://localhost:8080/test
+Content-Type: application/json
+
+{
+  "name" : "이름",
+  "phone" : "010-1111-2222"
+}
+
+### PATCH 테스트
+PATCH http://localhost:8080/test/1
+Content-Type: application/json
+
+{
+  "phone" : "010-2222-3333"
+}
+
+### GET 테스트
+GET http://localhost:8080/test/1
+Content-Type: application/json
+
+{
+}
+
+### Delete 테스트
+DELETE http://localhost:8080/test/1
+Content-Type: application/json
+
+{
+}
