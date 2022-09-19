@@ -9,7 +9,14 @@ import {
   Notice,
   FoodMenu,
   Menu,
+  MenuInfo,
   MenuImg,
+  Cart,
+  CartTab,
+  CartList,
+  CartListAdd,
+  TotalPrice,
+  OrderBtn,
 } from './Detailstyles';
 
 function FoodDetail() {
@@ -39,40 +46,65 @@ function FoodDetail() {
 
       <FoodMenu>
         <Menu>
-          <span>치킨</span>
-          <span>빠삭한 치킨입니다!</span>
-          <span>12,000원</span>
+          <MenuInfo>
+            <span>치킨</span>
+            <span>빠삭한 치킨입니다!</span>
+            <span>12,000원</span>
+          </MenuInfo>
+
+          <MenuImg>
+            <img alt="thumb" />
+          </MenuImg>
         </Menu>
 
-        <MenuImg>
-          <img alt="thumb" />
-        </MenuImg>
+        <Menu>
+          <MenuInfo>
+            <span>치킨</span>
+            <span>빠삭한 치킨입니다!</span>
+            <span>12,000원</span>
+          </MenuInfo>
+
+          <MenuImg>
+            <img alt="thumb" />
+          </MenuImg>
+        </Menu>
       </FoodMenu>
-
-      <div className="장바구니">
-        <div className="장바구니 탭">
-          장바구니
+      <Cart>
+        <CartTab>
+          <div>장바구니</div>
           <button type="button">리셋</button>
-        </div>
+        </CartTab>
 
-        <div className="장바구니 내용">
-          <div className="장바구니 메뉴이름">치킨</div>
+        <CartList>
+          <div>햄버거</div>
 
-          <div className="장바구니 메뉴가격&수량">
-            12,000원
+          <CartListAdd>
+            <div>8,000원</div>
             <div className="수량버튼">
               <button type="button">-</button>
               <span>1</span>
               <button type="button">+</button>
             </div>
-          </div>
-        </div>
-        <div className="totalPrice">합계: 12,000원</div>
-      </div>
-      <div className="주문 버튼">
+          </CartListAdd>
+        </CartList>
+        <CartList>
+          <div>치킨</div>
+
+          <CartListAdd>
+            <div>12,000원</div>
+            <div className="수량버튼">
+              <button type="button">-</button>
+              <span>1</span>
+              <button type="button">+</button>
+            </div>
+          </CartListAdd>
+        </CartList>
+        <TotalPrice className="totalPrice">합계: 20,000원</TotalPrice>
+      </Cart>
+      <OrderBtn>
         <button type="button">주문 취소</button>
         <button type="button">바로 주문하기</button>
-      </div>
+      </OrderBtn>
     </Section>
   );
 }

@@ -4,16 +4,16 @@ import styled from 'styled-components';
 const MenuBar = styled.div`
   display: flex;
   justify-content: space-evenly;
-  align-items: stretch;
   margin: 20px 0px 0px;
 `;
 
 const TabBtn = styled.button`
-  width: 33%;
+  width: 33.3%;
   height: 47px;
   background-color: ${(e) => e.theme.mainColor};
   color: ${(e) => e.theme.fontColor};
   font-size: 20px;
+  font-weight: 900;
 `;
 
 function DetailMenuBar() {
