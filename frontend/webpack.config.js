@@ -43,7 +43,9 @@ module.exports = {
       favicon: path.resolve(__dirname, 'public', 'logo.png'),
     }),
     new MiniCssExtractPlugin(),
-    new Dotenv(),
+    new Dotenv({
+      systemvars: true,
+    }),
   ],
   devServer: {
     historyApiFallback: true,
