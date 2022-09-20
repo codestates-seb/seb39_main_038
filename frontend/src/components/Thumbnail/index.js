@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
   ThumbnailContainer,
   ThumbnailWrapper,
@@ -6,9 +6,15 @@ import {
   ThumbnailImage,
 } from './styles';
 
-function Thumbnail({ title, src }) {
+function Thumbnail({ title, src, query }) {
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    containerRef.current.setAttribute('data-query', query);
+  }, [query]);
+
   return (
-    <ThumbnailContainer>
+    <ThumbnailContainer ref={containerRef}>
       <ThumbnailWrapper>
         <ThumbnailTitle>{title}</ThumbnailTitle>
         <ThumbnailImage src={src} alt={title} />
