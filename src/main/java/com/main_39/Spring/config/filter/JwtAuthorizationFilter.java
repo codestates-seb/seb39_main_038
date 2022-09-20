@@ -147,7 +147,6 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
                         .path("/")
                         .sameSite("None")
                         .httpOnly(true)
-                        .domain("127.0.0.1:3000")
                         .maxAge(60 * 60)
                         .build();
                 response.setHeader("Set-Cookie", access_cookie.toString());
