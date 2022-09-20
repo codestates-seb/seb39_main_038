@@ -4,6 +4,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import axios from 'axios';
 import './index.css';
 import { ThemeProvider } from 'styled-components';
+import { RecoilRoot } from 'recoil';
 import App from './App';
 import theme from './style/theme';
 
@@ -12,7 +13,9 @@ const root = reactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Router>
     <ThemeProvider theme={theme}>
-      <App />
+      <RecoilRoot>
+        <App />
+      </RecoilRoot>
     </ThemeProvider>
   </Router>,
 );

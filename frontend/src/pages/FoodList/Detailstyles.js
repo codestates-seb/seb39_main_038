@@ -1,12 +1,25 @@
 import styled from 'styled-components';
 
 const Section = styled.section`
-  font-size: 25px;
+  max-width: 1020px;
+  margin: 0 auto;
+  font-size: 22px;
   color: ${(e) => e.theme.fontColor};
   background-color: white;
-  @media ${(e) => e.theme.mobile} {
+  @media screen and (max-width: 767px) {
     font-size: 20px;
     padding-bottom: 65px;
+  }
+  @media ${(e) => e.theme.tablet} {
+    flex-direction: row;
+  }
+`;
+
+const MainBody = styled.div`
+  @media ${(e) => e.theme.tablet} {
+    width: 65%;
+    display: inline-block;
+    margin: 0px 20px 0px 0px;
   }
 `;
 
@@ -18,7 +31,10 @@ const FoodTruckName = styled.div`
   display: flex;
   justify-content: start;
   align-items: center;
-  padding: 0px 10px 0px;
+  @media ${(e) => e.theme.tablet} {
+    width: 100%;
+    height: 56px;
+  }
 `;
 
 const FoodTruckCapsulizedInfo = styled.div`
@@ -27,6 +43,9 @@ const FoodTruckCapsulizedInfo = styled.div`
   background-color: ${(e) => e.theme.mainColor};
   margin: 20px 0px 0px;
   height: 120px;
+  @media ${(e) => e.theme.tablet} {
+    width: 100%;
+  }
 `;
 
 const FoodTruckImg = styled.div`
@@ -54,37 +73,17 @@ const Notice = styled.div`
   height: 43px;
   align-items: center;
   padding: 0px 10px 0px;
+  @media ${(e) => e.theme.tablet} {
+    width: 100%;
+  }
 `;
 
-const FoodMenu = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 300px;
-  background-color: lightgrey;
-`;
-
-const Menu = styled.div`
-  display: flex;
-  justify-content: space-between;
-  background-color: ${(e) => e.theme.mainColor};
-  height: 104px;
-  padding: 10px 10px 0px;
-`;
-
-const MenuInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-`;
-
-const MenuImg = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 10px;
-  > img {
-    width: 80px;
-    height: 80px;
+const StickyBody = styled.div`
+  @media ${(e) => e.theme.tablet} {
+    width: 30%;
+    display: inline-block;
+    position: sticky;
+    top: 50px;
   }
 `;
 
@@ -95,6 +94,10 @@ const Cart = styled.div`
   padding: 10px 10px 0px;
   width: 100%;
   height: 200px;
+  @media ${(e) => e.theme.tablet} {
+    width: 100%;
+    height: 220px;
+  }
 `;
 
 const CartTab = styled.div`
@@ -102,13 +105,14 @@ const CartTab = styled.div`
   justify-content: space-between;
   align-items: center;
   font-weight: 900;
+  margin: 0px 0px 10px;
 `;
 
 const CartList = styled.div`
   display: flex;
   justify-content: space-between;
   flex-direction: column;
-  margin: 10px 0px 0px;
+  margin: 10px 0px 0px 0px;
 `;
 
 const CartListAdd = styled.div`
@@ -121,12 +125,13 @@ const TotalPrice = styled.div`
   justify-content: end;
   height: 47px;
   align-items: center;
+  font-weight: 900;
+  @media ${(e) => e.theme.tablet} {
+    height: 55px;
+  }
 `;
 
 const OrderBtn = styled.div`
-  bottom: 0px;
-  position: fixed;
-  width: 100%;
   > button {
     width: 50%;
     background-color: ${(e) => e.theme.mainColor};
@@ -135,19 +140,32 @@ const OrderBtn = styled.div`
     font-size: 20px;
     font-weight: 900;
   }
+  @media screen and (max-width: 767px) {
+    bottom: 0px;
+    position: fixed;
+    width: 100%;
+  }
+  @media ${(e) => e.theme.tablet} {
+    width: 100%;
+    display: flex;
+    flex-direction: column-reverse;
+    > button {
+      width: 100%;
+      height: 47px;
+      margin: 50px 0px 0px;
+    }
+  }
 `;
 
 export {
   Section,
+  MainBody,
   FoodTruckName,
   FoodTruckCapsulizedInfo,
   FoodTruckImg,
   CapsulizedInfo,
   Notice,
-  FoodMenu,
-  Menu,
-  MenuInfo,
-  MenuImg,
+  StickyBody,
   Cart,
   CartTab,
   CartList,
