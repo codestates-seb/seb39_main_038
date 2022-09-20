@@ -1,5 +1,7 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
+import { Banner } from '../../components/Banner';
+import LocalNav from '../../components/LocalNav';
 import FoodDetail from './FoodDetail';
 
 function FoodList() {
@@ -8,7 +10,9 @@ function FoodList() {
 
   return (
     <div>
-      FoodList <FoodDetail />
+      <Banner />
+      <LocalNav />
+      <FoodDetail />
     </div>
   );
 }
