@@ -26,6 +26,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.Date;
 
@@ -34,8 +36,6 @@ import java.util.Date;
 @Validated
 @RequiredArgsConstructor
 public class MemberController {
-//    @Value("${spring.security.oauth2.client.registration.kakao.client-secret}")
-    private final String SECRET_KEY = "secret_jwt_key";
     private final MemberService memberService;
     private final MemberMapper memberMapper;
 
@@ -85,39 +85,36 @@ public class MemberController {
 
     //프론트엔드로 code 전달 받으면 유저정보 저장, token 발송
     @PostMapping("/login/oauth2/code/kakao")
-    public ResponseEntity kakaoCallback(@RequestBody CodeDto codeDto){ //Data를 리턴해주는 컨트롤러 함수
+    public ResponseEntity kakaoCallback(@RequestBody CodeDto codeDto,
+                                        HttpServletResponse response){ //Data를 리턴해주는 컨트롤러 함수
+
+        System.out.println("Authentication 시작");
 
         //code -> 토큰
         OAuthToken oauthToken = memberService.getToken(codeDto.getCode());
-        log.info("코드 -> 토큰 바꾸기 성공");
         //토큰 -> 사용자 정보
         KakaoProfile kakaoProfile = memberService.getKaKaoProfile(oauthToken);
-        log.info("토큰 -> 사용자 정보 바꾸기 성공");
         //profile -> entity
         Kakao kakao = memberMapper.kakaoProfileToKakao(kakaoProfile,oauthToken);
 
         //DB에 저장
         Kakao posted = memberService.createKakao(kakao);
-        log.info("DB저장 성공");
-
-        //JWT 생성
-        String token = JWT.create()
-                .withClaim("id", String.valueOf(posted.getKakao_id()))
-                .withClaim("email", posted.getEmail())
-                .withClaim("access_token",oauthToken.getAccess_token())
-                .withExpiresAt(new Date(System.currentTimeMillis() + (6*60*60*1000))) //토큰 시간 : 카카오 6시간과 일치시킴
-                .sign(Algorithm.HMAC512(SECRET_KEY));
-
-        log.info("JWT 성공");
 
         //헤더에 access토큰,refresh토큰,id토큰(혹시 모름),만료시간 넣어 리턴
-        MultiValueMap<String,String> headers = new LinkedMultiValueMap<>();
-        headers.add("ACCESS_TOKEN", oauthToken.getAccess_token());
-        headers.add("REFRESH_TOKEN", oauthToken.getRefresh_token());
-        headers.add("Authorization", "Bearer " + token);
 
-        return new ResponseEntity<>(headers,HttpStatus.OK);
+        //access_token 쿠키
+        Cookie access_cookie = new Cookie("access_token",oauthToken.getAccess_token());
+        access_cookie.setMaxAge(60 * 60); //6시간(카카오와 동일)
+        access_cookie.setHttpOnly(true);
+        response.addCookie(access_cookie);
 
+        //refresh_token 쿠키
+        Cookie refresh_cookie = new Cookie("refresh_token",oauthToken.getRefresh_token());
+        refresh_cookie.setMaxAge(60 * 60 * 24 * 30 * 2); //2달(카카오와 동일)
+        refresh_cookie.setHttpOnly(true);
+        response.addCookie(refresh_cookie);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }
