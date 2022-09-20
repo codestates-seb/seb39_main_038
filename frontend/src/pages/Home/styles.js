@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { SCREEN } from '../../constants/index';
 
 const HomeContainer = styled.div``;
 
@@ -8,6 +9,10 @@ const Banner = styled.div`
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
+
+  @media all and (max-width: ${SCREEN.MOBILE}) {
+    display: none;
+  }
 `;
 
 const HomeWrapper = styled.div`
