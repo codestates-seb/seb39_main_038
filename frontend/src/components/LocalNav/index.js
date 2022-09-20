@@ -15,6 +15,5 @@ function LocalNav() {
       <NavWrapper>{createNavList()}</NavWrapper>
     </NavContainer>
   );
-}
 
 export default LocalNav;
