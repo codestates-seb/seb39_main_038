@@ -45,6 +45,9 @@ function Login() {
           <Button onClick={handleOnClick(KAKAO_API.URI())}>
             {KAKAO_API.NAME}
           </Button>
+          <Button onClick={hanldeOnClickText(ROUTE.REGISTER.PATH)}>
+            {ROUTE.REGISTER.NAME}
+          </Button>
         </LoginInner>
       </LoginWrapper>
     </LoginContainer>

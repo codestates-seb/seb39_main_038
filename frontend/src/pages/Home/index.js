@@ -1,13 +1,15 @@
 import React, { useEffect } from 'react';
 import axios from 'axios';
 import { API_URI } from '../../constants';
+import Thumbnail from '../../components/Thumbnail';
+import { HomeContainer, HomeWrapper, Banner } from './styles';
 
 function Home() {
-  const postAuthData = (api, data) => {
+  const postAuthData = (api) => {
     if (api === null) return;
     axios
-      .post(api, data)
-      .then((res) => console.log(res.headers))
+      .get(api)
+      .then((res) => console.log(res.data))
       .catch((err) => console.log(err.message));
   };
 
@@ -15,10 +17,46 @@ function Home() {
     const redirectURI = new URL(window.location.href);
     const code = redirectURI.searchParams.get('code');
     if (!code) return;
-    postAuthData(API_URI.KAKAO_LOGIN, { code });
+    postAuthData(`${API_URI.KAKAO_LOGIN}?code=${code}`);
   }, []);
 
-  return <div>Home</div>;
+  return (
+    <HomeContainer>
+      <Banner primary />
+      <HomeWrapper>
+        <Thumbnail
+          title="피자/양식"
+          src="https://www.yogiyo.co.kr/mobile/image/category-03.png"
+          alt="피자/양식"
+        />
+        <Thumbnail
+          title="피자/양식"
+          src="https://www.yogiyo.co.kr/mobile/image/category-03.png"
+          alt="피자/양식"
+        />
+        <Thumbnail
+          title="피자/양식"
+          src="https://www.yogiyo.co.kr/mobile/image/category-03.png"
+          alt="피자/양식"
+        />
+        <Thumbnail
+          title="피자/양식"
+          src="https://www.yogiyo.co.kr/mobile/image/category-03.png"
+          alt="피자/양식"
+        />
+        <Thumbnail
+          title="피자/양식"
+          src="https://www.yogiyo.co.kr/mobile/image/category-03.png"
+          alt="피자/양식"
+        />
+        <Thumbnail
+          title="피자/양식"
+          src="https://www.yogiyo.co.kr/mobile/image/category-03.png"
+          alt="피자/양식"
+        />
+      </HomeWrapper>
+    </HomeContainer>
+  );
 }
 
 export default Home;
