@@ -14,6 +14,7 @@ import com.main_39.Spring.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -103,16 +104,24 @@ public class MemberController {
         //헤더에 access토큰,refresh토큰,id토큰(혹시 모름),만료시간 넣어 리턴
 
         //access_token 쿠키
-        Cookie access_cookie = new Cookie("access_token",oauthToken.getAccess_token());
-        access_cookie.setMaxAge(60 * 60); //6시간(카카오와 동일)
-        access_cookie.setHttpOnly(true);
-        response.addCookie(access_cookie);
+        ResponseCookie access_cookie = ResponseCookie.from("access_token", oauthToken.getAccess_token())
+                .path("/")
+                .sameSite("None")
+                .httpOnly(true)
+                .domain("127.0.0.1:3000")
+                .maxAge(60 * 60)
+                .build();
+        response.setHeader("Set-Cookie", access_cookie.toString());
 
         //refresh_token 쿠키
-        Cookie refresh_cookie = new Cookie("refresh_token",oauthToken.getRefresh_token());
-        refresh_cookie.setMaxAge(60 * 60 * 24 * 30 * 2); //2달(카카오와 동일)
-        refresh_cookie.setHttpOnly(true);
-        response.addCookie(refresh_cookie);
+        ResponseCookie refresh_cookie = ResponseCookie.from("refresh_token",oauthToken.getRefresh_token())
+                .path("/")
+                .sameSite("None")
+                .httpOnly(true)
+                .domain("127.0.0.1:3000")
+                .maxAge(60 * 60 * 24 * 30 * 2)
+                .build();
+        response.setHeader("Set-Cookie",refresh_cookie.toString());
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

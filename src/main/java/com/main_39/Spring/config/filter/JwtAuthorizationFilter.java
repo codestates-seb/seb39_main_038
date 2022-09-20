@@ -11,6 +11,7 @@ import com.main_39.Spring.member.repository.KakaoRepository;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -142,10 +143,14 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
                 System.out.println(access_token);
 
                 //쿠키 수정
-                Cookie access_cookie = new Cookie("access_token",access_token);
-                access_cookie.setMaxAge(60 * 60); //6시간(카카오와 동일)
-                access_cookie.setHttpOnly(true);
-                response.addCookie(access_cookie);
+                ResponseCookie access_cookie = ResponseCookie.from("access_token", access_token)
+                        .path("/")
+                        .sameSite("None")
+                        .httpOnly(true)
+                        .domain("127.0.0.1:3000")
+                        .maxAge(60 * 60)
+                        .build();
+                response.setHeader("Set-Cookie", access_cookie.toString());
 
             } catch (HttpClientErrorException e) { //access_token(x) and refresh_token(x) -> 로그인 실패
                 System.out.println("유효한 refresh_token 없음, access_token 재 발행 실패했으므로 인증권한이 없습니다.");
