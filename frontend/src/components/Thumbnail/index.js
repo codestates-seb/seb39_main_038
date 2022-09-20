@@ -6,9 +6,9 @@ import {
   ThumbnailImage,
 } from './styles';
 
-function Thumbnail({ width, title, src }) {
+function Thumbnail({ title, src }) {
   return (
-    <ThumbnailContainer width={width}>
+    <ThumbnailContainer>
       <ThumbnailWrapper>
         <ThumbnailTitle>{title}</ThumbnailTitle>
         <ThumbnailImage src={src} alt={title} />
