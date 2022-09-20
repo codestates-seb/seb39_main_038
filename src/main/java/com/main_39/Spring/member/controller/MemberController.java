@@ -85,14 +85,14 @@ public class MemberController {
 
 
     //프론트엔드로 code 전달 받으면 유저정보 저장, token 발송
-    @PostMapping("/login/oauth2/code/kakao")
-    public ResponseEntity kakaoCallback(@RequestBody CodeDto codeDto,
+    @GetMapping("/login/oauth2/code/kakao")
+    public ResponseEntity kakaoCallback(@RequestParam String code,
                                         HttpServletResponse response){ //Data를 리턴해주는 컨트롤러 함수
 
         System.out.println("Authentication 시작");
 
         //code -> 토큰
-        OAuthToken oauthToken = memberService.getToken(codeDto.getCode());
+        OAuthToken oauthToken = memberService.getToken(code);
         //토큰 -> 사용자 정보
         KakaoProfile kakaoProfile = memberService.getKaKaoProfile(oauthToken);
         //profile -> entity
@@ -105,21 +105,19 @@ public class MemberController {
 
         //access_token 쿠키
         ResponseCookie access_cookie = ResponseCookie.from("access_token", oauthToken.getAccess_token())
-                .path("/")
-                .sameSite("None")
+                .sameSite("Lax")
                 .httpOnly(true)
                 .maxAge(60 * 60)
                 .build();
-        response.setHeader("Set-Cookie", access_cookie.toString());
+        response.addHeader("Set-Cookie", access_cookie.toString());
 
         //refresh_token 쿠키
         ResponseCookie refresh_cookie = ResponseCookie.from("refresh_token",oauthToken.getRefresh_token())
-                .path("/")
-                .sameSite("None")
+                .sameSite("Lax")
                 .httpOnly(true)
                 .maxAge(60 * 60 * 24 * 30 * 2)
                 .build();
-        response.setHeader("Set-Cookie",refresh_cookie.toString());
+        response.addHeader("Set-Cookie",refresh_cookie.toString());
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
