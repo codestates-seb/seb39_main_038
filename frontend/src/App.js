@@ -17,11 +17,11 @@ function App() {
       <GlobalNav />
       <Routes>
         <Route path={ROUTE.HOME.PATH} element={<Home />} />
+        <Route path={`${ROUTE.FOODLIST.PATH}/*`} element={<FoodList />} />
         <Route path={ROUTE.LOGIN.PATH} element={<Login />} />
         <Route path={ROUTE.REGISTER.PATH} element={<Register />} />
         <Route path={ROUTE.IDINQUIRY.PATH} element={<IdInquiry />} />
         <Route path={ROUTE.PWINQUIRY.PATH} element={<PwInquiry />} />
-        <Route path={ROUTE.FOODLIST.PATH} element={<FoodList />} />
         <Route path={ROUTE.BASKET.PATH} element={<Basket />} />
       </Routes>
     </React.Suspense>
