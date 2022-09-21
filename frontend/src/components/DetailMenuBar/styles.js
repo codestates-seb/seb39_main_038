@@ -21,7 +21,6 @@ const TabBtn = styled.button`
 const Section = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: lightgrey;
   margin: 10px 0px 0px;
   @media ${(e) => e.theme.tablet} {
     width: 100%;
@@ -31,9 +30,10 @@ const Section = styled.div`
 const Menu = styled.div`
   display: flex;
   justify-content: space-between;
-  background-color: ${(e) => e.theme.mainColor};
+  background-color: white;
   height: 104px;
   padding: 10px 10px 10px;
+  border-bottom: 1px solid grey;
 `;
 
 const MenuInfo = styled.div`
@@ -68,6 +68,9 @@ const Comment = styled.div`
   background-color: lightgrey;
   font-size: 14px;
   padding: 5px;
+  line-height: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid grey;
 `;
 
 const NameDateReply = styled.div`
@@ -92,6 +95,36 @@ const Thumnail = styled.img`
   width: 200px;
   height: 120px;
 `;
+
+const TruckInfoBody = styled.div`
+  margin: 20px;
+  line-height: 30px;
+`;
+
+const TruckInfoTitle = styled.div`
+  font-size: 25px;
+  font-weight: 900;
+  color: black;
+  border-bottom: 2px solid black;
+  padding-bottom: 10px;
+`;
+
+const TruckInfoContent = styled.div`
+  white-space: pre-wrap;
+  color: black;
+  padding-bottom: 50px;
+  padding-top: 10px;
+`;
+
+const TruckInfoContentKey = styled.div`
+  color: grey;
+  padding-bottom: 15px;
+`;
+
+const TruckInfoContentValue = styled.span`
+  color: black;
+`;
+
 export {
   MenuBar,
   TabBtn,
@@ -105,4 +138,9 @@ export {
   ReplyDeleteBtn,
   ThumnailBox,
   Thumnail,
+  TruckInfoBody,
+  TruckInfoTitle,
+  TruckInfoContent,
+  TruckInfoContentKey,
+  TruckInfoContentValue,
 };
