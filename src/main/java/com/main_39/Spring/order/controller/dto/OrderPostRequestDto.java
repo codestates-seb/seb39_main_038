@@ -1,5 +1,6 @@
-package com.main_39.Spring.order;
+package com.main_39.Spring.order.controller.dto;
 
+import com.main_39.Spring.order.controller.dto.OrderMenuPostRequestDto;
 import lombok.Getter;
 
 import java.util.List;

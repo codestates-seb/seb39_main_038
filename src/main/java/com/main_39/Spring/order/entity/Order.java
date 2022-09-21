@@ -1,11 +1,9 @@
-package com.main_39.Spring.order;
+package com.main_39.Spring.order.entity;
 
 import com.main_39.Spring.audit.Auditable;
 import com.main_39.Spring.member.entity.Kakao;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;

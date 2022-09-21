@@ -1,4 +1,4 @@
-package com.main_39.Spring.order;
+package com.main_39.Spring.order.controller.dto;
 
 import lombok.Getter;
 

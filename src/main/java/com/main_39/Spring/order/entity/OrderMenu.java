@@ -1,11 +1,10 @@
-package com.main_39.Spring.order;
+package com.main_39.Spring.order.entity;
 
 import com.main_39.Spring.audit.Auditable;
 import com.main_39.Spring.menu.Menu;
-import lombok.Builder;
+import com.main_39.Spring.order.entity.Order;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
