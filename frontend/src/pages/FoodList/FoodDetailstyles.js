@@ -10,9 +10,6 @@ const Section = styled.section`
     font-size: 20px;
     padding-bottom: 65px;
   }
-  @media ${(e) => e.theme.tablet} {
-    flex-direction: row;
-  }
 `;
 
 const MainBody = styled.div`
@@ -87,16 +84,24 @@ const StickyBody = styled.div`
   }
 `;
 
+const CartListBody = styled.div`
+  background-color: ${(e) => e.theme.mainColor};
+`;
+
 const Cart = styled.div`
   display: flex;
   flex-direction: column;
   background-color: ${(e) => e.theme.mainColor};
-  padding: 10px 10px 0px;
   width: 100%;
   height: 200px;
+  @media screen and (max-width: 767px) {
+    margin-top: 20px;
+  }
   @media ${(e) => e.theme.tablet} {
     width: 100%;
-    height: 220px;
+    height: 150px;
+    position: relative;
+    top: 20px;
   }
 `;
 
@@ -105,14 +110,14 @@ const CartTab = styled.div`
   justify-content: space-between;
   align-items: center;
   font-weight: 900;
-  margin: 0px 0px 10px;
+  margin: 5px;
 `;
 
 const CartList = styled.div`
   display: flex;
   justify-content: space-between;
   flex-direction: column;
-  margin: 10px 0px 0px 0px;
+  margin: 10px 5px;
 `;
 
 const CartListAdd = styled.div`
@@ -126,8 +131,10 @@ const TotalPrice = styled.div`
   height: 47px;
   align-items: center;
   font-weight: 900;
+  background-color: ${(e) => e.theme.mainColor};
   @media ${(e) => e.theme.tablet} {
-    height: 55px;
+    width: 100%;
+    padding: 20px;
   }
 `;
 
@@ -149,6 +156,8 @@ const OrderBtn = styled.div`
     width: 100%;
     display: flex;
     flex-direction: column-reverse;
+    position: relative;
+    top: 120px;
     > button {
       width: 100%;
       height: 47px;
@@ -166,6 +175,7 @@ export {
   CapsulizedInfo,
   Notice,
   StickyBody,
+  CartListBody,
   Cart,
   CartTab,
   CartList,
