@@ -17,4 +17,4 @@ function LocalNav() {
   );
 }
 
-export default LocalNav;
+export { LocalNav };

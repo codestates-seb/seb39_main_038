@@ -30,4 +30,4 @@ function GlobalNav() {
   );
 }
 
-export default GlobalNav;
+export { GlobalNav };

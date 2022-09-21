@@ -23,4 +23,4 @@ function Thumbnail({ title, src, query }) {
   );
 }
 
-export default Thumbnail;
+export { Thumbnail };
