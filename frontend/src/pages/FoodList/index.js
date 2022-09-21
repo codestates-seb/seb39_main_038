@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { Banner, LocalNav } from '../../components';
-import FoodDetail from './FoodDetail';
+import { Banner, LocalNav, FoodTruck } from '../../components';
+import { FoodListContainer, FoodListWrapper } from './styles';
 
 function FoodList() {
   const location = useLocation();
@@ -11,7 +11,14 @@ function FoodList() {
     <div>
       <Banner />
       <LocalNav />
-      <FoodDetail />
+      <FoodListContainer>
+        <FoodListWrapper>
+          <FoodTruck />
+          <FoodTruck />
+          <FoodTruck />
+          <FoodTruck />
+        </FoodListWrapper>
+      </FoodListContainer>
     </div>
   );
 }
