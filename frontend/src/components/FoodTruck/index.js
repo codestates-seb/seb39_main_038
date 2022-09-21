@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   FoodTruckContainer,
   FoodTruckWrapper,
@@ -13,6 +14,7 @@ import {
 } from './styles';
 
 function FoodTruck({
+  id = null,
   title = '가게이름',
   star = 4.5,
   review = 100,
@@ -20,6 +22,7 @@ function FoodTruck({
   tag = ['카드환영', '밤샘영업'],
   time = '10분~20분',
 }) {
+  const navigate = useNavigate();
   const createTag = () => {
     let i = 0;
     return tag.map((item) => {
@@ -29,7 +32,7 @@ function FoodTruck({
   };
 
   return (
-    <FoodTruckContainer>
+    <FoodTruckContainer onClick={() => navigate(`/foodlist/${id}`)}>
       <FoodTruckWrapper>
         <FoodTruckImage />
         <FoodTruckTextInner>
