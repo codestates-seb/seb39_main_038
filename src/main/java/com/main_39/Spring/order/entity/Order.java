@@ -11,8 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,12 +22,11 @@ import java.util.List;
 @NoArgsConstructor
 @Table(name = "orders")
 public class Order extends Auditable {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "kakao_id")
     private Kakao kakao;
 
@@ -35,4 +34,12 @@ public class Order extends Auditable {
     private List<OrderMenu> orderMenus = new ArrayList<>();
 
     private int count;
+
+    public void addKakao(Kakao kakao) {
+        this.kakao = kakao;
+    }
+
+    public void addOrderMenus(List<OrderMenu> orderMenus) {
+        this.orderMenus = orderMenus;
+    }
 }

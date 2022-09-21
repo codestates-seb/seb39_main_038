@@ -1,5 +1,6 @@
 package com.main_39.Spring.order.controller.dto;
 
+import com.main_39.Spring.member.entity.Kakao;
 import com.main_39.Spring.order.controller.dto.OrderMenuPostRequestDto;
 import lombok.Getter;
 
@@ -11,7 +12,9 @@ public class OrderPostRequestDto {
 
     private List<OrderMenuPostRequestDto> orderMenus;
 
-    /**
-     * TODO: 구매자 ID 가지고 오기
-     */
+    public Kakao getKakao() {
+        Kakao kakao = new Kakao();
+        kakao.addKakao(kakao_id);
+        return kakao;
+    }
 }

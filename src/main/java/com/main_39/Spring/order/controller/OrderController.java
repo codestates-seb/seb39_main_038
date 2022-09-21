@@ -1,5 +1,6 @@
 package com.main_39.Spring.order.controller;
 
+import com.main_39.Spring.order.OrderMapper;
 import com.main_39.Spring.order.controller.dto.OrderPostRequestDto;
 import com.main_39.Spring.order.service.OrderService;
 import com.main_39.Spring.order.entity.Order;
@@ -19,11 +20,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class OrderController {
     private final OrderService orderService;
 
+    private final OrderMapper mapper;
+
     @PostMapping
     public ResponseEntity createOrder(@RequestBody OrderPostRequestDto requestDto) {
         /**
          * TODO : OrderPostRequestDto -> Order 변환 필요
          */
+        orderService.createOrder(mapper.orderPostRequestDtoToOrder(requestDto));
         return new ResponseEntity ("", HttpStatus.CREATED);
     }
 

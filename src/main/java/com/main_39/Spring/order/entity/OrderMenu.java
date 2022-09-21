@@ -31,4 +31,22 @@ public class OrderMenu extends Auditable {
     private Menu menu;
 
     private int count;
+
+    public void addOrder(Order order) {
+        this.order = order;
+        if(!this.order.getOrderMenus().contains(this)) {
+            this.order.getOrderMenus().add(this);
+        }
+    }
+
+    public void addMenu(Menu menu) {
+        this.menu = menu;
+        if(!this.menu.getOrderMenus().contains(this)) {
+            this.menu.addOrderMenu(this);
+        }
+    }
+
+    public void addCount(int count) {
+        this.count = count;
+    }
 }
