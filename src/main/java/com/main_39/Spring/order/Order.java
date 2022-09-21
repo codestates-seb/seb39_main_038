@@ -1,8 +1,11 @@
 package com.main_39.Spring.order;
 
+import com.main_39.Spring.audit.Auditable;
 import com.main_39.Spring.member.entity.Kakao;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,13 +15,15 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
 @NoArgsConstructor
-public class Order {
+@Table(name = "orders")
+public class Order extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,8 +37,4 @@ public class Order {
     private List<OrderMenu> orderMenus = new ArrayList<>();
 
     private int count;
-
-    /**
-     * TODO : Builder 패턴 적용해야 하는지 확인
-     */
 }

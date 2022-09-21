@@ -1,5 +1,6 @@
 package com.main_39.Spring.order;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,21 +12,26 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/order")
+@RequiredArgsConstructor
 public class OrderController {
+    private final OrderService orderService;
 
     @PostMapping
     public ResponseEntity createOrder(@RequestBody OrderPostRequestDto requestDto) {
         /**
-         * TODO : 내부 로직 필요
+         * TODO : OrderPostRequestDto -> Order 변환 필요
          */
         return new ResponseEntity ("", HttpStatus.CREATED);
     }
 
+    /**
+     * 단일 주문 가져오기
+     */
     @GetMapping("/{order-id}")
     public ResponseEntity getOrder(@PathVariable("order-id") long orderId) {
-        /**
-         * TODO : 내부 로직 필요
-         */
-        return new ResponseEntity("", HttpStatus.OK);
+
+        Order getOrder = orderService.getOrder(orderId);
+
+        return new ResponseEntity(getOrder, HttpStatus.OK);
     }
 }
