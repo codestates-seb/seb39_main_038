@@ -1,9 +1,8 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { ROUTE } from './constants';
-import Spinner from './components/Spinner';
+import { GlobalNav, Spinner } from './components';
 
-const GlobalNav = React.lazy(() => import('./components/GlobalNav'));
 const Home = React.lazy(() => import('./pages/Home'));
 const Login = React.lazy(() => import('./pages/Login'));
 const Register = React.lazy(() => import('./pages/Register'));

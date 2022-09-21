@@ -1,7 +1,6 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { Banner } from '../../components/Banner';
-import LocalNav from '../../components/LocalNav';
+import { Banner, LocalNav } from '../../components';
 import FoodDetail from './FoodDetail';
 
 function FoodList() {

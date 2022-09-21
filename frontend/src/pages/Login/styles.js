@@ -1,23 +1,8 @@
 import styled from 'styled-components';
 
-const LoginContainer = styled.div`
-  max-width: 800px;
-  margin: 0 auto;
-  height: calc(100vh - 80px);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-`;
-
 const Logo = styled.div`
   height: 45px;
   background-color: red;
-`;
-
-const LoginWrapper = styled.form`
-  display: flex;
-  flex-direction: column;
-  padding: 20px 0px;
 `;
 
 const LoginInner = styled.div`
@@ -48,28 +33,4 @@ const FindText = styled.a`
   cursor: pointer;
 `;
 
-const Input = styled.input`
-  font-size: 14px;
-  padding: 10px 15px;
-  border: 1px solid #ddd;
-  border-radius: 2px;
-`;
-
-const Button = styled.button`
-  font-size: 15px;
-  padding: 10px 15px;
-  border: 1px solid #ddd;
-  border-radius: 2px;
-  background-color: transparent;
-`;
-
-export {
-  LoginContainer,
-  Logo,
-  LoginWrapper,
-  LoginInner,
-  FindInner,
-  FindText,
-  Input,
-  Button,
-};
+export { Logo, LoginInner, FindInner, FindText };

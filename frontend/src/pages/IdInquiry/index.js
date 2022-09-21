@@ -1,20 +1,15 @@
 import React from 'react';
-import {
-  FormContainer,
-  FormWrapper,
-  FormInput,
-  FormButton,
-} from '../../components/Form';
+import { Form } from '../../components';
 
 function IdInquiry() {
   return (
-    <FormContainer>
-      <FormWrapper>
-        <FormInput placeholder="사용자 이름 입력" />
-        <FormInput placeholder="휴대폰 전화번호 입력 (-제외)" />
-        <FormButton>아이디 찾기</FormButton>
-      </FormWrapper>
-    </FormContainer>
+    <Form.Container>
+      <Form.Wrapper>
+        <Form.Input placeholder="사용자 이름 입력" />
+        <Form.Input placeholder="휴대폰 전화번호 입력 (-제외)" />
+        <Form.Button>아이디 찾기</Form.Button>
+      </Form.Wrapper>
+    </Form.Container>
   );
 }
 
