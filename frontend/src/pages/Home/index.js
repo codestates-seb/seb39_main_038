@@ -25,7 +25,7 @@ function Home() {
   const createThumbnail = () => {
     return MENU.map((item) => (
       <Thumbnail
-        id={item.id}
+        key={item.id}
         title={item.title}
         src={item.src}
         alt={item.title}
