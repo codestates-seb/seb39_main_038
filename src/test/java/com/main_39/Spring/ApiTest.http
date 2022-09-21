@@ -1,30 +1,43 @@
-### POST 테스트
-POST http://localhost:8080/test
+### menu get
+GET http://localhost:8080/menu/2
+Content-Type: application/json
+
+### menu post 1
+POST http://localhost:8080/menu
 Content-Type: application/json
 
 {
-  "name" : "이름",
-  "phone" : "010-1111-2222"
+  "name" : "아메리카노",
+  "price" : 4500
 }
 
-### PATCH 테스트
-PATCH http://localhost:8080/test/1
+### menu post 2
+POST http://localhost:8080/menu
 Content-Type: application/json
 
 {
-  "phone" : "010-2222-3333"
+  "name" : "카페라떼",
+  "price" : 5000
 }
 
-### GET 테스트
-GET http://localhost:8080/test/1
+### order post 1
+POST http://localhost:8080/order
 Content-Type: application/json
 
 {
+  "kakao_id" : 1,
+  "orderMenus" : [
+  {
+    "menuId" : 1,
+    "count" : 2
+  },
+  {
+    "menuId" : 2,
+    "count" : 1
+  }
+]
 }
 
-### Delete 테스트
-DELETE http://localhost:8080/test/1
+### order get
+GET http://localhost:8080/order/1
 Content-Type: application/json
-
-{
-}
