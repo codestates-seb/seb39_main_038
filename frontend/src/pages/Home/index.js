@@ -2,9 +2,8 @@ import React, { useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { API_URI, MENU, ROUTE } from '../../constants';
-import Thumbnail from '../../components/Thumbnail';
+import { Banner, Thumbnail } from '../../components';
 import { HomeContainer, HomeWrapper } from './styles';
-import { Banner } from '../../components/Banner';
 
 function Home() {
   const navigate = useNavigate();
@@ -26,7 +25,7 @@ function Home() {
   const createThumbnail = () => {
     return MENU.map((item) => (
       <Thumbnail
-        id={item.id}
+        key={item.id}
         title={item.title}
         src={item.src}
         alt={item.title}

@@ -5,7 +5,7 @@ import { MENU } from '../../constants';
 function LocalNav() {
   const createNavList = () => {
     return MENU.map((item) => (
-      <NavList id={item.id}>
+      <NavList key={item.id}>
         <Navitem>{item.title}</Navitem>
       </NavList>
     ));
@@ -17,4 +17,4 @@ function LocalNav() {
   );
 }
 
-export default LocalNav;
+export { LocalNav };
