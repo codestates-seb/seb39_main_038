@@ -31,7 +31,6 @@ public class Menu {
 
     @OneToMany(mappedBy = "menu")
     private List<OrderMenu> orderMenus = new ArrayList<>();
-
     /**
      * 주문에서 불러올 메뉴
      * TODO : 필요없으면 삭제
