@@ -30,10 +30,10 @@ public class OrderService {
      * 단일 주문 불러오기
      */
     public Order getOrder(long orderId) {
-        Order findOrder = orderRepository.findById(orderId).orElseThrow(
+        Order getOrder = orderRepository.findById(orderId).orElseThrow(
                 () -> new BusinessLogicException(ExceptionCode.ORDER_NOT_FOUND));
         // TODO : 예외 코드 변경
-        return findOrder;
+        return getOrder;
     }
     /**
      *  TODO : 회원별 주문 내역 불러오기
