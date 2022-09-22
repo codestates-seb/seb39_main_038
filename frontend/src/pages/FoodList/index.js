@@ -1,12 +1,17 @@
-import React from 'react';
-import { useLocation, Routes, Route } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Routes, Route } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import { atoms } from '../../store';
 import { Banner, LocalNav } from '../../components';
 import FoodTrucks from './FoodTrucks';
 import FoodDetail from './FoodDetail';
 
 function FoodList() {
-  const location = useLocation();
-  console.log('FoodList', location.state?.query);
+  const menuQuery = useRecoilValue(atoms.menuQuery);
+
+  useEffect(() => {
+    console.log(menuQuery);
+  }, [menuQuery]);
 
   return (
     <>

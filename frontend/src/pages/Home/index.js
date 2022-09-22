@@ -1,12 +1,16 @@
 import React, { useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
+import { atoms } from '../../store';
 import { API_URI, MENU, ROUTE } from '../../constants';
 import { Banner, Thumbnail } from '../../components';
 import { HomeContainer, HomeWrapper } from './styles';
 
 function Home() {
   const navigate = useNavigate();
+  const setMenuQuery = useSetRecoilState(atoms.menuQuery);
+
   const postAuthData = (api) => {
     if (api === null) return;
     axios
@@ -36,9 +40,8 @@ function Home() {
 
   const hanldeOnClick = (e) => {
     const $container = e.target.closest('div');
-    navigate(`/${ROUTE.FOODLIST.PATH}`, {
-      state: { query: $container.dataset.query },
-    });
+    setMenuQuery($container.dataset.query);
+    navigate(`/${ROUTE.FOODLIST.PATH}`);
   };
 
   return (
