@@ -1,13 +1,13 @@
 import React from 'react';
 import { useRecoilState } from 'recoil';
-import { menuTab } from '../../../atom';
+import { atoms } from '../../store';
 import { MenuBar, TabBtn, Section } from './styles';
 import { DetailFoodMenu } from '../DetailFoodMenu';
 import { DetailInfo } from '../DetailInfo';
 import { DetailReview } from '../DetailReview';
 
 function DetailMenuBar() {
-  const [menu, setMenu] = useRecoilState(menuTab);
+  const [menu, setMenu] = useRecoilState(atoms.menuTab);
 
   return (
     <Section>

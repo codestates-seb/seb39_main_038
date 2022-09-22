@@ -1,10 +1,10 @@
 import React from 'react';
 import { useRecoilValue } from 'recoil';
-import { getMenu } from '../../../atom';
+import { selectors } from '../../store';
 import { Section, Menu, MenuInfo, MenuImg } from './styles';
 
 function FoodMenuList() {
-  const menu = useRecoilValue(getMenu);
+  const menu = useRecoilValue(selectors.getMenu);
   return (
     <>
       <span>{menu.name}</span>
