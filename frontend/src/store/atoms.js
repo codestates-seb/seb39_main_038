@@ -4,7 +4,7 @@ import { MENU } from '../constants';
 const atoms = {
   menuQuery: atom({ key: 'menu', default: MENU[0].query }),
   modal: atom({
-    key: 'mode',
+    key: 'modal',
     default: { food: false, order: false, email: false },
   }),
 };
