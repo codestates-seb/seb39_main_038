@@ -1,8 +1,5 @@
-package com.main_39.Spring.order.controller.dto;
+package com.main_39.Spring.order.dto;
 
-import com.main_39.Spring.member.entity.Kakao;
-import com.main_39.Spring.menu.Menu;
-import com.main_39.Spring.order.controller.dto.OrderMenuPostRequestDto;
 import lombok.Getter;
 
 import java.util.List;

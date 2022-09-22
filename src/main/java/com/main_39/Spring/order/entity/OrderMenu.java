@@ -1,12 +1,12 @@
 package com.main_39.Spring.order.entity;
 
 import com.main_39.Spring.audit.Auditable;
-import com.main_39.Spring.menu.Menu;
+import com.main_39.Spring.menu.entity.Menu;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,15 +21,24 @@ public class OrderMenu extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderMenuId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
+//            (fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     private Order order;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
+//            (fetch = FetchType.LAZY)
     @JoinColumn(name = "menu_id")
     private Menu menu;
 
     private int count;
+
+    @Builder
+    public OrderMenu(Order order, Menu menu, int count) {
+        this.order = order;
+        this.menu = menu;
+        this.count = count;
+    }
 
     public void addOrder(Order order) {
         this.order = order;

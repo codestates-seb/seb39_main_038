@@ -1,6 +1,5 @@
-package com.main_39.Spring.order.controller.dto;
+package com.main_39.Spring.order.dto;
 
-import com.main_39.Spring.member.entity.Kakao;
 import lombok.Getter;
 import lombok.Setter;
 

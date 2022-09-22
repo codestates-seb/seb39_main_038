@@ -11,7 +11,7 @@ Content-Type: application/json
   "price" : 4500
 }
 
-### menu post 2
+### menu post
 POST http://localhost:8080/menu
 Content-Type: application/json
 
@@ -20,21 +20,37 @@ Content-Type: application/json
   "price" : 5000
 }
 
+### menu patch
+PATCH http://localhost:8080/menu/2
+Content-Type: application/json
+
+{
+  "name" : "아이스 카페라떼",
+  "price" : 5500
+}
+### menu get
+GET http://localhost:8080/menu/1
+Content-Type: application/json
+
+### menu delete
+DELETE http://localhost:8080/menu/
+Content-Type: application/json
+
 ### order post 1
 POST http://localhost:8080/order
 Content-Type: application/json
 
 {
   "orderMenus" : [
-  {
-    "menuId" : 1,
-    "count" : 2
-  },
-  {
-    "menuId" : 2,
-    "count" : 1
-  }
-]
+    {
+      "menuId" : 1,
+      "count" : 1
+    },
+    {
+      "menuId" : 2,
+      "count" : 2
+    }
+  ]
 }
 
 ### order get
