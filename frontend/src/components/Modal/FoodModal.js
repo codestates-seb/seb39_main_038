@@ -4,14 +4,17 @@ import { Modal } from './Modal';
 import { COLOR } from '../../constants';
 
 const FoodModalBody = styled.div`
-  height: 540px;
+  position: absolute;
+  top: 60px;
+  bottom: 48px;
   overflow-y: auto;
+  width: 100%;
+  background-color: #efefef;
 `;
 
 const FoodModalImage = styled.div`
+  background-color: gold;
   height: 220px;
-  width: 100%;
-  background-color: red;
 `;
 
 const FoodModalBox = styled.div`
@@ -19,7 +22,7 @@ const FoodModalBox = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 25px 15px;
+  padding: 18px 15px;
   height: ${({ height }) => height};
 
   ${({ description }) =>
@@ -29,9 +32,9 @@ const FoodModalBox = styled.div`
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      padding: 30px;
+      padding: 20px;
 
-      p {
+      span {
         font-size: 12px;
         color: #999;
         padding-top: 5px;
@@ -44,7 +47,7 @@ const FoodModalTitle = styled.h1`
   font-size: 24px;
 `;
 
-const FoodModalText = styled.p`
+const FoodModalText = styled.span`
   font-size: ${({ size }) => (size ? `${size}` : '15px')};
   font-weight: bold;
   color: ${({ color }) => color};
@@ -66,8 +69,9 @@ const FoodModalCountButton = styled.button`
 `;
 
 const FoodModalFooter = styled.footer`
+  position: absolute;
   width: 100%;
-  bottom: 48px;
+  bottom: 0;
 `;
 
 const FoodModalFooterButton = styled.button`
