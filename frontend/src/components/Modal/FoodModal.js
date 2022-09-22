@@ -1,93 +1,25 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
+import { useRecoilValue } from 'recoil';
+import { atoms } from '../../store';
 import { Modal } from './Modal';
 import { COLOR } from '../../constants';
+import {
+  FoodModalBody,
+  FoodModalImage,
+  FoodModalBox,
+  FoodModalTitle,
+  FoodModalText,
+  FoodModalButtonBox,
+  FoodModalCountButton,
+  FoodModalFooter,
+  FoodModalFooterButton,
+} from './styles';
 
-const FoodModalBody = styled.div`
-  position: absolute;
-  top: 60px;
-  bottom: 48px;
-  overflow-y: auto;
-  width: 100%;
-  background-color: #efefef;
-`;
-
-const FoodModalImage = styled.div`
-  background-color: gold;
-  height: 220px;
-`;
-
-const FoodModalBox = styled.div`
-  border-bottom: 1px solid #f0f0f0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 18px 15px;
-  height: ${({ height }) => height};
-
-  ${({ description }) =>
-    description &&
-    css`
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-
-      span {
-        font-size: 12px;
-        color: #999;
-        padding-top: 5px;
-        padding-bottom: 3px;
-      }
-    `}
-`;
-
-const FoodModalTitle = styled.h1`
-  font-size: 24px;
-`;
-
-const FoodModalText = styled.span`
-  font-size: ${({ size }) => (size ? `${size}` : '15px')};
-  font-weight: bold;
-  color: ${({ color }) => color};
-`;
-
-const FoodModalButtonBox = styled.div`
-  display: flex;
-`;
-
-const FoodModalCountButton = styled.button`
-  border: 1px solid #ccc;
-  background-color: transparent;
-  padding: 4px 8px;
-  ${({ count }) =>
-    count &&
-    css`
-      padding: 4px 16px;
-    `}
-`;
-
-const FoodModalFooter = styled.footer`
-  position: absolute;
-  width: 100%;
-  bottom: 0;
-`;
-
-const FoodModalFooterButton = styled.button`
-  width: ${({ width }) => width};
-  height: 48px;
-  border: none;
-  font-size: 16px;
-  font-weight: bold;
-  padding: 4px;
-  background-color: ${({ color }) => (color ? `${color}` : 'transparent')};
-  color: white;
-`;
-
-function FoodModal() {
+function FoodModal({ closeModal }) {
+  const isMadal = useRecoilValue(atoms.modal);
+  if (!isMadal.food) return null;
   return (
-    <Modal title="메뉴상세" width={450} height={600}>
+    <Modal title="메뉴상세" width={450} height={600} closeModal={closeModal}>
       <FoodModalBody>
         <FoodModalImage />
         <FoodModalBox description>
