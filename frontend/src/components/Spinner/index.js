@@ -18,4 +18,4 @@ function Spinner({ color }) {
   );
 }
 
-export default Spinner;
+export { Spinner };

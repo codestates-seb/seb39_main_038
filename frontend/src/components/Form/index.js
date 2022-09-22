@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const FormContainer = styled.div`
+const Container = styled.div`
   max-width: 800px;
   margin: 0 auto;
   height: calc(100vh - 80px);
@@ -9,13 +9,13 @@ const FormContainer = styled.div`
   justify-content: center;
 `;
 
-const FormWrapper = styled.form`
+const Wrapper = styled.form`
   display: flex;
   flex-direction: column;
   padding: 20px 0px;
 `;
 
-const FormText = styled.p`
+const Text = styled.p`
   color: #666;
   font-size: 14px;
   &::before {
@@ -23,14 +23,14 @@ const FormText = styled.p`
   }
 `;
 
-const FormInput = styled.input`
+const Input = styled.input`
   font-size: 14px;
   padding: 10px 15px;
   border: 1px solid #ddd;
   border-radius: 2px;
 `;
 
-const FormButton = styled.button`
+const Button = styled.button`
   font-size: 15px;
   padding: 10px 15px;
   border: 1px solid #ddd;
@@ -38,4 +38,12 @@ const FormButton = styled.button`
   background-color: transparent;
 `;
 
-export { FormContainer, FormWrapper, FormText, FormInput, FormButton };
+const Form = {
+  Container,
+  Wrapper,
+  Text,
+  Input,
+  Button,
+};
+
+export { Form };
