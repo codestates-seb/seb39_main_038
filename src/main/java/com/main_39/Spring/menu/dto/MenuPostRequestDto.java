@@ -1,4 +1,4 @@
-package com.main_39.Spring.menu;
+package com.main_39.Spring.menu.dto;
 
 import lombok.Getter;
 
