@@ -18,6 +18,7 @@ const ModalWrapper = styled.div`
   width: 460px;
   height: 600px;
   background-color: #fdfdfd;
+  position: relative;
 `;
 
 const ModalHeader = styled.div`
