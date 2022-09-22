@@ -5,6 +5,7 @@ import {
   Cart,
   CartTab,
   CartList,
+  FoodName,
   CartListAdd,
   TotalPrice,
   OrderBtn,
@@ -20,11 +21,13 @@ function Receipt() {
         </CartTab>
         <CartListBody>
           <CartList>
-            <div>햄버거</div>
+            <FoodName>햄버거</FoodName>
 
             <CartListAdd>
-              <div>8,000원</div>
-              <div className="수량버튼">
+              <div>
+                <button type="button">x</button>8,000원
+              </div>
+              <div>
                 <button type="button">-</button>
                 <span>1</span>
                 <button type="button">+</button>
@@ -32,11 +35,13 @@ function Receipt() {
             </CartListAdd>
           </CartList>
           <CartList>
-            <div>피자</div>
+            <FoodName>피자</FoodName>
 
             <CartListAdd>
-              <div>18,000원</div>
-              <div className="수량버튼">
+              <div>
+                <button type="button">x</button>18,000원
+              </div>
+              <div>
                 <button type="button">-</button>
                 <span>1</span>
                 <button type="button">+</button>
@@ -44,11 +49,13 @@ function Receipt() {
             </CartListAdd>
           </CartList>
           <CartList>
-            <div>치킨</div>
+            <FoodName>치킨</FoodName>
 
             <CartListAdd>
-              <div>12,000원</div>
-              <div className="수량버튼">
+              <div>
+                <button type="button">x</button>12,000원
+              </div>
+              <div>
                 <button type="button">-</button>
                 <span>1</span>
                 <button type="button">+</button>
@@ -56,7 +63,7 @@ function Receipt() {
             </CartListAdd>
           </CartList>
         </CartListBody>
-        <TotalPrice className="totalPrice">합계: 38,000원</TotalPrice>
+        <TotalPrice>합계: 38,000원</TotalPrice>
       </Cart>
 
       <OrderBtn>

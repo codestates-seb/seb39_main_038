@@ -5,7 +5,7 @@ import { LocalNav } from './LocalNav';
 import { Spinner } from './Spinner';
 import { Thumbnail } from './Thumbnail';
 import { FoodTruck } from './FoodTruck';
-import { DetailFoodMenu } from './DetailFoodMenu';
+import { DetailFoodList } from './DetailFoodList';
 import { DetailInfo } from './DetailInfo';
 import { DetailMenuBar } from './DetailMenuBar';
 import { DetailReview } from './DetailReview';
@@ -20,7 +20,7 @@ export {
   Thumbnail,
   FoodTruck,
   Receipt,
-  DetailFoodMenu,
+  DetailFoodList,
   DetailInfo,
   DetailMenuBar,
   DetailReview,

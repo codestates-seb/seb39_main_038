@@ -14,25 +14,43 @@ const Rating = styled.div`
   justify-content: center;
   align-items: center;
   font-size: 40px;
-  background-color: ${(e) => e.theme.mainColor};
+  font-weight: 900;
   height: 100px;
   width: 100%;
+  border: 1px solid lightgrey;
+  > span {
+    border-left: 1px solid lightgrey;
+    color: orange;
+    padding: 0px 0px 0px 15px;
+  }
+`;
+
+const TotalRate = styled.div`
+  padding: 0px 15px 0px 0px;
 `;
 
 const Comment = styled.div`
   color: black;
-  background-color: lightgrey;
   font-size: 14px;
   padding: 5px;
   line-height: 20px;
   padding-bottom: 20px;
-  border-bottom: 1px solid grey;
+  border: 1px solid lightgrey;
+  margin-top: -1px;
 `;
 
 const NameDateReply = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+`;
+
+const Rate = styled.div`
+  color: orange;
+`;
+
+const Date = styled.span`
+  color: grey;
 `;
 
 const ReplyDeleteBtn = styled.button`
@@ -47,6 +65,12 @@ const ThumnailBox = styled.button`
   flex-direction: row;
 `;
 
+const OrderHistory = styled.div`
+  font-size: 12px;
+  /* color: ${(e) => e.theme.fontColor}; */
+  color: grey;
+`;
+
 const Thumnail = styled.img`
   width: 200px;
   height: 120px;
@@ -55,9 +79,13 @@ const Thumnail = styled.img`
 export {
   Section,
   Rating,
+  TotalRate,
   Comment,
   NameDateReply,
+  Date,
+  Rate,
   ReplyDeleteBtn,
   ThumnailBox,
+  OrderHistory,
   Thumnail,
 };

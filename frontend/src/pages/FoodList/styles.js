@@ -15,31 +15,34 @@ const FoodListWrapper = styled.div`
 const Section = styled.section`
   max-width: 1020px;
   margin: 0 auto;
-  font-size: 22px;
-  color: ${(e) => e.theme.fontColor};
+  font-size: 14px;
   background-color: white;
+  padding: 10px 10px 0px 10px;
   @media screen and (max-width: 767px) {
-    font-size: 20px;
     padding-bottom: 65px;
   }
 `;
 
 const MainBody = styled.div`
   @media ${(e) => e.theme.tablet} {
-    width: 65%;
+    width: 66%;
     display: inline-block;
     margin: 0px 20px 0px 0px;
+    position: relative;
+    top: -170px;
+    z-index: 0;
   }
 `;
 
 const FoodTruckName = styled.div`
-  background-color: ${(e) => e.theme.mainColor};
   height: 43px;
-  font-size: 30px;
-  font-weight: 900;
+  font-size: 15.5px;
+  font-weight: 500;
   display: flex;
   justify-content: start;
   align-items: center;
+  padding: 10px;
+  border: 1px solid lightgrey;
   @media ${(e) => e.theme.tablet} {
     width: 100%;
     height: 56px;
@@ -49,9 +52,9 @@ const FoodTruckName = styled.div`
 const FoodTruckCapsulizedInfo = styled.div`
   display: flex;
   justify-content: start;
-  background-color: ${(e) => e.theme.mainColor};
-  margin: 20px 0px 0px;
+  border: 1px solid lightgrey;
   height: 120px;
+  margin-top: -1px;
   @media ${(e) => e.theme.tablet} {
     width: 100%;
   }
@@ -77,11 +80,11 @@ const CapsulizedInfo = styled.div`
 
 const Notice = styled.div`
   display: flex;
-  background-color: ${(e) => e.theme.mainColor};
-  margin: 10px 0px 0px;
+  border: 1px solid lightgrey;
   height: 43px;
   align-items: center;
-  padding: 0px 10px 0px;
+  padding: 14px 20px 12px 15px;
+  margin-top: -1px;
   @media ${(e) => e.theme.tablet} {
     width: 100%;
   }

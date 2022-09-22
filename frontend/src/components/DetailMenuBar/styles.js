@@ -9,13 +9,43 @@ const MenuBar = styled.div`
   }
 `;
 
-const TabBtn = styled.button`
+const MenuTabBtn = styled.button`
   width: 33.3%;
   height: 47px;
-  background-color: ${(e) => e.theme.mainColor};
-  color: ${(e) => e.theme.fontColor};
-  font-size: 20px;
-  font-weight: 900;
+  background-color: white;
+  font-size: 15px;
+  font-weight: 500;
+  margin-left: -3px;
+  border: 1px solid lightgrey;
+  border-bottom: 5px solid
+    ${(props) => (props.menu === '메뉴' ? '#16267D' : '1px')};
+  color: ${(props) => (props.menu === '메뉴' ? '#16267D' : 'black')};
+`;
+
+const ReviewTabBtn = styled.button`
+  width: 33.3%;
+  height: 47px;
+  background-color: white;
+  font-size: 15px;
+  font-weight: 500;
+  margin-left: -3px;
+  border: 1px solid lightgrey;
+  border-bottom: 5px solid
+    ${(props) => (props.menu === '리뷰' ? '#16267D' : 'asd')};
+  color: ${(props) => (props.menu === '리뷰' ? '#16267D' : 'black')};
+`;
+
+const InfoTabBtn = styled.button`
+  width: 33.3%;
+  height: 47px;
+  background-color: white;
+  font-size: 15px;
+  font-weight: 500;
+  margin-left: -3px;
+  border: 1px solid lightgrey;
+  border-bottom: 5px solid
+    ${(props) => (props.menu === '정보' ? '#16267D' : '1px')};
+  color: ${(props) => (props.menu === '정보' ? '#16267D' : 'black')};
 `;
 
 const Section = styled.div`
@@ -27,4 +57,4 @@ const Section = styled.div`
   }
 `;
 
-export { MenuBar, TabBtn, Section };
+export { MenuBar, ReviewTabBtn, InfoTabBtn, MenuTabBtn, Section };

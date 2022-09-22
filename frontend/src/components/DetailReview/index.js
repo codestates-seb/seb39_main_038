@@ -2,30 +2,38 @@ import React from 'react';
 import {
   Section,
   Rating,
+  TotalRate,
   Comment,
   NameDateReply,
+  Date,
+  Rate,
   ReplyDeleteBtn,
   ThumnailBox,
+  OrderHistory,
   Thumnail,
 } from './styles';
 
 function DetailReview() {
   return (
     <Section>
-      <Rating>5.0 ★★★★★</Rating>
+      <Rating>
+        <TotalRate>5.0</TotalRate> <span>★★★★★</span>
+      </Rating>
       <Comment>
         <NameDateReply>
-          <span>김재원 2022-09-20</span>
+          <div>
+            김재원 <Date>2022-09-20</Date>
+          </div>
           <div>
             <ReplyDeleteBtn type="button">답글</ReplyDeleteBtn>
             <ReplyDeleteBtn type="button">삭제</ReplyDeleteBtn>
           </div>
         </NameDateReply>
-        <div>별점 ★★</div>
+        <Rate>별점 ★★</Rate>
         <ThumnailBox>
           <Thumnail alt="Thumnail" />
         </ThumnailBox>
-        <div>주문내역</div>
+        <OrderHistory>주문내역</OrderHistory>
         <div>
           사장님도 친절하시고, 양도 많고 엄청 신선했습니다! 많이 시켜먹을 것
           같습니다!
@@ -33,13 +41,15 @@ function DetailReview() {
       </Comment>
       <Comment>
         <NameDateReply>
-          <span>김재원 2022-09-21</span>
+          <div>
+            김재원 <Date>2022-09-21</Date>
+          </div>
           <div>
             <ReplyDeleteBtn type="button">답글</ReplyDeleteBtn>
             <ReplyDeleteBtn type="button">삭제</ReplyDeleteBtn>
           </div>
         </NameDateReply>
-        <div>별점 ★★★★</div>
+        <Rate>별점 ★★★★</Rate>
         <ThumnailBox>
           <Thumnail alt="Thumnail" />
         </ThumnailBox>
@@ -48,13 +58,15 @@ function DetailReview() {
       </Comment>
       <Comment>
         <NameDateReply>
-          <span>김재원 2022-09-20</span>
+          <div>
+            김재원 <Date>2022-09-20</Date>
+          </div>
           <div>
             <ReplyDeleteBtn type="button">답글</ReplyDeleteBtn>
             <ReplyDeleteBtn type="button">삭제</ReplyDeleteBtn>
           </div>
         </NameDateReply>
-        <div>별점 ★★</div>
+        <Rate>별점 ★★</Rate>
         <ThumnailBox>
           <Thumnail alt="Thumnail" />
         </ThumnailBox>
@@ -66,13 +78,15 @@ function DetailReview() {
       </Comment>
       <Comment>
         <NameDateReply>
-          <span>김재원 2022-09-21</span>
+          <div>
+            김재원 <Date>2022-09-21</Date>
+          </div>
           <div>
             <ReplyDeleteBtn type="button">답글</ReplyDeleteBtn>
             <ReplyDeleteBtn type="button">삭제</ReplyDeleteBtn>
           </div>
         </NameDateReply>
-        <div>별점 ★★★★</div>
+        <Rate>별점 ★★★★</Rate>
         <ThumnailBox>
           <Thumnail alt="Thumnail" />
         </ThumnailBox>
@@ -81,13 +95,15 @@ function DetailReview() {
       </Comment>
       <Comment>
         <NameDateReply>
-          <span>김재원 2022-09-20</span>
+          <div>
+            김재원 <Date>2022-09-20</Date>
+          </div>
           <div>
             <ReplyDeleteBtn type="button">답글</ReplyDeleteBtn>
             <ReplyDeleteBtn type="button">삭제</ReplyDeleteBtn>
           </div>
         </NameDateReply>
-        <div>별점 ★★</div>
+        <Rate>별점 ★★</Rate>
         <ThumnailBox>
           <Thumnail alt="Thumnail" />
         </ThumnailBox>
@@ -99,13 +115,15 @@ function DetailReview() {
       </Comment>
       <Comment>
         <NameDateReply>
-          <span>김재원 2022-09-21</span>
+          <div>
+            김재원 <Date>2022-09-21</Date>
+          </div>
           <div>
             <ReplyDeleteBtn type="button">답글</ReplyDeleteBtn>
             <ReplyDeleteBtn type="button">삭제</ReplyDeleteBtn>
           </div>
         </NameDateReply>
-        <div>별점 ★★★★</div>
+        <Rate>별점 ★★★★</Rate>
         <ThumnailBox>
           <Thumnail alt="Thumnail" />
         </ThumnailBox>

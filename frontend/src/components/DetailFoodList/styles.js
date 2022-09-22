@@ -15,13 +15,28 @@ const Menu = styled.div`
   background-color: white;
   height: 104px;
   padding: 10px 10px 10px;
-  border-bottom: 1px solid grey;
+  border: 1px solid lightgrey;
+  margin-top: -1px;
 `;
 
 const MenuInfo = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
+`;
+
+const Name = styled.span`
+  font-size: 15px;
+  font-weight: bold;
+`;
+
+const Info = styled.span`
+  font-size: 12.5px;
+  color: grey;
+`;
+
+const Price = styled.span`
+  font-size: 15px;
 `;
 
 const MenuImg = styled.div`
@@ -35,4 +50,4 @@ const MenuImg = styled.div`
   }
 `;
 
-export { Section, Menu, MenuInfo, MenuImg };
+export { Section, Menu, MenuInfo, Name, Info, Price, MenuImg };

@@ -1,4 +1,4 @@
-import axios from 'axios';
+// import axios from 'axios';
 import { atom, selector } from 'recoil';
 import { MENU } from '../constants';
 
@@ -11,8 +11,8 @@ const selectors = {
   getMenu: selector({
     key: 'getMenu',
     get: async () => {
-      const response = await axios.get('http://localhost:8080/menu');
-      return response.data;
+      // const response = await axios.get('http://localhost:8080/menu');
+      // return response.data;
     },
   }),
 };

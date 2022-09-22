@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const StickyBody = styled.div`
   @media ${(e) => e.theme.tablet} {
-    width: 30%;
+    width: calc(33% - 20px);
     display: inline-block;
     position: sticky;
     top: 50px;
@@ -10,21 +10,17 @@ const StickyBody = styled.div`
 `;
 
 const CartListBody = styled.div`
-  background-color: ${(e) => e.theme.mainColor};
+  border: 1px solid lightgrey;
 `;
 
 const Cart = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: ${(e) => e.theme.mainColor};
-  width: 100%;
-  height: 200px;
   @media screen and (max-width: 767px) {
     margin-top: 20px;
   }
   @media ${(e) => e.theme.tablet} {
     width: 100%;
-    height: 150px;
     position: relative;
     top: 20px;
   }
@@ -34,15 +30,22 @@ const CartTab = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-weight: 900;
-  margin: 5px;
+  font-weight: 600;
+  background-color: ${(e) => e.theme.mainColor};
+  color: ${(e) => e.theme.fontColor};
+  padding: 10px 10px 10px 15px;
 `;
 
 const CartList = styled.div`
   display: flex;
   justify-content: space-between;
   flex-direction: column;
-  margin: 10px 5px;
+  margin: 10px 15px;
+`;
+
+const FoodName = styled.div`
+  font-size: 14px;
+  padding: 5px 12px 8px;
 `;
 
 const CartListAdd = styled.div`
@@ -56,7 +59,9 @@ const TotalPrice = styled.div`
   height: 47px;
   align-items: center;
   font-weight: 900;
-  background-color: ${(e) => e.theme.mainColor};
+  background-color: lightyellow;
+  border: 1px solid lightgrey;
+  margin-top: -1px;
   @media ${(e) => e.theme.tablet} {
     width: 100%;
     padding: 20px;
@@ -69,8 +74,8 @@ const OrderBtn = styled.div`
     background-color: ${(e) => e.theme.mainColor};
     color: ${(e) => e.theme.fontColor};
     height: 65px;
-    font-size: 20px;
-    font-weight: 900;
+    font-size: 18px;
+    font-weight: bold;
   }
   @media screen and (max-width: 767px) {
     bottom: 0px;
@@ -81,8 +86,6 @@ const OrderBtn = styled.div`
     width: 100%;
     display: flex;
     flex-direction: column-reverse;
-    position: relative;
-    top: 120px;
     > button {
       width: 100%;
       height: 47px;
@@ -97,6 +100,7 @@ export {
   Cart,
   CartTab,
   CartList,
+  FoodName,
   CartListAdd,
   TotalPrice,
   OrderBtn,
