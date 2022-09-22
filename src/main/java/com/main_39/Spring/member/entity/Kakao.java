@@ -47,6 +47,10 @@ public class Kakao {
         this.refresh_token = refresh_token;
     }
 
+    public void addKakao(Long kakao_id) {
+        this.kakao_id = kakao_id;
+    }
+
     public enum Role {
         ROLE_USER("ROLE_USER"),
         CUSTOMER("ROLE_CUSTOMER"),
