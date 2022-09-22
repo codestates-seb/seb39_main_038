@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ROUTE } from '../../constants';
 import {
   FoodTruckContainer,
   FoodTruckWrapper,
@@ -23,6 +24,7 @@ function FoodTruck({
   time = '10분~20분',
 }) {
   const navigate = useNavigate();
+  const handleOnClick = () => navigate(`/${ROUTE.FOODLIST.PATH}/${id}`);
   const createTag = () => {
     let i = 0;
     return tag.map((item) => {
@@ -32,7 +34,7 @@ function FoodTruck({
   };
 
   return (
-    <FoodTruckContainer onClick={() => navigate(`/foodlist/${id}`)}>
+    <FoodTruckContainer onClick={handleOnClick}>
       <FoodTruckWrapper>
         <FoodTruckImage />
         <FoodTruckTextInner>
