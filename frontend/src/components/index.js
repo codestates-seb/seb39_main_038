@@ -5,7 +5,7 @@ import { LocalNav } from './LocalNav';
 import { Spinner } from './Spinner';
 import { Thumbnail } from './Thumbnail';
 import { FoodTruck } from './FoodTruck';
-import { FoodModal } from './Modal';
+import { Modal } from './Modal';
 
 export {
   Banner,
@@ -15,5 +15,5 @@ export {
   Spinner,
   Thumbnail,
   FoodTruck,
-  FoodModal,
+  Modal,
 };
