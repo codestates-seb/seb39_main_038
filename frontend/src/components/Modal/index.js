@@ -1,3 +1,11 @@
 import { FoodModal } from './FoodModal';
+import { OrderModal } from './OrderModal';
+import { EmailModal } from './EmailModal';
 
-export { FoodModal };
+const Modal = {
+  FoodModal,
+  OrderModal,
+  EmailModal,
+};
+
+export { Modal };
