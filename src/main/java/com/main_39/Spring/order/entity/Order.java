@@ -5,6 +5,7 @@ import com.main_39.Spring.member.entity.Kakao;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -34,10 +35,6 @@ public class Order extends Auditable {
     private List<OrderMenu> orderMenus = new ArrayList<>();
 
     private int count;
-
-    public void addKakao(Kakao kakao) {
-        this.kakao = kakao;
-    }
 
     public void addOrderMenus(List<OrderMenu> orderMenus) {
         this.orderMenus = orderMenus;

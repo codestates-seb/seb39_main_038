@@ -2,7 +2,6 @@ package com.main_39.Spring.order.entity;
 
 import com.main_39.Spring.audit.Auditable;
 import com.main_39.Spring.menu.Menu;
-import com.main_39.Spring.order.entity.Order;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

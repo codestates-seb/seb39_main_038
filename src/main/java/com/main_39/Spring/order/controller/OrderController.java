@@ -1,5 +1,6 @@
 package com.main_39.Spring.order.controller;
 
+import com.main_39.Spring.order.controller.dto.OrderResponseDto;
 import com.main_39.Spring.order.mapper.OrderMapper;
 import com.main_39.Spring.order.controller.dto.OrderPostRequestDto;
 import com.main_39.Spring.order.service.OrderService;
@@ -25,18 +26,20 @@ public class OrderController {
     @PostMapping
     public ResponseEntity createOrder(@RequestBody OrderPostRequestDto requestDto) {
 
-        orderService.createOrder(mapper.orderPostRequestDtoToOrder(requestDto));
-        return new ResponseEntity ("", HttpStatus.CREATED);
+        orderService.createOrder(mapper.orderPostDtoToOrder(requestDto));
+
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 
     /**
      * 단일 주문 가져오기
      */
     @GetMapping("/{order-id}")
-    public ResponseEntity getOrder(@PathVariable("order-id") long orderId) {
+    public ResponseEntity<OrderResponseDto> findOrder(@PathVariable("order-id") long orderId) {
 
-        Order getOrder = orderService.getOrder(orderId);
+        Order findOrder = orderService.findOrder(orderId);
 
-        return new ResponseEntity(getOrder, HttpStatus.OK);
+        return new ResponseEntity<>(mapper.orderToOrderResponseDto(findOrder), HttpStatus.OK);
     }
 }
+

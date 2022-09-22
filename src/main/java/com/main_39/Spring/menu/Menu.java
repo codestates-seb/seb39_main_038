@@ -32,16 +32,6 @@ public class Menu {
     @OneToMany(mappedBy = "menu")
     private List<OrderMenu> orderMenus = new ArrayList<>();
 
-    /**
-     * 주문에서 불러올 메뉴
-     * TODO : 필요없으면 삭제
-     */
-    @Builder
-    public Menu(String name, int price) {
-        this.name = name;
-        this.price = price;
-    }
-
     public void addMenuId(Long menuId) {
         this.menuId = menuId;
     }

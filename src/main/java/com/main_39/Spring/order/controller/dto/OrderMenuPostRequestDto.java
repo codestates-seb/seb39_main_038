@@ -4,6 +4,6 @@ import lombok.Getter;
 
 @Getter
 public class OrderMenuPostRequestDto {
-    private Long menuId;
+    private long menuId;
     private int count;
 }
