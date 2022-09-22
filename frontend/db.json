@@ -1,0 +1,22 @@
+{
+  "menu": [
+    {
+      "name": "치킨",
+      "info": "바삭한 치킨 입니다!",
+      "price": "12,000",
+      "img": "https://w.namu.la/s/c4b8eb1c9ea25c0e252b81e3aab503097fdd7a7ae00acdba6f86da4e46ad5e3629335e1022104c01db12954074159679a427e9d4f2e0519db064e4203dec3dc074288b1d9931b11ba92f349382dc05ed6d90ae12834d8907b0168df980bdf022"
+    },
+    {
+      "name": "피자",
+      "info": "말랑한 피자 입니다!",
+      "price": "18,000",
+      "img": "https://w.namu.la/s/8c2aebf04d4c6e0ae24ebf3b3789cb064f353da40f0a2916630ee33cc34742414ac8427b8765569e84d615a24cac7bc389ada2e5c60579541ea8b41be9b22db66f14a3db5f981a2cc93bba229a752932915474cffbb7d3fe3cc41022e163a2b2b720c118309e131b9dbe8fdfda5c449b"
+    },
+    {
+      "name": "햄버거",
+      "info": "두툼한 햄버거 입니다!",
+      "price": "8,000",
+      "img": "https://thumb.mt.co.kr/06/2021/03/2021030517294890953_1.jpg/dims/optimize/"
+    }
+  ]
+}
