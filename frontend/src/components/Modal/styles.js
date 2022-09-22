@@ -15,8 +15,8 @@ const ModalContainer = styled.div`
 `;
 
 const ModalWrapper = styled.div`
-  width: 460px;
-  height: 600px;
+  width: ${({ width }) => width};
+  height: ${({ height }) => height};
   background-color: #fdfdfd;
   position: relative;
 `;

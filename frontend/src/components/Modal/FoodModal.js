@@ -87,7 +87,7 @@ const FoodModalFooterButton = styled.button`
 
 function FoodModal() {
   return (
-    <Modal title="메뉴상세">
+    <Modal title="메뉴상세" width={450} height={600}>
       <FoodModalBody>
         <FoodModalImage />
         <FoodModalBox description>

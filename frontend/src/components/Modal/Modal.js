@@ -8,7 +8,7 @@ import {
   CloseButton,
 } from './styles';
 
-function Modal({ title = '제목', closeModal, children }) {
+function Modal({ title = '제목', closeModal, children, width, height }) {
   const modalRef = useRef(null);
 
   const overlayEvent = useCallback(
@@ -31,7 +31,7 @@ function Modal({ title = '제목', closeModal, children }) {
 
   return createPortal(
     <ModalContainer>
-      <ModalWrapper ref={modalRef}>
+      <ModalWrapper ref={modalRef} width={width} height={height}>
         <ModalHeader>
           <ModalTitle>{title}</ModalTitle>
           <CloseButton onClick={closeModal} />
