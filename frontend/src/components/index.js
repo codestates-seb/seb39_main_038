@@ -5,5 +5,15 @@ import { LocalNav } from './LocalNav';
 import { Spinner } from './Spinner';
 import { Thumbnail } from './Thumbnail';
 import { FoodTruck } from './FoodTruck';
+import { FoodModal } from './Modal';
 
-export { Banner, Form, GlobalNav, LocalNav, Spinner, Thumbnail, FoodTruck };
+export {
+  Banner,
+  Form,
+  GlobalNav,
+  LocalNav,
+  Spinner,
+  Thumbnail,
+  FoodTruck,
+  FoodModal,
+};
