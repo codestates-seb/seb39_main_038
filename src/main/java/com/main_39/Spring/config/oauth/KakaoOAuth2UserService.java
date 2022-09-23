@@ -57,11 +57,11 @@ public class KakaoOAuth2UserService extends DefaultOAuth2UserService {
         //존재하는 회원인지 찾고 없으면 새로 만들기
         Kakao kakaoEntity = kakaoRepository.findById(id).orElse(
                 Kakao.builder()
-                        .kakao_id((Long) attributes.get("id"))
+                        .kakaoId((Long) attributes.get("id"))
                         .nickname((String) properties.get("nickname"))
-                        .connected_at((String) attributes.get("connected_at"))
-                        .profile_image((String) properties.get("profile_image"))
-                        .thumbnail_image((String) properties.get("thumbnail_image"))
+                        .connectedAt((String) attributes.get("connected_at"))
+                        .profileImage((String) properties.get("profile_image"))
+                        .thumbnailImage((String) properties.get("thumbnail_image"))
                         .email((String) kakao_account.get("email"))
                         .build()
         );
@@ -76,6 +76,6 @@ public class KakaoOAuth2UserService extends DefaultOAuth2UserService {
 
 
 
-        return new PrincipalDetails(kakaoEntity,principal_attribute);
+        return new KakaoDetails(kakaoEntity,principal_attribute);
     }
 }

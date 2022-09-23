@@ -1,9 +1,7 @@
 package com.main_39.Spring.member.controller;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
 import com.main_39.Spring.dto.SingleResponseDto;
-import com.main_39.Spring.member.dto.CodeDto;
+import com.main_39.Spring.member.dto.KakaoDto;
 import com.main_39.Spring.member.dto.KakaoProfile;
 import com.main_39.Spring.member.dto.LocalDto;
 import com.main_39.Spring.member.dto.OAuthToken;
@@ -18,19 +16,16 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.util.Date;
 
 @Slf4j
 @Controller
@@ -56,8 +51,11 @@ public class MemberController {
     @PostMapping("/signup")
     public ResponseEntity LocalSignUp(@Valid @RequestBody LocalDto.Post postDto){
         Local local = memberMapper.localPostToLocal(postDto);
+
+        // 1. 데이터베이스에 회원정보 저장
         Local posted = memberService.createLocal(local);
 
+        // 2. 회원가입 정보 리턴
         LocalDto.postResponse response = memberMapper.localToLocalPostResponse(posted);
 
         return new ResponseEntity<>(
@@ -65,61 +63,106 @@ public class MemberController {
         );
     }
 
-    @PostMapping("/login")
-    public ResponseEntity LocalLogin(){
-        return new ResponseEntity(HttpStatus.OK);
-    }
+    // 로컬 로그인은 UsernamePasswordAuthenticationFilter가 처리 (url: POST /login(default))
+    /*
+    * 1. acess_token, refresh_token 생성
+    * 2. refresh_token 회원 DB에 저장
+    * 3. loacl_access_token, local_refresh_token 쿠키 전달
+    */
 
-    @PostMapping("/logout")
-    public ResponseEntity LocalLogout(){
-        //Redis에 해당 토큰 BlackList 처리
-        return new ResponseEntity(HttpStatus.OK);
-    }
+    // 로컬 로그아웃은 Security에서 처리(ur: POST /logout)
+    /*
+    * loacl_access_token, local_refresh_token 삭제
+    */
+
 
     @PostMapping("/kakao/logout")
-    public ResponseEntity KakaoLogout(){
+    public ResponseEntity KakaoLogout(HttpServletRequest request, HttpServletResponse response){
+
+        //토큰 불러 오기
+        Cookie[] cookies = request.getCookies();
+
+        Cookie access_cookie = null;
+        Cookie refresh_cookie = null;
+        String access_token = "";
+        String refresh_token = "";
+
+
+        if(cookies != null){
+            for(Cookie cookie : cookies){
+                if(cookie.getName().equals("kakao_access_token")) access_cookie = cookie;
+                if(cookie.getName().equals("kakao_refresh_token")) refresh_cookie = cookie;
+            }
+        }
+
+        if(access_cookie != null) access_token = access_cookie.getValue();
+        if(refresh_cookie != null) refresh_token = refresh_cookie.getValue();
+
         //카카오에 로그아웃 요청 -> access_token, refresh_token 무효
-        //Redis에 해당 토큰 BlackList 처리
+        memberService.logoutKakao(access_token);
+
+
+        //access_token 삭제
+        ResponseCookie remove_access_cookie = ResponseCookie.from("kakao_access_token",access_token)
+                .sameSite("None")
+                .secure(true)
+                .httpOnly(true)
+                .maxAge(0)
+                .build();
+        response.setHeader("Set-Cookie", remove_access_cookie.toString());
+
+        //refresh_token 삭제
+        ResponseCookie remove_refresh_cookie = ResponseCookie.from("kakao_refresh_token",refresh_token)
+                .sameSite("None")
+                .secure(true)
+                .httpOnly(true)
+                .maxAge(0)
+                .build();
+        response.setHeader("Set-Cookie",remove_refresh_cookie.toString());
+
+
         return new ResponseEntity(HttpStatus.OK);
     }
 
 
     //프론트엔드로 code 전달 받으면 유저정보 저장, token 발송
-    @GetMapping("/login/oauth2/code/kakao")
-    public ResponseEntity kakaoCallback(@RequestParam String code,
+    @PostMapping("/login/oauth2/code/kakao")
+    public ResponseEntity kakaoCallback(@RequestBody KakaoDto.CodeDto code,
                                         HttpServletResponse response){ //Data를 리턴해주는 컨트롤러 함수
 
         System.out.println("Authentication 시작");
 
         //code -> 토큰
-        OAuthToken oauthToken = memberService.getToken(code);
+        OAuthToken oauthToken = memberService.getToken(code.getCode());
         //토큰 -> 사용자 정보
         KakaoProfile kakaoProfile = memberService.getKaKaoProfile(oauthToken);
         //profile -> entity
         Kakao kakao = memberMapper.kakaoProfileToKakao(kakaoProfile,oauthToken);
 
-        //DB에 저장
+        //데이터 베이스에 회원 정보 저장
         Kakao posted = memberService.createKakao(kakao);
 
         //헤더에 access토큰,refresh토큰,id토큰(혹시 모름),만료시간 넣어 리턴
 
         //access_token 쿠키
-        ResponseCookie access_cookie = ResponseCookie.from("access_token", oauthToken.getAccess_token())
-                .sameSite("Lax")
+        ResponseCookie access_cookie = ResponseCookie.from("kakao_access_token", oauthToken.getAccess_token())
+                .sameSite("None")
+                .secure(true)
                 .httpOnly(true)
                 .maxAge(60 * 60)
                 .build();
         response.addHeader("Set-Cookie", access_cookie.toString());
 
         //refresh_token 쿠키
-        ResponseCookie refresh_cookie = ResponseCookie.from("refresh_token",oauthToken.getRefresh_token())
-                .sameSite("Lax")
+        ResponseCookie refresh_cookie = ResponseCookie.from("kakao_refresh_token",oauthToken.getRefresh_token())
+                .sameSite("None")
+                .secure(true)
                 .httpOnly(true)
                 .maxAge(60 * 60 * 24 * 30 * 2)
                 .build();
         response.addHeader("Set-Cookie",refresh_cookie.toString());
 
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
 }

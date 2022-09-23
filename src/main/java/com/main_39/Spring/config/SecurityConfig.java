@@ -1,9 +1,10 @@
 package com.main_39.Spring.config;
 
 
+import com.main_39.Spring.config.filter.JwtAuthenticationFilter;
 import com.main_39.Spring.config.filter.JwtAuthorizationFilter;
-import com.main_39.Spring.config.oauth.KakaoOAuth2UserService;
 import com.main_39.Spring.member.repository.KakaoRepository;
+import com.main_39.Spring.member.repository.LocalRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +13,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.filter.CorsFilter;
 
@@ -19,13 +21,28 @@ import org.springframework.web.filter.CorsFilter;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig{
+    /**
+     * 스프링 백엔드 서버의 보안을 설정하는 클래스
+     * @author 유태형
+     * @see CorsFilter CORS설정 필터
+     * @see com.main_39.Spring.member.repository.KakaoRepository  카카오 로그인 정보 레포지토리
+     * @see com.main_39.Spring.member.repository.LocalRepository
+     * */
 
     private final CorsFilter corsFilter;
     private final KakaoRepository kakaoRepository;
+    private final LocalRepository localRepository;
 
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        /**
+         * 스프링 백엔드 보안 설정, 경로별 권한 지정, 로그인과 로그아웃을 설정하는 체인 메서드
+         * @author 유태형
+         * @exception Exception 설정 관련 예외
+         * @param HttpSecurity 리소스 권한, 로그인 로그아웃, 필터, csrf 호출등 스프링시큐리티의 거의 대부분설정을 담당하는 객체
+         * @return SecurityFilterChain 설정을 담당하는 필터들을 체인형식으로 묶어놓은 인터페이스
+         * */
         http.csrf().disable()
                 .httpBasic().disable();
         http.headers().frameOptions().disable();
@@ -42,11 +59,15 @@ public class SecurityConfig{
                 .authorizeRequests()
                 //권한 설정
                 .antMatchers("/css/**","/image/**","/js/**","/h2-console/**","/favicon.ico").permitAll()
-                .antMatchers("/login/**","/oauth2/**","/oauth/**","/h2/**","/v2/**").permitAll()
+                .antMatchers("/signup","/login/**","/oauth2/**","/oauth/**","/h2/**","/v2/**").permitAll()
                 .anyRequest().permitAll()
                 .and()
                 .formLogin()
-                .loginPage("/login");
+                .loginPage("/login")
+                .and()
+                .logout()
+                .deleteCookies("local_access_token","local_refresh_token"); //로컬 access_token, refresh_token 쿠키 삭제
+
                 /*
                 * SpringSecurity5 + OAuth2 + JWT -> Refresh_token 해결할 것
                 * */
@@ -71,15 +92,30 @@ public class SecurityConfig{
         return http.build();
     }
 
-    public class CustomDsl extends AbstractHttpConfigurer<CustomDsl, HttpSecurity> {
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder(){
+        /**
+         * 비밀번호를 단방향 암호화 하기위한 클래스
+         * @deprecated
+         * */
+        return new BCryptPasswordEncoder();
+    }
 
+    public class CustomDsl extends AbstractHttpConfigurer<CustomDsl, HttpSecurity> {
         @Override
         public void configure(HttpSecurity builder) throws Exception {
+            /**
+             * CORS 설정, 인증 설정, 인가 설정 필터들을 묶어 놓는 메서드
+             * @author 유태형
+             * @exception Exception 설정 관련 예외
+             * @param HttpSecurity 리소스 권한, 로그인 로그아웃, 필터, csrf 호출등 스프링시큐리티의 거의 대부분설정을 담당하는 객체
+             * @return void
+             * */
             AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
             builder
                     .addFilter(corsFilter) //cors 설정
-//                    .addFilter(new JwtAuthenticationFilter(authenticationManager))
-                    .addFilter(new JwtAuthorizationFilter(authenticationManager,kakaoRepository));
+                    .addFilter(new JwtAuthenticationFilter(authenticationManager,localRepository))
+                    .addFilter(new JwtAuthorizationFilter(authenticationManager,kakaoRepository,localRepository));
         }
     }
 }

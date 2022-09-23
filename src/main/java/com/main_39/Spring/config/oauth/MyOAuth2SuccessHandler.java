@@ -20,7 +20,7 @@ public class MyOAuth2SuccessHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest req, HttpServletResponse res, Authentication authentication) {
         String id = authentication.getName();
         System.out.println("id : " + id);
-        LinkedHashMap<String, Object> kakao_account = (LinkedHashMap<String, Object>) ((PrincipalDetails)authentication.getPrincipal()).getAttributes().get("kakao_account");
+        LinkedHashMap<String, Object> kakao_account = (LinkedHashMap<String, Object>) ((KakaoDetails)authentication.getPrincipal()).getAttributes().get("kakao_account");
         String email = (String) kakao_account.get("email");
         System.out.println("email : " + email);
 
@@ -33,6 +33,6 @@ public class MyOAuth2SuccessHandler implements AuthenticationSuccessHandler {
         // JWT -> BE
         res.addHeader("Authorization", "Bearer " + token);
         //access_token -> 카카오
-        res.addHeader("access_token",(String)((PrincipalDetails)authentication.getPrincipal()).getAttributes().get("access_token"));
+        res.addHeader("access_token",(String)((KakaoDetails)authentication.getPrincipal()).getAttributes().get("access_token"));
     }
 }

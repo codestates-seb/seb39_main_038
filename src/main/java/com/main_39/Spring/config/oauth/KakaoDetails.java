@@ -12,17 +12,24 @@ import java.util.Collection;
 import java.util.Map;
 
 @Data
-public class PrincipalDetails implements OAuth2User, UserDetails{
+public class KakaoDetails implements OAuth2User, UserDetails{
+    /**
+     * 카카오 유저 정보 객체를 인증객체로 관리하기 위해 감싸는 클래스
+     * @author 유태형
+     * @see OAuth2User OAuth2.0 인증 관련 인터페이스
+     * @see UserDetails 회원 가입 인증 관련 인터페이스
+     * */
+
     @Value("${spring.security.oauth2.client.registration.kakao.client-secret}")
     private String CLIENT_SECRET;
     private Kakao kakao;
     private Map<String,Object> attributes;
 
-    public PrincipalDetails(Kakao kakao){
+    public KakaoDetails(Kakao kakao){
         this.kakao = kakao;
     }
 
-    public PrincipalDetails(Kakao kakao, Map<String,Object> attributes){
+    public KakaoDetails(Kakao kakao, Map<String,Object> attributes){
         this.kakao = kakao;
         this.attributes = attributes;
     }
@@ -51,7 +58,7 @@ public class PrincipalDetails implements OAuth2User, UserDetails{
 
     @Override
     public String getUsername() {
-        return String.valueOf(kakao.getKakao_id());
+        return String.valueOf(kakao.getKakaoId());
     }
 
     @Override
