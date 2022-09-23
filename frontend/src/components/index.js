@@ -5,7 +5,7 @@ import { LocalNav } from './LocalNav';
 import { Spinner } from './Spinner';
 import { Thumbnail } from './Thumbnail';
 import { FoodTruck } from './FoodTruck';
-import { Modal } from './CustomModal';
+import { CustomModal } from './CustomModal';
 import { DetailFoodList } from './DetailFoodList';
 import { DetailInfo } from './DetailInfo';
 import { DetailReview } from './DetailReview';
@@ -19,7 +19,7 @@ export {
   Spinner,
   Thumbnail,
   FoodTruck,
-  Modal,
+  CustomModal,
   DetailFoodList,
   DetailInfo,
   DetailReview,
