@@ -7,6 +7,7 @@ const NavContainer = styled.nav`
   position: sticky;
   top: 0;
   background-color: #ffffff;
+  z-index: 999;
 `;
 
 const NavWrapper = styled.ul`
