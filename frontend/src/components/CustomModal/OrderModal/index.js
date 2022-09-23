@@ -1,8 +1,8 @@
 import React from 'react';
 import { useRecoilValue } from 'recoil';
-import { atoms } from '../../store';
-import { Modal } from './Modal';
-import { COLOR } from '../../constants';
+import { atoms } from '../../../store';
+import { Modal } from '../Modal';
+import { COLOR } from '../../../constants';
 import {
   OrderMenuBox,
   OrderModalBody,
