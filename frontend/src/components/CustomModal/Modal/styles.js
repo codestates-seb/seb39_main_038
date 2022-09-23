@@ -63,4 +63,17 @@ const CloseButton = styled.a`
   }
 `;
 
-export { ModalContainer, ModalWrapper, ModalHeader, ModalTitle, CloseButton };
+const ModalText = styled.span`
+  font-size: ${({ size }) => (size ? `${size}` : '15px')};
+  font-weight: bold;
+  color: ${({ color }) => color};
+`;
+
+export {
+  ModalContainer,
+  ModalWrapper,
+  ModalHeader,
+  ModalTitle,
+  CloseButton,
+  ModalText,
+};

@@ -44,12 +44,6 @@ const FoodModalTitle = styled.h1`
   font-size: 24px;
 `;
 
-const FoodModalText = styled.span`
-  font-size: ${({ size }) => (size ? `${size}` : '15px')};
-  font-weight: bold;
-  color: ${({ color }) => color};
-`;
-
 const FoodModalButtonBox = styled.div`
   display: flex;
 `;
@@ -91,5 +85,4 @@ export {
   FoodModalFooterButton,
   FoodModalImage,
   FoodModalTitle,
-  FoodModalText,
 };

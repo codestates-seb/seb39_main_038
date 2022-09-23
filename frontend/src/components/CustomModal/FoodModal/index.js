@@ -1,14 +1,13 @@
 import React from 'react';
 import { useRecoilValue } from 'recoil';
 import { atoms } from '../../../store';
-import { Modal } from '../Modal';
+import { Modal, ModalText } from '../Modal';
 import { COLOR } from '../../../constants';
 import {
   FoodModalBody,
   FoodModalImage,
   FoodModalBox,
   FoodModalTitle,
-  FoodModalText,
   FoodModalButtonBox,
   FoodModalCountButton,
   FoodModalFooter,
@@ -24,15 +23,15 @@ function FoodModal({ closeModal }) {
         <FoodModalImage />
         <FoodModalBox description>
           <FoodModalTitle>짬뽕</FoodModalTitle>
-          <FoodModalText>{null}</FoodModalText>
+          <ModalText>{null}</ModalText>
         </FoodModalBox>
         <FoodModalBox>
-          <FoodModalText>가격</FoodModalText>
-          <FoodModalText>20,900원</FoodModalText>
+          <ModalText>가격</ModalText>
+          <ModalText>20,900원</ModalText>
         </FoodModalBox>
         <FoodModalBox>
-          <FoodModalText>수량</FoodModalText>
-          <FoodModalText>
+          <ModalText>수량</ModalText>
+          <ModalText>
             <FoodModalButtonBox>
               <FoodModalCountButton>＋</FoodModalCountButton>
               <FoodModalCountButton as="a" count>
@@ -40,13 +39,13 @@ function FoodModal({ closeModal }) {
               </FoodModalCountButton>
               <FoodModalCountButton>－</FoodModalCountButton>
             </FoodModalButtonBox>
-          </FoodModalText>
+          </ModalText>
         </FoodModalBox>
         <FoodModalBox height={80}>
-          <FoodModalText>총 주문금액</FoodModalText>
-          <FoodModalText size={24} color={COLOR.YELLOW}>
+          <ModalText>총 주문금액</ModalText>
+          <ModalText size={24} color={COLOR.YELLOW}>
             20,900원
-          </FoodModalText>
+          </ModalText>
         </FoodModalBox>
       </FoodModalBody>
       <FoodModalFooter>

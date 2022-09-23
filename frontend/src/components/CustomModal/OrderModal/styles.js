@@ -39,16 +39,4 @@ const OrderModalTitle = styled.h1`
   border-bottom: 1px solid #ccc;
 `;
 
-const OrderModalText = styled.span`
-  font-size: ${({ size }) => (size ? `${size}` : '15px')};
-  font-weight: bold;
-  color: ${({ color }) => color};
-`;
-
-export {
-  OrderModalBody,
-  OrderMenuBox,
-  OrderModalBox,
-  OrderModalTitle,
-  OrderModalText,
-};
+export { OrderModalBody, OrderMenuBox, OrderModalBox, OrderModalTitle };
