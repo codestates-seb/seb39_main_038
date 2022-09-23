@@ -1,5 +1,6 @@
 import React from 'react';
-import DetailMenuBar from '../../components/DetailMenuBar';
+import { useRecoilState } from 'recoil';
+import { atoms } from '../../store';
 import {
   Section,
   MainBody,
@@ -8,24 +9,28 @@ import {
   FoodTruckImg,
   CapsulizedInfo,
   Notice,
-  StickyBody,
-  CartListBody,
-  Cart,
-  CartTab,
-  CartList,
-  CartListAdd,
-  TotalPrice,
-  OrderBtn,
-} from './FoodDetailstyles';
+  MenuBar,
+  ReviewTabBtn,
+  InfoTabBtn,
+  MenuTabBtn,
+  MenuSection,
+} from './styles';
+import {
+  DetailFoodList,
+  DetailInfo,
+  DetailReview,
+  Receipt,
+} from '../../components';
 
 function FoodDetail() {
+  const [menu, setMenu] = useRecoilState(atoms.menuTab);
+
   return (
     <Section>
       <MainBody>
         <FoodTruckName>
           <div>맘스터치</div>
         </FoodTruckName>
-
         <FoodTruckCapsulizedInfo>
           <FoodTruckImg>
             <img alt="FoodTruckImg" />
@@ -37,65 +42,45 @@ function FoodDetail() {
             <span>정보</span>
           </CapsulizedInfo>
         </FoodTruckCapsulizedInfo>
-
         <Notice className="Notice">
           <div>사장님의 알림</div>
         </Notice>
-
-        <DetailMenuBar />
+        <MenuSection>
+          <MenuBar>
+            <MenuTabBtn
+              menu={menu}
+              type="button"
+              onClick={() => {
+                setMenu('메뉴');
+              }}
+            >
+              메뉴 35
+            </MenuTabBtn>
+            <ReviewTabBtn
+              menu={menu}
+              type="button"
+              onClick={() => {
+                setMenu('리뷰');
+              }}
+            >
+              클린리뷰 1740
+            </ReviewTabBtn>
+            <InfoTabBtn
+              menu={menu}
+              type="button"
+              onClick={() => {
+                setMenu('정보');
+              }}
+            >
+              정보
+            </InfoTabBtn>
+          </MenuBar>
+          {menu === '메뉴' ? <DetailFoodList /> : null}
+          {menu === '리뷰' ? <DetailReview /> : null}
+          {menu === '정보' ? <DetailInfo /> : null}
+        </MenuSection>
       </MainBody>
-      <StickyBody>
-        <Cart>
-          <CartTab>
-            <div>장바구니</div>
-            <button type="button">리셋</button>
-          </CartTab>
-          <CartListBody>
-            <CartList>
-              <div>햄버거</div>
-
-              <CartListAdd>
-                <div>8,000원</div>
-                <div className="수량버튼">
-                  <button type="button">-</button>
-                  <span>1</span>
-                  <button type="button">+</button>
-                </div>
-              </CartListAdd>
-            </CartList>
-            <CartList>
-              <div>피자</div>
-
-              <CartListAdd>
-                <div>18,000원</div>
-                <div className="수량버튼">
-                  <button type="button">-</button>
-                  <span>1</span>
-                  <button type="button">+</button>
-                </div>
-              </CartListAdd>
-            </CartList>
-            <CartList>
-              <div>치킨</div>
-
-              <CartListAdd>
-                <div>12,000원</div>
-                <div className="수량버튼">
-                  <button type="button">-</button>
-                  <span>1</span>
-                  <button type="button">+</button>
-                </div>
-              </CartListAdd>
-            </CartList>
-          </CartListBody>
-          <TotalPrice className="totalPrice">합계: 30,000원</TotalPrice>
-        </Cart>
-
-        <OrderBtn>
-          <button type="button">주문 취소</button>
-          <button type="button">바로 주문하기</button>
-        </OrderBtn>
-      </StickyBody>
+      <Receipt />
     </Section>
   );
 }

@@ -13,4 +13,4 @@ const theme = {
   desktop: `screen and (min-width: ${size.desktop})`,
 };
 
-export default theme;
+export { theme };

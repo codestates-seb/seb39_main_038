@@ -1,3 +1,4 @@
-import { atoms } from './atoms';
+import { atoms, selectors } from './atoms';
+import { theme } from './theme';
 
-export { atoms };
+export { atoms, selectors, theme };
