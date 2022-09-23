@@ -6,7 +6,7 @@ import './index.css';
 import { ThemeProvider } from 'styled-components';
 import { RecoilRoot } from 'recoil';
 import App from './App';
-import theme from './style/theme';
+import { theme } from './store';
 
 axios.defaults.withCredentials = true;
 const root = reactDOM.createRoot(document.getElementById('root'));
