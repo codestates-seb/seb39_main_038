@@ -2,6 +2,7 @@ package com.main_39.Spring.order.entity;
 
 import com.main_39.Spring.audit.Auditable;
 import com.main_39.Spring.menu.entity.Menu;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -30,6 +31,13 @@ public class OrderMenu extends Auditable {
     private Menu menu;
 
     private int count;
+
+    @Builder
+    public OrderMenu(Order order, Menu menu, int count) {
+        this.order = order;
+        this.menu = menu;
+        this.count = count;
+    }
 
     public void addOrder(Order order) {
         this.order = order;

@@ -10,7 +10,7 @@ import java.util.List;
 @Setter
 public class OrderResponseDto {
     private long orderId;
-//    private long kakaoId;
+    //    private long kakaoId;
     private List<OrderMenuResponseDto> orderMenus;
     private LocalDateTime createdAt;
 
