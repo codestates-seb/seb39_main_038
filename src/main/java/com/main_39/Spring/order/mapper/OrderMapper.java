@@ -1,10 +1,9 @@
 package com.main_39.Spring.order.mapper;
 
-import com.main_39.Spring.member.entity.Kakao;
-import com.main_39.Spring.menu.Menu;
-import com.main_39.Spring.order.controller.dto.OrderMenuResponseDto;
-import com.main_39.Spring.order.controller.dto.OrderPostRequestDto;
-import com.main_39.Spring.order.controller.dto.OrderResponseDto;
+import com.main_39.Spring.menu.entity.Menu;
+import com.main_39.Spring.order.dto.OrderMenuResponseDto;
+import com.main_39.Spring.order.dto.OrderPostRequestDto;
+import com.main_39.Spring.order.dto.OrderResponseDto;
 import com.main_39.Spring.order.entity.Order;
 import com.main_39.Spring.order.entity.OrderMenu;
 import org.mapstruct.Mapper;
@@ -24,12 +23,13 @@ public interface OrderMapper {
         List<OrderMenu> orderMenus = requestDto.getOrderMenus()
                 .stream()
                 .map(orderMenuRequest -> {
-                    OrderMenu orderMenu = new OrderMenu();
                     Menu menu = new Menu();
                     menu.addMenuId(orderMenuRequest.getMenuId());
-                    orderMenu.addOrder(order);
-                    orderMenu.addMenu(menu);
-                    orderMenu.addCount(orderMenuRequest.getCount());
+                    OrderMenu orderMenu = OrderMenu.builder()
+                            .order(order)
+                            .menu(menu)
+                            .count(orderMenuRequest.getCount())
+                            .build();
                     return orderMenu;
                 }).collect(Collectors.toList());
 

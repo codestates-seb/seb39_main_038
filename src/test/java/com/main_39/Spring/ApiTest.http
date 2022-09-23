@@ -26,17 +26,25 @@ Content-Type: application/json
 
 {
   "orderMenus" : [
-  {
+    {
     "menuId" : 1,
     "count" : 2
-  },
-  {
+    },
+    {
     "menuId" : 2,
     "count" : 1
-  }
-]
+    },
+    {
+      "menuId" : 3,
+      "count" : 2
+    },
+    {
+      "menuId" : 4,
+      "count" : 1
+    }
+  ]
 }
 
 ### order get
-GET http://localhost:8080/order/1
+GET http://localhost:8080/order/2
 Content-Type: application/json

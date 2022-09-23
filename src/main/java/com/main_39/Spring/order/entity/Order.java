@@ -31,7 +31,7 @@ public class Order extends Auditable {
     @JoinColumn(name = "kakao_id")
     private Kakao kakao;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<OrderMenu> orderMenus = new ArrayList<>();
 
     private int count;

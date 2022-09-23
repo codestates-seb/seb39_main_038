@@ -1,6 +1,5 @@
-package com.main_39.Spring.order.controller.dto;
+package com.main_39.Spring.order.dto;
 
-import com.main_39.Spring.member.entity.Kakao;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,7 +10,7 @@ import java.util.List;
 @Setter
 public class OrderResponseDto {
     private long orderId;
-//    private long kakaoId;
+    //    private long kakaoId;
     private List<OrderMenuResponseDto> orderMenus;
     private LocalDateTime createdAt;
 

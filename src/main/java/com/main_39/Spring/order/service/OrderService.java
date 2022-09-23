@@ -2,7 +2,7 @@ package com.main_39.Spring.order.service;
 
 import com.main_39.Spring.exception.BusinessLogicException;
 import com.main_39.Spring.exception.ExceptionCode;
-import com.main_39.Spring.menu.MenuService;
+import com.main_39.Spring.menu.service.MenuService;
 import com.main_39.Spring.order.entity.Order;
 import com.main_39.Spring.order.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;

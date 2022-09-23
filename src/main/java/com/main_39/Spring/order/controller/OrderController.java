@@ -1,8 +1,8 @@
 package com.main_39.Spring.order.controller;
 
-import com.main_39.Spring.order.controller.dto.OrderResponseDto;
+import com.main_39.Spring.order.dto.OrderResponseDto;
 import com.main_39.Spring.order.mapper.OrderMapper;
-import com.main_39.Spring.order.controller.dto.OrderPostRequestDto;
+import com.main_39.Spring.order.dto.OrderPostRequestDto;
 import com.main_39.Spring.order.service.OrderService;
 import com.main_39.Spring.order.entity.Order;
 import lombok.RequiredArgsConstructor;
