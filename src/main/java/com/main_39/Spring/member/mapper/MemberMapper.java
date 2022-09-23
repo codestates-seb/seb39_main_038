@@ -14,13 +14,13 @@ public interface MemberMapper {
     LocalDto.postResponse localToLocalPostResponse(Local local);
     default Kakao kakaoProfileToKakao(KakaoProfile kakaoProfile, OAuthToken oAuthToken){
         return Kakao.builder()
-                .kakao_id(kakaoProfile.getId())
+                .kakaoId(kakaoProfile.getId())
                 .nickname(kakaoProfile.getProperties().getNickname())
-                .connected_at(kakaoProfile.getConnected_at())
-                .profile_image(kakaoProfile.getProperties().getProfile_image())
-                .thumbnail_image(kakaoProfile.getProperties().getThumbnail_image())
+                .connectedAt(kakaoProfile.getConnected_at())
+                .profileImage(kakaoProfile.getProperties().getProfile_image())
+                .thumbnailImage(kakaoProfile.getProperties().getThumbnail_image())
                 .email(kakaoProfile.getKakao_account().getEmail())
-                .refresh_token(oAuthToken.getRefresh_token())
+                .refreshToken(oAuthToken.getRefresh_token())
                 .build();
     }
 }

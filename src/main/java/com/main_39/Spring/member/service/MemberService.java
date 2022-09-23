@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.main_39.Spring.exception.BusinessLogicException;
 import com.main_39.Spring.exception.ExceptionCode;
+import com.main_39.Spring.member.dto.KakaoDto;
 import com.main_39.Spring.member.dto.KakaoProfile;
 import com.main_39.Spring.member.dto.OAuthToken;
 import com.main_39.Spring.member.entity.Kakao;
@@ -16,7 +17,9 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
@@ -28,8 +31,7 @@ import java.util.Optional;
 public class MemberService {
     private final KakaoRepository kaKaoRepository;
     private final LocalRepository localRepository;
-
-
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     //토큰 얻는 메서드
     public OAuthToken getToken(String code){
@@ -126,17 +128,85 @@ public class MemberService {
         return kaKaoRepository.save(kakao);
     }
 
+    public void logoutKakao(String access_token){
+        //RestTemplate
+        RestTemplate rt = new RestTemplate();
+
+        //RequestHeader
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type","application/x-www-form-urlencoded");
+        headers.add("Authorization", "Bearer " + access_token);
+
+        //HttpEntity
+        HttpEntity<MultiValueMap<String,Object>> kakaoLogoutRequest = new HttpEntity<>(headers);
+
+        //요청(rt.exchange)
+        ResponseEntity<String> logout = rt.exchange(
+                "https://kapi.kakao.com/v1/user/logout",
+                HttpMethod.POST,
+                kakaoLogoutRequest,
+                String.class
+        );
+
+        //ObjectMapper
+        ObjectMapper objectMapper = new ObjectMapper();
+        KakaoDto.logoutDto logoutDto = null;
+        try {
+            logoutDto = objectMapper.readValue(logout.getBody(),KakaoDto.logoutDto.class);
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+        } catch (JsonProcessingException e){
+            e.printStackTrace();
+        }
+
+        kaKaoRepository.findById(logoutDto.getId()).orElseThrow(
+                () -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+
+    }
+
 
     //로컬 회원 가입
     public Local createLocal(Local local){
-        verifyExistsLocal(local.getAccount_email());
+        verifyExistsLocal(local.getAccountEmail());
+        // 비밀번호 암호화(Security가 암호화 강제함)
+        String rawPass = local.getLocalPassword();
+        String encPass = bCryptPasswordEncoder.encode(rawPass);
+        local.setLocalPassword(encPass);
         return localRepository.save(local);
+    }
+
+    @Transactional(readOnly = true)
+    public Local findVerifiedLocal(long localId){
+        Optional<Local> optionalLocal = localRepository.findById(localId);
+        Local findLocal =
+                optionalLocal.orElseThrow(() ->
+                        new BusinessLogicException(ExceptionCode.NOT_MATCH_USER_INFO));
+        return findLocal;
+    }
+
+    @Transactional(readOnly = true)
+    public Kakao findVerifiedKakao(long kakao_id){
+        Optional<Kakao> optionalKakao = kaKaoRepository.findById(kakao_id);
+        Kakao findKakao =
+                optionalKakao.orElseThrow(() ->
+                        new BusinessLogicException(ExceptionCode.AUTH_NOT_MATCH_TOKEN));
+        return findKakao;
+    }
+
+    @Transactional(readOnly = true)
+    public Local findVerifiedLocalByEmail(String email){
+        Optional<Local> optionalLocal = localRepository.findByAccountEmail(email);
+        Local findLocal =
+                optionalLocal.orElseThrow(() ->
+                        new BusinessLogicException(ExceptionCode.NOT_MATCH_USER_INFO));
+        return findLocal;
     }
 
     // 로컬 회원 중복 확인
     private void verifyExistsLocal(String email){
-        Optional<Local> local = localRepository.findByAccount_email(email);
+        Optional<Local> local = localRepository.findByAccountEmail(email);
         if(local.isPresent())
             throw new BusinessLogicException(ExceptionCode.SIGNUP_EMAIL_DUPLICATE);
     }
+
 }

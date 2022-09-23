@@ -2,6 +2,7 @@ package com.main_39.Spring.member.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,27 +14,36 @@ import javax.persistence.Id;
 
 
 @Getter
+@Setter
 @NoArgsConstructor
 @Entity
 public class Local {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long local_id;
+    private Long localId;
 
     @Column(length = 50,nullable = false)
-    private String profile_nickname;
+    private String profileNickname;
 
     @Column(length = 255)
-    private String profile_image;
+    private String profileImage;
 
     @Column(length = 20, nullable = false)
     private String name;
 
     @Column(length = 50, nullable = false, unique = true)
-    private String account_email;
+    private String accountEmail;
 
-    @Column(length = 50, nullable = false)
-    private String local_password;
+    //암호화로 인해 최소 60자
+    @Column(length = 255, nullable = false)
+    private String localPassword;
+
+    @Column(nullable = false, length = 20)
+    private String phoneNumber;
+
+    @Setter
+    @Column(nullable = true, updatable = true, unique = true)
+    private String refreshToken;
 
     @Enumerated(value = EnumType.STRING)
     @Column(nullable = false, length = 20)
@@ -41,7 +51,7 @@ public class Local {
 
     //외래키 도입 전
 
-    private enum Role{
+    public enum Role{
         SELLER("ROLE_SELLER"),
         ADMIN("ROLE_ADMIN");
 

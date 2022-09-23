@@ -17,38 +17,37 @@ import javax.persistence.Id;
 public class Kakao {
     @Id
     @Column(nullable = false, updatable = false, unique = true)
-    private Long kakao_id;
+    private Long kakaoId;
     @Column
-    private String connected_at;
+    private String connectedAt;
     @Column(nullable = false,length = 50)
     private String nickname;
     @Column(length = 255)
-    private String profile_image;
+    private String profileImage;
     @Column(length = 255)
-    private String thumbnail_image;
+    private String thumbnailImage;
     @Column(unique = true, length = 50)
     private String email;
 
+    @Column(nullable = false)
+    private long mileage = 0;
+
     @Column(nullable = false, updatable = true, unique = true)
-    private String refresh_token;
+    private String refreshToken;
 
     @Enumerated(value = EnumType.STRING)
     @Column(length = 20, nullable = false)
     private Role role = Role.CUSTOMER;
 
     @Builder
-    Kakao(Long kakao_id, String nickname, String connected_at, String profile_image, String thumbnail_image, String email, String refresh_token){
-        this.kakao_id = kakao_id;
+    Kakao(Long kakaoId, String nickname, String connectedAt, String profileImage, String thumbnailImage, String email, String refreshToken){
+        this.kakaoId = kakaoId;
         this.nickname = nickname;
-        this.connected_at = connected_at;
-        this.profile_image = profile_image;
-        this.thumbnail_image = thumbnail_image;
+        this.connectedAt = connectedAt;
+        this.profileImage = profileImage;
+        this.thumbnailImage = thumbnailImage;
         this.email = email;
-        this.refresh_token = refresh_token;
-    }
-
-    public void addKakao(Long kakao_id) {
-        this.kakao_id = kakao_id;
+        this.refreshToken = refreshToken;
     }
 
     public enum Role {
