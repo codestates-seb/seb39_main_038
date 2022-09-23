@@ -1,6 +1,6 @@
 package com.main_39.Spring.order.mapper;
 
-import com.main_39.Spring.menu.Menu;
+import com.main_39.Spring.menu.entity.Menu;
 import com.main_39.Spring.order.dto.OrderMenuResponseDto;
 import com.main_39.Spring.order.dto.OrderPostRequestDto;
 import com.main_39.Spring.order.dto.OrderResponseDto;

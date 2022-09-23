@@ -1,4 +1,4 @@
-package com.main_39.Spring.menu;
+package com.main_39.Spring.menu.entity;
 
 import com.main_39.Spring.order.entity.OrderMenu;
 import lombok.Builder;
@@ -31,6 +31,20 @@ public class Menu {
 
     @OneToMany(mappedBy = "menu")
     private List<OrderMenu> orderMenus = new ArrayList<>();
+
+    @Builder
+    public Menu(String name, int price) {
+        this.name = name;
+        this.price = price;
+    }
+    public void addName(String name) {
+        this.name = name;
+    }
+
+    public void addPrice(int price) {
+        this.price = price;
+    }
+
 
     public void addMenuId(Long menuId) {
         this.menuId = menuId;
