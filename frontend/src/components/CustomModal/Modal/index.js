@@ -6,6 +6,7 @@ import {
   ModalHeader,
   ModalTitle,
   CloseButton,
+  ModalText,
 } from './styles';
 
 function Modal({ title = '제목', closeModal, children, width, height }) {
@@ -43,4 +44,4 @@ function Modal({ title = '제목', closeModal, children, width, height }) {
   );
 }
 
-export { Modal };
+export { Modal, ModalText };

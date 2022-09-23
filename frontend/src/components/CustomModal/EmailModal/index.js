@@ -1,7 +1,7 @@
 import React from 'react';
 import { useRecoilValue } from 'recoil';
-import { atoms } from '../../store';
-import { Modal } from './Modal';
+import { atoms } from '../../../store';
+import { Modal } from '../Modal';
 import { EmailBody, EmailButton, EmailInput } from './styles';
 
 function EmailModal({ closeModal }) {
