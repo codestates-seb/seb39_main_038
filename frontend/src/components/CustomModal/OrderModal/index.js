@@ -1,13 +1,12 @@
 import React from 'react';
 import { useRecoilValue } from 'recoil';
-import { atoms } from '../../store';
-import { Modal } from './Modal';
-import { COLOR } from '../../constants';
+import { atoms } from '../../../store';
+import { Modal, ModalText } from '../Modal';
+import { COLOR } from '../../../constants';
 import {
   OrderMenuBox,
   OrderModalBody,
   OrderModalBox,
-  OrderModalText,
   OrderModalTitle,
 } from './styles';
 
@@ -19,31 +18,31 @@ function OrderModal({ closeModal }) {
       <OrderModalBody>
         <OrderModalTitle>BBQ-신논현점</OrderModalTitle>
         <OrderMenuBox>
-          <OrderModalText as="h2" size={20}>
+          <ModalText as="h2" size={20}>
             주문내역
-          </OrderModalText>
+          </ModalText>
           <OrderModalBox>
-            <OrderModalText>치즈스틱 × 1</OrderModalText>
-            <OrderModalText>2,500원</OrderModalText>
+            <ModalText>치즈스틱 × 1</ModalText>
+            <ModalText>2,500원</ModalText>
           </OrderModalBox>
         </OrderMenuBox>
         <OrderModalBox>
-          <OrderModalText>주문시간</OrderModalText>
-          <OrderModalText>2022년 9월 22일</OrderModalText>
+          <ModalText>주문시간</ModalText>
+          <ModalText>2022년 9월 22일</ModalText>
         </OrderModalBox>
         <OrderModalBox>
-          <OrderModalText>상품합계</OrderModalText>
-          <OrderModalText>6,900원</OrderModalText>
+          <ModalText>상품합계</ModalText>
+          <ModalText>6,900원</ModalText>
         </OrderModalBox>
         <OrderModalBox>
-          <OrderModalText color={COLOR.YELLOW}>결제금액</OrderModalText>
-          <OrderModalText size={24} color={COLOR.YELLOW}>
+          <ModalText color={COLOR.YELLOW}>결제금액</ModalText>
+          <ModalText size={24} color={COLOR.YELLOW}>
             6,900원
-          </OrderModalText>
+          </ModalText>
         </OrderModalBox>
         <OrderModalBox none>
-          <OrderModalText>결제방식</OrderModalText>
-          <OrderModalText>카드결제</OrderModalText>
+          <ModalText>결제방식</ModalText>
+          <ModalText>카드결제</ModalText>
         </OrderModalBox>
       </OrderModalBody>
     </Modal>

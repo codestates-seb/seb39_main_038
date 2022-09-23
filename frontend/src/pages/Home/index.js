@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { atoms } from '../../store';
 import { API_URI, MENU, ROUTE } from '../../constants';
-import { Banner, Thumbnail, Modal } from '../../components';
+import { Banner, Thumbnail, CustomModal } from '../../components';
 import { HomeContainer, HomeWrapper } from './styles';
 import { useModal } from '../../hooks';
 
@@ -15,10 +15,10 @@ function Home() {
   const [openOrder, closeOrder] = useModal('order');
   const [openEmail, closeEmail] = useModal('email');
 
-  const postAuthData = (api) => {
+  const postAuthData = (api, code) => {
     if (api === null) return;
     axios
-      .get(api)
+      .post(api, code)
       .then((res) => console.log(res.data))
       .catch((err) => console.log(err.message));
   };
@@ -27,7 +27,7 @@ function Home() {
     const redirectURI = new URL(window.location.href);
     const code = redirectURI.searchParams.get('code');
     if (!code) return;
-    postAuthData(`${API_URI.KAKAO_LOGIN}?code=${code}`);
+    postAuthData(API_URI.KAKAO_LOGIN, { code });
   }, []);
 
   const createThumbnail = () => {
@@ -61,9 +61,9 @@ function Home() {
       <button type="button" onClick={openEmail}>
         Email 모달
       </button>
-      <Modal.FoodModal closeModal={closeFood} />
-      <Modal.OrderModal closeModal={closeOrder} />
-      <Modal.EmailModal closeModal={closeEmail} />
+      <CustomModal.Food closeModal={closeFood} />
+      <CustomModal.Order closeModal={closeOrder} />
+      <CustomModal.Email closeModal={closeEmail} />
     </HomeContainer>
   );
 }
