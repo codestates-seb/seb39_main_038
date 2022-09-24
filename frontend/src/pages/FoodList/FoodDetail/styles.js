@@ -40,24 +40,22 @@ const FoodTruckCapsulizedInfo = styled.div`
   justify-content: start;
   border: 1px solid lightgrey;
   margin-top: -1px;
+  padding: 10px;
+  font-size: 14px;
   @media ${(e) => e.theme.tablet} {
   }
 `;
 
 const FoodTruckImg = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 10px;
   > img {
+    background-image: url(${(props) => props.url}), url(default);
+    line-height: 100px;
   }
 `;
 
 const CapsulizedInfo = styled.div`
-  display: flex;
-  justify-content: space-evenly;
-  flex-direction: column;
-  align-items: start;
+  padding: 0px 0px 0px 10px;
+  line-height: 30px;
 `;
 
 const Notice = styled.div`
@@ -66,9 +64,7 @@ const Notice = styled.div`
   align-items: center;
   padding: 14px 20px 12px 15px;
   margin-top: -1px;
-  @media ${(e) => e.theme.tablet} {
-    width: 100%;
-  }
+  font-size: 12px;
 `;
 
 const MenuBar = styled.div`
@@ -82,8 +78,9 @@ const MenuTabBtn = styled.button`
   font-size: 15px;
   font-weight: 500;
   border: 1px solid lightgrey;
-  border-bottom: 5px solid
-    ${(props) => (props.menu === '메뉴' ? '#16267D' : '1px')};
+  border-bottom: 5px solid;
+  padding: 12px 0px 8px;
+  ${(props) => (props.menu === '메뉴' ? '#16267D' : '1px')};
   color: ${(props) => (props.menu === '메뉴' ? '#16267D' : 'black')};
 `;
 

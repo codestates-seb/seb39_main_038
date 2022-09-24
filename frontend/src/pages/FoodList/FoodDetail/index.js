@@ -37,9 +37,11 @@ function FoodDetail() {
           </FoodTruckImg>
 
           <CapsulizedInfo>
-            <span>별점</span>
-            <span>대기줄 시간</span>
-            <span>정보</span>
+            <ul>
+              <li>별점</li>
+              <li>대기줄 시간</li>
+              <li>정보</li>
+            </ul>
           </CapsulizedInfo>
         </FoodTruckCapsulizedInfo>
         <Notice className="Notice">
