@@ -7,33 +7,31 @@ const Section = styled.section`
   background-color: white;
   padding: 10px 10px 0px 10px;
   @media screen and (max-width: 767px) {
-    padding-bottom: 65px;
+    padding-bottom: 40px;
+  }
+  @media ${(e) => e.theme.tablet} {
+    gap: 20px;
+    display: flex;
   }
 `;
 
 const MainBody = styled.div`
   @media ${(e) => e.theme.tablet} {
-    width: 66%;
-    display: inline-block;
-    margin: 0px 20px 0px 0px;
-    position: relative;
-    top: -190px;
+    width: 66.666%;
     z-index: 0;
   }
 `;
 
 const FoodTruckName = styled.div`
-  height: 43px;
-  font-size: 15.5px;
+  font-size: 16px;
   font-weight: 500;
   display: flex;
   justify-content: start;
   align-items: center;
   padding: 10px;
   border: 1px solid lightgrey;
-  @media ${(e) => e.theme.tablet} {
-    width: 100%;
-    height: 56px;
+  > div {
+    padding-top: 3px 0px 0px;
   }
 `;
 
@@ -41,10 +39,8 @@ const FoodTruckCapsulizedInfo = styled.div`
   display: flex;
   justify-content: start;
   border: 1px solid lightgrey;
-  height: 120px;
   margin-top: -1px;
   @media ${(e) => e.theme.tablet} {
-    width: 100%;
   }
 `;
 
@@ -52,10 +48,8 @@ const FoodTruckImg = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 10px;
+  padding: 10px;
   > img {
-    width: 80px;
-    height: 80px;
   }
 `;
 
@@ -69,7 +63,6 @@ const CapsulizedInfo = styled.div`
 const Notice = styled.div`
   display: flex;
   border: 1px solid lightgrey;
-  height: 43px;
   align-items: center;
   padding: 14px 20px 12px 15px;
   margin-top: -1px;
@@ -85,7 +78,6 @@ const MenuBar = styled.div`
 
 const MenuTabBtn = styled.button`
   width: 33.3%;
-  height: 47px;
   background-color: white;
   font-size: 15px;
   font-weight: 500;
@@ -97,7 +89,6 @@ const MenuTabBtn = styled.button`
 
 const ReviewTabBtn = styled.button`
   width: 33.3%;
-  height: 47px;
   background-color: white;
   font-size: 15px;
   font-weight: 500;
@@ -110,7 +101,6 @@ const ReviewTabBtn = styled.button`
 
 const InfoTabBtn = styled.button`
   width: 33.3%;
-  height: 47px;
   background-color: white;
   font-size: 15px;
   font-weight: 500;
@@ -126,7 +116,6 @@ const MenuSection = styled.div`
   flex-direction: column;
   margin: 10px 0px 0px;
   @media ${(e) => e.theme.tablet} {
-    width: 100%;
   }
 `;
 
