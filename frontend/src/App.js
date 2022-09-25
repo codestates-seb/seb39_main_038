@@ -10,6 +10,7 @@ const IdInquiry = React.lazy(() => import('./pages/IdInquiry'));
 const PwInquiry = React.lazy(() => import('./pages/PwInquiry'));
 const FoodList = React.lazy(() => import('./pages/FoodList'));
 const Basket = React.lazy(() => import('./pages/Basket'));
+const FoodTruckSetting = React.lazy(() => import('./pages/FoodTruckSetting'));
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path={ROUTE.IDINQUIRY.PATH} element={<IdInquiry />} />
         <Route path={ROUTE.PWINQUIRY.PATH} element={<PwInquiry />} />
         <Route path={ROUTE.BASKET.PATH} element={<Basket />} />
+        <Route path={`${ROUTE.MYPAGE.PATH}/*`} element={<FoodTruckSetting />} />
       </Routes>
     </React.Suspense>
   );
