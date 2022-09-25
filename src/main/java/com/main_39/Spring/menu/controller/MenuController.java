@@ -1,10 +1,7 @@
 package com.main_39.Spring.menu.controller;
 
-import com.main_39.Spring.exception.BusinessLogicException;
-import com.main_39.Spring.exception.ExceptionCode;
 import com.main_39.Spring.menu.dto.MenuPatchRequestDto;
 import com.main_39.Spring.menu.dto.MenuPostRequestDto;
-import com.main_39.Spring.menu.repository.MenuRepository;
 import com.main_39.Spring.menu.entity.Menu;
 import com.main_39.Spring.menu.service.MenuService;
 import lombok.RequiredArgsConstructor;
@@ -30,11 +27,11 @@ public class MenuController {
      * 메뉴 등록
      */
     @PostMapping
-    public ResponseEntity createMenu(@RequestBody MenuPostRequestDto requestDto) {
+    public ResponseEntity<Void> createMenu(@RequestBody MenuPostRequestDto requestDto) {
 
         menuService.createMenu(requestDto);
 
-        return new ResponseEntity(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     /**
@@ -49,22 +46,31 @@ public class MenuController {
     }
 
     /**
+     * TODO : 상점별 메뉴 불러오기
+     */
+    @GetMapping("/{store-id}/menus")
+    public ResponseEntity getMenus() {
+
+        return new ResponseEntity("", HttpStatus.OK);
+    }
+
+    /**
      * 메뉴 수정
      */
     @PatchMapping("/{menu-id}")
-    public ResponseEntity<Menu> updateMenu(@PathVariable("menu-id") long menuId,
+    public ResponseEntity<Void> updateMenu(@PathVariable("menu-id") long menuId,
                                            @RequestBody MenuPatchRequestDto patchRequestDto) {
 
-        Menu updateMenu = menuService.updateMenu(menuId, patchRequestDto);
+        menuService.updateMenu(menuId, patchRequestDto);
 
-        return new ResponseEntity<>(updateMenu, HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     /**
      * 메뉴 삭제
      */
     @DeleteMapping("/{menu-id}")
-    public ResponseEntity deleteMenu(@PathVariable("menu-id") long menuId) {
+    public ResponseEntity<Void> deleteMenu(@PathVariable("menu-id") long menuId) {
 
         menuService.deleteMenu(menuId);
 

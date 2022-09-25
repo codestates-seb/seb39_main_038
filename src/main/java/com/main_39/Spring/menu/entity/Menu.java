@@ -9,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +31,9 @@ public class Menu {
 
     private String image;
 
+//    @ManyToOne
+//    @JoinColumn(name = "store_id")
+//    private Store store;
     @OneToMany(mappedBy = "menu")
     private List<OrderMenu> orderMenus = new ArrayList<>();
 
@@ -46,7 +51,7 @@ public class Menu {
     }
 
 
-    public void addMenuId(Long menuId) {
+    public void addMenuId(Long menuId)  {
         this.menuId = menuId;
     }
 
