@@ -2,6 +2,7 @@ package com.main_39.Spring.order.entity;
 
 import com.main_39.Spring.audit.Auditable;
 import com.main_39.Spring.member.entity.Kakao;
+import com.main_39.Spring.order.dto.OrderMenuResponseDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -31,12 +32,22 @@ public class Order extends Auditable {
     @JoinColumn(name = "kakao_id")
     private Kakao kakao;
 
-    @OneToMany(mappedBy = "order", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderMenu> orderMenus = new ArrayList<>();
-
-    private int count;
 
     public void addOrderMenus(List<OrderMenu> orderMenus) {
         this.orderMenus = orderMenus;
+    }
+
+    public int getTotalCount() {
+        return orderMenus.stream()
+                .mapToInt(OrderMenu::getCount)
+                .sum();
+    }
+
+    public int getTotalPrice() {
+        return orderMenus.stream()
+                .mapToInt(OrderMenu::getPrice)
+                .sum();
     }
 }

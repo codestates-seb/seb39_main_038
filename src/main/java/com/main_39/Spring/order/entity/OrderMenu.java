@@ -32,6 +32,9 @@ public class OrderMenu extends Auditable {
 
     private int count;
 
+    public int getPrice() {
+        return getMenu().getPrice() * getCount();
+    }
     @Builder
     public OrderMenu(Order order, Menu menu, int count) {
         this.order = order;
@@ -51,9 +54,5 @@ public class OrderMenu extends Auditable {
         if(!this.menu.getOrderMenus().contains(this)) {
             this.menu.addOrderMenu(this);
         }
-    }
-
-    public void addCount(int count) {
-        this.count = count;
     }
 }

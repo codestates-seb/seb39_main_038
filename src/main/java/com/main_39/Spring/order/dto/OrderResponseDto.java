@@ -12,7 +12,12 @@ public class OrderResponseDto {
     private long orderId;
     //    private long kakaoId;
     private List<OrderMenuResponseDto> orderMenus;
+
     private LocalDateTime createdAt;
+
+    private int totalCount;
+
+    private int totalPrice;
 
 //    public void addKakao(Kakao kakao) {
 //        this.kakao_id = kakao.getKakao_id();
