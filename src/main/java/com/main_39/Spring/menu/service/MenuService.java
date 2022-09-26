@@ -37,9 +37,9 @@ public class MenuService {
         Menu menu = findMenu(menuId);
 
         Optional.ofNullable(requestDto.getName())
-                .ifPresent(name -> menu.addName(name));
-        Optional.ofNullable(menu.getPrice())
-                .ifPresent(price -> menu.addPrice(price));
+                .ifPresent(menu::addName);
+        Optional.of(requestDto.getPrice())
+                .ifPresent(menu::addPrice);
 
         return menuRepository.save(menu);
     }
