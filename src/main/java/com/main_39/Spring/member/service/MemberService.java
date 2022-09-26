@@ -59,7 +59,8 @@ public class MemberService {
         params.add("client_id","704ec763b63cc0eb75e0f897b8f91ed0");
         params.add("client_secret","uJ06mEQStcdLrcUyuzdyt4YN2oO1X4NO");
 //        params.add("redirect_uri","http://localhost:8080/login/oauth2/code/kakao"); //로컬 확인용
-        params.add("redirect_uri","http://127.0.0.1:3000");
+//        params.add("redirect_uri","http://127.0.0.1:3000");
+        params.add("redirect_uri","https://yapick.netlify.app");
         params.add("code",code);
 
         //HttpHeader와 HttpBody를 하나의 오브젝트에 담기
