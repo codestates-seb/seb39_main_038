@@ -10,6 +10,7 @@ import { DetailFoodList } from './DetailFoodList';
 import { DetailInfo } from './DetailInfo';
 import { DetailReview } from './DetailReview';
 import { Receipt } from './Receipt';
+import { SvgIcon } from './SvgIcon';
 
 export {
   Banner,
@@ -24,4 +25,5 @@ export {
   DetailInfo,
   DetailReview,
   Receipt,
+  SvgIcon,
 };
