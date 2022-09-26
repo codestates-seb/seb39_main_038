@@ -1,4 +1,5 @@
 const ALERT = {
+  E000: { MESSAGE: '현재 서비스 준비중입니다. !!' },
   E400: { MESSAGE: '이메일과 비밀번호 모든 값을 입력해주세요.', STATUS: 400 },
   E401: { MESSAGE: '비밀번호는 10자 이상입니다.', STATUS: 401 },
   E402: { MESSAGE: '모든 입력창의 값을 입력해주세요.', STATUS: 402 },
