@@ -117,15 +117,17 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         //access_token 쿠키 추가
         ResponseCookie local_access_cookie = ResponseCookie.from("local_access_token",local_access_token)
+                .path("/")
                 .sameSite("None")
                 .secure(true)
                 .httpOnly(true)
                 .maxAge(10 * 60) // 10분
                 .build();
-        response.setHeader("Set-Cookie", local_access_cookie.toString());
+        response.addHeader("Set-Cookie", local_access_cookie.toString());
 
         //refresh_token 쿠키 추가
         ResponseCookie local_refresh_cookie = ResponseCookie.from("local_refresh_token",local_refresh_token)
+                .path("/")
                 .sameSite("None")
                 .secure(true)
                 .httpOnly(true)

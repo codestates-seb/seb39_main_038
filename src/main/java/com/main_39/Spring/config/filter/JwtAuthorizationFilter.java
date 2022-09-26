@@ -162,6 +162,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
                 //access_token 쿠키 수정
                 ResponseCookie local_access_cookie = ResponseCookie.from("local_access_token",access_token)
+                        .path("/")
                         .sameSite("None")
                         .secure(true)
                         .httpOnly(true)
@@ -296,6 +297,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
                     //쿠키 수정
                     ResponseCookie update_access_cookie = ResponseCookie.from("kakao_access_token", access_token)
+                            .path("/")
                             .sameSite("None")
                             .secure(true)
                             .httpOnly(true)
