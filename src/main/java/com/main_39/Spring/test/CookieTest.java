@@ -20,7 +20,7 @@ public class CookieTest {
 
     @GetMapping("/get")
     public ResponseEntity getTest(HttpServletResponse response){
-        ResponseCookie cookie = ResponseCookie.from("cookieG","getTest")
+        ResponseCookie cookie = ResponseCookie.from("cookieG","getTest1")
                 .path("/")
                 .sameSite("None")
                 .secure(true)
@@ -35,7 +35,7 @@ public class CookieTest {
 
     @PostMapping("/post")
     public ResponseEntity postTest(HttpServletResponse response){
-        ResponseCookie cookie = ResponseCookie.from("cookieP","postTest")
+        ResponseCookie cookie = ResponseCookie.from("cookieP","postTest1")
                 .path("/")
                 .sameSite("None")
                 .secure(true)
