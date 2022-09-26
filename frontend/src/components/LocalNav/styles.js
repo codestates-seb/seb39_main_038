@@ -24,11 +24,12 @@ const NavList = styled.li`
   cursor: pointer;
   background: url(${BAR_URI}) no-repeat -999px 20px;
   &:first-child {
-    background: none;
+    background: ${({ active }) => (active ? 'gold' : null)} none;
   }
   &:hover {
     background-color: gold;
   }
+  background-color: ${({ active }) => (active ? 'gold' : null)};
 `;
 
 const Navitem = styled.span`
