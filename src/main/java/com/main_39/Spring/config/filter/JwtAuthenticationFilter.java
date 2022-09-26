@@ -118,7 +118,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         //access_token 쿠키 추가
         ResponseCookie local_access_cookie = ResponseCookie.from("local_access_token",local_access_token)
                 .path("/")
-                .domain(".deploymentprac38.tk")
+                .domain(".yapick.netlify.app")
                 .sameSite("None")
                 .secure(true)
                 .httpOnly(true)
@@ -129,7 +129,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         //refresh_token 쿠키 추가
         ResponseCookie local_refresh_cookie = ResponseCookie.from("local_refresh_token",local_refresh_token)
                 .path("/")
-                .domain(".deploymentprac38.tk")
+                .domain(".yapick.netlify.app")
                 .sameSite("None")
                 .secure(true)
                 .httpOnly(true)
