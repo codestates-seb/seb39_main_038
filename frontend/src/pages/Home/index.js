@@ -19,7 +19,10 @@ function Home() {
     if (api === null) return;
     axios
       .post(api, code)
-      .then(() => window.location.replace('/'))
+      .then(() => {
+        // 리다이렉션 해제
+        // window.location.replace('/');
+      })
       .catch((err) => console.log(err.message));
   };
 
