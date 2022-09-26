@@ -1,5 +1,6 @@
 package com.main_39.Spring.member.entity;
 
+import com.main_39.Spring.store.entity.Store;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,6 +12,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 
 @Getter
@@ -62,5 +64,9 @@ public class Local {
             this.status = status;
         }
     }
+
+    //매핑
+    @OneToOne(mappedBy = "local")
+    private Store store;
 
 }

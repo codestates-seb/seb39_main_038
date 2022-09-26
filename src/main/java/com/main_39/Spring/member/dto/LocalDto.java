@@ -1,8 +1,18 @@
 package com.main_39.Spring.member.dto;
 
+import com.main_39.Spring.member.entity.Local;
+import com.main_39.Spring.store.dto.StoreDto;
+import com.main_39.Spring.store.entity.Store;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
+import javax.persistence.Column;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -34,6 +44,19 @@ public class LocalDto {
 
     @Getter
     @AllArgsConstructor
+    public static class response{
+        private Long localId;
+        private StoreDto.response store;
+        private String profileNickname;
+        private String profileImage;
+        private String name;
+        private String accountEmail;
+        private String phoneNumber;
+        private Local.Role role;
+    }
+
+    @Getter
+    @AllArgsConstructor
     public static class Login{
         @NotBlank
         @Email
@@ -50,4 +73,32 @@ public class LocalDto {
         private String profileNickname;
         private String profileImage;
     }
+
+    @Getter
+    @AllArgsConstructor
+    public static class searchIdDto{
+        private String name;
+        private String phoneNumber;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class searchIdResponse{
+        private String localEmail;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class searchPwDto{
+        private String accountEmail;
+        private String name;
+        private String phoneNumber;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class searchPwResponse{
+        private String localPassword;
+    }
+
 }
