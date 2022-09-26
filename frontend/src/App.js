@@ -13,6 +13,7 @@ const Basket = React.lazy(() => import('./pages/Basket'));
 const Order = React.lazy(() => import('./pages/Order'));
 const MyPage = React.lazy(() => import('./pages/MyPage'));
 const NotFound = React.lazy(() => import('./pages/NotFound'));
+const FoodTruckSetting = React.lazy(() => import('./pages/FoodTruckSetting'));
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
         <Route path={ROUTE.BASKET.PATH} element={<Basket />} />
         <Route path={ROUTE.ORDER.PATH} element={<Order />} />
         <Route path={ROUTE.MYPAGE.PATH} element={<MyPage />} />
+        <Route path={`${ROUTE.MYPAGE.PATH}/*`} element={<FoodTruckSetting />} />
         <Route path={ROUTE.NOTFOUND.PATH} element={<NotFound />} />
       </Routes>
     </React.Suspense>

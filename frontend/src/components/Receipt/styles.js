@@ -2,27 +2,21 @@ import styled from 'styled-components';
 
 const StickyBody = styled.div`
   @media ${(e) => e.theme.tablet} {
-    width: calc(33% - 20px);
-    display: inline-block;
-    position: sticky;
-    top: 50px;
+    width: 33.333%;
   }
 `;
 
 const CartListBody = styled.div`
   border: 1px solid lightgrey;
+  max-height: 400px;
+  overflow: auto;
 `;
 
 const Cart = styled.div`
   display: flex;
   flex-direction: column;
   @media screen and (max-width: 767px) {
-    margin-top: 20px;
-  }
-  @media ${(e) => e.theme.tablet} {
-    width: 100%;
-    position: relative;
-    top: 20px;
+    padding: 20px 0px;
   }
 `;
 
@@ -36,72 +30,42 @@ const CartTab = styled.div`
   padding: 10px 10px 10px 15px;
 `;
 
-const CartList = styled.div`
-  display: flex;
-  justify-content: space-between;
-  flex-direction: column;
-  margin: 10px 15px;
-`;
-
-const FoodName = styled.div`
-  font-size: 14px;
-  padding: 5px 12px 8px;
-`;
-
-const CartListAdd = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
 const TotalPrice = styled.div`
   display: flex;
   justify-content: end;
-  height: 47px;
   align-items: center;
   font-weight: 900;
   background-color: lightyellow;
   border: 1px solid lightgrey;
   margin-top: -1px;
-  @media ${(e) => e.theme.tablet} {
-    width: 100%;
-    padding: 20px;
-  }
+  padding: 10px 12px;
+  font-size: 16px;
 `;
 
 const OrderBtn = styled.div`
   > button {
-    width: 50%;
     background-color: ${(e) => e.theme.mainColor};
     color: ${(e) => e.theme.fontColor};
-    height: 65px;
-    font-size: 18px;
+    font-size: 14px;
     font-weight: bold;
+    width: 100%;
   }
   @media screen and (max-width: 767px) {
     bottom: 0px;
     position: fixed;
     width: 100%;
+    > button {
+      padding: 10px;
+    }
   }
   @media ${(e) => e.theme.tablet} {
-    width: 100%;
     display: flex;
-    flex-direction: column-reverse;
+    padding: 35px 0px 0px;
+    gap: 15px;
     > button {
-      width: 100%;
-      height: 47px;
-      margin: 50px 0px 0px;
+      padding: 10px;
     }
   }
 `;
 
-export {
-  StickyBody,
-  CartListBody,
-  Cart,
-  CartTab,
-  CartList,
-  FoodName,
-  CartListAdd,
-  TotalPrice,
-  OrderBtn,
-};
+export { StickyBody, CartListBody, Cart, CartTab, TotalPrice, OrderBtn };

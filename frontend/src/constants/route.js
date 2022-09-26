@@ -5,6 +5,10 @@ const ROUTE = {
     FOODTRUCKS: { PATH: '/' },
     FOODDETAIL: { PATH: ':id' },
   },
+  MYPAGE: {
+    PATH: 'mypage',
+    FOODTRUCKSETTING: { PATH: '/' },
+  },
   LOGIN: { PATH: 'login', NAME: '로그인' },
   REGISTER: { PATH: 'register', NAME: '회원가입' },
   IDINQUIRY: { PATH: 'idinquiry', NAME: '아이디 찾기' },
