@@ -47,24 +47,32 @@ public class MenuController {
 
         return new ResponseEntity<>(findMenu, HttpStatus.OK);
     }
+    /**
+     * TODO : 상점별 메뉴 불러오기
+     */
+    @GetMapping("/{store-id}/menus")
+    public ResponseEntity getMenus() {
+
+        return new ResponseEntity("", HttpStatus.OK);
+    }
 
     /**
      * 메뉴 수정
      */
     @PatchMapping("/{menu-id}")
-    public ResponseEntity<Menu> updateMenu(@PathVariable("menu-id") long menuId,
+    public ResponseEntity<Void> updateMenu(@PathVariable("menu-id") long menuId,
                                            @RequestBody MenuPatchRequestDto patchRequestDto) {
 
-        Menu updateMenu = menuService.updateMenu(menuId, patchRequestDto);
+        menuService.updateMenu(menuId, patchRequestDto);
 
-        return new ResponseEntity<>(updateMenu, HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     /**
      * 메뉴 삭제
      */
     @DeleteMapping("/{menu-id}")
-    public ResponseEntity deleteMenu(@PathVariable("menu-id") long menuId) {
+    public ResponseEntity<Void> deleteMenu(@PathVariable("menu-id") long menuId) {
 
         menuService.deleteMenu(menuId);
 

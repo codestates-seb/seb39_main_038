@@ -45,6 +45,7 @@ public class SecurityConfig{
          * */
         http.csrf().disable()
                 .httpBasic().disable();
+        http.cors().disable();
         http.headers().frameOptions().disable();
         http
                 /*
