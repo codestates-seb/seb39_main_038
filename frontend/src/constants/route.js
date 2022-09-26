@@ -14,6 +14,8 @@ const ROUTE = {
   IDINQUIRY: { PATH: 'idinquiry', NAME: '아이디 찾기' },
   PWINQUIRY: { PATH: 'pwinquiry', NAME: '비밀번호 찾기' },
   BASKET: { PATH: 'basket', NAME: '장바구니' },
+  ORDER: { PATH: 'order' },
+  NOTFOUND: { PATH: '*', NAME: '404' },
 };
 
 export { ROUTE };
