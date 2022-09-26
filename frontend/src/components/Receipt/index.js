@@ -4,12 +4,10 @@ import {
   CartListBody,
   Cart,
   CartTab,
-  CartList,
-  FoodName,
-  CartListAdd,
   TotalPrice,
   OrderBtn,
 } from './styles';
+import { ReceiptList } from '../ReceiptList';
 
 function Receipt() {
   return (
@@ -20,54 +18,17 @@ function Receipt() {
           <button type="button">리셋</button>
         </CartTab>
         <CartListBody>
-          <CartList>
-            <FoodName>햄버거</FoodName>
-
-            <CartListAdd>
-              <div>
-                <button type="button">x</button>8,000원
-              </div>
-              <div>
-                <button type="button">-</button>
-                <span>1</span>
-                <button type="button">+</button>
-              </div>
-            </CartListAdd>
-          </CartList>
-          <CartList>
-            <FoodName>피자</FoodName>
-
-            <CartListAdd>
-              <div>
-                <button type="button">x</button>18,000원
-              </div>
-              <div>
-                <button type="button">-</button>
-                <span>1</span>
-                <button type="button">+</button>
-              </div>
-            </CartListAdd>
-          </CartList>
-          <CartList>
-            <FoodName>치킨</FoodName>
-
-            <CartListAdd>
-              <div>
-                <button type="button">x</button>12,000원
-              </div>
-              <div>
-                <button type="button">-</button>
-                <span>1</span>
-                <button type="button">+</button>
-              </div>
-            </CartListAdd>
-          </CartList>
+          <ReceiptList />
+          <ReceiptList />
+          <ReceiptList />
+          <ReceiptList />
+          <ReceiptList />
+          <ReceiptList />
         </CartListBody>
         <TotalPrice>합계: 38,000원</TotalPrice>
       </Cart>
 
       <OrderBtn>
-        <button type="button">주문 취소</button>
         <button type="button">바로 주문하기</button>
       </OrderBtn>
     </StickyBody>
