@@ -182,9 +182,9 @@ public class MemberService {
     public Local createLocal(Local local){
         verifyExistsLocal(local.getAccountEmail());
         // 비밀번호 암호화(Security가 암호화 강제함)
-        String rawPass = local.getLocalPassword();
-        String encPass = bCryptPasswordEncoder.encode(rawPass);
-        local.setLocalPassword(encPass);
+//        String rawPass = local.getLocalPassword();
+//        String encPass = bCryptPasswordEncoder.encode(rawPass);
+//        local.setLocalPassword(encPass);
         return localRepository.save(local);
     }
 
