@@ -2,16 +2,15 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Form } from '../../../components';
 import { Logo, LoginInner, FindInner, FindText } from './styles';
-import { KAKAO_API, ROUTE } from '../../../constants';
+import { ROUTE } from '../../../constants';
 
 function ProviderLogin() {
   const navigate = useNavigate();
   const hanldeOnSumbmit = (e) => {
     e.preventDefault();
-    // const { id, pw } = e.target;
     e.reset();
   };
-  const handleOnClick = (api) => () => window.location.assign(api);
+
   const hanldeOnClickText = (path) => () => navigate(`/${path}`);
 
   return (
@@ -34,9 +33,6 @@ function ProviderLogin() {
 
         <LoginInner>
           <Form.Button type="submit">{ROUTE.LOGIN.NAME}</Form.Button>
-          <Form.Button onClick={handleOnClick(KAKAO_API.URI())}>
-            {KAKAO_API.NAME}
-          </Form.Button>
           <Form.Button onClick={hanldeOnClickText(ROUTE.REGISTER.PATH)}>
             {ROUTE.REGISTER.NAME}
           </Form.Button>
