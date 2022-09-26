@@ -2,21 +2,15 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Form } from '../../../components';
 import { Logo, LoginInner, FindInner, FindText } from './styles';
-import { ROUTE, COLOR } from '../../../constants';
+import { ROUTE, COLOR, ALERT } from '../../../constants';
 // import { sha256 } from '../../../utils';
-
-/*
-  비밀번호 규칙
-  1. 10자리 이상
-  2. 숫자 영문 특수문자
-*/
 
 function ProviderLogin() {
   const navigate = useNavigate();
 
-  const validation = (email, pw) => {
-    if (!(email && pw)) return 401;
-    if (pw.length < 10) return 402;
+  const validation = (id, pw) => {
+    if (!(id && pw)) return ALERT.PROVIDERLOGIN[400].STATUS;
+    if (pw.length < 10) return ALERT.PROVIDERLOGIN[401].STATUS;
     return null;
   };
 
@@ -24,8 +18,8 @@ function ProviderLogin() {
     e.preventDefault();
     const { id, pw } = e.target;
     const isCheck = validation(id.value, pw.value);
-    if (isCheck === 401) return alert('이메일과 비밀번호 모두 입력해주세요.');
-    if (isCheck === 402) return alert('비밀번호는 10자 이상입니다.');
+    if (isCheck === 400) return alert(ALERT.PROVIDERLOGIN[400].MESSAGE);
+    if (isCheck === 400) return alert(ALERT.PROVIDERLOGIN[401].MESSAGE);
     return null;
   };
 
