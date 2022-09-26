@@ -107,7 +107,7 @@ public class MemberController {
         //access_token 삭제
         ResponseCookie remove_access_cookie = ResponseCookie.from("kakao_access_token",access_token)
                 .path("/")
-                .domain("yapick.netlify.app")
+                .domain(".yapick.netlify.app")
                 .sameSite("None")
                 .secure(true)
                 .httpOnly(true)
@@ -119,7 +119,7 @@ public class MemberController {
         //refresh_token 삭제
         ResponseCookie remove_refresh_cookie = ResponseCookie.from("kakao_refresh_token",refresh_token)
                 .path("/")
-                .domain("yapick.netlify.app")
+                .domain(".yapick.netlify.app")
                 .sameSite("None")
                 .secure(true)
                 .httpOnly(true)
@@ -154,7 +154,7 @@ public class MemberController {
         //access_token 쿠키
         ResponseCookie access_cookie = ResponseCookie.from("kakao_access_token", oauthToken.getAccess_token())
                 .path("/")
-                .domain("yapick.netlify.app")
+                .domain(".yapick.netlify.app")
                 .sameSite("None")
                 .secure(true)
                 .httpOnly(true)
@@ -165,7 +165,7 @@ public class MemberController {
         //refresh_token 쿠키
         ResponseCookie refresh_cookie = ResponseCookie.from("kakao_refresh_token",oauthToken.getRefresh_token())
                 .path("/")
-                .domain("yapick.netlify.app")
+                .domain(".yapick.netlify.app")
                 .sameSite("None")
                 .secure(true)
                 .httpOnly(true)
