@@ -58,6 +58,7 @@ function ProviderLogin() {
             {ROUTE.LOGIN.NAME}
           </Form.Button>
           <Form.Button
+            type="button"
             color={COLOR.NAVY}
             fontColor={COLOR.WHITE}
             onClick={hanldeOnClickText(ROUTE.REGISTER.PATH)}
