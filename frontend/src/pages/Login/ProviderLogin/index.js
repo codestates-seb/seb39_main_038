@@ -9,8 +9,8 @@ function ProviderLogin() {
   const navigate = useNavigate();
 
   const validation = (id, pw) => {
-    if (!(id && pw)) return ALERT.PROVIDERLOGIN[400].STATUS;
-    if (pw.length < 10) return ALERT.PROVIDERLOGIN[401].STATUS;
+    if (!(id && pw)) return ALERT.E400.STATUS;
+    if (pw.length < 10) return ALERT.E401.STATUS;
     return null;
   };
 
@@ -18,8 +18,8 @@ function ProviderLogin() {
     e.preventDefault();
     const { id, pw } = e.target;
     const isCheck = validation(id.value, pw.value);
-    if (isCheck === 400) return alert(ALERT.PROVIDERLOGIN[400].MESSAGE);
-    if (isCheck === 400) return alert(ALERT.PROVIDERLOGIN[401].MESSAGE);
+    if (isCheck === ALERT.E400.STATUS) return alert(ALERT.E400.MESSAGE);
+    if (isCheck === ALERT.E401.STATUS) return alert(ALERT.E401.MESSAGE);
     return null;
   };
 
