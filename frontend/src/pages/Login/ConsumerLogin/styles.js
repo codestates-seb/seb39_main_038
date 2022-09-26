@@ -6,4 +6,15 @@ const ButtonInner = styled.div`
   gap: 10px;
 `;
 
-export { ButtonInner };
+const TextBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+`;
+
+const Text = styled.span`
+  font-weight: 500;
+`;
+
+export { ButtonInner, TextBox, Text };
