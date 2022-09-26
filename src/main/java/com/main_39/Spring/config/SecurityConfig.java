@@ -45,6 +45,10 @@ public class SecurityConfig{
          * */
         http.csrf().disable()
                 .httpBasic().disable();
+        /**
+         * TODO : 테스트 끝나고 삭제
+         */
+        http.cors().disable();
         http.headers().frameOptions().disable();
         http
                 /*
