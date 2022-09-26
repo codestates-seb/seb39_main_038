@@ -1,16 +1,24 @@
 import React from 'react';
 import { Form } from '../../components';
+import { COLOR } from '../../constants';
+import { TextBox } from './styles';
 
 function PwInquiry() {
   return (
     <Form.Container>
       <Form.Wrapper>
         <Form.Input placeholder="가입에 사용된 이메일 주소 입력" />
-        <Form.Text>
-          입력하신 이메일 주소로 비밀번호 재설정 메일이 발송됩니다.
-        </Form.Text>
-        <Form.Text>카카오 소셜 회원은 비밀번호 찾기가 불가능합니다.</Form.Text>
-        <Form.Button>이메일 발송</Form.Button>
+        <TextBox>
+          <Form.Text>
+            입력하신 이메일 주소로 비밀번호 재설정 메일이 발송됩니다.
+          </Form.Text>
+          <Form.Text>
+            카카오 소셜 회원은 비밀번호 찾기가 불가능합니다.
+          </Form.Text>
+        </TextBox>
+        <Form.Button color={COLOR.NAVY} fontColor={COLOR.WHITE}>
+          이메일 발송
+        </Form.Button>
       </Form.Wrapper>
     </Form.Container>
   );
