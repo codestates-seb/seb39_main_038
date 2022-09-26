@@ -39,4 +39,16 @@ public class Order extends Auditable {
     public void addOrderMenus(List<OrderMenu> orderMenus) {
         this.orderMenus = orderMenus;
     }
+
+    public int getTotalCount() {
+        return orderMenus.stream()
+                .mapToInt(OrderMenu::getCount)
+                .sum();
+    }
+
+    public int getTotalPrice() {
+        return orderMenus.stream()
+                .mapToInt(OrderMenu::getPrice)
+                .sum();
+    }
 }

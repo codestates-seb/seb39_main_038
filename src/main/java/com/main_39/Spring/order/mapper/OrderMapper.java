@@ -45,6 +45,8 @@ public interface OrderMapper {
         OrderResponseDto orderResponseDto = new OrderResponseDto();
         orderResponseDto.setOrderId(order.getOrderId());
 //        orderResponseDto.setKakao(order.order.getKakao());
+        orderResponseDto.setTotalCount(order.getTotalCount());
+        orderResponseDto.setTotalPrice(order.getTotalPrice());
         orderResponseDto.setCreatedAt(order.getCreatedAt());
         orderResponseDto.setOrderMenus(orderMenusToOrderMenuResponseDtos(orderMenus));
         return orderResponseDto;
