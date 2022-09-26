@@ -1,5 +1,10 @@
 package com.main_39.Spring.config;
 
+
+import com.main_39.Spring.config.filter.JwtAuthenticationFilter;
+import com.main_39.Spring.config.filter.JwtAuthorizationFilter;
+import com.main_39.Spring.member.repository.KakaoRepository;
+import com.main_39.Spring.member.repository.LocalRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,8 +21,17 @@ import org.springframework.web.filter.CorsFilter;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig{
-    private final CorsFilter corsFilter;
+    /**
+     * 스프링 백엔드 서버의 보안을 설정하는 클래스
+     * @author 유태형
+     * @see CorsFilter CORS설정 필터
+     * @see com.main_39.Spring.member.repository.KakaoRepository  카카오 로그인 정보 레포지토리
+     * @see com.main_39.Spring.member.repository.LocalRepository
+     * */
 
+    private final CorsFilter corsFilter;
+    private final KakaoRepository kakaoRepository;
+    private final LocalRepository localRepository;
 
 
     @Bean
@@ -99,7 +113,9 @@ public class SecurityConfig{
              * */
             AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
             builder
-                    .addFilter(corsFilter); //cors 설정
+                    .addFilter(corsFilter) //cors 설정
+                    .addFilter(new JwtAuthenticationFilter(authenticationManager,localRepository))
+                    .addFilter(new JwtAuthorizationFilter(authenticationManager,kakaoRepository,localRepository));
         }
     }
 }
