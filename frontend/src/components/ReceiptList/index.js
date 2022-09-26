@@ -1,16 +1,16 @@
 import React from 'react';
 import { CartList, FoodName, CartListAdd } from './styles';
 
-function ReceiptList() {
+function ReceiptList({ name, price }) {
   return (
     <CartList>
       <div>
-        <FoodName>치킨</FoodName>
+        <FoodName>{name}</FoodName>
 
         <CartListAdd>
           <div>
             <div type="button">x</div>
-            <span>12,000원</span>
+            <span>{price}</span>
           </div>
           <div>
             <div type="button">-</div>

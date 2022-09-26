@@ -1,4 +1,6 @@
 import React from 'react';
+import { useRecoilValue } from 'recoil';
+import { selectors } from '../../store/atoms';
 import {
   StickyBody,
   CartListBody,
@@ -10,6 +12,7 @@ import {
 import { ReceiptList } from '../ReceiptList';
 
 function Receipt() {
+  const menu = useRecoilValue(selectors.getCart);
   return (
     <StickyBody>
       <Cart>
@@ -18,12 +21,9 @@ function Receipt() {
           <button type="button">리셋</button>
         </CartTab>
         <CartListBody>
-          <ReceiptList />
-          <ReceiptList />
-          <ReceiptList />
-          <ReceiptList />
-          <ReceiptList />
-          <ReceiptList />
+          {menu.map((res) => (
+            <ReceiptList name={res.name} price={res.price} />
+          ))}
         </CartListBody>
         <TotalPrice>합계: 38,000원</TotalPrice>
       </Cart>

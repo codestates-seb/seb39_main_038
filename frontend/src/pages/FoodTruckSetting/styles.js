@@ -35,6 +35,10 @@ const CreateFoodTruck = styled.div`
     display: flex;
     justify-content: center;
   }
+  > form {
+    display: flex;
+    justify-content: start;
+  }
   > textarea {
     padding: 10px;
     height: 200px;
@@ -57,9 +61,36 @@ const DeleteTag = styled.div`
   flex-wrap: wrap;
 `;
 
-const HashTagBtn = styled.button`
-  background-color: white;
-  padding: 5px;
+const Form = styled.form`
+  height: 25px;
+  /* width: 220px; */
+  overflow: hidden;
+  input {
+    width: 100px;
+    clear: left;
+    float: left;
+    padding: 1px 10px;
+    display: hidden;
+  }
+  label:focus + input {
+    transition: 0.5s;
+    margin-left: -50%;
+  }
+  input:focus {
+    margin-right: -50%;
+    transition: 0.5s;
+  }
+`;
+
+const HashTagBtn = styled.label`
+  padding: 2px 10px;
+  float: left;
+  border-radius: 5px;
+  text-align: center;
+  background: white;
+  border: 1px solid #ccc;
+  transition: 0.5s;
+  overflow: hidden;
 `;
 
 const Hash = styled.div`
@@ -136,6 +167,7 @@ export {
   MainImg,
   CreateFoodTruck,
   TypeInfo,
+  Form,
   HashTagBtn,
   Hash,
   DeleteTag,
