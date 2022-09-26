@@ -1,15 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  LoginContainer,
-  Logo,
-  LoginWrapper,
-  LoginInner,
-  FindInner,
-  FindText,
-  Input,
-  Button,
-} from './styles';
+import { Form } from '../../components';
+import { Logo, LoginInner, FindInner, FindText } from './styles';
 import { KAKAO_API, ROUTE } from '../../constants';
 
 function Login() {
@@ -23,12 +15,12 @@ function Login() {
   const hanldeOnClickText = (path) => () => navigate(`/${path}`);
 
   return (
-    <LoginContainer>
+    <Form.Container>
       <Logo />
-      <LoginWrapper onSubmit={hanldeOnSumbmit}>
+      <Form.Wrapper onSubmit={hanldeOnSumbmit}>
         <LoginInner>
-          <Input name="id" type="email" placeholder="이메일 주소 입력" />
-          <Input name="pw" type="password" placeholder="비밀번호 입력" />
+          <Form.Input name="id" type="email" placeholder="이메일 주소 입력" />
+          <Form.Input name="pw" type="password" placeholder="비밀번호 입력" />
         </LoginInner>
 
         <FindInner>
@@ -41,13 +33,16 @@ function Login() {
         </FindInner>
 
         <LoginInner>
-          <Button type="submit">{ROUTE.LOGIN.NAME}</Button>
-          <Button onClick={handleOnClick(KAKAO_API.URI())}>
+          <Form.Button type="submit">{ROUTE.LOGIN.NAME}</Form.Button>
+          <Form.Button onClick={handleOnClick(KAKAO_API.URI())}>
             {KAKAO_API.NAME}
-          </Button>
+          </Form.Button>
+          <Form.Button onClick={hanldeOnClickText(ROUTE.REGISTER.PATH)}>
+            {ROUTE.REGISTER.NAME}
+          </Form.Button>
         </LoginInner>
-      </LoginWrapper>
-    </LoginContainer>
+      </Form.Wrapper>
+    </Form.Container>
   );
 }
 

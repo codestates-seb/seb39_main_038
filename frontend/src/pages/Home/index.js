@@ -1,13 +1,25 @@
 import React, { useEffect } from 'react';
 import axios from 'axios';
-import { API_URI } from '../../constants';
+import { useNavigate } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
+import { atoms } from '../../store';
+import { API_URI, MENU, ROUTE } from '../../constants';
+import { Banner, Thumbnail, CustomModal } from '../../components';
+import { HomeContainer, HomeWrapper } from './styles';
+import { useModal } from '../../hooks';
 
 function Home() {
-  const postAuthData = (api, data) => {
+  const navigate = useNavigate();
+  const setMenuQuery = useSetRecoilState(atoms.menuQuery);
+  const [openFood, closeFood] = useModal('food');
+  const [openOrder, closeOrder] = useModal('order');
+  const [openEmail, closeEmail] = useModal('email');
+
+  const postAuthData = (api, code) => {
     if (api === null) return;
     axios
-      .post(api, data)
-      .then((res) => console.log(res.headers))
+      .post(api, code)
+      .then((res) => console.log(res.data))
       .catch((err) => console.log(err.message));
   };
 
@@ -18,7 +30,42 @@ function Home() {
     postAuthData(API_URI.KAKAO_LOGIN, { code });
   }, []);
 
-  return <div>Home</div>;
+  const createThumbnail = () => {
+    return MENU.map((item) => (
+      <Thumbnail
+        key={item.id}
+        title={item.title}
+        src={item.src}
+        alt={item.title}
+        query={item.query}
+      />
+    ));
+  };
+
+  const hanldeOnClick = (e) => {
+    const $container = e.target.closest('div');
+    setMenuQuery($container.dataset.query);
+    navigate(`/${ROUTE.FOODLIST.PATH}`);
+  };
+
+  return (
+    <HomeContainer>
+      <Banner primary />
+      <HomeWrapper onClick={hanldeOnClick}>{createThumbnail()}</HomeWrapper>
+      <button type="button" onClick={openFood}>
+        Food 모달
+      </button>
+      <button type="button" onClick={openOrder}>
+        Order 모달
+      </button>
+      <button type="button" onClick={openEmail}>
+        Email 모달
+      </button>
+      <CustomModal.Food closeModal={closeFood} />
+      <CustomModal.Order closeModal={closeOrder} />
+      <CustomModal.Email closeModal={closeEmail} />
+    </HomeContainer>
+  );
 }
 
 export default Home;
