@@ -44,7 +44,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
          * @author 유태형
          * @exception AuthenticationException 인증 예외
          * @throw IOException 입출력 예외
-         * @param HttpServlerRequest 요청
+         * @param HttpServletRequest 요청
          * @param HttpServletResponse 응답
          * @return Authentication 인증객체
          */

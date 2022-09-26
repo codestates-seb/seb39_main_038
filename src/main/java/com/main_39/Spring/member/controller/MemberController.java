@@ -18,6 +18,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -26,6 +27,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 
 @Slf4j
 @Controller
@@ -162,7 +164,94 @@ public class MemberController {
                 .build();
         response.addHeader("Set-Cookie",refresh_cookie.toString());
 
-
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    /**
+     * 로컬 유저 아이디 찾기
+     * */
+    @PostMapping("/search/email")
+    public ResponseEntity<SingleResponseDto<LocalDto.searchIdResponse>> localIdSearch(@RequestBody LocalDto.searchIdDto idDto){
+
+        Local findLocal = memberService.verifyEmail(idDto.getName(), idDto.getPhoneNumber());
+        LocalDto.searchIdResponse response = memberMapper.localToLocalDtoSearchIdResponse(findLocal);
+
+        return new ResponseEntity<SingleResponseDto<LocalDto.searchIdResponse>>(
+          new SingleResponseDto<LocalDto.searchIdResponse>(response),HttpStatus.OK
+        );
+    }
+
+    /**
+     * 로컬 유저 비밀번호 찾기
+     * */
+    @PostMapping("/search/password")
+    public ResponseEntity<SingleResponseDto<LocalDto.searchPwResponse>> localPwSearch(@RequestBody LocalDto.searchPwDto pwDto){
+
+        Local findLocal = memberService.verifyPassword(pwDto.getAccountEmail(), pwDto.getName(), pwDto.getPhoneNumber());
+        LocalDto.searchPwResponse response = memberMapper.localToLocalDtoSearchPwResponse(findLocal);
+
+        return new ResponseEntity<SingleResponseDto<LocalDto.searchPwResponse>>(
+          new SingleResponseDto<LocalDto.searchPwResponse>(response),HttpStatus.OK
+        );
+    }
+
+    /**
+     * 카카오 마이페이지
+     * */
+    @PostMapping("/kakao/mypage")
+    public ResponseEntity<SingleResponseDto<KakaoDto.response>> kakaoMypage(HttpServletRequest request){
+        Cookie[] cookies = request.getCookies();
+        Cookie access_cookie = null;
+        String access_token = "";
+        if(cookies != null){
+            for(Cookie cookie : cookies){
+                if(cookie.getName().equals("kakao_access_token")) access_cookie = cookie;
+            }
+        }
+
+        if(access_cookie != null) access_token = access_cookie.getValue();
+
+        Kakao kakao = memberService.getKakaoInfo(access_token);
+        KakaoDto.response response = memberMapper.kakaoToKakaoDtoResponse(kakao);
+
+        return new ResponseEntity<SingleResponseDto<KakaoDto.response>>(
+                new SingleResponseDto<KakaoDto.response>(response), HttpStatus.OK);
+    }
+
+    /**
+     * 로컬 마이페이지
+     * */
+    @PostMapping("/local/mypage")
+    public ResponseEntity<SingleResponseDto<LocalDto.response>> localMypage(HttpServletRequest request){
+        Cookie[] cookies = request.getCookies();
+        Cookie access_cookie = null;
+        String access_token = "";
+        if(cookies != null){
+            for(Cookie cookie : cookies){
+                if(cookie.getName().equals("local_access_token")) access_cookie = cookie;
+            }
+        }
+        if(access_cookie != null) access_token = access_cookie.getValue();
+
+        Local local = memberService.getLocalInfo(access_token);
+        LocalDto.response response = memberMapper.localToLocalDtoResponse(local);
+
+
+        return new ResponseEntity<SingleResponseDto<LocalDto.response>>(
+                new SingleResponseDto<LocalDto.response>(response), HttpStatus.OK
+        );
+    }
+
+    /**
+     * 마일리지 확인
+     * */
+    @GetMapping("/kakao/mileage/{kakao-id}")
+    public ResponseEntity<SingleResponseDto<KakaoDto.mileageDto>> kakaoMileage(@PathVariable @Positive Long kakaoId){
+        Kakao kakao = memberService.findVerifiedKakao(kakaoId);
+        KakaoDto.mileageDto response = memberMapper.kakaoToKakaoDtoMileage(kakao);
+
+        return new ResponseEntity<SingleResponseDto<KakaoDto.mileageDto>>(
+                new SingleResponseDto<KakaoDto.mileageDto>(response),HttpStatus.OK
+        );
     }
 }

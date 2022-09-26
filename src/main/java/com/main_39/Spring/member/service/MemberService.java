@@ -1,12 +1,17 @@
 package com.main_39.Spring.member.service;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.main_39.Spring.config.filter.Valid;
 import com.main_39.Spring.exception.BusinessLogicException;
 import com.main_39.Spring.exception.ExceptionCode;
 import com.main_39.Spring.member.dto.KakaoDto;
 import com.main_39.Spring.member.dto.KakaoProfile;
+import com.main_39.Spring.member.dto.LocalDto;
 import com.main_39.Spring.member.dto.OAuthToken;
 import com.main_39.Spring.member.entity.Kakao;
 import com.main_39.Spring.member.entity.Local;
@@ -32,6 +37,8 @@ public class MemberService {
     private final KakaoRepository kaKaoRepository;
     private final LocalRepository localRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    private final String SECRET_KEY = "cos jwt token";
 
     //토큰 얻는 메서드
     public OAuthToken getToken(String code){
@@ -123,8 +130,14 @@ public class MemberService {
 
 
 
-    //카카오 회원 가입
+    //카카오 로그인 & 회원가입
     public Kakao createKakao(Kakao kakao){
+        //기존의 회원정보가 있다면 == 로그인이라면
+        Kakao findKakao = findVerifiedKakao(kakao.getKakaoId());
+        //마일리지 보존
+        if(findKakao.getMileage() != 0)
+            kakao.setMileage(findKakao.getMileage());
+
         return kaKaoRepository.save(kakao);
     }
 
@@ -207,6 +220,84 @@ public class MemberService {
         Optional<Local> local = localRepository.findByAccountEmail(email);
         if(local.isPresent())
             throw new BusinessLogicException(ExceptionCode.SIGNUP_EMAIL_DUPLICATE);
+    }
+
+    public Local verifyEmail(String name, String phoneNumber){
+        Local findLocal = localRepository.findByNameAndPhoneNumber(name,phoneNumber).orElseThrow(
+                () -> new BusinessLogicException(ExceptionCode.NOT_EXISTS_USER_INFO)
+        );
+        return findLocal;
+    }
+
+    public Local verifyPassword(String accountEmail, String name, String phoneNumber){
+        Local findLocal = localRepository.findByAccountEmailAndNameAndPhoneNumber(accountEmail, name, phoneNumber).orElseThrow(
+                () -> new BusinessLogicException(ExceptionCode.NOT_EXISTS_USER_INFO)
+        );
+        return findLocal;
+    }
+
+    /**
+     * 카카오 마이 페이지
+     * */
+    public Kakao getKakaoInfo(String access_token){
+
+        //RestTemplate
+        RestTemplate rt = new RestTemplate();
+
+        //헤더
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization","Bearer " + access_token);
+
+        //바디
+
+        //HttpEntity
+        HttpEntity<MultiValueMap<String,String>> kakaoUserInfo = new HttpEntity<>(headers);
+        //exchange
+        ResponseEntity<String> userInfo = rt.exchange(
+                "https://kapi.kakao.com/v1/user/access_token_info",
+                HttpMethod.GET,
+                kakaoUserInfo,
+                String.class
+        );
+
+        //ObjectMapper
+        ObjectMapper objectMapper = new ObjectMapper().setPropertyNamingStrategy(PropertyNamingStrategy.LOWER_CAMEL_CASE);
+        Valid.Access access = null;
+        try {
+            access = objectMapper.readValue(userInfo.getBody(), Valid.Access.class);
+        }catch (JsonMappingException e){
+            e.printStackTrace();
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        Kakao findKakao = findVerifiedKakao(access.getId());
+        return findKakao;
+    }
+
+    /**
+     * 로컬 마이페이지
+     * */
+    public Local getLocalInfo(String access_token){
+        String refresh_token = "";
+        long localId = 0;
+        String accountEmail = "";
+
+        try{
+            //access_token -> refresh_token
+            refresh_token = JWT.require(Algorithm.HMAC512(SECRET_KEY)).build().verify(access_token).getClaim("refresh_token").asString();
+            //refresh_token -> id, email
+            localId = JWT.require(Algorithm.HMAC512(SECRET_KEY)).build().verify(refresh_token).getClaim("local_id").asLong();
+            accountEmail = JWT.require(Algorithm.HMAC512(SECRET_KEY)).build().verify(refresh_token).getClaim("account_email").asString();
+        }catch(Exception e){
+            throw new BusinessLogicException(ExceptionCode.AUTH_EXPIRED_TOKEN);
+        }
+
+        Local localByEmail = findVerifiedLocalByEmail(accountEmail); //이메일로 찾은 회원
+
+        if(localId != localByEmail.getLocalId()) throw new BusinessLogicException(ExceptionCode.AUTH_NOT_MATCH_TOKEN);
+
+        return localByEmail;
     }
 
 }

@@ -9,4 +9,6 @@ import java.util.Optional;
 @Repository
 public interface LocalRepository extends JpaRepository<Local,Long> {
     Optional<Local> findByAccountEmail(String accountEmail);
+    Optional<Local> findByNameAndPhoneNumber(String name, String phoneNumber);
+    Optional<Local> findByAccountEmailAndNameAndPhoneNumber(String accountEmail, String name, String phoneNumber);
 }

@@ -32,6 +32,10 @@ public class Kakao {
     @Column(nullable = false)
     private long mileage = 0;
 
+    public void setMileage(long mileage){
+        this.mileage = mileage;
+    }
+
     @Column(nullable = false, updatable = true, unique = true)
     private String refreshToken;
 
