@@ -133,11 +133,12 @@ public class MemberService {
 
     //카카오 로그인 & 회원가입
     public Kakao createKakao(Kakao kakao){
-        //기존의 회원정보가 있다면 == 로그인이라면
-        Kakao findKakao = findVerifiedKakao(kakao.getKakaoId());
+        Optional<Kakao> optionalKakao = kaKaoRepository.findById(kakao.getKakaoId());
         //마일리지 보존
-        if(findKakao.getMileage() != 0)
+        if(optionalKakao.isPresent()){
+            Kakao findKakao = optionalKakao.get();
             kakao.setMileage(findKakao.getMileage());
+        }
 
         return kaKaoRepository.save(kakao);
     }
