@@ -2,6 +2,7 @@ const path = require('path');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 
 module.exports = {
@@ -46,6 +47,7 @@ module.exports = {
     new Dotenv({
       systemvars: true,
     }),
+    new NodePolyfillPlugin(),
   ],
   devServer: {
     historyApiFallback: true,
