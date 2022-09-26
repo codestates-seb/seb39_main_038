@@ -18,7 +18,7 @@ function Home() {
   const postAuthData = (api, code) => {
     if (api === null) return;
     axios
-      .post(api, code)
+      .post(api, code, { withCredentials: true })
       .then(() => {
         // 리다이렉션 해제
         // window.location.replace('/');
