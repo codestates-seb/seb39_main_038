@@ -113,6 +113,7 @@ public class MemberController {
                 .build();
         response.setHeader("Set-Cookie", remove_access_cookie.toString());
 
+
         //refresh_token 삭제
         ResponseCookie remove_refresh_cookie = ResponseCookie.from("kakao_refresh_token",refresh_token)
                 .sameSite("None")
@@ -153,7 +154,7 @@ public class MemberController {
                 .httpOnly(true)
                 .maxAge(60 * 60)
                 .build();
-        response.addHeader("Set-Cookie", access_cookie.toString());
+        response.setHeader("Set-Cookie", access_cookie.toString());
 
         //refresh_token 쿠키
         ResponseCookie refresh_cookie = ResponseCookie.from("kakao_refresh_token",oauthToken.getRefresh_token())

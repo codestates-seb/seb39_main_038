@@ -122,7 +122,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .httpOnly(true)
                 .maxAge(10 * 60) // 10분
                 .build();
-        response.addHeader("Set-Cookie", local_access_cookie.toString());
+        response.setHeader("Set-Cookie", local_access_cookie.toString());
 
         //refresh_token 쿠키 추가
         ResponseCookie local_refresh_cookie = ResponseCookie.from("local_refresh_token",local_refresh_token)

@@ -51,7 +51,7 @@ public class Store {
     public enum StoreType{
         FAST_FOOD("패스트푸드"),
         CHICKEN("치킨"),
-        PIZZA("피자"),
+        WESTERN("양식"),
         COFFEE("커피"),
         NIGHT_FOOD("야식"),
         CHINESE("중식"),
