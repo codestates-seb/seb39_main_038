@@ -13,6 +13,7 @@ const Wrapper = styled.form`
   display: flex;
   flex-direction: column;
   padding: 20px 0px;
+  gap: 10px;
 `;
 
 const Text = styled.p`
