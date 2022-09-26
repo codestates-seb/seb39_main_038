@@ -19,7 +19,7 @@ function Home() {
     if (api === null) return;
     axios
       .post(api, code)
-      .then((res) => console.log(res.data))
+      .then(() => window.location.assign('/'))
       .catch((err) => console.log(err.message));
   };
 
