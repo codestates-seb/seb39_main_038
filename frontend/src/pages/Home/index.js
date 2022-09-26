@@ -22,6 +22,7 @@ function Home() {
       .then(() => {
         // 리다이렉션 해제
         // window.location.replace('/');
+        console.log(window.location.host);
       })
       .catch((err) => console.log(err.message));
   };
