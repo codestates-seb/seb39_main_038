@@ -1,7 +1,7 @@
 import React from 'react';
-import { Form } from '../../../components';
-import { ButtonInner } from './styles';
-import { KAKAO_API } from '../../../constants';
+import { Form, SvgIcon } from '../../../components';
+import { ButtonInner, TextBox, Text } from './styles';
+import { KAKAO_API, TEXT, ALERT } from '../../../constants';
 
 function ConsumerLogin() {
   const handleOnSubmit = (api) => (e) => {
@@ -11,22 +11,46 @@ function ConsumerLogin() {
 
   const handleOnClick = (e) => {
     e.preventDefault();
-    alert('준비중입니다...!!');
+    alert(ALERT.E000.MESSAGE);
   };
 
   return (
     <Form.Container onSubmit={handleOnSubmit(KAKAO_API.URI())}>
       <Form.Wrapper>
         <ButtonInner>
-          <Form.Button type="submit">카카오 로그인</Form.Button>
-          <Form.Button type="button" onClick={handleOnClick}>
-            구글 로그인
+          <Form.Button type="submit" color="#ffeb00">
+            <TextBox>
+              <SvgIcon name="kakao" />
+              <Text>{TEXT.CONSUMERLOGIN.KAKAO_LOGIN}</Text>
+            </TextBox>
+          </Form.Button>
+          <Form.Button
+            type="button"
+            color="#2f3337"
+            fontColor="#fdfdfd"
+            onClick={handleOnClick}
+          >
+            <TextBox>
+              <SvgIcon name="gitHub" />
+              <Text>{TEXT.CONSUMERLOGIN.GITHUB_LOGIN}</Text>
+            </TextBox>
           </Form.Button>
           <Form.Button type="button" onClick={handleOnClick}>
-            페이스북 로그인
+            <TextBox>
+              <SvgIcon name="google" />
+              <Text>{TEXT.CONSUMERLOGIN.GOOGLE_LOGIN}</Text>
+            </TextBox>
           </Form.Button>
-          <Form.Button type="button" onClick={handleOnClick}>
-            깃허브 로그인
+          <Form.Button
+            type="button"
+            color="#385499"
+            fontColor="#fdfdfd"
+            onClick={handleOnClick}
+          >
+            <TextBox>
+              <SvgIcon name="faceBook" />
+              <Text>{TEXT.CONSUMERLOGIN.FACEBOOK_LOGIN}</Text>
+            </TextBox>
           </Form.Button>
         </ButtonInner>
       </Form.Wrapper>
