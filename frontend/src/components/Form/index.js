@@ -35,7 +35,8 @@ const Button = styled.button`
   padding: 10px 15px;
   border: 1px solid #ddd;
   border-radius: 2px;
-  background-color: transparent;
+  background-color: ${({ color }) => (color ? `${color}` : 'transparent')};
+  color: ${({ fontColor }) => (fontColor ? `${fontColor}` : '000')};
 `;
 
 const Form = {
