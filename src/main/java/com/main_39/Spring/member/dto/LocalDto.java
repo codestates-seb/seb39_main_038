@@ -31,8 +31,7 @@ public class LocalDto {
         @Email
         private String email;
 
-        @Pattern(regexp = "^\\w{6,16}$",
-                message = "비밀번호느 6자리이상 16자리 이하로 가능합니다!")
+        @NotBlank
         private String password;
 
         @Pattern(regexp = "^010-\\d{3,4}-\\d{4}$",
@@ -58,9 +57,7 @@ public class LocalDto {
         @NotBlank
         @Email
         private String email;
-
-        @Pattern(regexp = "^\\w{6,16}$",
-                message = "비밀번호느 6자리이상 16자리 이하로 가능합니다!")
+        @NotBlank
         private String password;
     }
 
