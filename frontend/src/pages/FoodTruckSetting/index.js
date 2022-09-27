@@ -1,12 +1,12 @@
-// import axios from 'axios';
-import React, { useRef } from 'react';
+import axios from 'axios';
+import React from 'react';
+import { useRecoilState } from 'recoil';
 import {
   Section,
   Title,
   MainImg,
   CreateFoodTruck,
   TypeInfo,
-  Form,
   HashTagBtn,
   Hash,
   DeleteTag,
@@ -16,6 +16,7 @@ import {
   UpdateInput,
   SettingDoneBtn,
 } from './styles';
+import { atoms } from '../../store/atoms';
 
 function TypeInputInfo() {
   return (
@@ -29,36 +30,35 @@ function TypeInputInfo() {
 }
 
 function FoodTruckSetting() {
-  const hashTagRef = useRef(null);
-  console.log(hashTagRef.current);
-  // const AddMenu = () => {
-  //   axios
-  //     .post(
-  //       'ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/menu',
-  //       {
-  //         name: '치킨',
-  //         price: 12000,
-  //       },
-  //     )
-  //     .then(() => {
-  //       alert('success');
-  //     })
-  //     .catch((res) => {
-  //       alert(res);
-  //     });
-  // };
+  const [tag, setTag] = useRecoilState(atoms.tagName);
+  const AddMenu = () => {
+    axios
+      .post(
+        'ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/menu',
+        {
+          name: '치킨',
+          price: 12000,
+        },
+      )
+      .then(() => {
+        alert('success');
+      })
+      .catch((res) => {
+        alert(res);
+      });
+  };
 
-  // const AddHashTag = () => {
-  //   axios.post('uri', {
-  //     tag_id: 1,
-  //     store_id: 1,
-  //     tag_name: hashTagRef.current.value,
-  //   });
-  // };
+  const AddHashTag = () => {
+    axios.post('uri', {
+      tag_id: 1,
+      store_id: 1,
+      tag_name: tag,
+    });
+  };
 
-  // const onClickHandlerAddMenu = () => {
-  //   AddMenu();
-  // };
+  const onClickHandlerAddMenu = () => {
+    AddMenu();
+  };
 
   return (
     <Section>
@@ -92,13 +92,13 @@ function FoodTruckSetting() {
           </li>
         </ul>
         <DeleteTag>
-          {/* onClick={AddHashTag} */}
-          <Form>
-            <input id="tag" />
-            <HashTagBtn ref={hashTagRef} htmlfor="tag">
-              해시태그 추가 +
-            </HashTagBtn>
-          </Form>
+          <input
+            value={tag}
+            onChange={(e) => {
+              setTag(e.target.value);
+            }}
+          />
+          <HashTagBtn onClick={AddHashTag}>해시태그 추가 +</HashTagBtn>
           <Hash>
             <span>#양식asdasdsddsada</span>
             <button type="button">X</button>
@@ -115,8 +115,10 @@ function FoodTruckSetting() {
           <img alt="FoodImg" />
 
           <TypeInputInfo />
-          {/* onClick={onClickHandlerAddMenu} */}
-          <button type="button">추가</button>
+
+          <button type="button" onClick={onClickHandlerAddMenu}>
+            추가
+          </button>
         </CreateFood>
 
         <UpdateFood>
