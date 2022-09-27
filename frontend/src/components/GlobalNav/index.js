@@ -20,10 +20,11 @@ function GlobalNav() {
           <Link to={ROUTE.LOGIN.PATH}>
             <NavButton color={COLOR.YELLOW}>{ROUTE.LOGIN.NAME}</NavButton>
           </Link>
-
-          <Link to={ROUTE.BASKET.PATH}>
-            <NavButton color={COLOR.WHITE}>{ROUTE.BASKET.NAME}</NavButton>
-          </Link>
+          {true ? null : (
+            <Link to={ROUTE.BASKET.PATH}>
+              <NavButton color={COLOR.WHITE}>{ROUTE.BASKET.NAME}</NavButton>
+            </Link>
+          )}
         </ButtonInner>
       </NavWrapper>
     </NavContainer>
