@@ -8,17 +8,15 @@ import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 public class CorsConfig {
-
+    /**
+     * CORS관련 설정하는 메서드
+     * */
     @Bean
     public CorsFilter corsFilter(){
-        /**
-         * CORS관련 설정하는 메서드
-         * */
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
         config.addAllowedOrigin("https://yapick.netlify.app");
-        config.addAllowedOrigin("http://localhost:3000");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         config.addExposedHeader("*");

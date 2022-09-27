@@ -11,7 +11,6 @@ import com.main_39.Spring.exception.BusinessLogicException;
 import com.main_39.Spring.exception.ExceptionCode;
 import com.main_39.Spring.member.dto.KakaoDto;
 import com.main_39.Spring.member.dto.KakaoProfile;
-import com.main_39.Spring.member.dto.LocalDto;
 import com.main_39.Spring.member.dto.OAuthToken;
 import com.main_39.Spring.member.entity.Kakao;
 import com.main_39.Spring.member.entity.Local;
@@ -34,13 +33,22 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class MemberService {
+    /**
+     * 회원관련 비즈니스 로직을 처리하는 Service
+     * @author 유태형
+     * @see com.main_39.Spring.member.repository.KakaoRepository 카카오 레포지토리
+     * @see com.main_39.Spring.member.repository.LocalRepository 로컬 레포지토리
+     * @see org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder 암호화 Encoder
+     * */
     private final KakaoRepository kaKaoRepository;
     private final LocalRepository localRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     private final String SECRET_KEY = "cos jwt token";
 
-    //토큰 얻는 메서드
+    /**
+     * 토큰을 획득하는 메서드
+     * */
     public OAuthToken getToken(String code){
         //Post방식으로 key=value 데이터를 요청 (카카오쪽으로)
         //Retrofit2
@@ -91,7 +99,9 @@ public class MemberService {
     }
 
 
-    //토큰 -> 유저 정보
+    /**
+     * 토큰 -> 유저정보
+     * */
     public KakaoProfile getKaKaoProfile(OAuthToken oauthToken){
         RestTemplate rt = new RestTemplate();
 
@@ -131,7 +141,9 @@ public class MemberService {
 
 
 
-    //카카오 로그인 & 회원가입
+    /**
+     * 카카오 로그인 (처음 로그인 시 회원가입)
+     * */
     public Kakao createKakao(Kakao kakao){
         Optional<Kakao> optionalKakao = kaKaoRepository.findById(kakao.getKakaoId());
         //마일리지 보존
@@ -143,6 +155,9 @@ public class MemberService {
         return kaKaoRepository.save(kakao);
     }
 
+    /**
+     * 카카오 로그아웃
+     * */
     public void logoutKakao(String access_token){
         //RestTemplate
         RestTemplate rt = new RestTemplate();
@@ -180,7 +195,9 @@ public class MemberService {
     }
 
 
-    //로컬 회원 가입
+    /**
+     * 로컬 회원가입
+     * */
     public Local createLocal(Local local){
         verifyExistsLocal(local.getAccountEmail());
         // 비밀번호 암호화(Security가 암호화 강제함)
@@ -190,6 +207,9 @@ public class MemberService {
         return localRepository.save(local);
     }
 
+    /**
+     * 로컬Id로 회원 찾기
+     * */
     @Transactional(readOnly = true)
     public Local findVerifiedLocal(long localId){
         Optional<Local> optionalLocal = localRepository.findById(localId);
@@ -199,6 +219,9 @@ public class MemberService {
         return findLocal;
     }
 
+    /**
+     * 카카오Id로 회원 찾기
+     * */
     @Transactional(readOnly = true)
     public Kakao findVerifiedKakao(long kakao_id){
         Optional<Kakao> optionalKakao = kaKaoRepository.findById(kakao_id);
@@ -208,6 +231,9 @@ public class MemberService {
         return findKakao;
     }
 
+    /**
+     * 로컬 이메일로 회원 찾기
+     * */
     @Transactional(readOnly = true)
     public Local findVerifiedLocalByEmail(String email){
         Optional<Local> optionalLocal = localRepository.findByAccountEmail(email);
@@ -217,13 +243,18 @@ public class MemberService {
         return findLocal;
     }
 
-    // 로컬 회원 중복 확인
+   /**
+    * 이미 존재하는 로컬회원인지 확인
+    * */
     private void verifyExistsLocal(String email){
         Optional<Local> local = localRepository.findByAccountEmail(email);
         if(local.isPresent())
             throw new BusinessLogicException(ExceptionCode.SIGNUP_EMAIL_DUPLICATE);
     }
 
+    /**
+     * 이름, 휴대폰 번호로 계정 찾기
+     * */
     public Local verifyEmail(String name, String phoneNumber){
         Local findLocal = localRepository.findByNameAndPhoneNumber(name,phoneNumber).orElseThrow(
                 () -> new BusinessLogicException(ExceptionCode.NOT_EXISTS_USER_INFO)
@@ -231,6 +262,9 @@ public class MemberService {
         return findLocal;
     }
 
+    /**
+     * 이메일, 이름, 휴대폰 번호로 비밀번호 찾기
+     * */
     public Local verifyPassword(String accountEmail, String name, String phoneNumber){
         Local findLocal = localRepository.findByAccountEmailAndNameAndPhoneNumber(accountEmail, name, phoneNumber).orElseThrow(
                 () -> new BusinessLogicException(ExceptionCode.NOT_EXISTS_USER_INFO)

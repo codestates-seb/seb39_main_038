@@ -1,6 +1,7 @@
 package com.main_39.Spring.store.entity;
 
 import com.main_39.Spring.member.entity.Local;
+import com.main_39.Spring.menu.entity.Menu;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -48,13 +52,25 @@ public class Store {
     @Column(nullable = false)
     private StoreStatus storeStatus = StoreStatus.CLOSE;
 
+    // 외래키
+    @OneToOne
+    @JoinColumn(name = "local_id")
+    private Local local;
+
+    // 일대다 양방향 매핑
+    @OneToMany(mappedBy = "store")
+    private List<Menu> menus = new ArrayList<>();
+
+
     public enum StoreType{
-        FAST_FOOD("패스트푸드"),
         CHICKEN("치킨"),
+        PIZZA("피자"),
+        BUNSICK("분식"),
+        KOREAN("한식"),
         WESTERN("양식"),
         COFFEE("커피"),
         NIGHT_FOOD("야식"),
-        CHINESE("중식"),
+        CHINESE("중국집"),
         JAPANESE("일식");
 
         @Getter
@@ -76,9 +92,4 @@ public class Store {
             this.status = status;
         }
     }
-
-    // 매핑
-    @OneToOne
-    @JoinColumn(name = "local_id")
-    private Local local;
 }
