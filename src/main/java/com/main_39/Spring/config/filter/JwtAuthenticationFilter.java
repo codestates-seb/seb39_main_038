@@ -37,17 +37,16 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     private final AuthenticationManager authenticationManager;
     private final LocalRepository localRepository;
 
+
+    /**
+     * 로컬 회원 로그인시 아이디,비밀번호 확인 후 토큰 발급
+     * @author 유태형
+     * @exception AuthenticationException 인증 예외
+     * @throw IOException 입출력 예외
+     * @return Authentication 인증객체
+     */
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        /**
-         * 로컬 회원 로그인시 아이디,비밀번호 확인 후 토큰 발급
-         * @author 유태형
-         * @exception AuthenticationException 인증 예외
-         * @throw IOException 입출력 예외
-         * @param HttpServletRequest 요청
-         * @param HttpServletResponse 응답
-         * @return Authentication 인증객체
-         */
         System.out.println("로그인 과정 시작");
         try{
             ObjectMapper objectMapper = new ObjectMapper();
@@ -76,20 +75,15 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         return null;
     }
 
-    //로그인 성공 시
+    /**
+     * 로그인 인증 성공시 토큰 발급하는 메서드
+     * @author 유태형
+     * @exception IOException 입출력 예외
+     * @exception ServletException 서블릿 관련 예외
+     * @return void 없음
+     * */
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-        /**
-         * 로그인 인증 성공시 토큰 발급하는 메서드
-         * @author 유태형
-         * @exception IOException 입출력 예외
-         * @exception ServletException 서블릿 관련 예외
-         * @param HttpServletRequest 요청
-         * @param HttpServletResponse 응답
-         * @param FilterChain 체인
-         * @param Authentication 인증 객체
-         * @return void 없음
-         * */
         System.out.println("로컬 토큰 발행 시작");
         LocalDetails localDetails = (LocalDetails)authResult.getPrincipal();
         Local local = localDetails.getLocal();

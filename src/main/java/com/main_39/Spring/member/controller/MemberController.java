@@ -34,6 +34,12 @@ import javax.validation.constraints.Positive;
 @Validated
 @RequiredArgsConstructor
 public class MemberController {
+    /**
+     * kakao, local 회원 관련 Controller
+     * @author 유태형
+     * @see com.main_39.Spring.member.mapper.MemberMapper Dto Entity 전환 매퍼
+     * @see com.main_39.Spring.member.service.MemberService 서비스 계층
+     * */
     private final MemberService memberService;
     private final MemberMapper memberMapper;
 
@@ -49,9 +55,13 @@ public class MemberController {
         return "로그인 성공";
     }
 
-    //로컬 회원 가입
+    /**
+     * 회원가입 정보를 입력받아 데이터 베이스에 저장하는 메서드
+     * */
     @PostMapping("/signup")
     public ResponseEntity LocalSignUp(@Valid @RequestBody LocalDto.Post postDto){
+
+
         Local local = memberMapper.localPostToLocal(postDto);
 
         // 1. 데이터베이스에 회원정보 저장
@@ -77,9 +87,12 @@ public class MemberController {
     * loacl_access_token, local_refresh_token 삭제
     */
 
-
+    /**
+     * 카카오 로그아웃을 처리하는 메서드
+     * */
     @PostMapping("/kakao/logout")
     public ResponseEntity KakaoLogout(HttpServletRequest request, HttpServletResponse response){
+
 
         //토큰 불러 오기
         Cookie[] cookies = request.getCookies();
@@ -132,7 +145,9 @@ public class MemberController {
     }
 
 
-    //프론트엔드로 code 전달 받으면 유저정보 저장, token 발송
+    /**
+     * 프론트엔드로 부터 받은 코드로 부터 카카오 인증을 처리하는 메서드
+     * */
     @PostMapping("/login/oauth2/code/kakao")
     public ResponseEntity kakaoCallback(@RequestBody KakaoDto.CodeDto code,
                                         HttpServletResponse response){ //Data를 리턴해주는 컨트롤러 함수

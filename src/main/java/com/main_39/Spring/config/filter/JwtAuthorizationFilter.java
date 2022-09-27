@@ -56,21 +56,17 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         this.localRepository = localRepository;
     }
 
+    /**
+     * 인증된 사용자의 인가를 처리하는 메서드
+     * @author 유태형
+     * @exception IOException 입출력 예외
+     * @exception ServletException 서블릿 관련 에러
+     * @throw BusinessLogicException(ExceptionCode.NOT_EXISTS_USER_INFO) 회원 아이디로 회원 정보를 찾을 수 없는 예외
+     * @throw new BusinessLogicException(ExceptionCode.AUTH_NOT_MATCH_TOKEN) 토큰에 해당하는 사용자 정보가 없는 예외
+     * @return void
+     * */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-        /**
-         * 인증된 사용자의 인가를 처리하는 메서드
-         * @author 유태형
-         * @param HttpServletRequest 요청
-         * @param HttpServletResponse 응답
-         * @param FilterChain 체인
-         * @exception IOException 입출력 예외
-         * @exception ServletException 서블릿 관련 에러
-         * @throw BusinessLogicException(ExceptionCode.NOT_EXISTS_USER_INFO) 회원 아이디로 회원 정보를 찾을 수 없는 예외
-         * @throw new BusinessLogicException(ExceptionCode.AUTH_NOT_MATCH_TOKEN) 토큰에 해당하는 사용자 정보가 없는 예외
-         * @return void
-         * */
-
         System.out.println("인증 권한이 필요한 리소스에 접근");
 
         /*

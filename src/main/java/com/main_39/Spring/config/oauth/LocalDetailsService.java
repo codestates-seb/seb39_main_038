@@ -20,16 +20,15 @@ public class LocalDetailsService implements UserDetailsService {
      * */
     private final LocalRepository localRepository;
 
+    /**
+     * DB로 부터 회원정보를 불러들여와 UserDetails를 생성하는 메서드
+     * @author 유태형
+     * @param username 회원 아이디
+     * @exception UsernameNotFoundException 회원정보를 찾을 수 없을 때 발생하는 예외
+     * @throw BusinessLogicException(ExceptionCode.NOT_EXISTS_USER_INFO) 회원정보를 찾을 수 없을 때 발생하는 예외
+     * @return LocalDetails UserDetails를 구현하고 로컬 회원정보를 감싸는 구현체
+     * */
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
-        /**
-         * DB로 부터 회원정보를 불러들여와 UserDetails를 생성하는 메서드
-         * @author 유태형
-         * @param username 회원 아이디
-         * @exception UsernameNotFoundException 회원정보를 찾을 수 없을 때 발생하는 예외
-         * @throw BusinessLogicException(ExceptionCode.NOT_EXISTS_USER_INFO) 회원정보를 찾을 수 없을 때 발생하는 예외
-         * @return LocalDetails UserDetails를 구현하고 로컬 회원정보를 감싸는 구현체
-         * */
-
         Local localEntity = localRepository.findByAccountEmail(username).orElseThrow(
                 () -> new BusinessLogicException(ExceptionCode.NOT_EXISTS_USER_INFO)
         );
