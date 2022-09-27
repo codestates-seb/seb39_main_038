@@ -109,7 +109,6 @@ public class MemberController {
         //access_token 삭제
         ResponseCookie remove_access_cookie = ResponseCookie.from("kakao_access_token",access_token)
                 .path("/")
-                .domain("yapick")
                 .sameSite("None")
                 .secure(true)
                 .httpOnly(true)
@@ -121,7 +120,6 @@ public class MemberController {
         //refresh_token 삭제
         ResponseCookie remove_refresh_cookie = ResponseCookie.from("kakao_refresh_token",refresh_token)
                 .path("/")
-                .domain("yapick")
                 .sameSite("None")
                 .secure(true)
                 .httpOnly(true)
@@ -158,7 +156,6 @@ public class MemberController {
         //access_token 쿠키
         ResponseCookie access_cookie = ResponseCookie.from("kakao_access_token", oauthToken.getAccess_token())
                 .path("/")
-                .domain("yapick")
                 .sameSite("None")
                 .secure(true)
                 .httpOnly(true)
@@ -169,7 +166,6 @@ public class MemberController {
         //refresh_token 쿠키
         ResponseCookie refresh_cookie = ResponseCookie.from("kakao_refresh_token",oauthToken.getRefresh_token())
                 .path("/")
-                .domain("yapick")
                 .sameSite("None")
                 .secure(true)
                 .httpOnly(true)
@@ -199,6 +195,7 @@ public class MemberController {
      * */
     @PostMapping("/search/password")
     public ResponseEntity<SingleResponseDto<LocalDto.searchPwResponse>> localPwSearch(@RequestBody LocalDto.searchPwDto pwDto){
+        //https://devofroad.tistory.com/43로 실제 이메일 보내기
 
         Local findLocal = memberService.verifyPassword(pwDto.getEmail(), pwDto.getName(), pwDto.getPhone());
         LocalDto.searchPwResponse response = memberMapper.localToLocalDtoSearchPwResponse(findLocal);
