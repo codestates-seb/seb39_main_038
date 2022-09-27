@@ -10,6 +10,7 @@ const atoms = {
     key: 'modal',
     default: { food: false, order: false, email: false },
   }),
+  tagName: atom({ key: 'tagName', default: '' }),
 };
 
 const selectors = {
