@@ -25,7 +25,7 @@ public class Valid {
 
     @Data
     public static class Login{
-        private String username;
+        private String email;
         private String password;
     }
 }

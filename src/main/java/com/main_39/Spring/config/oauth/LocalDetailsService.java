@@ -29,7 +29,7 @@ public class LocalDetailsService implements UserDetailsService {
      * @return LocalDetails UserDetails를 구현하고 로컬 회원정보를 감싸는 구현체
      * */
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
-        Local localEntity = localRepository.findByAccountEmail(username).orElseThrow(
+        Local localEntity = localRepository.findByEmail(username).orElseThrow(
                 () -> new BusinessLogicException(ExceptionCode.NOT_EXISTS_USER_INFO)
         );
         return new LocalDetails(localEntity);

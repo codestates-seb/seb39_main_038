@@ -55,11 +55,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             //로컬 회원 정보 불러오기
 
             //이메일 비교
-            Local local = localRepository.findByAccountEmail(login.getUsername()).orElseThrow(
+            Local local = localRepository.findByEmail(login.getEmail()).orElseThrow(
                     () -> new IOException());
 
             //비밀번호 비교
-            if(!local.getLocalPassword().equals(login.getPassword())) throw new IOException();
+            if(!local.getPassword().equals(login.getPassword())) throw new IOException();
 
             //로그인 처리
             LocalDetails localDetails = new LocalDetails(local);
@@ -90,7 +90,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         String local_refresh_token = JWT.create()
                 .withClaim("local_id",local.getLocalId())
-                .withClaim("account_email",local.getAccountEmail())
+                .withClaim("email",local.getEmail())
                 .withExpiresAt(new Date(System.currentTimeMillis() + (2 * 30 * 24 * 60 * 60 * 1000)))
                 .sign(Algorithm.HMAC512(SECRET_KEY));
 

@@ -38,12 +38,12 @@ public class LocalDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        return local.getLocalPassword();
+        return local.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return local.getAccountEmail();
+        return local.getEmail();
     }
 
     @Override
