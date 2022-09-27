@@ -6,9 +6,9 @@ function IdInquiry() {
   const validation = (name, phone) => {
     const koreaRegex = /^[가-힣]+$/;
     const phoneRegex = /^[0-9]+$/;
-    if (!(name && phone)) return ALERT.E402.STATUS;
-    if (!koreaRegex.test(name)) return ALERT.E403.STATUS;
-    if (!phoneRegex.test(phone)) return ALERT.E406.STATUS;
+    if (!(name && phone)) return ALERT.CLIENT[401].STATUS;
+    if (!koreaRegex.test(name)) return ALERT.CLIENT[403].STATUS;
+    if (!phoneRegex.test(phone)) return ALERT.CLIENT[406].STATUS;
     return null;
   };
 
@@ -16,9 +16,7 @@ function IdInquiry() {
     e.preventDefault();
     const { name, phone } = e.target;
     const isCheck = validation(name.value, phone.value);
-    if (isCheck === ALERT.E402.STATUS) return alert(ALERT.E402.MESSAGE);
-    if (isCheck === ALERT.E403.STATUS) return alert(ALERT.E403.MESSAGE);
-    if (isCheck === ALERT.E406.STATUS) return alert(ALERT.E406.MESSAGE);
+    if (ALERT.CLIENT[isCheck]) return alert(ALERT.CLIENT[isCheck].MESSAGE);
     return null;
   };
 

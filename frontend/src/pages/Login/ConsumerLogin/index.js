@@ -11,7 +11,7 @@ function ConsumerLogin() {
 
   const handleOnClick = (e) => {
     e.preventDefault();
-    alert(ALERT.E000.MESSAGE);
+    alert(ALERT.CLIENT[400].MESSAGE);
   };
 
   return (

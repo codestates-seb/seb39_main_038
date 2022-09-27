@@ -10,11 +10,12 @@ function Register() {
     const koreaRegex = /^[가-힣]+$/;
     const pwRegex = /^.*(?=^.{10,}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
     const phoneRegex = /^[0-9]+$/;
-    if (!(id && name && phone && pw && pwCheck)) return ALERT.E402.STATUS;
-    if (!koreaRegex.test(name)) return ALERT.E403.STATUS;
-    if (!pwRegex.test(pw)) return ALERT.E404.STATUS;
-    if (pw !== pwCheck) return ALERT.E405.STATUS;
-    if (!phoneRegex.test(phone)) return ALERT.E406.STATUS;
+    if (!(id && name && phone && pw && pwCheck))
+      return ALERT.CLIENT.E401.STATUS;
+    if (!koreaRegex.test(name)) return ALERT.CLIENT[403].STATUS;
+    if (!pwRegex.test(pw)) return ALERT.CLIENT[404].STATUS;
+    if (pw !== pwCheck) return ALERT.CLIENT[405].STATUS;
+    if (!phoneRegex.test(phone)) return ALERT.CLIENT[406].STATUS;
     return null;
   };
 
@@ -28,11 +29,7 @@ function Register() {
       pw.value,
       pwCheck.value,
     );
-    if (isCheck === ALERT.E402.STATUS) return alert(ALERT.E402.MESSAGE);
-    if (isCheck === ALERT.E403.STATUS) return alert(ALERT.E403.MESSAGE);
-    if (isCheck === ALERT.E404.STATUS) return alert(ALERT.E404.MESSAGE);
-    if (isCheck === ALERT.E405.STATUS) return alert(ALERT.E405.MESSAGE);
-    if (isCheck === ALERT.E406.STATUS) return alert(ALERT.E406.MESSAGE);
+    if (ALERT.CLIENT[isCheck]) return alert(ALERT.CLIENT[isCheck].MESSAGE);
     return navigate(`/${ROUTE.LOGIN.PATH}`, { state: ROUTE.REGISTER.PATH });
   };
 

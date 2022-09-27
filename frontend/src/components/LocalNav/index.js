@@ -11,11 +11,12 @@ function LocalNav() {
 
   const createNavList = () => {
     return MENU.map((item) => {
+      console.log(menuQuery, item.query);
       return (
         <NavList
           key={item.id}
           value={item.query}
-          active={menuQuery === item.query}
+          active={menuQuery.toString() === item.query}
         >
           <Navitem>{item.title}</Navitem>
         </NavList>
