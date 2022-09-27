@@ -19,9 +19,9 @@ public class CorsConfig {
         config.addAllowedOrigin("https://yapick.netlify.app");
         config.addAllowedOrigin("https://deploymentprac38.tk");
         config.addAllowedOrigin("http://localhost:3000");
-        config.addAllowedHeader("Origin, X-Requested-With, Content-Type, Accept, Authorization");
+        config.addAllowedHeader("*");
         config.addAllowedMethod("*");
-        config.addExposedHeader("Authorization");
+        config.addExposedHeader("*");
         source.registerCorsConfiguration("/**",config);
 
         return new CorsFilter(source);
