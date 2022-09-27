@@ -117,7 +117,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             try{
                 //refresh_token으로 정보 가져오기
                 local_id =  JWT.require(Algorithm.HMAC512(SECRET_KEY)).build().verify(refresh_token).getClaim("local_id").asLong();
-                account_email = JWT.require(Algorithm.HMAC512(SECRET_KEY)).build().verify(refresh_token).getClaim("account_email").asString();
+                account_email = JWT.require(Algorithm.HMAC512(SECRET_KEY)).build().verify(refresh_token).getClaim("email").asString();
             }catch(Exception e){
                 System.out.println("유효한 refresh_token 없음, access_token 재 발행 실패했으므로 인증권한이 없습니다.");
                 chain.doFilter(request,response);
@@ -128,7 +128,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
                 // 1. access_token 복호화한 다음 id, email 교차 검증 -> 인가
                 decode_access_token = JWT.require(Algorithm.HMAC512(SECRET_KEY)).build().verify(access_token).getClaim("refresh_token").asString();
                 decode_local_id =  JWT.require(Algorithm.HMAC512(SECRET_KEY)).build().verify(decode_access_token).getClaim("local_id").asLong();
-                decode_account_email = JWT.require(Algorithm.HMAC512(SECRET_KEY)).build().verify(decode_access_token).getClaim("account_email").asString();
+                decode_account_email = JWT.require(Algorithm.HMAC512(SECRET_KEY)).build().verify(decode_access_token).getClaim("email").asString();
             }catch(Exception e){
                 System.out.println("유효한 access_token 없음");
                 //access_token은 안되면 재발급
@@ -138,7 +138,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             //access_token이 만료 or 손상 되었다면
             if(!(decode_access_token.equals(refresh_token)) || !(decode_local_id == local_id) || !(decode_account_email.equals(account_email))){
                 // 2. refresh_token 검증 -> access_token 재발급, 인가
-                local = localRepository.findByAccountEmail(account_email).orElseThrow(
+                local = localRepository.findByEmail(account_email).orElseThrow(
                         () -> new BusinessLogicException(ExceptionCode.NOT_EXISTS_USER_INFO));
 
                //refresh_token의 email, id와 데이터베이스의 Id값을 비교
@@ -169,7 +169,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             }
             // 1. access_token(o), refresh_token(o)
             if(local == null)
-                local = localRepository.findByAccountEmail(account_email).orElseThrow(
+                local = localRepository.findByEmail(account_email).orElseThrow(
                         () -> new BusinessLogicException(ExceptionCode.NOT_EXISTS_USER_INFO));
 
             //Authorization (세션에 추가)

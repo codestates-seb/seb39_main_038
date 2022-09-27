@@ -22,7 +22,7 @@ public interface MemberMapper {
                 store.getStoreType(),store.getStoreStatus()
         );
         LocalDto.response response = new LocalDto.response(
-                local.getLocalId(),storeResponse,local.getProfileNickname(),local.getProfileImage(),local.getName(),local.getAccountEmail(),local.getPhoneNumber(),
+                local.getLocalId(),storeResponse,local.getAvatar(),local.getName(),local.getEmail(),local.getPhone(),
                 local.getRole()
         );
         return response;
@@ -42,10 +42,10 @@ public interface MemberMapper {
     KakaoDto.response kakaoToKakaoDtoResponse(Kakao kakao);
 
     default LocalDto.searchIdResponse localToLocalDtoSearchIdResponse(Local local){
-        return new LocalDto.searchIdResponse(local.getAccountEmail());
+        return new LocalDto.searchIdResponse(local.getEmail());
     }
     default LocalDto.searchPwResponse localToLocalDtoSearchPwResponse(Local local){
-        return new LocalDto.searchPwResponse(local.getLocalPassword());
+        return new LocalDto.searchPwResponse(local.getPassword());
     }
 
     KakaoDto.mileageDto kakaoToKakaoDtoMileage(Kakao kakao);

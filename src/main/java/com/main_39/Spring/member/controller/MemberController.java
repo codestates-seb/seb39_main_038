@@ -43,17 +43,6 @@ public class MemberController {
     private final MemberService memberService;
     private final MemberMapper memberMapper;
 
-    //버튼 확인용(프론트엔드)
-    @GetMapping("/login")
-    public String login() {
-        return "loginForm";
-    }
-
-    @GetMapping("/")
-    public @ResponseBody String loginSuccess(Authentication authentication){
-        System.out.println("인증 객체 : " + authentication);
-        return "로그인 성공";
-    }
 
     /**
      * 회원가입 정보를 입력받아 데이터 베이스에 저장하는 메서드
@@ -197,7 +186,7 @@ public class MemberController {
     @PostMapping("/search/email")
     public ResponseEntity<SingleResponseDto<LocalDto.searchIdResponse>> localIdSearch(@RequestBody LocalDto.searchIdDto idDto){
 
-        Local findLocal = memberService.verifyEmail(idDto.getName(), idDto.getPhoneNumber());
+        Local findLocal = memberService.verifyEmail(idDto.getName(), idDto.getPhone());
         LocalDto.searchIdResponse response = memberMapper.localToLocalDtoSearchIdResponse(findLocal);
 
         return new ResponseEntity<SingleResponseDto<LocalDto.searchIdResponse>>(
@@ -211,7 +200,7 @@ public class MemberController {
     @PostMapping("/search/password")
     public ResponseEntity<SingleResponseDto<LocalDto.searchPwResponse>> localPwSearch(@RequestBody LocalDto.searchPwDto pwDto){
 
-        Local findLocal = memberService.verifyPassword(pwDto.getAccountEmail(), pwDto.getName(), pwDto.getPhoneNumber());
+        Local findLocal = memberService.verifyPassword(pwDto.getEmail(), pwDto.getName(), pwDto.getPhone());
         LocalDto.searchPwResponse response = memberMapper.localToLocalDtoSearchPwResponse(findLocal);
 
         return new ResponseEntity<SingleResponseDto<LocalDto.searchPwResponse>>(

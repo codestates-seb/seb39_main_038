@@ -199,7 +199,7 @@ public class MemberService {
      * 로컬 회원가입
      * */
     public Local createLocal(Local local){
-        verifyExistsLocal(local.getAccountEmail());
+        verifyExistsLocal(local.getEmail());
         // 비밀번호 암호화(Security가 암호화 강제함)
 //        String rawPass = local.getLocalPassword();
 //        String encPass = bCryptPasswordEncoder.encode(rawPass);
@@ -236,7 +236,7 @@ public class MemberService {
      * */
     @Transactional(readOnly = true)
     public Local findVerifiedLocalByEmail(String email){
-        Optional<Local> optionalLocal = localRepository.findByAccountEmail(email);
+        Optional<Local> optionalLocal = localRepository.findByEmail(email);
         Local findLocal =
                 optionalLocal.orElseThrow(() ->
                         new BusinessLogicException(ExceptionCode.NOT_MATCH_USER_INFO));
@@ -247,7 +247,7 @@ public class MemberService {
     * 이미 존재하는 로컬회원인지 확인
     * */
     private void verifyExistsLocal(String email){
-        Optional<Local> local = localRepository.findByAccountEmail(email);
+        Optional<Local> local = localRepository.findByEmail(email);
         if(local.isPresent())
             throw new BusinessLogicException(ExceptionCode.SIGNUP_EMAIL_DUPLICATE);
     }
@@ -255,8 +255,8 @@ public class MemberService {
     /**
      * 이름, 휴대폰 번호로 계정 찾기
      * */
-    public Local verifyEmail(String name, String phoneNumber){
-        Local findLocal = localRepository.findByNameAndPhoneNumber(name,phoneNumber).orElseThrow(
+    public Local verifyEmail(String name, String phone){
+        Local findLocal = localRepository.findByNameAndPhone(name,phone).orElseThrow(
                 () -> new BusinessLogicException(ExceptionCode.NOT_EXISTS_USER_INFO)
         );
         return findLocal;
@@ -265,8 +265,8 @@ public class MemberService {
     /**
      * 이메일, 이름, 휴대폰 번호로 비밀번호 찾기
      * */
-    public Local verifyPassword(String accountEmail, String name, String phoneNumber){
-        Local findLocal = localRepository.findByAccountEmailAndNameAndPhoneNumber(accountEmail, name, phoneNumber).orElseThrow(
+    public Local verifyPassword(String email, String name, String phone){
+        Local findLocal = localRepository.findByEmailAndNameAndPhone(email, name, phone).orElseThrow(
                 () -> new BusinessLogicException(ExceptionCode.NOT_EXISTS_USER_INFO)
         );
         return findLocal;
@@ -324,7 +324,7 @@ public class MemberService {
             refresh_token = JWT.require(Algorithm.HMAC512(SECRET_KEY)).build().verify(access_token).getClaim("refresh_token").asString();
             //refresh_token -> id, email
             localId = JWT.require(Algorithm.HMAC512(SECRET_KEY)).build().verify(refresh_token).getClaim("local_id").asLong();
-            accountEmail = JWT.require(Algorithm.HMAC512(SECRET_KEY)).build().verify(refresh_token).getClaim("account_email").asString();
+            accountEmail = JWT.require(Algorithm.HMAC512(SECRET_KEY)).build().verify(refresh_token).getClaim("email").asString();
         }catch(Exception e){
             throw new BusinessLogicException(ExceptionCode.AUTH_EXPIRED_TOKEN);
         }

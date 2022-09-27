@@ -24,24 +24,21 @@ public class Local {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long localId;
 
-    @Column(length = 50,nullable = false)
-    private String profileNickname;
-
     @Column(length = 255)
-    private String profileImage;
+    private String avatar;
 
     @Column(length = 20, nullable = false)
     private String name;
 
     @Column(length = 50, nullable = false, unique = true)
-    private String accountEmail;
+    private String email;
 
     //암호화로 인해 최소 60자
     @Column(length = 255, nullable = false)
-    private String localPassword;
+    private String password;
 
     @Column(nullable = false, length = 20)
-    private String phoneNumber;
+    private String phone;
 
     @Setter
     @Column(nullable = true, updatable = true, unique = true)
@@ -51,7 +48,9 @@ public class Local {
     @Column(nullable = false, length = 20)
     private Role role = Role.SELLER;
 
-    //외래키 도입 전
+    //외래키
+    @OneToOne(mappedBy = "local")
+    private Store store;
 
     public enum Role{
         SELLER("ROLE_SELLER"),
@@ -64,9 +63,5 @@ public class Local {
             this.status = status;
         }
     }
-
-    //매핑
-    @OneToOne(mappedBy = "local")
-    private Store store;
 
 }
