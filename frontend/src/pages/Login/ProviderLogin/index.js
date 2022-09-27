@@ -8,16 +8,16 @@ import { ROUTE, COLOR, ALERT } from '../../../constants';
 function ProviderLogin() {
   const navigate = useNavigate();
 
-  const validation = (id, pw) => {
-    if (!(id && pw)) return ALERT.CLIENT[401].STATUS;
+  const validation = (email, pw) => {
+    if (!(email && pw)) return ALERT.CLIENT[401].STATUS;
     if (pw.length < 10) return ALERT.CLIENT[402].STATUS;
     return null;
   };
 
   const hanldeOnSumbmit = (e) => {
     e.preventDefault();
-    const { id, pw } = e.target;
-    const isCheck = validation(id.value, pw.value);
+    const { email, pw } = e.target;
+    const isCheck = validation(email.value, pw.value);
     if (ALERT.CLIENT[isCheck]) return alert(ALERT.CLIENT[isCheck].MESSAGE);
     return null;
   };
@@ -29,7 +29,11 @@ function ProviderLogin() {
       <Logo />
       <Form.Wrapper onSubmit={hanldeOnSumbmit}>
         <LoginInner>
-          <Form.Input name="id" type="email" placeholder="이메일 주소 입력" />
+          <Form.Input
+            name="email"
+            type="email"
+            placeholder="이메일 주소 입력"
+          />
           <Form.Input name="pw" type="password" placeholder="비밀번호 입력" />
         </LoginInner>
 
