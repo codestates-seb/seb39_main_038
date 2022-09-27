@@ -1,5 +1,6 @@
 const ALERT = {
   CLIENT: {
+    500: { MESSAGE: '서버와 연결을 확인해주세요.' },
     400: { MESSAGE: '현재 서비스 준비중입니다. !!' },
     401: { MESSAGE: '모든 입력창의 값을 입력해주세요.', STATUS: 401 },
     402: { MESSAGE: '비밀번호는 10 자 이상입니다.', STATUS: 402 },
