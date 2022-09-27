@@ -19,9 +19,7 @@ public class OrderService {
      * 주문 요청
      */
     public void createOrder(Order order) {
-        /**
-         * TODO : 검증 로직 필요
-         */
+        // TODO : 검증 로직 필요
         orderRepository.save(order);
     }
     /**

@@ -12,6 +12,11 @@ public class OrderResponseDto {
     private long orderId;
     //    private long kakaoId;
     private List<OrderMenuResponseDto> orderMenus;
+
+    private int totalCount;
+
+    private int totalPrice;
+
     private LocalDateTime createdAt;
 
 //    public void addKakao(Kakao kakao) {
