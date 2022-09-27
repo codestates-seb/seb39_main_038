@@ -16,6 +16,10 @@ function ProviderLogin() {
     };
     console.log('userInfo', userInfo);
     const response = await axios.post(API_URI.LOGIN, userInfo, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-type': 'application/x-www-form-urlencoded',
+      },
       withCredentials: true,
     });
     console.log('response', response);
