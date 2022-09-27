@@ -18,8 +18,17 @@ function Home() {
   const postAuthData = (api, code) => {
     if (api === null) return;
     axios
-      .post(api, code)
-      .then((res) => console.log(res.data))
+      .post(api, code, { withCredentials: true })
+      .then(() => {
+        // 리다이렉션 해제
+        // window.location.replace('/');
+        console.log(
+          window.location.origin,
+          window.location.host,
+          window.location.protocol,
+          window.location.ancestorOrigins,
+        );
+      })
       .catch((err) => console.log(err.message));
   };
 
