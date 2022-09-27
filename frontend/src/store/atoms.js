@@ -25,7 +25,10 @@ const selectors = {
     key: 'getMenu',
     get: async () => {
       const res = await axios.get('/store/1');
-      return res.menu;
+      if (res.menu) {
+        return res.menu;
+      }
+      return alert('음식을 불러오지 못했습니다.');
     },
   }),
 };
