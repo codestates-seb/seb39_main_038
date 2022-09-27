@@ -24,13 +24,13 @@ function Register() {
   const validation = (email, name, phone, password, passwordCheck) => {
     const koreaRegex = /^[가-힣]+$/;
     const pwRegex = /^.*(?=^.{10,}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
-    const phoneRegex = /^[0-9]+$/;
+    // const phoneRegex = /^[0-9]+$/;
     if (!(email && name && phone && password && passwordCheck))
       return ALERT.CLIENT[401].STATUS;
     if (!koreaRegex.test(name)) return ALERT.CLIENT[403].STATUS;
     if (!pwRegex.test(password)) return ALERT.CLIENT[404].STATUS;
     if (password !== passwordCheck) return ALERT.CLIENT[405].STATUS;
-    if (!phoneRegex.test(phone)) return ALERT.CLIENT[406].STATUS;
+    // if (!phoneRegex.test(phone)) return ALERT.CLIENT[406].STATUS;
     return null;
   };
 
