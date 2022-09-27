@@ -3,8 +3,9 @@ package com.main_39.Spring.menu.dto;
 import lombok.Getter;
 
 @Getter
-public class MenuPostRequestDto {
+public class MenuRequest {
     private String name;
-
     private int price;
+    private String content;
+    private String image;
 }

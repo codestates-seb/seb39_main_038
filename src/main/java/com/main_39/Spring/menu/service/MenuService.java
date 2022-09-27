@@ -2,8 +2,7 @@ package com.main_39.Spring.menu.service;
 
 import com.main_39.Spring.exception.BusinessLogicException;
 import com.main_39.Spring.exception.ExceptionCode;
-import com.main_39.Spring.menu.dto.MenuPatchRequestDto;
-import com.main_39.Spring.menu.dto.MenuPostRequestDto;
+import com.main_39.Spring.menu.dto.MenuRequest;
 import com.main_39.Spring.menu.entity.Menu;
 import com.main_39.Spring.menu.repository.MenuRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,12 +19,7 @@ public class MenuService {
     /**
      * 메뉴 등록하기
      */
-    public void createMenu(MenuPostRequestDto requestDto) {
-
-        Menu menu = Menu.builder()
-                .name(requestDto.getName())
-                .price(requestDto.getPrice())
-                .build();
+    public void createMenu(Menu menu) {
 
         menuRepository.save(menu);
     }
@@ -33,26 +27,15 @@ public class MenuService {
     /**
      * 메뉴 수정하기
      */
-    public Menu updateMenu(long menuId, MenuPatchRequestDto requestDto) {
-        Menu menu = findMenu(menuId);
+    public void updateMenu(long menuId, MenuRequest requestDto) {
+        Menu updateMenu = findVerifiedMenu(menuId);
 
         Optional.ofNullable(requestDto.getName())
-                .ifPresent(menu::addName);
+                .ifPresent(updateMenu::addName);
         Optional.of(requestDto.getPrice())
-                .ifPresent(menu::addPrice);
+                .ifPresent(updateMenu::addPrice);
 
-        return menuRepository.save(menu);
-    }
-
-    /**
-     * 단일 메뉴 찾기
-     */
-    public Menu findMenu(long menuId) {
-
-        Menu menu = menuRepository.findById(menuId).orElseThrow(
-                () -> new BusinessLogicException(ExceptionCode.MENU_NOT_FOUND));
-
-        return menu;
+        menuRepository.save(updateMenu);
     }
 
     /**
@@ -60,13 +43,17 @@ public class MenuService {
      */
     public void deleteMenu(long menuId) {
 
-        Menu menu = findMenu(menuId);
+        Menu deleteMenu = findVerifiedMenu(menuId);
 
-        menuRepository.delete(menu);
+        menuRepository.delete(deleteMenu);
 
     }
 
+    /**
+     * 단일 메뉴 찾기
+     */
     public Menu findVerifiedMenu(long menuId) {
+
         Menu verifiedMenu = menuRepository.findById(menuId).orElseThrow(
                 () -> new BusinessLogicException(ExceptionCode.MENU_NOT_FOUND));
 
