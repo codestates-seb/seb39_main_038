@@ -1,25 +1,48 @@
+import axios from 'axios';
 import React from 'react';
-// import { useRecoilValue } from 'recoil';
-// import { selectors } from '../../store';
+import { useRecoilValue } from 'recoil';
+import { selectors } from '../../store';
 import { Section, Menu, MenuInfo, Name, Info, Price, MenuImg } from './styles';
 
-// function FoodMenuList() {
-//   const menu = useRecoilValue(selectors.getMenu);
-//   return (
-//     <>
-//       <span>{menu.name}</span>
-//       <span>{menu.info}</span>
-//       <span>{menu.price}</span>
-//       <span>{menu.img}</span>
-//     </>
-//   );
-// }
+function FoodMenuList() {
+  const menu = useRecoilValue(selectors.getMenu);
+  return (
+    <Menu>
+      <MenuInfo>
+        <Name>{menu.name}</Name>
+        <Info>{menu.info}</Info>
+        <Price>{menu.price}</Price>
+      </MenuInfo>
+      <MenuImg>
+        <img alt="menuImg" src={menu.img} />
+      </MenuImg>
+    </Menu>
+  );
+}
 
 function DetailFoodList() {
-  // const menu = useRecoilValue(getMenu);
+  const AddOrder = () => {
+    axios
+      .post('ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com/order', {
+        menuId: 1,
+        count: 2,
+      })
+      .then(() => {
+        alert('success');
+      })
+      .catch((res) => {
+        alert(res);
+      });
+  };
+
+  const onHandlerGetCart = () => {
+    AddOrder();
+  };
+
   return (
     <Section>
-      <Menu>
+      <FoodMenuList />
+      <Menu onClick={onHandlerGetCart}>
         <MenuInfo>
           <Name>치킨</Name>
           <Info>빠삭한 치킨입니다!</Info>

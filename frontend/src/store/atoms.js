@@ -1,4 +1,4 @@
-// import axios from 'axios';
+import axios from 'axios';
 
 import { atom, selector } from 'recoil';
 import { MENU } from '../constants';
@@ -10,14 +10,22 @@ const atoms = {
     key: 'modal',
     default: { food: false, order: false, email: false },
   }),
+  tagName: atom({ key: 'tagName', default: '' }),
 };
 
 const selectors = {
+  getCart: selector({
+    key: 'getCart',
+    get: async () => {
+      const res = await axios.get('http://localhost:8080/order/1');
+      return res.data;
+    },
+  }),
   getMenu: selector({
     key: 'getMenu',
     get: async () => {
-      // const response = await axios.get('http://localhost:8080/menu');
-      // return response.data;
+      const res = await axios.get('/store/1');
+      return res.menu;
     },
   }),
 };

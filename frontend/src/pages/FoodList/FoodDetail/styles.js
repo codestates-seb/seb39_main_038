@@ -78,9 +78,9 @@ const MenuTabBtn = styled.button`
   font-size: 15px;
   font-weight: 500;
   border: 1px solid lightgrey;
-  border-bottom: 5px solid;
-  padding: 12px 0px 8px;
-  ${(props) => (props.menu === '메뉴' ? '#16267D' : '1px')};
+  border-bottom: 5px solid
+    ${(props) => (props.menu === '메뉴' ? '#16267D' : '1px')};
+  padding: 12px 12px;
   color: ${(props) => (props.menu === '메뉴' ? '#16267D' : 'black')};
 `;
 
@@ -93,6 +93,7 @@ const ReviewTabBtn = styled.button`
   border: 1px solid lightgrey;
   border-bottom: 5px solid
     ${(props) => (props.menu === '리뷰' ? '#16267D' : '1px')};
+  padding: 12px 12px;
   color: ${(props) => (props.menu === '리뷰' ? '#16267D' : 'black')};
 `;
 
@@ -103,6 +104,7 @@ const InfoTabBtn = styled.button`
   font-weight: 500;
   margin-left: -3px;
   border: 1px solid lightgrey;
+  padding: 12px 12px;
   border-bottom: 5px solid
     ${(props) => (props.menu === '정보' ? '#16267D' : '1px')};
   color: ${(props) => (props.menu === '정보' ? '#16267D' : 'black')};
