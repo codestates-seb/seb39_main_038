@@ -1,10 +1,8 @@
 package com.main_39.Spring.menu.controller;
 
-import com.main_39.Spring.exception.BusinessLogicException;
-import com.main_39.Spring.exception.ExceptionCode;
-import com.main_39.Spring.menu.dto.MenuPatchRequestDto;
-import com.main_39.Spring.menu.dto.MenuPostRequestDto;
-import com.main_39.Spring.menu.repository.MenuRepository;
+import com.main_39.Spring.menu.MenuMapper;
+import com.main_39.Spring.menu.dto.MenuRequest;
+import com.main_39.Spring.menu.dto.MenuResponse;
 import com.main_39.Spring.menu.entity.Menu;
 import com.main_39.Spring.menu.service.MenuService;
 import lombok.RequiredArgsConstructor;
@@ -26,26 +24,28 @@ public class MenuController {
 
     private final MenuService menuService;
 
+    private final MenuMapper mapper;
+
     /**
      * 메뉴 등록
      */
     @PostMapping
-    public ResponseEntity createMenu(@RequestBody MenuPostRequestDto requestDto) {
+    public ResponseEntity<Void> createMenu(@RequestBody MenuRequest menuRequest) {
 
-        menuService.createMenu(requestDto);
+        menuService.createMenu(mapper.menuRequestToMenu(menuRequest));
 
-        return new ResponseEntity(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     /**
      * 단일 메뉴 불러오기
      */
     @GetMapping("/{menu-id}")
-    public ResponseEntity<Menu> getMenu(@PathVariable("menu-id") long menuId) {
+    public ResponseEntity<MenuResponse> getMenu(@PathVariable("menu-id") long menuId) {
 
-        Menu findMenu = menuService.findMenu(menuId);
+        Menu findMenu = menuService.findVerifiedMenu(menuId);
 
-        return new ResponseEntity<>(findMenu, HttpStatus.OK);
+        return new ResponseEntity<>(mapper.menuToMenuResponse(findMenu), HttpStatus.OK);
     }
     /**
      * TODO : 상점별 메뉴 불러오기
@@ -61,9 +61,9 @@ public class MenuController {
      */
     @PatchMapping("/{menu-id}")
     public ResponseEntity<Void> updateMenu(@PathVariable("menu-id") long menuId,
-                                           @RequestBody MenuPatchRequestDto patchRequestDto) {
+                                           @RequestBody MenuRequest menuRequest) {
 
-        menuService.updateMenu(menuId, patchRequestDto);
+        menuService.updateMenu(menuId, menuRequest);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
