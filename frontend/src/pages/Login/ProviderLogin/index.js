@@ -1,12 +1,24 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import { Form } from '../../../components';
 import { Logo, LoginInner, FindInner, FindText } from './styles';
-import { ROUTE, COLOR, ALERT } from '../../../constants';
-// import { sha256 } from '../../../utils';
+import { ROUTE, COLOR, ALERT, API_URI } from '../../../constants';
+import { sha256 } from '../../../utils';
 
 function ProviderLogin() {
   const navigate = useNavigate();
+
+  const postUserData = async (email, password) => {
+    const userInfo = {
+      email,
+      password,
+    };
+    console.log('userInfo', userInfo);
+    const response = await axios.post(API_URI.REGISTER, userInfo);
+    console.log('response', response);
+    return navigate(`/${ROUTE.LOGIN.PATH}`, { state: ROUTE.REGISTER.PATH });
+  };
 
   const validation = (email, pw) => {
     if (!(email && pw)) return ALERT.CLIENT[401].STATUS;
@@ -16,9 +28,12 @@ function ProviderLogin() {
 
   const hanldeOnSumbmit = (e) => {
     e.preventDefault();
-    const { email, pw } = e.target;
-    const isCheck = validation(email.value, pw.value);
+    const { email, password } = e.target;
+    const isCheck = validation(email.value, password.value);
     if (ALERT.CLIENT[isCheck]) return alert(ALERT.CLIENT[isCheck].MESSAGE);
+    postUserData(email.value, sha256(password.value)).catch(() =>
+      alert(ALERT.CLIENT[500].MESSAGE),
+    );
     return null;
   };
 
@@ -34,7 +49,11 @@ function ProviderLogin() {
             type="email"
             placeholder="이메일 주소 입력"
           />
-          <Form.Input name="pw" type="password" placeholder="비밀번호 입력" />
+          <Form.Input
+            name="password"
+            type="password"
+            placeholder="비밀번호 입력"
+          />
         </LoginInner>
 
         <FindInner>
