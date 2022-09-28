@@ -262,6 +262,7 @@ public class MemberController {
      * */
     @PostMapping("/local/mypage")
     public ResponseEntity<SingleResponseDto<LocalDto.response>> localMypage(HttpServletRequest request){
+        //쿠키로 부터 access_token 가져오기
         Cookie[] cookies = request.getCookies();
         Cookie access_cookie = null;
         String access_token = "";
