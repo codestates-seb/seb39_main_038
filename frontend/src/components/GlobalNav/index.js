@@ -9,7 +9,7 @@ import {
   NavButton,
 } from './styles';
 import { ROUTE, COLOR } from '../../constants';
-import { atoms } from '../../store';
+import { atoms, storge } from '../../store';
 
 function GlobalNav() {
   const navigate = useNavigate();
@@ -19,6 +19,7 @@ function GlobalNav() {
     const isCheck = window.confirm('정말 로그아웃 하시겠습니까?');
     if (!isCheck) return;
     setIsLogin(false);
+    storge.setData('isLogin', false);
     navigate(ROUTE.HOME, { replace: true });
   };
 
