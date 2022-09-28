@@ -1,21 +1,12 @@
 package com.main_39.Spring.member.dto;
 
 import com.main_39.Spring.member.entity.Local;
-
-import com.main_39.Spring.store.entity.Store;
+import com.main_39.Spring.store.dto.StoreResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
-
-import javax.persistence.Column;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import lombok.NoArgsConstructor;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
 
 public class LocalDto {
     @Getter
@@ -42,7 +33,7 @@ public class LocalDto {
     @AllArgsConstructor
     public static class response{
         private Long localId;
-        private StoreDto.response store;
+        private StoreResponseDto store;
         private String avatar;
         private String name;
         private String email;
@@ -81,11 +72,24 @@ public class LocalDto {
     }
 
     @Getter
+    @NoArgsConstructor
+    public static class mailDto{
+        @Email
+        private String email;
+    }
+
+    @Getter
     @AllArgsConstructor
     public static class searchPwDto{
         private String email;
-        private String name;
-        private String phone;
+        private String code;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class changePwDto{
+        private String email;
+        private String password;
     }
 
     @Getter

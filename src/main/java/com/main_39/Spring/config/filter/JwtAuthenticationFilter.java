@@ -61,7 +61,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             //비밀번호 비교
             if(!local.getPassword().equals(login.getPassword())) throw new IOException();
 
-            //로그인 처리
+            //세션에 로그인 처리
             LocalDetails localDetails = new LocalDetails(local);
             Authentication authentication   = new UsernamePasswordAuthenticationToken(localDetails,localDetails.getPassword(),localDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -88,6 +88,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         LocalDetails localDetails = (LocalDetails)authResult.getPrincipal();
         Local local = localDetails.getLocal();
 
+        //refresh_token 생성
         String local_refresh_token = JWT.create()
                 .withClaim("local_id",local.getLocalId())
                 .withClaim("email",local.getEmail())

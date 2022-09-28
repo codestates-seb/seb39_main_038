@@ -6,7 +6,7 @@ import com.main_39.Spring.member.dto.LocalDto;
 import com.main_39.Spring.member.dto.OAuthToken;
 import com.main_39.Spring.member.entity.Kakao;
 import com.main_39.Spring.member.entity.Local;
-import com.main_39.Spring.store.dto.StoreDto;
+import com.main_39.Spring.store.dto.StoreResponseDto;
 import com.main_39.Spring.store.entity.Store;
 import org.mapstruct.Mapper;
 
@@ -17,12 +17,12 @@ public interface MemberMapper {
     LocalDto.postResponse localToLocalPostResponse(Local local);
     default LocalDto.response localToLocalDtoResponse(Local local){
         Store store = local.getStore();
-        StoreDto.response storeResponse = new StoreDto.response(
-                store.getStoreId(), store.getStorePhone(), store.getStoreNumber(), store.getStoreName(), store.getStoreContent(), store.getStoreImage(),
-                store.getStoreType(),store.getStoreStatus()
+        StoreResponseDto storeResponseDto = new StoreResponseDto(
+                store.getStoreId(),store.getLocal().getLocalId(), store.getStorePhone(), store.getStoreNumber(), store.getStoreStatus(), store.getStoreName(),
+                store.getStoreContent(), store.getStoreImage(), store.getStoreType()
         );
         LocalDto.response response = new LocalDto.response(
-                local.getLocalId(),storeResponse,local.getAvatar(),local.getName(),local.getEmail(),local.getPhone(),
+                local.getLocalId(),storeResponseDto,local.getAvatar(),local.getName(),local.getEmail(),local.getPhone(),
                 local.getRole()
         );
         return response;

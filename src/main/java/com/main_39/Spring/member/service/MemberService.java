@@ -21,14 +21,17 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import javax.mail.internet.MimeMessage;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -36,13 +39,15 @@ public class MemberService {
     /**
      * 회원관련 비즈니스 로직을 처리하는 Service
      * @author 유태형
-     * @see com.main_39.Spring.member.repository.KakaoRepository 카카오 레포지토리
-     * @see com.main_39.Spring.member.repository.LocalRepository 로컬 레포지토리
-     * @see org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder 암호화 Encoder
+     * @see KakaoRepository 카카오 레포지토리
+     * @see LocalRepository 로컬 레포지토리
+     * @see JavaMailSenderImpl 인증 메일 전송
      * */
     private final KakaoRepository kaKaoRepository;
     private final LocalRepository localRepository;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final JavaMailSenderImpl mailSender;
+
+    private final String AUTH_EMAIL = "yapick38@gmail.com";
 
     private final String SECRET_KEY = "cos jwt token";
 
@@ -200,10 +205,6 @@ public class MemberService {
      * */
     public Local createLocal(Local local){
         verifyExistsLocal(local.getEmail());
-        // 비밀번호 암호화(Security가 암호화 강제함)
-//        String rawPass = local.getLocalPassword();
-//        String encPass = bCryptPasswordEncoder.encode(rawPass);
-//        local.setLocalPassword(encPass);
         return localRepository.save(local);
     }
 
@@ -263,12 +264,52 @@ public class MemberService {
     }
 
     /**
+     * 인증 메일 전송
+     * */
+    public void sendMail(Local local){
+        //난수 생성
+        Random r = new Random();
+        int checksum = r.nextInt(888888) + 111111;
+        System.out.println("인증 번호 : " + checksum);
+        String authNumber = String.valueOf(checksum); //문자열로 저장
+
+        //이메일 양식
+        String title = "야 픽 비밀번호 찾기 인증 이메일 입니다.";
+        String content =
+                "야픽을 방문해주셔서 감사합니다." + 	//html 형식으로 작성 !
+                        "<br><br>" +
+                        "인증 번호는 " + authNumber + "입니다." +
+                        "<br>" +
+                        "해당 인증번호를 인증번호 확인란에 기입하여 주세요."; //이메일 내용 삽입
+
+        //이메일 전송
+        MimeMessage message = mailSender.createMimeMessage();
+        try {
+            MimeMessageHelper helper = new MimeMessageHelper(message,true,"utf-8");
+            helper.setFrom(AUTH_EMAIL);
+            helper.setTo(local.getEmail());
+            helper.setSubject(title);
+            helper.setText(content,true);
+            mailSender.send(message);
+        } catch (Exception e) {
+            System.out.println("이메일 인증 요청 실패");
+            throw new BusinessLogicException(ExceptionCode.NOT_EXISTS_USER_INFO);
+        }
+
+        //인증번호를 refresh_token에 저장 -> 로그인 전까지 필요 없음 but 이메일 인증은 로그인 하면 할 수 없는 작업 -> refresh_token 필드 사용 가능
+        local.setRefreshToken(authNumber);
+        localRepository.save(local);
+
+        System.out.println("인증번호 : " + local.getRefreshToken());
+    }
+
+    /**
      * 이메일, 이름, 휴대폰 번호로 비밀번호 찾기
      * */
-    public Local verifyPassword(String email, String name, String phone){
-        Local findLocal = localRepository.findByEmailAndNameAndPhone(email, name, phone).orElseThrow(
-                () -> new BusinessLogicException(ExceptionCode.NOT_EXISTS_USER_INFO)
-        );
+    public Local verifyExistLocalToStatus(String email,String authCode){
+        Local findLocal = localRepository.findByEmailAndRefreshToken(email,authCode).orElseThrow(
+                () -> new BusinessLogicException(ExceptionCode.NOT_EXISTS_USER_INFO));
+
         return findLocal;
     }
 
@@ -336,4 +377,16 @@ public class MemberService {
         return localByEmail;
     }
 
+
+    public void changePassword(String email, String password){
+        try{
+            Local findLocal = findVerifiedLocalByEmail(email);
+            findLocal.setPassword(password);
+            localRepository.save(findLocal); //새로운 비밀번호 저장
+            System.out.println("이메일 변경 : " + findLocal.getPassword()); //바뀐 비밀번호
+        }catch(Exception e){ //에러 발생 시
+            System.out.println("회원이 존재하지 않습니다!");
+            throw new BusinessLogicException(ExceptionCode.NOT_MATCH_USER_INFO);
+        }
+    }
 }

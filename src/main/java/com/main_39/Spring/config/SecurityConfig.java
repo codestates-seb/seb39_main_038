@@ -102,7 +102,6 @@ public class SecurityConfig{
         return new BCryptPasswordEncoder();
     }
 
-
     /**
      * CORS 설정, 인증 설정, 인가 설정 필터들을 묶어 놓는 메서드
      * @author 유태형
