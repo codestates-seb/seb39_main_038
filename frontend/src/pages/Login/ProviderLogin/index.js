@@ -15,13 +15,7 @@ function ProviderLogin() {
       password,
     };
     console.log('userInfo', userInfo);
-    const response = await axios.post(API_URI.LOGIN, userInfo, {
-      headers: {
-        'Accept': 'application/json',
-        'Content-type': 'application/x-www-form-urlencoded',
-      },
-      withCredentials: true,
-    });
+    const response = await axios.post(API_URI.LOGIN, userInfo);
     console.log('response', response);
     return navigate(`/${ROUTE.LOGIN.PATH}`, { state: ROUTE.REGISTER.PATH });
   };
