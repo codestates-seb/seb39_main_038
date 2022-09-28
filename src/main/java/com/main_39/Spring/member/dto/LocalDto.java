@@ -1,7 +1,7 @@
 package com.main_39.Spring.member.dto;
 
 import com.main_39.Spring.member.entity.Local;
-import com.main_39.Spring.store.dto.StoreDto;
+
 import com.main_39.Spring.store.entity.Store;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
