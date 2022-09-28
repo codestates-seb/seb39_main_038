@@ -4,7 +4,7 @@ const Section = styled.div`
   display: flex;
   flex-direction: column;
   margin: 10px 0px 0px;
-  @media ${(e) => e.theme.tablet} {
+  @media screen and (min-width: 767px) {
     width: 100%;
   }
 `;

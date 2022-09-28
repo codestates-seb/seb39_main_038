@@ -16,7 +16,7 @@ const Section = styled.section`
 `;
 
 const MainBody = styled.div`
-  @media ${(e) => e.theme.tablet} {
+  @media screen and (min-width: 768px) {
     width: 66.666%;
     z-index: 0;
   }
@@ -42,8 +42,6 @@ const FoodTruckCapsulizedInfo = styled.div`
   margin-top: -1px;
   padding: 10px;
   font-size: 14px;
-  @media ${(e) => e.theme.tablet} {
-  }
 `;
 
 const FoodTruckImg = styled.div`
