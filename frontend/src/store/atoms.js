@@ -1,10 +1,11 @@
 import axios from 'axios';
 
 import { atom, selector } from 'recoil';
+import { storge } from './storge';
 import { MENU } from '../constants';
 
 const atoms = {
-  isLogin: atom({ key: 'isLogin', default: false }),
+  isLogin: atom({ key: 'isLogin', default: storge.getData('isLogin') }),
   menuQuery: atom({ key: 'menu', default: MENU[0].query }),
   menuTab: atom({ key: 'menuTab', default: '메뉴' }),
   modal: atom({
