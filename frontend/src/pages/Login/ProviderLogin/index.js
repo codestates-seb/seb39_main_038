@@ -1,12 +1,15 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useSetRecoilState } from 'recoil';
+import { atoms } from '../../../store';
 import { Form } from '../../../components';
 import { Logo, LoginInner, FindInner, FindText } from './styles';
 import { ROUTE, COLOR, ALERT, API_URI } from '../../../constants';
 import { sha256 } from '../../../utils';
 
 function ProviderLogin() {
+  const setIsLogin = useSetRecoilState(atoms.isLogin);
   const navigate = useNavigate();
 
   const postUserData = async (email, password) => {
@@ -14,10 +17,10 @@ function ProviderLogin() {
       email,
       password,
     };
-    console.log('userInfo', userInfo);
     const response = await axios.post(API_URI.LOGIN, userInfo);
-    console.log('response', response);
-    return navigate(`/${ROUTE.LOGIN.PATH}`, { state: ROUTE.REGISTER.PATH });
+    if (response.status === 226) return alert(response.data?.message);
+    setIsLogin(true);
+    return navigate(ROUTE.HOME.PATH);
   };
 
   const validation = (email, pw) => {
@@ -31,9 +34,7 @@ function ProviderLogin() {
     const { email, password } = e.target;
     const isCheck = validation(email.value, password.value);
     if (ALERT.CLIENT[isCheck]) return alert(ALERT.CLIENT[isCheck].MESSAGE);
-    postUserData(email.value, sha256(password.value)).catch(() =>
-      alert(ALERT.CLIENT[500].MESSAGE),
-    );
+    postUserData(email.value, sha256(password.value));
     return null;
   };
 
