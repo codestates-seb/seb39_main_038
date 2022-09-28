@@ -18,10 +18,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -37,11 +37,17 @@ public class MemberController {
     /**
      * kakao, local 회원 관련 Controller
      * @author 유태형
-     * @see com.main_39.Spring.member.mapper.MemberMapper Dto Entity 전환 매퍼
-     * @see com.main_39.Spring.member.service.MemberService 서비스 계층
+     * @see MemberMapper Dto Entity 전환 매퍼
+     * @see MemberService 서비스 계층
      * */
     private final MemberService memberService;
     private final MemberMapper memberMapper;
+
+    @GetMapping("/user")
+    public ResponseEntity user(Authentication authentication){
+        System.out.println("인증 객체 : " + authentication.getPrincipal());
+        return new ResponseEntity(HttpStatus.OK);
+    }
 
 
     /**
@@ -190,20 +196,43 @@ public class MemberController {
         );
     }
 
+
+    /**
+     * 인증 이메일 정송
+     * */
+    @PostMapping("/search/password")
+    public ResponseEntity sendEmail(@RequestBody LocalDto.mailDto mailDto){
+
+        Local findLocal = memberService.findVerifiedLocalByEmail(mailDto.getEmail()); //존재하는 회원인지 여부
+        memberService.sendMail(findLocal); //존재하면 이메일로 인증번호 전송
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
     /**
      * 로컬 유저 비밀번호 찾기
      * */
-    @PostMapping("/search/password")
-    public ResponseEntity<SingleResponseDto<LocalDto.searchPwResponse>> localPwSearch(@RequestBody LocalDto.searchPwDto pwDto){
-        //https://devofroad.tistory.com/43로 실제 이메일 보내기
+    @PostMapping("/search/password/verify")
+    public ResponseEntity localPwSearch(@RequestBody LocalDto.searchPwDto pwDto){
+        //이메일, 인증코드로 회원 찾기
+        Local local = memberService.verifyExistLocalToStatus(pwDto.getEmail(), pwDto.getCode());
+        System.out.println("인증된 이메일 : " + local.getEmail());
 
-        Local findLocal = memberService.verifyPassword(pwDto.getEmail(), pwDto.getName(), pwDto.getPhone());
-        LocalDto.searchPwResponse response = memberMapper.localToLocalDtoSearchPwResponse(findLocal);
-
-        return new ResponseEntity<SingleResponseDto<LocalDto.searchPwResponse>>(
-          new SingleResponseDto<LocalDto.searchPwResponse>(response),HttpStatus.OK
-        );
+        return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    /**
+     * 비밀번호 변경
+     * */
+    @PatchMapping("/change/password")
+    public ResponseEntity changePassword(@RequestBody LocalDto.changePwDto pwDto){
+        // Email에 해당하는 유저의  password 수정
+        memberService.changePassword(pwDto.getEmail(),pwDto.getPassword());
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 
     /**
      * 카카오 마이페이지

@@ -55,7 +55,7 @@ public class MenuService {
     public Menu findVerifiedMenu(long menuId) {
 
         Menu verifiedMenu = menuRepository.findById(menuId).orElseThrow(
-                () -> new BusinessLogicException(ExceptionCode.MENU_NOT_FOUND));
+                () -> new BusinessLogicException(ExceptionCode.MENU_NOT_EXISTS));
 
         return verifiedMenu;
     }
