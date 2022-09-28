@@ -4,6 +4,7 @@ import { atom, selector } from 'recoil';
 import { MENU } from '../constants';
 
 const atoms = {
+  isLogin: atom({ key: 'isLogin', default: false }),
   menuQuery: atom({ key: 'menu', default: MENU[0].query }),
   menuTab: atom({ key: 'menuTab', default: '메뉴' }),
   modal: atom({
