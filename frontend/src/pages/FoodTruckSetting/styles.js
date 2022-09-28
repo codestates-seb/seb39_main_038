@@ -30,7 +30,7 @@ const MainImg = styled.div`
 
 const CreateFoodTruck = styled.div`
   padding-bottom: 100px;
-  border-bottom: 3px solid ${(props) => props.theme.mainColor};
+  border-bottom: #16267d;
   > div {
     display: flex;
     justify-content: center;
