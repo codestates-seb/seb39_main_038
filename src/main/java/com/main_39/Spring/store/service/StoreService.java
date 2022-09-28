@@ -58,6 +58,12 @@ public class StoreService {
                 Sort.by("storeId").descending()));
     }
 
+//    public Page<Store> findStoreMenu(long menuId, int page, int size) {
+//        return storeRepository.findByStoreMenu(menuId, PageRequest.of(page, size,
+//                Sort.by("storeId").descending()));
+//    }
+
+
     public void deleteStore(long storeId){
         Store findStore = findVerifiedStore(storeId);
 

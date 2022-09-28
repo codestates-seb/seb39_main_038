@@ -66,6 +66,19 @@ public class StoreController {
                 new SingleResponseDto<>(mapper.storeToStoreResponseDto(store)), HttpStatus.OK);
    }
 
+
+//    @GetMapping("/{store-id}/menu")
+//    public ResponseEntity getStoreMenu(@PathVariable("store-id") @Positive long storeId,
+//                                       @RequestParam @Positive int page,
+//                                       @RequestParam(required = false, defaultValue = "15") @Positive int size) {
+//        Page<Store> pageMenu = storeService.findStoreMenu(menuId, page-1, size);
+//        List<Store> menu = pageMenu.getContent();
+//        List<StoreResponseDto> responses = mapper.storesToStoreResponseDtos(menu);
+//
+//        return new ResponseEntity<>(
+//                new SingleResponseDto<>(responses, pageMenu), HttpStatus.OK);
+//    }
+
     @GetMapping
     public ResponseEntity getStores(@Positive @RequestParam int page,
                                     @Positive @RequestParam int size) {
