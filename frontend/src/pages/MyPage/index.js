@@ -1,4 +1,7 @@
 import React from 'react';
+import axios from 'axios';
+import { useQuery } from '@tanstack/react-query';
+import { API_URI } from '../../constants';
 import {
   MyPageContainer,
   InfoInner,
@@ -14,7 +17,15 @@ import {
   Button,
 } from './styles';
 
+const fetchLocalMypage = async () => {
+  const response = axios.post(API_URI.LOCAL_MYPAGE + 1, {});
+  return response;
+};
+
 function MyPage() {
+  const { isError, error } = useQuery(['mypage'], fetchLocalMypage);
+  if (isError) return <div>{error.message}</div>;
+
   return (
     <MyPageContainer>
       <InfoInner>
