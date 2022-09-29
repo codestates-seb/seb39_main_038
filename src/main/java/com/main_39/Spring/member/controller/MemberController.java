@@ -81,7 +81,7 @@ public class MemberController {
     /**
     * 로컬 로그아웃 -> loacl_access_token, local_refresh_token 삭제
     */
-    @PostMapping("/logout")
+    @PostMapping("/local/logout")
     public ResponseEntity LocalLogout(HttpServletRequest request, HttpServletResponse response){
         //토큰 불러 오기
         Cookie[] cookies = request.getCookies();
