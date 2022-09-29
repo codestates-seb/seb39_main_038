@@ -1,7 +1,9 @@
 import React from 'react';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
+import { useRecoilValue } from 'recoil';
 import { API_URI } from '../../constants';
+import { atoms } from '../../store';
 import {
   MyPageContainer,
   InfoInner,
@@ -17,13 +19,18 @@ import {
   Button,
 } from './styles';
 
-const fetchLocalMypage = async () => {
-  const response = axios.post(API_URI.LOCAL_MYPAGE, {});
-  return response;
-};
-
 function MyPage() {
-  const { data, isError, error } = useQuery(['mypage'], fetchLocalMypage);
+  const { type } = useRecoilValue(atoms.isLogin);
+
+  const fetchLocalMypage = async (loginType) => () => {
+    let api;
+    if (loginType === 'kakao') api = API_URI.KAKAO_MYPAGE;
+    if (loginType === 'local') api = API_URI.LOCAL_MYPAGE;
+    const response = axios.post(api, {});
+    return response;
+  };
+
+  const { data, isError, error } = useQuery(['mypage'], fetchLocalMypage(type));
   if (isError) return <div>{error.message}</div>;
   console.log(data);
 

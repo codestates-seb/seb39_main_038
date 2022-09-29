@@ -1,5 +1,8 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
+import axios from 'axios';
+import { useRecoilValue } from 'recoil';
+import { atoms } from './store';
 import { ROUTE } from './constants';
 import { GlobalNav, Spinner } from './components';
 
@@ -17,6 +20,9 @@ const FoodTruckSetting = React.lazy(() => import('./pages/FoodTruckSetting'));
 const PwChange = React.lazy(() => import('./pages/PwChange'));
 
 function App() {
+  const { type } = useRecoilValue(atoms.isLogin);
+  axios.defaults.headers.common.Login = type;
+
   return (
     <React.Suspense fallback={<Spinner />}>
       <GlobalNav />

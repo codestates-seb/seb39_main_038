@@ -19,7 +19,8 @@ function GlobalNav() {
   const handleOnClick = async () => {
     const isCheck = window.confirm('정말 로그아웃 하시겠습니까?');
     if (!isCheck) return;
-    await axios.post(API_URI.LOGOUT);
+    if (isLogin.type === 'kakao') await axios.post(API_URI.KAKAO_LOGOUT);
+    if (isLogin.type === 'local') await axios.post(API_URI.LOGOUT);
     setIsLogin({ state: false, type: null });
     navigate(ROUTE.HOME.PATH);
   };
