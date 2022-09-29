@@ -18,7 +18,7 @@ const API_URI = {
   KAKAO_LOGOUT: `${API_HOST}/kakao/logout`,
   LOGIN: `${API_HOST}/login`,
   REGISTER: `${API_HOST}/signup`,
-  LOGOUT: `${API_HOST}/logout`,
+  LOGOUT: `${API_HOST}/local/logout`,
   IDINQUIRY: `${API_HOST}/search/email`,
   PWINQUIRY: `${API_HOST}/search/password`,
   MENU: `${API_HOST}/menu`,
