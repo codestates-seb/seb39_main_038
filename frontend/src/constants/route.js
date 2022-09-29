@@ -16,6 +16,7 @@ const ROUTE = {
   PWINQUIRY: { PATH: 'pwinquiry', NAME: '비밀번호 찾기' },
   BASKET: { PATH: 'basket', NAME: '장바구니' },
   ORDER: { PATH: 'order' },
+  PWCHANGE: { PATH: 'pwchange' },
   NOTFOUND: { PATH: '*', NAME: '404' },
 };
 
