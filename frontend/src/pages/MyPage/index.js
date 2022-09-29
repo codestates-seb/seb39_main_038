@@ -30,6 +30,7 @@ function MyPage() {
       if (loginType === 'local') api = API_URI.LOCAL_MYPAGE;
       if (loginType === 'kakao') api = API_URI.KAKAO_MYPAGE;
       const response = await axios.post(api, {});
+      console.log(api, response.data);
       return response;
     };
   };
@@ -39,7 +40,7 @@ function MyPage() {
 
   const createUserInfo = () => {
     if (type === 'local') {
-      const { avatar, email, name, phone } = data?.data ?? null;
+      const { avatar, email, name, phone } = data.data;
       return (
         <>
           <TextBox>
