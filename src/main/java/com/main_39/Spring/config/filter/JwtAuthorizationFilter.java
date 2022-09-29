@@ -167,9 +167,11 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
                 response.addHeader("Set-Cookie", local_access_cookie.toString());
             }
             // 1. access_token(o), refresh_token(o)
-            if(local == null)
+            if(local == null) {
                 local = localRepository.findByEmail(account_email).orElseThrow(
                         () -> new BusinessLogicException(ExceptionCode.NOT_EXISTS_USER_INFO));
+                System.out.println("access_token 유효함 : " + access_token);
+            }
 
             //Authorization (세션에 추가)
             LocalDetails localDetails = new LocalDetails(local);
