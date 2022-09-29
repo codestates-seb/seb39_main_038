@@ -164,7 +164,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
                         .httpOnly(true)
                         .maxAge(10 * 60) // 10분
                         .build();
-                response.setHeader("Set-Cookie", local_access_cookie.toString());
+                response.addHeader("Set-Cookie", local_access_cookie.toString());
             }
             // 1. access_token(o), refresh_token(o)
             if(local == null)
@@ -299,7 +299,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
                             .httpOnly(true)
                             .maxAge(60 * 60)
                             .build();
-                    response.setHeader("Set-Cookie", update_access_cookie.toString());
+                    response.addHeader("Set-Cookie", update_access_cookie.toString());
 
                 } catch (HttpClientErrorException e) { //access_token(x) and refresh_token(x) -> 로그인 실패
                     System.out.println("유효한 refresh_token 없음, access_token 재 발행 실패했으므로 인증권한이 없습니다.");

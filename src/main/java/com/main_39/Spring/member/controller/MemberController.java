@@ -102,6 +102,8 @@ public class MemberController {
         if(access_cookie != null) access_token = access_cookie.getValue();
         if(refresh_cookie != null) refresh_token = refresh_cookie.getValue();
 
+        //DB에서 refresh_token 삭제
+        memberService.logoutLocal(access_token);
 
         //access_token 삭제
         ResponseCookie remove_access_cookie = ResponseCookie.from("local_access_token",access_token)
@@ -111,7 +113,7 @@ public class MemberController {
                 .httpOnly(true)
                 .maxAge(0)
                 .build();
-        response.setHeader("Set-Cookie", remove_access_cookie.toString());
+        response.addHeader("Set-Cookie", remove_access_cookie.toString());
 
 
         //refresh_token 삭제
@@ -122,7 +124,7 @@ public class MemberController {
                 .httpOnly(true)
                 .maxAge(0)
                 .build();
-        response.setHeader("Set-Cookie",remove_refresh_cookie.toString());
+        response.addHeader("Set-Cookie",remove_refresh_cookie.toString());
 
 
         return new ResponseEntity(HttpStatus.OK);
@@ -169,7 +171,7 @@ public class MemberController {
                 .httpOnly(true)
                 .maxAge(0)
                 .build();
-        response.setHeader("Set-Cookie", remove_access_cookie.toString());
+        response.addHeader("Set-Cookie", remove_access_cookie.toString());
 
 
         //refresh_token 삭제
@@ -180,7 +182,7 @@ public class MemberController {
                 .httpOnly(true)
                 .maxAge(0)
                 .build();
-        response.setHeader("Set-Cookie",remove_refresh_cookie.toString());
+        response.addHeader("Set-Cookie",remove_refresh_cookie.toString());
 
 
         return new ResponseEntity(HttpStatus.OK);
