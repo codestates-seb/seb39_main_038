@@ -21,7 +21,7 @@ function EmailModal({ closeModal, email, setUserEmail }) {
         code: inputRef.current.value,
       });
       setUserEmail(null);
-      navigate(`/${ROUTE.PWCHANGE.PATH}`, { replace: true });
+      navigate(`/${ROUTE.PWCHANGE.PATH}`, { replace: true, state: { email } });
     } catch {
       alert(ALERT.CLIENT[500].MESSAGE);
     }
