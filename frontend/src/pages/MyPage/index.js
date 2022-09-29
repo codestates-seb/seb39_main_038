@@ -39,6 +39,7 @@ function MyPage() {
   if (isError) return navigate(`/${ROUTE.NOTFOUND.PATH}`, { replace: true });
 
   const createUserInfo = () => {
+    if (!data) return null;
     if (type === 'local') {
       const { avatar, email, name, phone } = data.data;
       return (
