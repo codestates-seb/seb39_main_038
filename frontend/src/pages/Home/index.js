@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
-import { atoms } from '../../store';
+import { atoms, storge } from '../../store';
 import { ALERT, API_URI, MENU, ROUTE } from '../../constants';
 import { Banner, Thumbnail } from '../../components';
 import { HomeContainer, HomeWrapper } from './styles';
@@ -10,12 +10,14 @@ import { HomeContainer, HomeWrapper } from './styles';
 function Home() {
   const navigate = useNavigate();
   const setMenuQuery = useSetRecoilState(atoms.menuQuery);
+  const setIsLogin = useSetRecoilState(atoms.isLogin);
 
   const postAuthData = async (api, code) => {
     const response = await axios.post(api, code);
     if (response.status === 226) return alert(response.data?.massage);
-    axios.defaults.headers.common.Login = 'kakao';
     window.location.replace(ROUTE.HOME.PATH);
+    setIsLogin(true);
+    storge.setData('isLogin', true);
     return null;
   };
 
