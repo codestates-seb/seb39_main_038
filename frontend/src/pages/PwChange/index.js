@@ -28,7 +28,7 @@ function PwChange() {
     const { password, passwordCheck } = e.target;
     const isCheck = validation(password.value, passwordCheck.value);
     if (ALERT.CLIENT[isCheck]) return alert(ALERT.CLIENT[isCheck].MESSAGE);
-    patchUserData(location.state.email, sha256(password)).catch(() =>
+    patchUserData(location.state.email, sha256(password.value)).catch(() =>
       alert(ALERT.CLIENT[500].MESSAGE),
     );
     return null;
