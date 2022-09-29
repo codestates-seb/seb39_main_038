@@ -77,10 +77,59 @@ public class MemberController {
     * 3. loacl_access_token, local_refresh_token 쿠키 전달
     */
 
-    // 로컬 로그아웃은 Security에서 처리(ur: POST /logout)
-    /*
-    * loacl_access_token, local_refresh_token 삭제
+
+    /**
+    * 로컬 로그아웃 -> loacl_access_token, local_refresh_token 삭제
     */
+    @PostMapping("/logout")
+    public ResponseEntity LocalLogout(HttpServletRequest request, HttpServletResponse response){
+        //토큰 불러 오기
+        Cookie[] cookies = request.getCookies();
+
+        Cookie access_cookie = null;
+        Cookie refresh_cookie = null;
+        String access_token = "";
+        String refresh_token = "";
+
+
+        if(cookies != null){
+            for(Cookie cookie : cookies){
+                if(cookie.getName().equals("local_access_token")) access_cookie = cookie;
+                if(cookie.getName().equals("local_refresh_token")) refresh_cookie = cookie;
+            }
+        }
+
+        if(access_cookie != null) access_token = access_cookie.getValue();
+        if(refresh_cookie != null) refresh_token = refresh_cookie.getValue();
+
+
+        //access_token 삭제
+        ResponseCookie remove_access_cookie = ResponseCookie.from("local_access_token",access_token)
+                .path("/")
+                .sameSite("None")
+                .secure(true)
+                .httpOnly(true)
+                .maxAge(0)
+                .build();
+        response.setHeader("Set-Cookie", remove_access_cookie.toString());
+
+
+        //refresh_token 삭제
+        ResponseCookie remove_refresh_cookie = ResponseCookie.from("local_refresh_token",refresh_token)
+                .path("/")
+                .sameSite("None")
+                .secure(true)
+                .httpOnly(true)
+                .maxAge(0)
+                .build();
+        response.setHeader("Set-Cookie",remove_refresh_cookie.toString());
+
+
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+
+
 
     /**
      * 카카오 로그아웃을 처리하는 메서드
