@@ -22,12 +22,14 @@ import {
 function MyPage() {
   const { type } = useRecoilValue(atoms.isLogin);
 
-  const fetchLocalMypage = async (loginType) => () => {
-    let api;
-    if (loginType === 'kakao') api = API_URI.KAKAO_MYPAGE;
-    if (loginType === 'local') api = API_URI.LOCAL_MYPAGE;
-    const response = axios.post(api, {});
-    return response;
+  const fetchLocalMypage = (loginType) => {
+    return async () => {
+      let api;
+      if (loginType === 'local') api = API_URI.LOCAL_MYPAGE;
+      if (loginType === 'kakao') api = API_URI.KAKAO_MYPAGE;
+      const response = await axios.post(api, {});
+      return response;
+    };
   };
 
   const { data, isError, error } = useQuery(['mypage'], fetchLocalMypage(type));
