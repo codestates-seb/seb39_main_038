@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
@@ -12,14 +12,17 @@ function Home() {
   const setMenuQuery = useSetRecoilState(atoms.menuQuery);
   const setIsLogin = useSetRecoilState(atoms.isLogin);
 
-  const postAuthData = async (api, code) => {
-    const response = await axios.post(api, code);
-    if (response.status === 226) return alert(response.data?.massage);
-    window.location.replace(ROUTE.HOME.PATH);
-    setIsLogin(true);
-    storge.setData('isLogin', true);
-    return null;
-  };
+  const postAuthData = useCallback(
+    async (api, code) => {
+      const response = await axios.post(api, code);
+      if (response.status === 226) return alert(response.data?.massage);
+      window.location.replace(ROUTE.HOME.PATH);
+      setIsLogin(true);
+      storge.setData('isLogin', true);
+      return null;
+    },
+    [setIsLogin],
+  );
 
   useEffect(() => {
     const redirectURI = new URL(window.location.href);
@@ -28,7 +31,7 @@ function Home() {
     postAuthData(API_URI.KAKAO_LOGIN, { code }).catch(() =>
       alert(ALERT.CLIENT[500].MESSAGE),
     );
-  }, []);
+  }, [postAuthData]);
 
   const createThumbnail = () => {
     return MENU.map((item) => (
