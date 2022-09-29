@@ -3,40 +3,29 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { atoms } from '../../store';
-import { API_URI, MENU, ROUTE } from '../../constants';
-import { Banner, Thumbnail, CustomModal } from '../../components';
+import { ALERT, API_URI, MENU, ROUTE } from '../../constants';
+import { Banner, Thumbnail } from '../../components';
 import { HomeContainer, HomeWrapper } from './styles';
-import { useModal } from '../../hooks';
 
 function Home() {
   const navigate = useNavigate();
   const setMenuQuery = useSetRecoilState(atoms.menuQuery);
-  const [openFood, closeFood] = useModal('food');
-  const [openOrder, closeOrder] = useModal('order');
-  const [openEmail, closeEmail] = useModal('email');
 
-  const postAuthData = (api, code) => {
-    if (api === null) return;
-    axios
-      .post(api, code)
-      .then(() => {
-        // 리다이렉션 해제
-        // window.location.replace('/');
-        console.log(
-          window.location.origin,
-          window.location.host,
-          window.location.protocol,
-          window.location.ancestorOrigins,
-        );
-      })
-      .catch((err) => console.log(err.message));
+  const postAuthData = async (api, code) => {
+    const response = await axios.post(api, code);
+    if (response.status === 226) return alert(response.data?.massage);
+    axios.defaults.headers.common.Login = 'kakao';
+    window.location.replace(ROUTE.HOME.PATH);
+    return null;
   };
 
   useEffect(() => {
     const redirectURI = new URL(window.location.href);
     const code = redirectURI.searchParams.get('code');
     if (!code) return;
-    postAuthData(API_URI.KAKAO_LOGIN, { code });
+    postAuthData(API_URI.KAKAO_LOGIN, { code }).catch(() =>
+      alert(ALERT.CLIENT[500].MESSAGE),
+    );
   }, []);
 
   const createThumbnail = () => {
@@ -61,18 +50,6 @@ function Home() {
     <HomeContainer>
       <Banner primary />
       <HomeWrapper onClick={hanldeOnClick}>{createThumbnail()}</HomeWrapper>
-      <button type="button" onClick={openFood}>
-        Food 모달
-      </button>
-      <button type="button" onClick={openOrder}>
-        Order 모달
-      </button>
-      <button type="button" onClick={openEmail}>
-        Email 모달
-      </button>
-      <CustomModal.Food closeModal={closeFood} />
-      <CustomModal.Order closeModal={closeOrder} />
-      <CustomModal.Email closeModal={closeEmail} />
     </HomeContainer>
   );
 }
