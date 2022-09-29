@@ -36,9 +36,13 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
         }
     }
 
+    /**
+     * 예외를 클라이언트에게 리턴하는 메서드
+     * */
     private void setErrorResponse(BusinessLogicException exception, HttpServletResponse response){
         response.setStatus(exception.getExceptionCode().getStatus());
         response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
         ErrorResponse errorResponse = ErrorResponse.of(exception.getExceptionCode());
         ObjectMapper objectMapper = new ObjectMapper();
         try{
