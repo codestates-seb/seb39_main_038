@@ -11,7 +11,6 @@ function LocalNav() {
 
   const createNavList = () => {
     return MENU.map((item) => {
-      console.log(menuQuery, item.query);
       return (
         <NavList
           key={item.id}
