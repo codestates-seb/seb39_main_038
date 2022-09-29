@@ -209,6 +209,33 @@ public class MemberService {
     }
 
     /**
+     * 로컬 로그아웃
+     * */
+    public void logoutLocal(String access_token){
+
+        //토큰 정보로 로컬 회원정보 찾기
+        String refresh_token = "";
+        long localId = -1;
+        String accountEmail = "";
+
+        try{
+            //access_token -> refresh_token
+            refresh_token = JWT.require(Algorithm.HMAC512(SECRET_KEY)).build().verify(access_token).getClaim("refresh_token").asString();
+            //refresh_token -> id, email
+            localId = JWT.require(Algorithm.HMAC512(SECRET_KEY)).build().verify(refresh_token).getClaim("local_id").asLong();
+            accountEmail = JWT.require(Algorithm.HMAC512(SECRET_KEY)).build().verify(refresh_token).getClaim("email").asString();
+        }catch(Exception e){
+            throw new BusinessLogicException(ExceptionCode.AUTH_EXPIRED_TOKEN);
+        }
+        Local local = findVerifiedLocalByEmail(accountEmail);
+        if(localId != local.getLocalId()) throw new BusinessLogicException(ExceptionCode.AUTH_INVALID_TOKEN);
+
+        //DB에 존재하는 로컬의 refresh_token 초기화
+        local.setRefreshToken("");
+        localRepository.save(local);
+    }
+
+    /**
      * 로컬Id로 회원 찾기
      * */
     @Transactional(readOnly = true)
