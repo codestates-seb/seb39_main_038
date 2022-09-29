@@ -61,6 +61,7 @@ public class SecurityConfig{
                 .antMatchers("/css/**","/image/**","/js/**","/h2-console/**","/favicon.ico").permitAll()
                 .antMatchers("/signup","/login/**","/oauth2/**","/oauth/**","/h2/**","/v2/**").permitAll()
                 .anyRequest().permitAll()
+                //로컬 로그인 설정
                 .and()
                 .formLogin()
                 .loginPage("/login");
