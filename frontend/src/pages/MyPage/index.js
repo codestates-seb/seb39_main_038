@@ -1,8 +1,9 @@
 import React from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { useRecoilValue } from 'recoil';
-import { API_URI } from '../../constants';
+import { API_URI, ROUTE } from '../../constants';
 import { atoms } from '../../store';
 import {
   MyPageContainer,
@@ -20,6 +21,7 @@ import {
 } from './styles';
 
 function MyPage() {
+  const navigate = useNavigate();
   const { type } = useRecoilValue(atoms.isLogin);
 
   const fetchLocalMypage = (loginType) => {
@@ -32,25 +34,49 @@ function MyPage() {
     };
   };
 
-  const { data, isError, error } = useQuery(['mypage'], fetchLocalMypage(type));
-  if (isError) return <div>{error.message}</div>;
-  console.log(data);
+  const { data, isError } = useQuery(['mypage'], fetchLocalMypage(type));
+  if (isError) return navigate(`/${ROUTE.NOTFOUND.PATH}`, { replace: true });
+
+  const createUserInfo = () => {
+    if (type === 'local') {
+      const { avatar, email, name, phone } = data.data;
+      return (
+        <>
+          <TextBox>
+            <Text size={14}>{`닉네임: ${name}`}</Text>
+            <Text size={14}>{`이메일: ${email}`}</Text>
+            <Text size={14}>{`핸드폰 번호: ${phone}`}</Text>
+          </TextBox>
+          <AvatarBox>
+            <Avatar src={avatar} alt="avatar" />
+            <Button>수정</Button>
+          </AvatarBox>
+        </>
+      );
+    }
+    if (type === 'kakao') {
+      const { email, nickname, profileImage } = data.data;
+      return (
+        <>
+          <TextBox>
+            <Text size={14}>{`닉네임: ${nickname}`}</Text>
+            <Text size={14}>{`이메일: ${email}`}</Text>
+          </TextBox>
+          <AvatarBox>
+            <Avatar src={profileImage} alt="avatar" />
+            <Button>수정</Button>
+          </AvatarBox>
+        </>
+      );
+    }
+    return null;
+  };
 
   return (
     <MyPageContainer>
       <InfoInner>
         <Header>유저정보</Header>
-        <InfoContent>
-          <TextBox>
-            <Text size={14}>닉네임: 양희준</Text>
-            <Text size={14}>이메일: codestate@gmail.com</Text>
-            <Text size={14}>마일리지: 0 원</Text>
-          </TextBox>
-          <AvatarBox>
-            <Avatar alt="avatar" />
-            <Button>수정</Button>
-          </AvatarBox>
-        </InfoContent>
+        <InfoContent>{createUserInfo()}</InfoContent>
       </InfoInner>
       <OrderInner>
         <Header>주문조회</Header>
@@ -67,7 +93,7 @@ function MyPage() {
           </ButtonBox>
         </OrderContent>
       </OrderInner>
-      <Button>가게 설정</Button>
+      {type === 'kakao' ? <Button>가게 설정</Button> : null}
     </MyPageContainer>
   );
 }
