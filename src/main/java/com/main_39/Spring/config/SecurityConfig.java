@@ -1,6 +1,7 @@
 package com.main_39.Spring.config;
 
 
+import com.main_39.Spring.config.filter.ExceptionHandlerFilter;
 import com.main_39.Spring.config.filter.JwtAuthenticationFilter;
 import com.main_39.Spring.config.filter.JwtAuthorizationFilter;
 import com.main_39.Spring.member.repository.KakaoRepository;
@@ -15,6 +16,8 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.filter.CorsFilter;
 
 @Configuration
@@ -32,6 +35,7 @@ public class SecurityConfig{
     private final CorsFilter corsFilter;
     private final KakaoRepository kakaoRepository;
     private final LocalRepository localRepository;
+    private final ExceptionHandlerFilter exceptionHandlerFilter;
 
 
     /**
@@ -65,7 +69,6 @@ public class SecurityConfig{
                 .and()
                 .formLogin()
                 .loginPage("/login");
-
         /*
          * SpringSecurity5 + OAuth2 + JWT -> Refresh_token 해결할 것
          * */
@@ -111,7 +114,9 @@ public class SecurityConfig{
             builder
                     .addFilter(corsFilter) //cors 설정
                     .addFilter(new JwtAuthenticationFilter(authenticationManager,localRepository))
-                    .addFilter(new JwtAuthorizationFilter(authenticationManager,kakaoRepository,localRepository)); //Service 참조 시 빈 순환참조
+                    .addFilterBefore(exceptionHandlerFilter, UsernamePasswordAuthenticationFilter.class)
+                    .addFilter(new JwtAuthorizationFilter(authenticationManager,kakaoRepository,localRepository)) //Service 참조 시 빈 순환참조
+                    .addFilterBefore(exceptionHandlerFilter, BasicAuthenticationFilter.class);
         }
     }
 }

@@ -56,6 +56,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
             //로컬 회원 정보 불러오기
 
+            System.out.println("비밀번호 : " + login.getPassword());
+
             //이메일 비교
             Local local = localRepository.findByEmail(login.getEmail()).orElseThrow(
                     () -> new BusinessLogicException(ExceptionCode.LOGIN_INVALID_LOGIN_INFO));

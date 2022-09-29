@@ -173,6 +173,8 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
                 System.out.println("access_token 유효함 : " + access_token);
             }
 
+            System.out.println("로컬 로그인 성공, 엑세스 토큰 : " + access_token);
+
             //Authorization (세션에 추가)
             LocalDetails localDetails = new LocalDetails(local);
             Authentication authentication = new UsernamePasswordAuthenticationToken(localDetails.getUsername(),localDetails.getPassword(),localDetails.getAuthorities());
@@ -365,4 +367,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
         super.doFilterInternal(request, response, chain);
     }
+
+
+
 }
