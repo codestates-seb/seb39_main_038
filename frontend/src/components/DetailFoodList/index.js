@@ -9,26 +9,36 @@ import { Spinner } from '../Spinner';
 import { Section, Menu, MenuInfo, Name, Info, Price, MenuImg } from './styles';
 
 function FoodMenuList() {
-  const menuList = async () => {
+  const getMenuList = async () => {
     const res = await axios.get('/store/1');
     return res.menu;
   };
-  const { isLoading, isError, data, error } = useQuery('getMenu', menuList, {
-    refetchOnWindowFocus: false,
-    retry: 0,
-    onSuccess: (res) => {
-      alert(res);
+
+  const { isLoading, isError, data, error } = useQuery(
+    ['getMenu'],
+    getMenuList,
+    {
+      refetchOnWindowFocus: false,
+      retry: 0,
+
+      onSuccess: (res) => {
+        alert(res);
+      },
+
+      onError: (e) => {
+        alert(e.message);
+      },
     },
-    onError: (e) => {
-      alert(e.message);
-    },
-  });
+  );
+
   if (isLoading) {
     return <Spinner />;
   }
+
   if (isError) {
     return alert('음식을 불러오지 못했습니다.', error.message);
   }
+
   return data.map((menu) => (
     <Menu key={menu.id}>
       <MenuInfo>

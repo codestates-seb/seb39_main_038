@@ -1,3 +1,3 @@
-import { atoms, selectors } from './atoms';
+import { atoms } from './atoms';
 
-export { atoms, selectors };
+export { atoms };
