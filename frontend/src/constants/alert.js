@@ -15,7 +15,7 @@ const ALERT = {
       STATUS: 405,
     },
     406: {
-      MESSAGE: '휴대폰 전화번호는 숫자만 가능합니다.',
+      MESSAGE: '휴대폰 전화번호 형식을 확인해주세요.',
       STATUS: 406,
     },
   },
