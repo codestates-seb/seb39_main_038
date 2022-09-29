@@ -21,6 +21,7 @@ const API_URI = {
   LOGOUT: `${API_HOST}/local/logout`,
   IDINQUIRY: `${API_HOST}/search/email`,
   PWINQUIRY: `${API_HOST}/search/password`,
+  PWVERIFY: `${API_HOST}/search/password/verify`,
   MENU: `${API_HOST}/menu`,
   REVIEW: `${API_HOST}/review`,
   LOCAL_MYPAGE: `${API_HOST}/local/mypage`,
