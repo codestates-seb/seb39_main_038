@@ -39,7 +39,7 @@ function MyPage() {
 
   const createUserInfo = () => {
     if (type === 'local') {
-      const { avatar, email, name, phone } = data.data;
+      const { avatar, email, name, phone } = data?.data ?? null;
       return (
         <>
           <TextBox>
