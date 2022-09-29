@@ -21,7 +21,7 @@ function ProviderLogin() {
     if (response.status === 226) return alert(response.data?.message);
     setIsLogin(true);
     storge.setData('isLogin', true);
-    axios.defaults.headers = { Login: 'local' };
+    axios.defaults.headers.common.Login = 'local';
     return navigate(ROUTE.HOME.PATH);
   };
 
