@@ -9,6 +9,8 @@ import { RecoilRoot } from 'recoil';
 import App from './App';
 
 axios.defaults.withCredentials = true;
+axios.defaults.headers.common.Login = 'kakao';
+
 const queryClient = new QueryClient();
 const root = reactDOM.createRoot(document.getElementById('root'));
 root.render(
