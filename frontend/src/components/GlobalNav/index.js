@@ -10,7 +10,7 @@ import {
   NavButton,
 } from './styles';
 import { ROUTE, COLOR, API_URI } from '../../constants';
-import { atoms, storge } from '../../store';
+import { atoms } from '../../store';
 
 function GlobalNav() {
   const navigate = useNavigate();
@@ -20,13 +20,12 @@ function GlobalNav() {
     const isCheck = window.confirm('정말 로그아웃 하시겠습니까?');
     if (!isCheck) return;
     await axios.post(API_URI.LOGOUT);
-    setIsLogin(false);
-    storge.setData('isLogin', false);
+    setIsLogin({ state: false, type: null });
     navigate(ROUTE.HOME.PATH);
   };
 
   const isLoginComponent = () => {
-    if (isLogin)
+    if (isLogin.state)
       return (
         <ButtonInner>
           <NavButton onClick={handleOnClick} color={COLOR.YELLOW}>

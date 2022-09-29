@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useSetRecoilState } from 'recoil';
-import { atoms, storge } from '../../../store';
+import { atoms } from '../../../store';
 import { Form } from '../../../components';
 import { Logo, LoginInner, FindInner, FindText } from './styles';
 import { ROUTE, COLOR, ALERT, API_URI } from '../../../constants';
@@ -19,9 +19,7 @@ function ProviderLogin() {
     };
     const response = await axios.post(API_URI.LOGIN, userInfo);
     if (response.status === 226) return alert(response.data?.message);
-    setIsLogin(true);
-    storge.setData('isLogin', true);
-    axios.defaults.headers.common.Login = 'local';
+    setIsLogin({ state: true, type: 'local' });
     return navigate(ROUTE.HOME.PATH);
   };
 
