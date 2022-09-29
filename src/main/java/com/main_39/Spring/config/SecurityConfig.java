@@ -63,10 +63,7 @@ public class SecurityConfig{
                 .anyRequest().permitAll()
                 .and()
                 .formLogin()
-                .loginPage("/login")
-                .and()
-                .logout()
-                .deleteCookies("local_access_token","local_refresh_token"); //로컬 access_token, refresh_token 쿠키 삭제
+                .loginPage("/login");
 
         /*
          * SpringSecurity5 + OAuth2 + JWT -> Refresh_token 해결할 것
