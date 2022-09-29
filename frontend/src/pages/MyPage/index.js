@@ -18,13 +18,14 @@ import {
 } from './styles';
 
 const fetchLocalMypage = async () => {
-  const response = axios.post(API_URI.LOCAL_MYPAGE + 1, {});
+  const response = axios.post(API_URI.LOCAL_MYPAGE, {});
   return response;
 };
 
 function MyPage() {
-  const { isError, error } = useQuery(['mypage'], fetchLocalMypage);
+  const { data, isError, error } = useQuery(['mypage'], fetchLocalMypage);
   if (isError) return <div>{error.message}</div>;
+  console.log(data);
 
   return (
     <MyPageContainer>
