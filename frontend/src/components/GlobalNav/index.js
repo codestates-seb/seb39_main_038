@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import axios from 'axios';
 import {
@@ -13,16 +13,16 @@ import { ROUTE, COLOR, API_URI } from '../../constants';
 import { atoms, storge } from '../../store';
 
 function GlobalNav() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [isLogin, setIsLogin] = useRecoilState(atoms.isLogin);
 
   const handleOnClick = async () => {
     const isCheck = window.confirm('정말 로그아웃 하시겠습니까?');
     if (!isCheck) return;
-    await axios.post(API_URI.LOGOUT);
+    const response = await axios.post(API_URI.LOGOUT);
+    console.log(response);
     setIsLogin(false);
     storge.setData('isLogin', false);
-    navigate(ROUTE.HOME, { replace: true });
   };
 
   const isLoginComponent = () => {
