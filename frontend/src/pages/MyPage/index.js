@@ -41,6 +41,7 @@ function MyPage() {
   const createUserInfo = () => {
     if (!data) return null;
     if (type === 'local') {
+      console.log('data', data);
       const { avatar, email, name, phone } = data.data;
       return (
         <>
@@ -57,6 +58,7 @@ function MyPage() {
       );
     }
     if (type === 'kakao') {
+      console.log('data', data);
       const { email, nickname, profileImage } = data.data;
       return (
         <>
