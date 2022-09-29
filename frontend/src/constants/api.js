@@ -26,6 +26,7 @@ const API_URI = {
   REVIEW: `${API_HOST}/review`,
   LOCAL_MYPAGE: `${API_HOST}/local/mypage`,
   KAKAO_MYPAGE: `${API_HOST}/kakao/mypage`,
+  PWCHANGE: `${API_HOST}/change/password`,
 };
 
 export { KAKAO_API, API_URI };
