@@ -349,6 +349,9 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
                     return;
                 }
             }
+
+            System.out.println("카카오 로그인 성공, 엑세스 토큰 : " + access_token);
+
             //Authorization (세션에 추가)
             KakaoDetails kakaoDetails = new KakaoDetails(kakao);
             Authentication authentication = new UsernamePasswordAuthenticationToken(kakaoDetails,null,kakaoDetails.getAuthorities());

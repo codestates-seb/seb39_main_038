@@ -356,7 +356,7 @@ public class MemberService {
 
         //HttpEntity
         HttpEntity<MultiValueMap<String,String>> kakaoUserInfo = new HttpEntity<>(headers);
-        //exchange
+        //exchange : access_token -> 카카오id
         ResponseEntity<String> userInfo = rt.exchange(
                 "https://kapi.kakao.com/v1/user/access_token_info",
                 HttpMethod.GET,
@@ -375,6 +375,7 @@ public class MemberService {
             e.printStackTrace();
         }
 
+        // 카카오 ID -> 카카오 유저 정보
         Kakao findKakao = findVerifiedKakao(access.getId());
         return findKakao;
     }

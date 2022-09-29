@@ -4,6 +4,8 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.main_39.Spring.config.oauth.LocalDetails;
+import com.main_39.Spring.exception.BusinessLogicException;
+import com.main_39.Spring.exception.ExceptionCode;
 import com.main_39.Spring.member.entity.Local;
 import com.main_39.Spring.member.repository.LocalRepository;
 import lombok.RequiredArgsConstructor;
@@ -56,10 +58,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
             //이메일 비교
             Local local = localRepository.findByEmail(login.getEmail()).orElseThrow(
-                    () -> new IOException());
+                    () -> new BusinessLogicException(ExceptionCode.LOGIN_INVALID_LOGIN_INFO));
 
             //비밀번호 비교
-            if(!local.getPassword().equals(login.getPassword())) throw new IOException();
+            if(!local.getPassword().equals(login.getPassword())) throw new BusinessLogicException(ExceptionCode.LOGIN_INVALID_LOGIN_INFO);
 
             //세션에 로그인 처리
             LocalDetails localDetails = new LocalDetails(local);
