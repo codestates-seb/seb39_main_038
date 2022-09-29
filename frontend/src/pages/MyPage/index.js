@@ -18,11 +18,7 @@ import {
 } from './styles';
 
 const fetchLocalMypage = async () => {
-  const response = axios.post(
-    API_URI.LOCAL_MYPAGE,
-    {},
-    { headers: { Login: 'local' } },
-  );
+  const response = axios.post(API_URI.LOCAL_MYPAGE, {});
   return response;
 };
 
