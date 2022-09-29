@@ -7,7 +7,6 @@ import axios from 'axios';
 import './index.css';
 import { RecoilRoot } from 'recoil';
 import App from './App';
-import { theme } from './store';
 
 axios.defaults.withCredentials = true;
 const queryClient = new QueryClient();

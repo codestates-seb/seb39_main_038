@@ -1,7 +1,6 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-// import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useMutation } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   Section,
   Title,
@@ -15,71 +14,71 @@ import {
   AddFood,
   CreateFood,
   UpdateFood,
-  // UpdateInput,
+  UpdateInput,
   SettingDoneBtn,
 } from './styles';
-// import { Spinner } from '../../components';
+import { Spinner } from '../../components';
 
-// function FoodMenusList(menuImg, menuName, menuContent, onChange, menuPrice) {
-//   const queryClient = useQueryClient();
+function FoodMenusList(menuImg, menuName, menuContent, onChange, menuPrice) {
+  const queryClient = useQueryClient();
 
-//   const getMenu = async () => {
-//     const res = await axios.get('/menu/1/menus');
-//     return res;
-//   };
+  const getMenu = async () => {
+    const res = await axios.get('/menu/1/menus');
+    return res;
+  };
 
-//   const { isError, isLoading, data } = useQuery(['menus'], getMenu, {
-//     retry: false,
-//     onSuccess: () => {
-//       queryClient.invalidateQueries(['menus']);
-//     },
-//     onError: () => {
-//       alert('실패');
-//     },
-//     onSettled: () => {
-//       alert('종료');
-//     },
-//   });
+  const { isError, isLoading, data } = useQuery(['menus'], getMenu, {
+    refetchOnWindowFocus: false,
+    onSuccess: () => {
+      queryClient.invalidateQueries(['menus']);
+    },
+    onError: () => {
+      alert('실패');
+    },
+    onSettled: () => {
+      alert('종료');
+    },
+  });
 
-//   if (isLoading) {
-//     return <Spinner />;
-//   }
+  if (isLoading) {
+    return <Spinner />;
+  }
 
-//   if (isError) {
-//     return alert('음식들을 불러오지 못했습니다.');
-//   }
+  if (isError) {
+    return alert('음식들을 불러오지 못했습니다.');
+  }
 
-//   return data.map(() => (
-//     <UpdateInput>
-//       <img alt="FoodImg" name="menuImg" value={menuImg} onChange={onChange} />
+  return data.map(() => (
+    <UpdateInput>
+      <img alt="FoodImg" name="menuImg" value={menuImg} onChange={onChange} />
 
-//       <TypeInfo>
-//         <input
-//           placeholder="메뉴 이름"
-//           name="menuName"
-//           value={menuName}
-//           onChange={onChange}
-//         />
+      <TypeInfo>
+        <input
+          placeholder="메뉴 이름"
+          name="menuName"
+          value={menuName}
+          onChange={onChange}
+        />
 
-//         <input
-//           placeholder="메뉴 소개"
-//           name="menuContent"
-//           value={menuContent}
-//           onChange={onChange}
-//         />
+        <input
+          placeholder="메뉴 소개"
+          name="menuContent"
+          value={menuContent}
+          onChange={onChange}
+        />
 
-//         <input
-//           placeholder="메뉴 가격"
-//           name="menuPrice"
-//           value={menuPrice}
-//           onChange={onChange}
-//         />
-//       </TypeInfo>
+        <input
+          placeholder="메뉴 가격"
+          name="menuPrice"
+          value={menuPrice}
+          onChange={onChange}
+        />
+      </TypeInfo>
 
-//       <button type="button">수정</button>
-//     </UpdateInput>
-//   ));
-// }
+      <button type="button">수정</button>
+    </UpdateInput>
+  ));
+}
 
 function FoodTruckSetting() {
   const [dropDown, setDropDown] = useState('종류를 선택하세요');
@@ -115,10 +114,10 @@ function FoodTruckSetting() {
     newMenuPrice,
     newMenuContent,
     newMenuImg,
-    // menuName,
-    // menuPrice,
-    // menuContent,
-    // menuImg,
+    menuName,
+    menuPrice,
+    menuContent,
+    menuImg,
   } = inputs;
 
   const onChange = (e) => {
@@ -394,13 +393,13 @@ function FoodTruckSetting() {
         <UpdateFood>
           <Title>가게 메뉴 편집</Title>
 
-          {/* <FoodMenusList
+          <FoodMenusList
             menuImg={menuImg}
             menuName={menuName}
             menuContent={menuContent}
             onChange={onChange}
             menuPrice={menuPrice}
-          /> */}
+          />
 
           <SettingDoneBtn>
             <button

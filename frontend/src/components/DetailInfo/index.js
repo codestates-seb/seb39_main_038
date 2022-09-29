@@ -1,4 +1,7 @@
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
 import React from 'react';
+import { Spinner } from '../Spinner';
 import {
   TruckInfoBody,
   TruckInfoTitle,
@@ -8,9 +11,39 @@ import {
 } from './styles';
 
 function DetailInfo() {
+  const queryClient = useQueryClient();
+
+  const getInfoList = async () => {
+    const res = await axios.get('/store/1');
+    return res;
+  };
+
+  const { isLoading, isError, data, error } = useQuery(
+    ['getInfo'],
+    getInfoList,
+    {
+      onSuccess: () => {
+        alert('정보 불러오기 성공');
+        queryClient.invalidateQueries(['getInfo']);
+      },
+
+      onError: (e) => {
+        alert(e);
+      },
+    },
+  );
+
+  if (isLoading) {
+    return <Spinner />;
+  }
+
+  if (isError) {
+    return alert('정보 불러오기 실패', error);
+  }
+
   return (
     <TruckInfoBody>
-      <TruckInfoTitle>사장님 알림</TruckInfoTitle>
+      <TruckInfoTitle>{data}사장님 알림</TruckInfoTitle>
 
       <TruckInfoContent>
         상단 찜 하트 꾸욱 눌러주세요. 리뷰 서비스 1당면추가 2음료

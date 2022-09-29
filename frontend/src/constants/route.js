@@ -9,15 +9,6 @@ const ROUTE = {
     PATH: 'mypage',
     FOODTRUCKSETTING: { PATH: '/' },
   },
-  FOODLIST: {
-    PATH: 'foodlist',
-    FOODTRUCKS: { PATH: '/' },
-    FOODDETAIL: { PATH: ':id' },
-  },
-  MYPAGE: {
-    PATH: 'mypage',
-    FOODTRUCKSETTING: { PATH: '/' },
-  },
   LOGIN: { PATH: 'login', NAME: '로그인' },
   LOGOUT: { PATH: 'logout', NAME: '로그아웃' },
   REGISTER: { PATH: 'register', NAME: '회원가입' },

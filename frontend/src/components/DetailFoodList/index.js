@@ -17,7 +17,6 @@ function FoodMenuList() {
     getMenuList,
     {
       refetchOnWindowFocus: false,
-      retry: 2,
 
       onSuccess: (res) => {
         alert(res);
