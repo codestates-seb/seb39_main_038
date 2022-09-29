@@ -1,5 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react';
+// import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import {
   Section,
   Title,
@@ -13,9 +15,71 @@ import {
   AddFood,
   CreateFood,
   UpdateFood,
-  UpdateInput,
+  // UpdateInput,
   SettingDoneBtn,
 } from './styles';
+// import { Spinner } from '../../components';
+
+// function FoodMenusList(menuImg, menuName, menuContent, onChange, menuPrice) {
+//   const queryClient = useQueryClient();
+
+//   const getMenu = async () => {
+//     const res = await axios.get('/menu/1/menus');
+//     return res;
+//   };
+
+//   const { isError, isLoading, data } = useQuery(['menus'], getMenu, {
+//     retry: false,
+//     onSuccess: () => {
+//       queryClient.invalidateQueries(['menus']);
+//     },
+//     onError: () => {
+//       alert('실패');
+//     },
+//     onSettled: () => {
+//       alert('종료');
+//     },
+//   });
+
+//   if (isLoading) {
+//     return <Spinner />;
+//   }
+
+//   if (isError) {
+//     return alert('음식들을 불러오지 못했습니다.');
+//   }
+
+//   return data.map(() => (
+//     <UpdateInput>
+//       <img alt="FoodImg" name="menuImg" value={menuImg} onChange={onChange} />
+
+//       <TypeInfo>
+//         <input
+//           placeholder="메뉴 이름"
+//           name="menuName"
+//           value={menuName}
+//           onChange={onChange}
+//         />
+
+//         <input
+//           placeholder="메뉴 소개"
+//           name="menuContent"
+//           value={menuContent}
+//           onChange={onChange}
+//         />
+
+//         <input
+//           placeholder="메뉴 가격"
+//           name="menuPrice"
+//           value={menuPrice}
+//           onChange={onChange}
+//         />
+//       </TypeInfo>
+
+//       <button type="button">수정</button>
+//     </UpdateInput>
+//   ));
+// }
 
 function FoodTruckSetting() {
   const [dropDown, setDropDown] = useState('종류를 선택하세요');
@@ -25,6 +89,7 @@ function FoodTruckSetting() {
     time: '',
     address: '',
     phone: '',
+    number: '',
     tag: '',
     ask: '',
     newMenuName: '',
@@ -43,16 +108,17 @@ function FoodTruckSetting() {
     time,
     address,
     phone,
+    number,
     tag,
     ask,
     newMenuName,
     newMenuPrice,
     newMenuContent,
     newMenuImg,
-    menuName,
-    menuPrice,
-    menuContent,
-    menuImg,
+    // menuName,
+    // menuPrice,
+    // menuContent,
+    // menuImg,
   } = inputs;
 
   const onChange = (e) => {
@@ -66,40 +132,91 @@ function FoodTruckSetting() {
     setDropDown(e.target.value);
   };
 
-  const AddMenu = () => {
-    axios
-      .post(
-        'ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/menu',
-        {
-          name: '치킨',
-          price: 12000,
-        },
-      )
-      .then(() => {
-        alert('success');
-      })
-      .catch((res) => {
-        alert(res);
-      });
+  const postMenu = async () => {
+    const res = await axios.post(
+      'ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/menu',
+      {
+        name: newMenuName,
+        price: newMenuPrice,
+      },
+    );
+    return res;
   };
 
-  const onClickHandlerAddMenu = () => {
-    AddMenu();
-  };
-
-  const AddHashTag = () => {
-    axios.post('uri', {
+  const postHashTag = async () => {
+    const res = await axios.post('/tag', {
       tag_id: 1,
       store_id: 1,
       tag_name: tag,
     });
+    return res;
   };
 
-  // const postInfo = () => {
-  //   const posting = async () => {
-  //     axios.post('/store/ask', {});
-  //   };
-  // };
+  const postInfo = async () => {
+    const res = await axios.post('/store/ask', {
+      local_id: '캐시 사장 id',
+      store_phone: phone,
+      store_number: number,
+      store_status: '토글 or 버튼으로 상태바',
+      store_name: name,
+      store_content: ask,
+      store_image: img,
+      sotre_tpye: dropDown,
+    });
+    return res;
+  };
+
+  const deleteTag = async () => {
+    const res = await axios.delete('/tag/1');
+    return res;
+  };
+
+  const patchTag = async () => {
+    const res = await axios.patch('/tag/1');
+    return res;
+  };
+
+  const onSuccess = () => {
+    alert('성공');
+  };
+
+  const onError = () => {
+    alert('실패');
+  };
+
+  const onSettled = () => {
+    alert('처리종료');
+  };
+
+  const { mutate: postMutateMenu } = useMutation(postMenu, {
+    onSuccess,
+    onError,
+    onSettled,
+  });
+
+  const { mutate: postMutateHashTag } = useMutation(postHashTag, {
+    onSuccess,
+    onError,
+    onSettled,
+  });
+
+  const { mutate: postMutateInfo } = useMutation(postInfo, {
+    onSuccess,
+    onError,
+    onSettled,
+  });
+
+  const { mutate: deleteMutateTag } = useMutation(deleteTag, {
+    onSuccess,
+    onError,
+    onSettled,
+  });
+
+  const { mutate: patchMutateTag } = useMutation(patchTag, {
+    onSuccess,
+    onError,
+    onSettled,
+  });
 
   const storeType = [
     { id: null, value: '종류를 선택하세요' },
@@ -110,6 +227,12 @@ function FoodTruckSetting() {
     { id: 5, value: '분식' },
     { id: 6, value: '디저트' },
   ];
+
+  const onKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      patchMutateTag();
+    }
+  };
 
   return (
     <Section>
@@ -179,16 +302,40 @@ function FoodTruckSetting() {
               />
             </TypeInfo>
           </li>
+
+          <li>
+            <TypeInfo>
+              <input
+                placeholder="사업자번호 (필수)"
+                name="number"
+                value={number}
+                onChange={onChange}
+              />
+            </TypeInfo>
+          </li>
         </ul>
 
         <DeleteTag>
           <input value={tag} name="tag" onChange={onChange} />
 
-          <HashTagBtn onClick={AddHashTag}>해시태그 추가 +</HashTagBtn>
+          <HashTagBtn
+            onClick={() => {
+              postMutateHashTag();
+            }}
+          >
+            해시태그 추가 +
+          </HashTagBtn>
 
           <Hash>
-            <span>#양식asdasdsddsada</span>
-            <button type="button">X</button>
+            <input value={tag} onKeyPress={onKeyPress} />
+            <button
+              type="button"
+              onClick={() => {
+                deleteMutateTag();
+              }}
+            >
+              X
+            </button>
           </Hash>
         </DeleteTag>
 
@@ -234,7 +381,12 @@ function FoodTruckSetting() {
             />
           </TypeInfo>
 
-          <button type="button" onClick={onClickHandlerAddMenu}>
+          <button
+            type="button"
+            onClick={() => {
+              postMutateMenu();
+            }}
+          >
             추가
           </button>
         </CreateFood>
@@ -242,42 +394,23 @@ function FoodTruckSetting() {
         <UpdateFood>
           <Title>가게 메뉴 편집</Title>
 
-          <UpdateInput>
-            <img
-              alt="FoodImg"
-              name="menuImg"
-              value={menuImg}
-              onChange={onChange}
-            />
-
-            <TypeInfo>
-              <input
-                placeholder="메뉴 이름"
-                name="menuName"
-                value={menuName}
-                onChange={onChange}
-              />
-
-              <input
-                placeholder="메뉴 소개"
-                name="menuContent"
-                value={menuContent}
-                onChange={onChange}
-              />
-
-              <input
-                placeholder="메뉴 가격"
-                name="menuPrice"
-                value={menuPrice}
-                onChange={onChange}
-              />
-            </TypeInfo>
-
-            <button type="button">수정</button>
-          </UpdateInput>
+          {/* <FoodMenusList
+            menuImg={menuImg}
+            menuName={menuName}
+            menuContent={menuContent}
+            onChange={onChange}
+            menuPrice={menuPrice}
+          /> */}
 
           <SettingDoneBtn>
-            <button type="button">가게설정 완료</button>
+            <button
+              type="button"
+              onClick={() => {
+                postMutateInfo();
+              }}
+            >
+              가게설정 완료
+            </button>
           </SettingDoneBtn>
         </UpdateFood>
       </AddFood>

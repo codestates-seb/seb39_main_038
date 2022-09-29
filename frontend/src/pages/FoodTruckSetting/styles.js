@@ -72,8 +72,14 @@ const Hash = styled.div`
     padding: 0px 4px 0px 4px;
     background-color: white;
   }
-  > span {
-    padding: 0px 5px 0px 10px;
+  input {
+    width: 60px;
+    border: none;
+    cursor: pointer;
+
+    :focus {
+      border: 1px solid #ccc;
+    }
   }
 `;
 

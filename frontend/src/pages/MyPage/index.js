@@ -1,4 +1,9 @@
 import React from 'react';
+import axios from 'axios';
+import { useQuery } from '@tanstack/react-query';
+import { useRecoilValue } from 'recoil';
+import { API_URI } from '../../constants';
+import { atoms } from '../../store';
 import {
   MyPageContainer,
   InfoInner,
@@ -15,6 +20,22 @@ import {
 } from './styles';
 
 function MyPage() {
+  const { type } = useRecoilValue(atoms.isLogin);
+
+  const fetchLocalMypage = (loginType) => {
+    return async () => {
+      let api;
+      if (loginType === 'local') api = API_URI.LOCAL_MYPAGE;
+      if (loginType === 'kakao') api = API_URI.KAKAO_MYPAGE;
+      const response = await axios.post(api, {});
+      return response;
+    };
+  };
+
+  const { data, isError, error } = useQuery(['mypage'], fetchLocalMypage(type));
+  if (isError) return <div>{error.message}</div>;
+  console.log(data);
+
   return (
     <MyPageContainer>
       <InfoInner>

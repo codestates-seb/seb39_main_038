@@ -15,22 +15,21 @@ function Register() {
       phone,
       password,
     };
-    console.log('userInfo', userInfo);
     const response = await axios.post(API_URI.REGISTER, userInfo);
-    console.log('response', response);
+    if (response.status === 226) return alert(response.data?.message);
     return navigate(`/${ROUTE.LOGIN.PATH}`, { state: ROUTE.REGISTER.PATH });
   };
 
   const validation = (email, name, phone, password, passwordCheck) => {
     const koreaRegex = /^[가-힣]+$/;
     const pwRegex = /^.*(?=^.{10,}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
-    // const phoneRegex = /^[0-9]+$/;
+    const phoneRegex = /(\d{3})-.*(\d{3})-.*(\d{4})/;
     if (!(email && name && phone && password && passwordCheck))
       return ALERT.CLIENT[401].STATUS;
     if (!koreaRegex.test(name)) return ALERT.CLIENT[403].STATUS;
     if (!pwRegex.test(password)) return ALERT.CLIENT[404].STATUS;
     if (password !== passwordCheck) return ALERT.CLIENT[405].STATUS;
-    // if (!phoneRegex.test(phone)) return ALERT.CLIENT[406].STATUS;
+    if (!phoneRegex.test(phone)) return ALERT.CLIENT[406].STATUS;
     return null;
   };
 
@@ -44,13 +43,14 @@ function Register() {
       password.value,
       passwordCheck.value,
     );
+
     if (ALERT.CLIENT[isCheck]) return alert(ALERT.CLIENT[isCheck].MESSAGE);
     postUserData(
       email.value,
       name.value,
       phone.value,
       sha256(password.value),
-    ).catch(() => alert('서버가 작동중이 아닙니다.'));
+    ).catch(() => alert(ALERT.CLIENT[500].MESSAGE));
     return null;
   };
 
@@ -62,7 +62,7 @@ function Register() {
         <Form.Input
           name="phone"
           type="tel"
-          placeholder="휴대폰 전화번호 입력 (-제외)"
+          placeholder="휴대폰 전화번호 입력 (예, 123-123-2344 혹은 123-1234-1234)"
         />
         <Form.Input
           type="password"

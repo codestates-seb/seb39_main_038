@@ -8,7 +8,7 @@ const HomeWrapper = styled.div`
   display: flex;
   flex-flow: row wrap;
   gap: 5px;
-  padding-top: 10px;
+  padding: 10px 0px;
 `;
 
 export { HomeContainer, HomeWrapper };

@@ -18,11 +18,15 @@ const API_URI = {
   KAKAO_LOGOUT: `${API_HOST}/kakao/logout`,
   LOGIN: `${API_HOST}/login`,
   REGISTER: `${API_HOST}/signup`,
-  LOGOUT: `${API_HOST}/logout`,
+  LOGOUT: `${API_HOST}/local/logout`,
   IDINQUIRY: `${API_HOST}/search/email`,
   PWINQUIRY: `${API_HOST}/search/password`,
+  PWVERIFY: `${API_HOST}/search/password/verify`,
   MENU: `${API_HOST}/menu`,
   REVIEW: `${API_HOST}/review`,
+  LOCAL_MYPAGE: `${API_HOST}/local/mypage`,
+  KAKAO_MYPAGE: `${API_HOST}/kakao/mypage`,
+  PWCHANGE: `${API_HOST}/change/password`,
 };
 
 export { KAKAO_API, API_URI };

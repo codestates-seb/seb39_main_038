@@ -1,14 +1,12 @@
 import axios from 'axios';
-import {
-  useQuery,
-  QueryClient,
-  QueryClientProvider,
-} from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 import { Spinner } from '../Spinner';
 import { Section, Menu, MenuInfo, Name, Info, Price, MenuImg } from './styles';
 
 function FoodMenuList() {
+  const queryClient = useQueryClient();
+
   const getMenuList = async () => {
     const res = await axios.get('/store/1');
     return res.menu;
@@ -19,10 +17,11 @@ function FoodMenuList() {
     getMenuList,
     {
       refetchOnWindowFocus: false,
-      retry: 0,
+      retry: 2,
 
       onSuccess: (res) => {
         alert(res);
+        queryClient.invalidateQueries(['getMenu']);
       },
 
       onError: (e) => {
@@ -54,7 +53,6 @@ function FoodMenuList() {
 }
 
 function DetailFoodList() {
-  const queryClient = new QueryClient();
   const AddOrder = () => {
     const orderMenus = [
       { menuId: 1, count: 2, price: 24000 },
@@ -79,9 +77,7 @@ function DetailFoodList() {
 
   return (
     <Section>
-      <QueryClientProvider client={queryClient}>
-        <FoodMenuList />
-      </QueryClientProvider>
+      <FoodMenuList />
       <Menu onClick={onHandlerGetCart}>
         <MenuInfo>
           <Name>치킨</Name>
