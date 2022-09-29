@@ -23,6 +23,8 @@ const API_URI = {
   PWINQUIRY: `${API_HOST}/search/password`,
   MENU: `${API_HOST}/menu`,
   REVIEW: `${API_HOST}/review`,
+  LOCAL_MYPAGE: `${API_HOST}/local/mypage`,
+  KAKAO_MYPAGE: `${API_HOST}/kakao/mypage`,
 };
 
 export { KAKAO_API, API_URI };
