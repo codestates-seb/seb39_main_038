@@ -1,4 +1,4 @@
 import { atoms, selectors } from './atoms';
-import { theme } from './theme';
+import { storge } from './storge';
 
-export { atoms, selectors, theme };
+export { atoms, selectors, storge };

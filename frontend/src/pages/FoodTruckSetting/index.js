@@ -1,4 +1,6 @@
+import axios from 'axios';
 import React from 'react';
+import { useRecoilState } from 'recoil';
 import {
   Section,
   Title,
@@ -14,6 +16,7 @@ import {
   UpdateInput,
   SettingDoneBtn,
 } from './styles';
+import { atoms } from '../../store/atoms';
 
 function TypeInputInfo() {
   return (
@@ -27,6 +30,36 @@ function TypeInputInfo() {
 }
 
 function FoodTruckSetting() {
+  const [tag, setTag] = useRecoilState(atoms.tagName);
+  const AddMenu = () => {
+    axios
+      .post(
+        'ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/menu',
+        {
+          name: '치킨',
+          price: 12000,
+        },
+      )
+      .then(() => {
+        alert('success');
+      })
+      .catch((res) => {
+        alert(res);
+      });
+  };
+
+  const AddHashTag = () => {
+    axios.post('uri', {
+      tag_id: 1,
+      store_id: 1,
+      tag_name: tag,
+    });
+  };
+
+  const onClickHandlerAddMenu = () => {
+    AddMenu();
+  };
+
   return (
     <Section>
       <Title>가게 설정</Title>
@@ -58,23 +91,16 @@ function FoodTruckSetting() {
             </TypeInfo>
           </li>
         </ul>
-
         <DeleteTag>
-          <HashTagBtn type="button">해시 태그 추가 +</HashTagBtn>
+          <input
+            value={tag}
+            onChange={(e) => {
+              setTag(e.target.value);
+            }}
+          />
+          <HashTagBtn onClick={AddHashTag}>해시태그 추가 +</HashTagBtn>
           <Hash>
             <span>#양식asdasdsddsada</span>
-            <button type="button">X</button>
-          </Hash>
-          <Hash>
-            <span>#양식asdadsada</span>
-            <button type="button">X</button>
-          </Hash>
-          <Hash>
-            <span>#양식</span>
-            <button type="button">X</button>
-          </Hash>
-          <Hash>
-            <span>#양식</span>
             <button type="button">X</button>
           </Hash>
         </DeleteTag>
@@ -90,7 +116,9 @@ function FoodTruckSetting() {
 
           <TypeInputInfo />
 
-          <button type="button">추가</button>
+          <button type="button" onClick={onClickHandlerAddMenu}>
+            추가
+          </button>
         </CreateFood>
 
         <UpdateFood>

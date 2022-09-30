@@ -4,6 +4,9 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 module.exports = {
   mode: 'development',
@@ -42,6 +45,9 @@ module.exports = {
       template: path.resolve(__dirname, 'public', 'index.html'),
       filename: 'index.html',
       favicon: path.resolve(__dirname, 'public', 'logo.png'),
+      templateParameters: {
+        env: process.env.MODE === 'development' ? '(development)' : null,
+      },
     }),
     new MiniCssExtractPlugin(),
     new Dotenv({
@@ -51,6 +57,10 @@ module.exports = {
   ],
   devServer: {
     historyApiFallback: true,
+    // proxy: {
+    //   '/menu':
+    //     'ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/menu',
+    // },
   },
   optimization: {
     minimizer: [new CssMinimizerPlugin()],

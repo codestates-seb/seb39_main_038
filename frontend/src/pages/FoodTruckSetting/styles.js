@@ -30,7 +30,7 @@ const MainImg = styled.div`
 
 const CreateFoodTruck = styled.div`
   padding-bottom: 100px;
-  border-bottom: 3px solid ${(props) => props.theme.mainColor};
+  border-bottom: #16267d;
   > div {
     display: flex;
     justify-content: center;
@@ -58,8 +58,11 @@ const DeleteTag = styled.div`
 `;
 
 const HashTagBtn = styled.button`
-  background-color: white;
-  padding: 5px;
+  padding: 2px 10px;
+  border-radius: 5px;
+  text-align: center;
+  background: white;
+  border: 1px solid #ccc;
 `;
 
 const Hash = styled.div`

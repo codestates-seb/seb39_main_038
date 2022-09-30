@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const StickyBody = styled.div`
-  @media ${(e) => e.theme.tablet} {
+  @media screen and (min-width: 768px) {
     width: 33.333%;
   }
 `;
@@ -25,8 +25,8 @@ const CartTab = styled.div`
   justify-content: space-between;
   align-items: center;
   font-weight: 600;
-  background-color: ${(e) => e.theme.mainColor};
-  color: ${(e) => e.theme.fontColor};
+  background-color: #16267d;
+  color: #f4b504;
   padding: 10px 10px 10px 15px;
 `;
 
@@ -44,8 +44,8 @@ const TotalPrice = styled.div`
 
 const OrderBtn = styled.div`
   > button {
-    background-color: ${(e) => e.theme.mainColor};
-    color: ${(e) => e.theme.fontColor};
+    background-color: #16267d;
+    color: #f4b504;
     font-size: 14px;
     font-weight: bold;
     width: 100%;
@@ -58,7 +58,7 @@ const OrderBtn = styled.div`
       padding: 10px;
     }
   }
-  @media ${(e) => e.theme.tablet} {
+  @media screen and (min-width: 768px) {
     display: flex;
     padding: 35px 0px 0px;
     gap: 15px;
