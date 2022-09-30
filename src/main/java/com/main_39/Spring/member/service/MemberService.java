@@ -40,6 +40,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
@@ -230,17 +231,17 @@ public class MemberService {
      * */
     private void saveAvatarToS3(Local local){
         String s3FileName =  "Avatar-" + local.getEmail();
-//        InputStream inputStream = new ByteArrayInputStream(local.getAvatar().getBytes());
-//        ObjectMetadata objectMetadata = new ObjectMetadata();
-//        try {
-//            objectMetadata.setContentLength(inputStream.available());
-//        } catch (IOException e) {
-//            System.out.println("S3에 회원 프로필 입력 실패");
-//            throw new BusinessLogicException(ExceptionCode.OAUTH_USERINFO_REQUEST_FAILED);
-//        }
-//        //S3에 저장
-//        amazonS3.putObject(bucket,s3FileName,inputStream,objectMetadata);
-        amazonS3.putObject(new PutObjectRequest(bucket,s3FileName,local.getAvatar()).withCannedAcl(CannedAccessControlList.PublicRead));
+        byte[] decodeByte = Base64.getDecoder().decode(local.getAvatar());
+        InputStream inputStream = new ByteArrayInputStream(decodeByte);
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+        try {
+            objectMetadata.setContentLength(inputStream.available());
+        } catch (IOException e) {
+            System.out.println("S3에 회원 프로필 입력 실패");
+            throw new BusinessLogicException(ExceptionCode.OAUTH_USERINFO_REQUEST_FAILED);
+        }
+        //S3에 저장
+        amazonS3.putObject(bucket,s3FileName,inputStream,objectMetadata);
         //URL 가져옴
         local.setAvatar(amazonS3.getUrl(bucket,s3FileName).toString());
     }
