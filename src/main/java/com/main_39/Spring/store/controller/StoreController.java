@@ -7,7 +7,7 @@ import com.main_39.Spring.store.dto.StorePatchDto;
 import com.main_39.Spring.store.dto.StorePostDto;
 import com.main_39.Spring.store.entity.Store;
 import com.main_39.Spring.store.mapper.StoreMapper;
-import com.main_39.Spring.store.service.S3Uploader;
+import com.main_39.Spring.store.service.AwsS3Uploader;
 import com.main_39.Spring.store.service.StoreService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -29,29 +29,23 @@ public class StoreController {
     private final StoreService storeService;
     private final StoreMapper mapper;
 
-    private final S3Uploader s3Uploader;
+    private final AwsS3Uploader awsS3Uploader;
 
 
-    public StoreController(StoreService storeService, StoreMapper mapper, S3Uploader s3Uploader) {
+    public StoreController(StoreService storeService, StoreMapper mapper, AwsS3Uploader awsS3Uploader) {
         this.storeService = storeService;
         this.mapper = mapper;
-        this.s3Uploader = s3Uploader;
+        this.awsS3Uploader = awsS3Uploader;
     }
 
     /**
      * s3 업로드
      */
-    @GetMapping("/test")
-    public String index() {
-        return "test";
-    }
-
     @PostMapping("/upload")
-    @ResponseBody
-    public String upload(@RequestParam("data") MultipartFile multipartFile) throws IOException {
-        return s3Uploader.upload(multipartFile, "static");
+    public String upload(@RequestParam("file") MultipartFile multipartFile) throws IOException {
+        String fileName = awsS3Uploader.upload(multipartFile, "test");
+        return fileName;
     }
-
 
    @PostMapping("/ask")
     public ResponseEntity postStore(@Valid @RequestBody StorePostDto storePostDto) {
@@ -102,7 +96,7 @@ public class StoreController {
 
     @GetMapping
     public ResponseEntity getStores(@Positive @RequestParam int page,
-                                    @Positive @RequestParam int size) {
+                                    @Positive @RequestParam(required = false, defaultValue = "15") int size){
         Page<Store> pageStores = storeService.findStores(page -1, size);
         List<Store> stores = pageStores.getContent();
 
