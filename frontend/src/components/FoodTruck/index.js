@@ -15,33 +15,27 @@ import {
 } from './styles';
 
 function FoodTruck({
-  id = null,
-  title = '가게이름',
-  star = 4.5,
-  review = 100,
-  answer = 100,
-  tag = '카드 환영',
-  time = '10분~20분',
+  data: { storeId, storeName, storeTag, storeWaittime, storeImage },
 }) {
   const navigate = useNavigate();
-  const handleOnClick = () => navigate(`/${ROUTE.FOODLIST.PATH}/${id}`);
+  const handleOnClick = () => navigate(`/${ROUTE.FOODLIST.PATH}/${storeId}`);
 
   return (
     <FoodTruckContainer onClick={handleOnClick}>
       <FoodTruckWrapper>
-        <FoodTruckImage />
+        <FoodTruckImage src={storeImage} />
         <FoodTruckTextInner>
-          <FoodTruckTitle>{title}</FoodTruckTitle>
+          <FoodTruckTitle>{storeName}</FoodTruckTitle>
           <FoodTruckContentBox>
-            <FoodTruckText color="#ffa800">★ {star}</FoodTruckText>
-            <FoodTruckText>리뷰 {review}</FoodTruckText>
-            <FoodTruckText none>답변 {answer}</FoodTruckText>
+            <FoodTruckText color="#ffa800">★ {5}</FoodTruckText>
+            <FoodTruckText>리뷰 {100}</FoodTruckText>
+            <FoodTruckText none>답변 {100}</FoodTruckText>
           </FoodTruckContentBox>
           <FoodTruckTagBox>
-            <FoodTruckTag>{tag}</FoodTruckTag>
+            <FoodTruckTag>{storeTag}</FoodTruckTag>
           </FoodTruckTagBox>
         </FoodTruckTextInner>
-        <FoodTruckTime>{time}</FoodTruckTime>
+        <FoodTruckTime>{storeWaittime}</FoodTruckTime>
       </FoodTruckWrapper>
     </FoodTruckContainer>
   );
