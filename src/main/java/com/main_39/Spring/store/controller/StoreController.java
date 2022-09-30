@@ -7,18 +7,15 @@ import com.main_39.Spring.store.dto.StorePatchDto;
 import com.main_39.Spring.store.dto.StorePostDto;
 import com.main_39.Spring.store.entity.Store;
 import com.main_39.Spring.store.mapper.StoreMapper;
-import com.main_39.Spring.store.service.S3Uploader;
 import com.main_39.Spring.store.service.StoreService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
-import java.io.IOException;
 import java.util.List;
 
 
@@ -29,39 +26,21 @@ public class StoreController {
     private final StoreService storeService;
     private final StoreMapper mapper;
 
-    private final S3Uploader s3Uploader;
-
-
-    public StoreController(StoreService storeService, StoreMapper mapper, S3Uploader s3Uploader) {
+    public StoreController(StoreService storeService, StoreMapper mapper) {
         this.storeService = storeService;
         this.mapper = mapper;
-        this.s3Uploader = s3Uploader;
-    }
-
-    /**
-     * s3 업로드
-     */
-    @GetMapping("/test")
-    public String index() {
-        return "test";
-    }
-
-    @PostMapping("/upload")
-    @ResponseBody
-    public String upload(@RequestParam("data") MultipartFile multipartFile) throws IOException {
-        return s3Uploader.upload(multipartFile, "static");
     }
 
 
-   @PostMapping("/ask")
+    @PostMapping("/ask")
     public ResponseEntity postStore(@Valid @RequestBody StorePostDto storePostDto) {
 
-       Store store =
-               storeService.createdStore(mapper.storePostDtoToStore(storePostDto));
-       return new ResponseEntity<>(
-               new SingleResponseDto<>(mapper.storeToStoreResponseDto(store)),
-               HttpStatus.CREATED);
-   }
+        Store store =
+                storeService.createdStore(mapper.storePostDtoToStore(storePostDto));
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(mapper.storeToStoreResponseDto(store)),
+                HttpStatus.CREATED);
+    }
 
     @PatchMapping("/{store-id}")
     public ResponseEntity patchStore(
@@ -79,13 +58,13 @@ public class StoreController {
     }
 
 
-   @GetMapping("/{store-id}")
+    @GetMapping("/{store-id}")
     public ResponseEntity getStore(@PathVariable("store-id") @Positive long storeId) {
 
         Store store = storeService.findStore(storeId);
         return new ResponseEntity<>(
                 new SingleResponseDto<>(mapper.storeToStoreResponseDto(store)), HttpStatus.OK);
-   }
+    }
 
 
 //    @GetMapping("/{store-id}/menu")
@@ -121,4 +100,3 @@ public class StoreController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }
-

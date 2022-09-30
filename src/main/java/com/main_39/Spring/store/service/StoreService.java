@@ -6,7 +6,6 @@ import com.main_39.Spring.store.entity.Store;
 import com.main_39.Spring.store.repository.StoreRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +31,7 @@ public class StoreService {
         Optional.ofNullable(store.getStorePhone())
                 .ifPresent(phone -> findStore.setStorePhone(phone));
         Optional.ofNullable(store.getStoreNumber())
-                        .ifPresent(number -> findStore.setStoreNumber(number));
+                .ifPresent(number -> findStore.setStoreNumber(number));
         Optional.ofNullable(store.getStoreStatus())
                 .ifPresent(status -> findStore.setStoreStatus(status));
         Optional.ofNullable(store.getStoreName())
@@ -47,7 +46,7 @@ public class StoreService {
 
 
         return storeRepository.save(findStore);
-        
+
     }
 
     public Store findStore(long storeId) {
@@ -58,6 +57,12 @@ public class StoreService {
         return storeRepository.findAll(PageRequest.of(page, size,
                 Sort.by("storeId").descending()));
     }
+
+//    public Page<Store> findStoreMenu(long menuId, int page, int size) {
+//        return storeRepository.findByStoreMenu(menuId, PageRequest.of(page, size,
+//                Sort.by("storeId").descending()));
+//    }
+
 
     public void deleteStore(long storeId){
         Store findStore = findVerifiedStore(storeId);
