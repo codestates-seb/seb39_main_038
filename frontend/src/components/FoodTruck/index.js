@@ -20,18 +20,11 @@ function FoodTruck({
   star = 4.5,
   review = 100,
   answer = 100,
-  tag = ['카드환영', '밤샘영업'],
+  tag = '카드 환영',
   time = '10분~20분',
 }) {
   const navigate = useNavigate();
   const handleOnClick = () => navigate(`/${ROUTE.FOODLIST.PATH}/${id}`);
-  const createTag = () => {
-    let i = 0;
-    return tag.map((item) => {
-      i += 1;
-      return <FoodTruckTag key={i}>{item}</FoodTruckTag>;
-    });
-  };
 
   return (
     <FoodTruckContainer onClick={handleOnClick}>
@@ -44,7 +37,9 @@ function FoodTruck({
             <FoodTruckText>리뷰 {review}</FoodTruckText>
             <FoodTruckText none>답변 {answer}</FoodTruckText>
           </FoodTruckContentBox>
-          <FoodTruckTagBox>{createTag()}</FoodTruckTagBox>
+          <FoodTruckTagBox>
+            <FoodTruckTag>{tag}</FoodTruckTag>
+          </FoodTruckTagBox>
         </FoodTruckTextInner>
         <FoodTruckTime>{time}</FoodTruckTime>
       </FoodTruckWrapper>
