@@ -31,7 +31,7 @@ public class StoreService {
         Optional.ofNullable(store.getStorePhone())
                 .ifPresent(phone -> findStore.setStorePhone(phone));
         Optional.ofNullable(store.getStoreNumber())
-                        .ifPresent(number -> findStore.setStoreNumber(number));
+                .ifPresent(number -> findStore.setStoreNumber(number));
         Optional.ofNullable(store.getStoreStatus())
                 .ifPresent(status -> findStore.setStoreStatus(status));
         Optional.ofNullable(store.getStoreName())
@@ -46,7 +46,7 @@ public class StoreService {
 
 
         return storeRepository.save(findStore);
-        
+
     }
 
     public Store findStore(long storeId) {

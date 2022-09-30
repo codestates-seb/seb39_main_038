@@ -1,6 +1,7 @@
 package com.main_39.Spring.store.entity;
 
 import com.main_39.Spring.member.entity.Local;
+import com.main_39.Spring.order.entity.OrderMenu;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -40,6 +41,8 @@ public class Store {
     private String storeImage;
 
     private String storeType;
+
+
 
 
 
