@@ -12,7 +12,7 @@ public class LocalDto {
     @Getter
     @AllArgsConstructor
     public static class Post{
-
+        //base64입력
         private String avatar;
 
         @NotBlank(message = "이름은 공백이 아니어야 합니다.")
@@ -34,7 +34,7 @@ public class LocalDto {
     public static class response{
         private Long localId;
         private StoreResponseDto store;
-        private String avatar;
+        private String avatar; //S3 저장 URL
         private String name;
         private String email;
         private String phone;
@@ -55,7 +55,7 @@ public class LocalDto {
     @AllArgsConstructor
     public static class postResponse{
         private String name;
-        private String avatar;
+        private String avatar; //S3 저장 URL
     }
 
     @Getter
