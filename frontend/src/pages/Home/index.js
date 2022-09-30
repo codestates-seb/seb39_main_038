@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import { atoms } from '../../store';
 import { ALERT, API_URI, MENU, ROUTE } from '../../constants';
 import { Banner, Thumbnail } from '../../components';
@@ -11,8 +11,6 @@ function Home() {
   const navigate = useNavigate();
   const setMenuQuery = useSetRecoilState(atoms.menuQuery);
   const setIsLogin = useSetRecoilState(atoms.isLogin);
-  const isLogin = useRecoilValue(atoms.isLogin);
-  console.log(isLogin);
 
   const postAuthData = useCallback(
     async (api, code) => {

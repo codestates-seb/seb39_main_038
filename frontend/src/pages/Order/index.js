@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   OrderContainer,
   OrderWrapper,
@@ -15,9 +15,20 @@ import {
   Button,
   DiscountBox,
   DiscountButton,
+  RadioBox,
 } from './styles';
 
 function Order() {
+  const [radio, setRadio] = useState({ value: 'card', togle: true });
+
+  const handleOnChange = (e) => {
+    setRadio({ value: e.target.value, togle: !radio.togle });
+  };
+
+  useEffect(() => {
+    console.log(radio);
+  }, [radio]);
+
   return (
     <OrderContainer>
       <OrderWrapper>
@@ -40,13 +51,26 @@ function Order() {
               있어요!
             </Text>
             <ButtonBox>
-              <Button>
+              <Button as="label" active={radio.togle}>
+                <RadioBox
+                  name="selector"
+                  type="radio"
+                  value="card"
+                  onChange={handleOnChange}
+                />
                 <Icon width={22} height={24} position="-36px -46px" />
                 <Text size={12} color="#999999">
                   신용카드
                 </Text>
               </Button>
-              <Button>
+
+              <Button as="label" active={!radio.togle}>
+                <RadioBox
+                  name="selector"
+                  type="radio"
+                  value="cash"
+                  onChange={handleOnChange}
+                />
                 <Icon width={24} height={24} position="-39px -7px" />
                 <Text size={12} color="#999999">
                   현금
