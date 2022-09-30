@@ -20,12 +20,14 @@ import { API_URI } from '../../../constants';
 */
 
 const fetchFoodList = async () => {
-  const response = await axios.get(API_URI.FOODLIST);
+  const response = await axios.get(API_URI.FOODLIST + 1);
   return response;
 };
 
 function FoodTrucks() {
-  const { data } = useQuery(['foodlist'], fetchFoodList);
+  const { data, isError, error } = useQuery(['foodlist'], fetchFoodList);
+
+  if (isError) return <div>{error.message}</div>;
 
   const createFoodTruck = () => {
     return data?.data.map((item) => {
