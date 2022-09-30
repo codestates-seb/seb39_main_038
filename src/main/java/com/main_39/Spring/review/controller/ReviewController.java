@@ -55,7 +55,7 @@ public class ReviewController {
 
     @GetMapping
     public ResponseEntity getStores(@Positive @RequestParam int page,
-                                    @Positive @RequestParam int size) {
+                                    @Positive @RequestParam(required = false, defaultValue = "15") int size){
         Page<Review> pageReviews = reviewService.findReviews(page -1, size);
         List<Review> reviews = pageReviews.getContent();
 

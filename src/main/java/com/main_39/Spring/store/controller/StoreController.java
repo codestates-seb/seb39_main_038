@@ -32,15 +32,15 @@ public class StoreController {
     }
 
 
-   @PostMapping("/ask")
+    @PostMapping("/ask")
     public ResponseEntity postStore(@Valid @RequestBody StorePostDto storePostDto) {
 
-       Store store =
-               storeService.createdStore(mapper.storePostDtoToStore(storePostDto));
-       return new ResponseEntity<>(
-               new SingleResponseDto<>(mapper.storeToStoreResponseDto(store)),
-               HttpStatus.CREATED);
-   }
+        Store store =
+                storeService.createdStore(mapper.storePostDtoToStore(storePostDto));
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(mapper.storeToStoreResponseDto(store)),
+                HttpStatus.CREATED);
+    }
 
     @PatchMapping("/{store-id}")
     public ResponseEntity patchStore(
@@ -58,13 +58,13 @@ public class StoreController {
     }
 
 
-   @GetMapping("/{store-id}")
+    @GetMapping("/{store-id}")
     public ResponseEntity getStore(@PathVariable("store-id") @Positive long storeId) {
 
         Store store = storeService.findStore(storeId);
         return new ResponseEntity<>(
                 new SingleResponseDto<>(mapper.storeToStoreResponseDto(store)), HttpStatus.OK);
-   }
+    }
 
 
 //    @GetMapping("/{store-id}/menu")
@@ -100,4 +100,3 @@ public class StoreController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }
-
