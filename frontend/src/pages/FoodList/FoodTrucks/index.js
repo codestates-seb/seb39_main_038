@@ -20,7 +20,7 @@ import { API_URI } from '../../../constants';
 */
 
 const fetchFoodList = async () => {
-  const response = await axios.get(API_URI.FOODLIST + 1);
+  const response = await axios.get(API_URI.FOODLIST);
   return response;
 };
 
