@@ -22,6 +22,11 @@ function DetailInfo() {
     ['getInfo'],
     getInfoList,
     {
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      retry: 1,
+      retryDelay: 3000,
+
       onSuccess: () => {
         alert('정보 불러오기 성공');
         queryClient.invalidateQueries(['getInfo']);

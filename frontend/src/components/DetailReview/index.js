@@ -28,6 +28,11 @@ function ReviewList() {
     ['getReview'],
     getReviewList,
     {
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      retry: 1,
+      retryDelay: 3000,
+
       onSuccess: () => {
         alert('리뷰 불러오기 성공');
         queryClient.invalidateQueries(['getReview']);

@@ -29,7 +29,12 @@ function FoodMenusList(menuImg, menuName, menuContent, onChange, menuPrice) {
 
   const { isError, isLoading, data } = useQuery(['menus'], getMenu, {
     refetchOnWindowFocus: false,
-    onSuccess: () => {
+    refetchOnReconnect: false,
+    retry: 1,
+    retryDelay: 3000,
+
+    onSuccess: (res) => {
+      alert(res);
       queryClient.invalidateQueries(['menus']);
     },
     onError: () => {
