@@ -1,6 +1,4 @@
-import React from 'react';
-import { useRecoilState } from 'recoil';
-import { atoms } from '../../../store';
+import React, { useState } from 'react';
 import {
   Section,
   MainBody,
@@ -23,7 +21,7 @@ import {
 } from '../../../components';
 
 function FoodDetail() {
-  const [menu, setMenu] = useRecoilState(atoms.menuTab);
+  const [menu, setMenu] = useState('메뉴');
 
   return (
     <Section>
