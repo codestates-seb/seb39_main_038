@@ -1,1 +1,3 @@
-export const { data: foodListData } = require("./foodList");
+const { data: foodListData } = require("./foodList");
+
+module.exports = { foodListData };

@@ -1,7 +1,7 @@
 const { randomRange } = require("../utils/index.js");
 /* https://www.yogiyo.co.kr/mobile/image/default_restaurant_logo.png */
 
-export const data = Array.from({ length: 100 });
+const data = Array.from({ length: 100 });
 
 const waittime = [
   "10분 이하",
@@ -34,3 +34,5 @@ for (let i = 0; i < data.length; i++) {
   };
   data[i] = result;
 }
+
+module.exports = { data };
