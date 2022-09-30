@@ -1,5 +1,7 @@
 package com.main_39.Spring.member.service;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -17,6 +19,7 @@ import com.main_39.Spring.member.entity.Local;
 import com.main_39.Spring.member.repository.KakaoRepository;
 import com.main_39.Spring.member.repository.LocalRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -30,8 +33,14 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import javax.mail.internet.MimeMessage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 import java.util.Random;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -46,7 +55,10 @@ public class MemberService {
     private final KakaoRepository kaKaoRepository;
     private final LocalRepository localRepository;
     private final JavaMailSenderImpl mailSender;
+    private final AmazonS3 amazonS3;
 
+    @Value("${cloud.aws.s3.bucket}")
+    private String bucket;
     private final String AUTH_EMAIL = "yapick38@gmail.com";
 
     private final String SECRET_KEY = "cos jwt token";
@@ -204,9 +216,30 @@ public class MemberService {
      * 로컬 회원가입
      * */
     public Local createLocal(Local local){
+        //회원이 중복인지 확인
         verifyExistsLocal(local.getEmail());
+        //S3에 이미지 저장 후 DB에 URL 저장
+        if(local.getAvatar() != null) saveAvatarToS3(local);
         return localRepository.save(local);
     }
+
+    /**
+     * S3에 이미지 저장 후 URL 반환
+     * */
+    private void saveAvatarToS3(Local local){
+        String s3FileName =  "Avatar-" + local.getEmail();
+        InputStream inputStream = new ByteArrayInputStream(local.getAvatar().getBytes());
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+        try {
+            objectMetadata.setContentLength(inputStream.available());
+        } catch (IOException e) {
+            System.out.println("S3에 회원 프로필 입력 실패");
+            throw new BusinessLogicException(ExceptionCode.OAUTH_USERINFO_REQUEST_FAILED);
+        }
+        amazonS3.putObject(bucket,s3FileName,inputStream,objectMetadata);
+        local.setAvatar(amazonS3.getUrl(bucket,s3FileName).toString());
+    }
+
 
     /**
      * 로컬 로그아웃
