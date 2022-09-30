@@ -230,8 +230,11 @@ public class MemberService {
      * S3에 이미지 저장 후 URL 반환
      * */
     private void saveAvatarToS3(Local local){
+        String meta = local.getAvatar().split(",")[0];
+        String data = local.getAvatar().split(",")[1];
         String s3FileName =  "Avatar-" + local.getEmail();
-        byte[] decodeByte = Base64.getDecoder().decode(local.getAvatar());
+
+        byte[] decodeByte = Base64.getDecoder().decode(data);
         InputStream inputStream = new ByteArrayInputStream(decodeByte);
         ObjectMetadata objectMetadata = new ObjectMetadata();
         try {
@@ -240,6 +243,8 @@ public class MemberService {
             System.out.println("S3에 회원 프로필 입력 실패");
             throw new BusinessLogicException(ExceptionCode.OAUTH_USERINFO_REQUEST_FAILED);
         }
+
+
         //S3에 저장
         amazonS3.putObject(bucket,s3FileName,inputStream,objectMetadata);
         //URL 가져옴
