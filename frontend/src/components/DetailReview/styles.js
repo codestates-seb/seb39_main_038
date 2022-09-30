@@ -92,6 +92,23 @@ const Answer = styled.div`
   }
 `;
 
+const EditorWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  a {
+    align-self: flex-end;
+  }
+`;
+
+const Editor = styled.textarea`
+  width: 100%;
+  height: 220px;
+  color: #666666;
+  font-size: 14px;
+  resize: none;
+`;
+
 export {
   ReviewContainer,
   Rating,
@@ -105,4 +122,6 @@ export {
   Button,
   Image,
   Answer,
+  EditorWrapper,
+  Editor,
 };

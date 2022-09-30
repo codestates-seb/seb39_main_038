@@ -12,6 +12,8 @@ import {
   Button,
   Image,
   Answer,
+  EditorWrapper,
+  Editor,
 } from './styles';
 
 function DetailReview() {
@@ -47,6 +49,12 @@ function DetailReview() {
           사장님도 친절하시고, 양도 많고 엄청 신선했습니다! 많이 시켜먹을 것
           같습니다!
         </Text>
+
+        <EditorWrapper>
+          <Editor placeholder="클린리뷰 특성상 재생성도 불가능하며 수정도 불가능합니다. 신중하게 작성해주세요." />
+          <Button>전송</Button>
+        </EditorWrapper>
+
         <Answer>
           <Header>
             <TextWrapper>
