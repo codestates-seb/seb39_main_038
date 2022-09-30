@@ -236,7 +236,9 @@ public class MemberService {
             System.out.println("S3에 회원 프로필 입력 실패");
             throw new BusinessLogicException(ExceptionCode.OAUTH_USERINFO_REQUEST_FAILED);
         }
+        //S3에 저장
         amazonS3.putObject(bucket,s3FileName,inputStream,objectMetadata);
+        //URL 가져옴
         local.setAvatar(amazonS3.getUrl(bucket,s3FileName).toString());
     }
 
