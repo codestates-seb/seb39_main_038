@@ -1,16 +1,17 @@
+/* /store?page={page}&size={size}&type={chinese} */
 const express = require("express");
-const path = require("path");
+const cors = require("cors");
+const { foodListData } = require("./data");
 
 const app = express();
 const PORT = 80;
-const createPath = (fileURL = "") =>
-  path.join(__dirname, `../frontend/build`, fileURL);
 
 app.use(express.json());
-app.use(express.static(createPath()));
+app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 
-app.get("/", (req, res) => res.sendFile(createPath("/index.html")));
-app.get("*", (req, res) => res.sendFile(createPath("/index.html")));
+app.get("/store", (req, res) => {
+  return res.status(200).json(foodListData);
+});
 
 app.listen(PORT, () => {
   console.log(`http://localhost:${PORT}`);

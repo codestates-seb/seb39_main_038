@@ -74,6 +74,63 @@ function ReviewList() {
   ));
 }
 
+// function ReviewList() {
+//   const queryClient = useQueryClient();
+
+//   const getReviewList = async () => {
+//     const res = await axios.get('/review');
+//     return res;
+//   };
+
+//   const { isLoading, isError, data, error } = useQuery(
+//     ['getReview'],
+//     getReviewList,
+//     {
+//       refetchOnWindowFocus: false,
+//       refetchOnReconnect: false,
+//       retry: 1,
+//       retryDelay: 3000,
+
+//       onSuccess: () => {
+//         alert('리뷰 불러오기 성공');
+//         queryClient.invalidateQueries(['getReview']);
+//       },
+
+//       onError: (e) => {
+//         alert(e);
+//       },
+//     },
+//   );
+
+//   if (isLoading) {
+//     return <Spinner />;
+//   }
+
+//   if (isError) {
+//     return alert('리뷰 불러오기 실패', error);
+//   }
+
+//   return data.map((res) => (
+//     <Comment key={res.id}>
+//       <NameDateReply>
+//         <div>
+//           {res.name} <Date>{res.date}</Date>
+//         </div>
+//         <div>
+//           <ReplyDeleteBtn type="button">답글</ReplyDeleteBtn>
+//           <ReplyDeleteBtn type="button">삭제</ReplyDeleteBtn>
+//         </div>
+//       </NameDateReply>
+//       <Rate>별점 {res.rate}</Rate>
+//       <ThumnailBox>
+//         <Thumnail alt="Thumnail" src={res.img} />
+//       </ThumnailBox>
+//       <OrderHistory>{res.history}</OrderHistory>
+//       <div>{res.content}</div>
+//     </Comment>
+//   ));
+// }
+
 function DetailReview() {
   return (
     <Section>

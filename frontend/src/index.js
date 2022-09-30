@@ -21,7 +21,6 @@ root.render(
       {process.env.MODE ? (
         <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
       ) : null}
-      <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
     </QueryClientProvider>
   </Router>,
 );

@@ -1,4 +1,5 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+import { COLOR } from '../../constants';
 
 const { ORDER_URI } = process.env;
 
@@ -78,6 +79,21 @@ const Button = styled.button`
   justify-content: center;
   align-items: center;
   gap: 4px;
+  border: 1px solid #ccc;
+  padding: 10px 15px;
+  cursor: pointer;
+  ${({ active }) =>
+    active &&
+    css`
+      border-color: ${COLOR.LIGHTNAVY};
+      span {
+        color: ${COLOR.LIGHTNAVY};
+      }
+    `}
+`;
+
+const RadioBox = styled.input`
+  display: none;
 `;
 
 const DiscountBox = styled.div`
@@ -114,4 +130,5 @@ export {
   ButtonBox,
   Input,
   Icon,
+  RadioBox,
 };
