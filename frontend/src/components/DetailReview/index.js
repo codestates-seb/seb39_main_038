@@ -15,6 +15,7 @@ import {
   OrderHistory,
   Thumnail,
 } from './styles';
+// import { storge } from '../../store';
 
 function ReviewList() {
   const queryClient = useQueryClient();

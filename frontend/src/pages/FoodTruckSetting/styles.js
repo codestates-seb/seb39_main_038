@@ -14,17 +14,23 @@ const Title = styled.h1`
 const MainImg = styled.div`
   font-size: 14px;
   align-items: start;
-  gap: 300px;
-  padding: 0px 0px 20px 430px;
+  padding: 0px 0px 20px 0px;
   display: flex;
-  span {
-    line-height: 110px;
+  div {
     background-image: url(${(props) => props.url});
-    border: 1px solid #ccc;
+    width: 50%;
+    justify-content: end;
+    display: flex;
+    img {
+      border: 1px solid #ccc;
+      line-height: 110px;
+    }
   }
 `;
 
-const Dropdown = styled.div``;
+const Dropdown = styled.div`
+  float: right;
+`;
 
 const CreateFoodTruck = styled.div`
   padding-bottom: 100px;
@@ -94,7 +100,7 @@ const CreateFood = styled.div`
   align-items: center;
   > img {
     border: 1px solid #ccc;
-    padding: 50px;
+    line-height: 100px;
   }
   > button {
     padding: 5px 15px;
@@ -113,7 +119,7 @@ const UpdateInput = styled.div`
   align-items: center;
   > img {
     border: 1px solid #ccc;
-    padding: 50px;
+    line-height: 100px;
   }
   > button {
     padding: 5px 15px;

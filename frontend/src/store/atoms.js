@@ -24,6 +24,17 @@ const atoms = {
     key: 'modal',
     default: { food: false, order: false, email: false },
   }),
+
+  menuOrder: atom({
+    key: 'menuOrder',
+    default: [{ name: '', price: null, id: null }],
+  }),
+
+  orderList: atom({
+    key: 'orderList',
+    default: [],
+    effects: [sessionStorageEffect('orderList')],
+  }),
 };
 
 export { atoms };
