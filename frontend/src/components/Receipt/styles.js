@@ -61,7 +61,6 @@ const OrderBtn = styled.div`
   @media screen and (min-width: 768px) {
     display: flex;
     padding: 35px 0px 0px;
-    gap: 15px;
     > button {
       padding: 10px;
     }

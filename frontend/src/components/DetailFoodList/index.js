@@ -1,34 +1,45 @@
 import axios from 'axios';
-import {
-  useQuery,
-  QueryClient,
-  QueryClientProvider,
-} from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 import { Spinner } from '../Spinner';
 import { Section, Menu, MenuInfo, Name, Info, Price, MenuImg } from './styles';
 
 function FoodMenuList() {
-  const menuList = async () => {
+  const queryClient = useQueryClient();
+
+  const getMenuList = async () => {
     const res = await axios.get('/store/1');
     return res.menu;
   };
-  const { isLoading, isError, data, error } = useQuery('getMenu', menuList, {
-    refetchOnWindowFocus: false,
-    retry: 0,
-    onSuccess: (res) => {
-      alert(res);
+
+  const { isLoading, isError, data, error } = useQuery(
+    ['getMenu'],
+    getMenuList,
+    {
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      retry: 1,
+      retryDelay: 3000,
+
+      onSuccess: (res) => {
+        alert(res);
+        queryClient.invalidateQueries(['getMenu']);
+      },
+
+      onError: (e) => {
+        alert(e.message);
+      },
     },
-    onError: (e) => {
-      alert(e.message);
-    },
-  });
+  );
+
   if (isLoading) {
     return <Spinner />;
   }
+
   if (isError) {
     return alert('음식을 불러오지 못했습니다.', error.message);
   }
+
   return data.map((menu) => (
     <Menu key={menu.id}>
       <MenuInfo>
@@ -44,7 +55,6 @@ function FoodMenuList() {
 }
 
 function DetailFoodList() {
-  const queryClient = new QueryClient();
   const AddOrder = () => {
     const orderMenus = [
       { menuId: 1, count: 2, price: 24000 },
@@ -69,9 +79,7 @@ function DetailFoodList() {
 
   return (
     <Section>
-      <QueryClientProvider client={queryClient}>
-        <FoodMenuList />
-      </QueryClientProvider>
+      <FoodMenuList />
       <Menu onClick={onHandlerGetCart}>
         <MenuInfo>
           <Name>치킨</Name>

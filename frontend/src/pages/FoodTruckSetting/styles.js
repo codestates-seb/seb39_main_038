@@ -13,20 +13,18 @@ const Title = styled.h1`
 
 const MainImg = styled.div`
   font-size: 14px;
-  gap: 20px;
-  align-items: center;
-  padding: 0px 0px 20px 0px;
-  > img {
-    line-height: 100px;
+  align-items: start;
+  gap: 300px;
+  padding: 0px 0px 20px 430px;
+  display: flex;
+  span {
+    line-height: 110px;
     background-image: url(${(props) => props.url});
     border: 1px solid #ccc;
   }
-  > button {
-    padding: 2px 10px;
-    height: 50%;
-    background-color: white;
-  }
 `;
+
+const Dropdown = styled.div``;
 
 const CreateFoodTruck = styled.div`
   padding-bottom: 100px;
@@ -74,8 +72,14 @@ const Hash = styled.div`
     padding: 0px 4px 0px 4px;
     background-color: white;
   }
-  > span {
-    padding: 0px 5px 0px 10px;
+  input {
+    width: 60px;
+    border: none;
+    cursor: pointer;
+
+    :focus {
+      border: 1px solid #ccc;
+    }
   }
 `;
 
@@ -90,10 +94,10 @@ const CreateFood = styled.div`
   align-items: center;
   > img {
     border: 1px solid #ccc;
-    padding: 20px;
+    padding: 50px;
   }
   > button {
-    padding: 5px;
+    padding: 5px 15px;
     background-color: white;
   }
 `;
@@ -109,16 +113,16 @@ const UpdateInput = styled.div`
   align-items: center;
   > img {
     border: 1px solid #ccc;
-    padding: 20px;
+    padding: 50px;
   }
   > button {
-    padding: 5px;
+    padding: 5px 15px;
     background-color: white;
   }
 `;
 
 const SettingDoneBtn = styled.div`
-  padding: 50px 50px 50px 0px;
+  padding: 50px 60px 50px 0px;
   > button {
     float: right;
     padding: 10px 40px 10px 40px;
@@ -137,6 +141,7 @@ export {
   Section,
   Title,
   MainImg,
+  Dropdown,
   CreateFoodTruck,
   TypeInfo,
   HashTagBtn,

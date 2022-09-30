@@ -9,7 +9,7 @@ const Section = styled.section`
   @media screen and (max-width: 767px) {
     padding-bottom: 40px;
   }
-  @media ${(e) => e.theme.tablet} {
+  @media screen and (min-width: 768px) {
     gap: 20px;
     display: flex;
   }
