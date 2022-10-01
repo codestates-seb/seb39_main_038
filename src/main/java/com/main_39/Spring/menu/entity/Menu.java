@@ -40,13 +40,23 @@ public class Menu {
     private Store store;
 
     @Builder
-    public Menu(String name, int price) {
+    public Menu(Store store, String name, int price, String content, String image) {
+        this.store = store;
         this.name = name;
         this.price = price;
+        this.content = content;
+        this.image = image;
     }
     public void addName(String name) {
         this.name = name;
     }
+
+    public void addStore(Store store) {
+        this.store = store;
+        if(!store.getMenus().contains(this))
+            store.getMenus().add(this);
+    }
+
 
     public void addPrice(int price) {
         this.price = price;
