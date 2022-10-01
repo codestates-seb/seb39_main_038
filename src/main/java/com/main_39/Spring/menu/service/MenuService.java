@@ -5,6 +5,8 @@ import com.main_39.Spring.exception.ExceptionCode;
 import com.main_39.Spring.menu.dto.MenuRequest;
 import com.main_39.Spring.menu.entity.Menu;
 import com.main_39.Spring.menu.repository.MenuRepository;
+import com.main_39.Spring.store.entity.Store;
+import com.main_39.Spring.store.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,10 +18,15 @@ public class MenuService {
 
     private final MenuRepository menuRepository;
 
+    private final StoreService storeService;
+
     /**
      * 메뉴 등록하기
      */
-    public void createMenu(Menu menu) {
+    public void createMenu(long storeId, Menu menu) {
+
+        Store store = storeService.findStore(storeId);
+        menu.addStore(store);
 
         menuRepository.save(menu);
     }
