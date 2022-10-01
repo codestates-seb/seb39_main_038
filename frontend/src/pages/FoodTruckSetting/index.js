@@ -244,14 +244,14 @@ function FoodTruckSetting() {
 
       <CreateFoodTruck>
         <MainImg>
-          <span>
+          <div>
             <img
               alt="FoodTruckImg"
               name="img"
               value={img}
               onChange={onChange}
             />
-          </span>
+          </div>
 
           <Dropdown>
             <select type="button" onChange={handleTypeChange} value={dropDown}>

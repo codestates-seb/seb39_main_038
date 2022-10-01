@@ -1,4 +1,4 @@
-import { atoms, selectors } from './atoms';
+import { atoms } from './atoms';
 import { storge } from './storge';
 
-export { atoms, selectors, storge };
+export { atoms, storge };
