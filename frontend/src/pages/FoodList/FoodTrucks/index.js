@@ -25,7 +25,9 @@ const fetchFoodList = async () => {
 };
 
 function FoodTrucks() {
-  const { data } = useQuery(['foodlist'], fetchFoodList);
+  const { data, isError, error } = useQuery(['foodlist'], fetchFoodList);
+
+  if (isError) return <div>{error.message}</div>;
 
   const createFoodTruck = () => {
     return data?.data.map((item) => {
