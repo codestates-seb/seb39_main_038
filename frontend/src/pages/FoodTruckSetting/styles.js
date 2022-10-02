@@ -98,11 +98,13 @@ const CreateFood = styled.div`
   padding: 0px 0px 30px 0px;
   gap: 10px;
   align-items: center;
-  > img {
+  img {
     border: 1px solid #ccc;
-    line-height: 100px;
+    width: 80px;
+    height: 100px;
+    object-fit: contain;
   }
-  > button {
+  button {
     padding: 5px 15px;
     background-color: white;
   }
@@ -117,11 +119,13 @@ const UpdateInput = styled.div`
   padding: 0px 0px 20px 0px;
   gap: 10px;
   align-items: center;
-  > img {
+  img {
     border: 1px solid #ccc;
-    line-height: 100px;
+    object-fit: contain;
+    width: 120px;
+    height: 120px;
   }
-  > button {
+  button {
     padding: 5px 15px;
     background-color: white;
   }

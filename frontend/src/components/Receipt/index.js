@@ -1,5 +1,7 @@
 import React from 'react';
 import { useRecoilValue, useResetRecoilState } from 'recoil';
+import axios from 'axios';
+import { useMutation } from '@tanstack/react-query';
 import {
   StickyBody,
   CartListBody,
@@ -14,6 +16,35 @@ import { atoms } from '../../store';
 function Receipt() {
   const orderList = useRecoilValue(atoms.orderList);
   const resetReceipt = useResetRecoilState(atoms.orderList);
+
+  const orderedMenu = () => {
+    axios.post('http://localhost:8080/foodtruck', {
+      orderMenus: [
+        {
+          menuId: orderList.id,
+          count: orderList.count,
+        },
+      ],
+    });
+  };
+
+  const onSuccess = () => {
+    alert('성공');
+  };
+
+  const onError = () => {
+    alert('실패');
+  };
+
+  const onSettled = () => {
+    alert('처리종료');
+  };
+
+  const { mutate: postMutateOrderedMenu } = useMutation(orderedMenu, {
+    onSuccess,
+    onError,
+    onSettled,
+  });
 
   return (
     <StickyBody>
@@ -33,7 +64,9 @@ function Receipt() {
       </Cart>
 
       <OrderBtn>
-        <button type="button">바로 주문하기</button>
+        <button type="button" onClick={postMutateOrderedMenu}>
+          바로 주문하기
+        </button>
       </OrderBtn>
     </StickyBody>
   );

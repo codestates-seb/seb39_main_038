@@ -1,237 +1,77 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
 import React from 'react';
-import { Spinner } from '../Spinner';
 import {
-  Section,
+  ReviewContainer,
   Rating,
   TotalRate,
+  Star,
   Comment,
-  NameDateReply,
-  Date,
-  Rate,
-  ReplyDeleteBtn,
-  ThumnailBox,
-  OrderHistory,
-  Thumnail,
+  Header,
+  TextWrapper,
+  Text,
+  ButtonWrapper,
+  Button,
+  Image,
+  Answer,
+  EditorWrapper,
+  Editor,
 } from './styles';
 // import { storge } from '../../store';
 
-function ReviewList() {
-  const queryClient = useQueryClient();
-
-  const getReviewList = async () => {
-    const res = await axios.get('/review');
-    return res;
-  };
-
-  const { isLoading, isError, data, error } = useQuery(
-    ['getReview'],
-    getReviewList,
-    {
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-      retry: 1,
-      retryDelay: 3000,
-
-      onSuccess: () => {
-        alert('리뷰 불러오기 성공');
-        queryClient.invalidateQueries(['getReview']);
-      },
-
-      onError: (e) => {
-        alert(e);
-      },
-    },
-  );
-
-  if (isLoading) {
-    return <Spinner />;
-  }
-
-  if (isError) {
-    return alert('리뷰 불러오기 실패', error);
-  }
-
-  return data.map((res) => (
-    <Comment key={res.id}>
-      <NameDateReply>
-        <div>
-          {res.name} <Date>{res.date}</Date>
-        </div>
-        <div>
-          <ReplyDeleteBtn type="button">답글</ReplyDeleteBtn>
-          <ReplyDeleteBtn type="button">삭제</ReplyDeleteBtn>
-        </div>
-      </NameDateReply>
-      <Rate>별점 {res.rate}</Rate>
-      <ThumnailBox>
-        <Thumnail alt="Thumnail" src={res.img} />
-      </ThumnailBox>
-      <OrderHistory>{res.history}</OrderHistory>
-      <div>{res.content}</div>
-    </Comment>
-  ));
-}
-
-// function ReviewList() {
-//   const queryClient = useQueryClient();
-
-//   const getReviewList = async () => {
-//     const res = await axios.get('/review');
-//     return res;
-//   };
-
-//   const { isLoading, isError, data, error } = useQuery(
-//     ['getReview'],
-//     getReviewList,
-//     {
-//       refetchOnWindowFocus: false,
-//       refetchOnReconnect: false,
-//       retry: 1,
-//       retryDelay: 3000,
-
-//       onSuccess: () => {
-//         alert('리뷰 불러오기 성공');
-//         queryClient.invalidateQueries(['getReview']);
-//       },
-
-//       onError: (e) => {
-//         alert(e);
-//       },
-//     },
-//   );
-
-//   if (isLoading) {
-//     return <Spinner />;
-//   }
-
-//   if (isError) {
-//     return alert('리뷰 불러오기 실패', error);
-//   }
-
-//   return data.map((res) => (
-//     <Comment key={res.id}>
-//       <NameDateReply>
-//         <div>
-//           {res.name} <Date>{res.date}</Date>
-//         </div>
-//         <div>
-//           <ReplyDeleteBtn type="button">답글</ReplyDeleteBtn>
-//           <ReplyDeleteBtn type="button">삭제</ReplyDeleteBtn>
-//         </div>
-//       </NameDateReply>
-//       <Rate>별점 {res.rate}</Rate>
-//       <ThumnailBox>
-//         <Thumnail alt="Thumnail" src={res.img} />
-//       </ThumnailBox>
-//       <OrderHistory>{res.history}</OrderHistory>
-//       <div>{res.content}</div>
-//     </Comment>
-//   ));
-// }
-
 function DetailReview() {
   return (
-    <Section>
+    <ReviewContainer>
       <Rating>
-        <TotalRate>5.0</TotalRate> <span>★★★★★</span>
+        <TotalRate>5.0</TotalRate>
+        <Star header>★★★★★</Star>
       </Rating>
-
-      {ReviewList}
-
       <Comment>
-        <NameDateReply>
-          <div>
-            김재원 <Date>2022-09-21</Date>
-          </div>
-          <div>
-            <ReplyDeleteBtn type="button">답글</ReplyDeleteBtn>
-            <ReplyDeleteBtn type="button">삭제</ReplyDeleteBtn>
-          </div>
-        </NameDateReply>
-        <Rate>별점 ★★★★</Rate>
-        <ThumnailBox>
-          <Thumnail alt="Thumnail" />
-        </ThumnailBox>
-        <div>주문내역</div>
-        <div>맛은 없는거 같아요...</div>
-      </Comment>
-      <Comment>
-        <NameDateReply>
-          <div>
-            김재원 <Date>2022-09-20</Date>
-          </div>
-          <div>
-            <ReplyDeleteBtn type="button">답글</ReplyDeleteBtn>
-            <ReplyDeleteBtn type="button">삭제</ReplyDeleteBtn>
-          </div>
-        </NameDateReply>
-        <Rate>별점 ★★</Rate>
-        <ThumnailBox>
-          <Thumnail alt="Thumnail" />
-        </ThumnailBox>
-        <div>주문내역</div>
-        <div>
+        <Header>
+          <TextWrapper>
+            <Text as="h1" size={16} color="#333333">
+              김재원님
+            </Text>
+            <Text size={12} color="#999999">
+              2022-09-21
+            </Text>
+          </TextWrapper>
+          <ButtonWrapper>
+            <Button>답변</Button>
+            <Button>삭제</Button>
+          </ButtonWrapper>
+        </Header>
+        <TextWrapper>
+          <Text as="h1" size={14} color="#ffa400">
+            별점
+          </Text>
+          <Star>★★★★★</Star>
+        </TextWrapper>
+        <Image alt="food" />
+        <Text size={14} color="#666666">
           사장님도 친절하시고, 양도 많고 엄청 신선했습니다! 많이 시켜먹을 것
           같습니다!
-        </div>
+        </Text>
+
+        <EditorWrapper>
+          <Editor placeholder="클린리뷰 특성상 재생성도 불가능하며 수정도 불가능합니다. 신중하게 작성해주세요." />
+          <Button>전송</Button>
+        </EditorWrapper>
+
+        <Answer>
+          <Header>
+            <TextWrapper>
+              <Text as="h1">사장님</Text>
+              <Text size={12} color="#999999">
+                2022-09-21
+              </Text>
+            </TextWrapper>
+            <Button>삭제</Button>
+          </Header>
+          <Text size={14} color="#666666">
+            안녕하세용~~~~ 감사합니다.
+          </Text>
+        </Answer>
       </Comment>
-      <Comment>
-        <NameDateReply>
-          <div>
-            김재원 <Date>2022-09-21</Date>
-          </div>
-          <div>
-            <ReplyDeleteBtn type="button">답글</ReplyDeleteBtn>
-            <ReplyDeleteBtn type="button">삭제</ReplyDeleteBtn>
-          </div>
-        </NameDateReply>
-        <Rate>별점 ★★★★</Rate>
-        <ThumnailBox>
-          <Thumnail alt="Thumnail" />
-        </ThumnailBox>
-        <div>주문내역</div>
-        <div>맛은 없는거 같아요...</div>
-      </Comment>
-      <Comment>
-        <NameDateReply>
-          <div>
-            김재원 <Date>2022-09-20</Date>
-          </div>
-          <div>
-            <ReplyDeleteBtn type="button">답글</ReplyDeleteBtn>
-            <ReplyDeleteBtn type="button">삭제</ReplyDeleteBtn>
-          </div>
-        </NameDateReply>
-        <Rate>별점 ★★</Rate>
-        <ThumnailBox>
-          <Thumnail alt="Thumnail" />
-        </ThumnailBox>
-        <div>주문내역</div>
-        <div>
-          사장님도 친절하시고, 양도 많고 엄청 신선했습니다! 많이 시켜먹을 것
-          같습니다!
-        </div>
-      </Comment>
-      <Comment>
-        <NameDateReply>
-          <div>
-            김재원 <Date>2022-09-21</Date>
-          </div>
-          <div>
-            <ReplyDeleteBtn type="button">답글</ReplyDeleteBtn>
-            <ReplyDeleteBtn type="button">삭제</ReplyDeleteBtn>
-          </div>
-        </NameDateReply>
-        <Rate>별점 ★★★★</Rate>
-        <ThumnailBox>
-          <Thumnail alt="Thumnail" />
-        </ThumnailBox>
-        <div>주문내역</div>
-        <div>맛은 없는거 같아요..</div>
-      </Comment>
-    </Section>
+    </ReviewContainer>
   );
 }
 

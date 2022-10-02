@@ -12,7 +12,7 @@ function FoodMenuList() {
 
   const [defaultObj, ...rest] = receipt;
   setOrderList(rest);
-  console.log(defaultObj);
+
   const queryClient = useQueryClient();
   queryClient.invalidateQueries(['getMenu']);
 
@@ -52,10 +52,10 @@ function FoodMenuList() {
     <Menu
       key={menu.id}
       onClick={() => {
-        return setReceipt([
-          ...receipt,
-          { name: menu.name, price: menu.price, id: menu.id },
-        ]);
+        if (receipt === '123') {
+          return defaultObj;
+        }
+        return setReceipt([...receipt, { count: menu.count, id: menu.id }]);
       }}
     >
       <MenuInfo>

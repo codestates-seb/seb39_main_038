@@ -27,7 +27,7 @@ const atoms = {
 
   menuOrder: atom({
     key: 'menuOrder',
-    default: [{ name: '', price: null, id: null }],
+    default: [{ name: '', price: null, id: null, count: null }],
   }),
 
   orderList: atom({

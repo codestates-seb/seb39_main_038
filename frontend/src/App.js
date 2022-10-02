@@ -18,6 +18,7 @@ const MyPage = React.lazy(() => import('./pages/MyPage'));
 const NotFound = React.lazy(() => import('./pages/NotFound'));
 const FoodTruckSetting = React.lazy(() => import('./pages/FoodTruckSetting'));
 const PwChange = React.lazy(() => import('./pages/PwChange'));
+const Review = React.lazy(() => import('./pages/Review'));
 
 function App() {
   const { type } = useRecoilValue(atoms.isLogin);
@@ -40,6 +41,7 @@ function App() {
         <Route path={ROUTE.PWCHANGE.PATH} element={<PwChange />} />
         <Route path={`${ROUTE.MYPAGE.PATH}/*`} element={<FoodTruckSetting />} />
         <Route path={ROUTE.NOTFOUND.PATH} element={<NotFound />} />
+        <Route path={ROUTE.REVIEW.PATH} element={<Review />} />
       </Routes>
     </React.Suspense>
   );

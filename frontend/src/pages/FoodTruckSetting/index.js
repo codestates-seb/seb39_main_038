@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useMutation } from '@tanstack/react-query';
 import {
   Section,
   Title,
@@ -19,29 +19,37 @@ import {
 } from './styles';
 import { Spinner } from '../../components';
 
-function FoodMenusList(menuImg, menuName, menuContent, onChange, menuPrice) {
-  const queryClient = useQueryClient();
+function FoodMenusList(
+  menuImg,
+  menuName,
+  menuContent,
+  onChange,
+  menuPrice,
+  deleteMutateMenu,
+) {
+  // const queryClient = useQueryClient();
+  // queryClient.invalidateQueries(['menus']);
 
   const getMenu = async () => {
-    const res = await axios.get('/menu/1/menus');
-    return res;
+    const res = await axios.get('http://localhost:8080/store');
+    // session storage 에 담긴 사장님 ID 로 FoodTruck 중 일치하는걸 찾아 뿌리는 방식?
+    return res.data.menus;
   };
 
   const { isError, isLoading, data } = useQuery(['menus'], getMenu, {
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
-    retry: 1,
+    retry: false,
     retryDelay: 3000,
 
-    onSuccess: (res) => {
-      alert(res);
-      queryClient.invalidateQueries(['menus']);
+    onSuccess: () => {
+      alert('성공1');
     },
     onError: () => {
-      alert('실패');
+      alert('실패1');
     },
     onSettled: () => {
-      alert('종료');
+      alert('종료1');
     },
   });
 
@@ -53,27 +61,33 @@ function FoodMenusList(menuImg, menuName, menuContent, onChange, menuPrice) {
     return alert('음식들을 불러오지 못했습니다.');
   }
 
-  return data.map(() => (
-    <UpdateInput>
-      <img alt="FoodImg" name="menuImg" value={menuImg} onChange={onChange} />
+  return data.map((res) => (
+    <UpdateInput key={res.id}>
+      <img
+        alt="FoodImg"
+        name="menuImg"
+        value={menuImg}
+        onChange={onChange}
+        src={res.img}
+      />
 
       <TypeInfo>
         <input
-          placeholder="메뉴 이름"
+          placeholder={res.name}
           name="menuName"
           value={menuName}
           onChange={onChange}
         />
 
         <input
-          placeholder="메뉴 소개"
+          placeholder={res.info}
           name="menuContent"
           value={menuContent}
           onChange={onChange}
         />
 
         <input
-          placeholder="메뉴 가격"
+          placeholder={res.price}
           name="menuPrice"
           value={menuPrice}
           onChange={onChange}
@@ -81,7 +95,61 @@ function FoodMenusList(menuImg, menuName, menuContent, onChange, menuPrice) {
       </TypeInfo>
 
       <button type="button">수정</button>
+      <button
+        type="button"
+        onClick={() => {
+          deleteMutateMenu();
+        }}
+      >
+        제거
+      </button>
     </UpdateInput>
+  ));
+}
+
+function HashTag({ deleteMutateTag, onKeyPress }) {
+  const getHashTag = async () => {
+    const res = await axios.get('http://localhost:8080/foodtruck');
+    return res.data;
+  };
+
+  const { isError, isLoading, data } = useQuery(['hashTag'], getHashTag, {
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    retry: false,
+    retryDelay: 3000,
+
+    onSuccess: () => {
+      alert('태그성공');
+    },
+    onError: () => {
+      alert('태그실패');
+    },
+    onSettled: () => {
+      alert('종료');
+    },
+  });
+
+  if (isLoading) {
+    return <Spinner />;
+  }
+
+  if (isError) {
+    return alert('태그를 불러오지 못했습니다.');
+  }
+
+  return data.map((res) => (
+    <Hash>
+      <input value={res.store_tag} onKeyPress={onKeyPress} />
+      <button
+        type="button"
+        onClick={() => {
+          deleteMutateTag();
+        }}
+      >
+        X
+      </button>
+    </Hash>
   ));
 }
 
@@ -137,41 +205,50 @@ function FoodTruckSetting() {
   };
 
   const postMenu = async () => {
-    const res = await axios.post(
-      'ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/menu',
-      {
-        name: newMenuName,
-        price: newMenuPrice,
-      },
-    );
+    const res = await axios.post('http://localhost:8080/store', {
+      menus: [
+        {
+          name: newMenuName,
+          price: newMenuPrice,
+          content: newMenuContent,
+          image: newMenuImg,
+        },
+      ],
+    });
     return res;
   };
 
   const postHashTag = async () => {
-    const res = await axios.post('/tag', {
-      tag_id: 1,
-      store_id: 1,
-      tag_name: tag,
+    const res = await axios.post('http://localhost:8080/store', {
+      foodtruck: [{ store_tag: tag }],
     });
     return res;
   };
 
   const postInfo = async () => {
-    const res = await axios.post('/store/ask', {
-      local_id: '캐시 사장 id',
-      store_phone: phone,
-      store_number: number,
-      store_status: '토글 or 버튼으로 상태바',
-      store_name: name,
-      store_content: ask,
-      store_image: img,
-      sotre_tpye: dropDown,
+    const res = await axios.post('http://localhost:8080/store', {
+      foodtruck: [
+        {
+          store_phone: phone,
+          store_number: number,
+          store_status: '토글 or 버튼으로 상태바',
+          store_name: name,
+          store_content: ask,
+          store_image: img,
+          sotre_tpye: dropDown,
+        },
+      ],
     });
     return res;
   };
 
   const deleteTag = async () => {
-    const res = await axios.delete('/tag/1');
+    const res = await axios.delete(`/tag/1`);
+    return res;
+  };
+
+  const deleteMenu = async () => {
+    const res = await axios.delete(`/menus/1`);
     return res;
   };
 
@@ -181,15 +258,15 @@ function FoodTruckSetting() {
   };
 
   const onSuccess = () => {
-    alert('성공');
+    alert('성공2');
   };
 
   const onError = () => {
-    alert('실패');
+    alert('실패2');
   };
 
   const onSettled = () => {
-    alert('처리종료');
+    alert('처리종료2');
   };
 
   const { mutate: postMutateMenu } = useMutation(postMenu, {
@@ -211,6 +288,12 @@ function FoodTruckSetting() {
   });
 
   const { mutate: deleteMutateTag } = useMutation(deleteTag, {
+    onSuccess,
+    onError,
+    onSettled,
+  });
+
+  const { mutate: deleteMutateMenu } = useMutation(deleteMenu, {
     onSuccess,
     onError,
     onSettled,
@@ -330,17 +413,7 @@ function FoodTruckSetting() {
             해시태그 추가 +
           </HashTagBtn>
 
-          <Hash>
-            <input value={tag} onKeyPress={onKeyPress} />
-            <button
-              type="button"
-              onClick={() => {
-                deleteMutateTag();
-              }}
-            >
-              X
-            </button>
-          </Hash>
+          <HashTag onKeyPress={onKeyPress} deleteMutateTag={deleteMutateTag} />
         </DeleteTag>
 
         <textarea
@@ -361,7 +434,6 @@ function FoodTruckSetting() {
             value={newMenuImg}
             onChange={onChange}
           />
-
           <TypeInfo>
             <input
               placeholder="메뉴 이름"
@@ -384,7 +456,6 @@ function FoodTruckSetting() {
               onChange={onChange}
             />
           </TypeInfo>
-
           <button
             type="button"
             onClick={() => {
@@ -404,6 +475,7 @@ function FoodTruckSetting() {
             menuContent={menuContent}
             onChange={onChange}
             menuPrice={menuPrice}
+            deleteMutateMenu={deleteMutateMenu}
           />
 
           <SettingDoneBtn>
