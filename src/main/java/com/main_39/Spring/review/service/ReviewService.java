@@ -98,7 +98,11 @@ public class ReviewService {
 
     public void deleteReview(long reviewId) {
         Review findReview = findVerifiedReview(reviewId);
-        if(findReview.getReviewImage() != null) amazonS3.deleteObject(bucket,findReview.getReviewImage());
+        if(findReview.getReviewImage() != null){
+            int index = findReview.getReviewImage().indexOf("/",8);
+            String key = findReview.getReviewImage().substring(index+1);
+            amazonS3.deleteObject(bucket,key);
+        }
         reviewRepository.delete(findReview);
     }
 
