@@ -1,7 +1,6 @@
 package com.main_39.Spring.store.controller;
 
 
-import com.amazonaws.services.s3.AmazonS3;
 import com.main_39.Spring.dto.MultiResponseDto;
 import com.main_39.Spring.dto.SingleResponseDto;
 import com.main_39.Spring.member.entity.Local;
@@ -91,17 +90,24 @@ public class StoreController {
                 new SingleResponseDto<>(mapper.storeToStoreResponseDto(store)), HttpStatus.OK);
     }
 
+//    @GetMapping("/{store-type}")
+//    public ResponseEntity getStores(@PathVariable("store-type") @Positive Store.StoreType storeType){
+//        Store store = storeService.findStoreTypes(storeType);
+//        return new ResponseEntity<>(
+//                new SingleResponseDto<>(mapper.storeToStoreResponseDto(store)), HttpStatus.OK);
+//    }
 
-//    @GetMapping("/{store-id}/menu")
-//    public ResponseEntity getStoreMenu(@PathVariable("store-id") @Positive long storeId,
-//                                       @RequestParam @Positive int page,
-//                                       @RequestParam(required = false, defaultValue = "15") @Positive int size) {
-//        Page<Store> pageMenu = storeService.findStoreMenu(menuId, page-1, size);
-//        List<Store> menu = pageMenu.getContent();
-//        List<StoreResponseDto> responses = mapper.storesToStoreResponseDtos(menu);
+//    @GetMapping
+//    public ResponseEntity getStores(@RequestParam Store.StoreType storeType,
+//                                    @Positive @RequestParam int page,
+//                                    @Positive @RequestParam(required = false, defaultValue = "15") int size){
+//        Page<Store> pageStores = storeService.findStores(page -1, size);
+//        List<Store> stores = pageStores.getContent();
 //
 //        return new ResponseEntity<>(
-//                new SingleResponseDto<>(responses, pageMenu), HttpStatus.OK);
+//                new MultiResponseDto<>(mapper.storesToStoreResponseDtos(stores),
+//                        pageStores),
+//                HttpStatus.OK);
 //    }
 
     @GetMapping

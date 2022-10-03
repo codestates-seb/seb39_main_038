@@ -7,8 +7,9 @@ import com.main_39.Spring.comment.mapper.CommentMapper;
 import com.main_39.Spring.comment.service.CommentService;
 import com.main_39.Spring.dto.MultiResponseDto;
 import com.main_39.Spring.dto.SingleResponseDto;
-import com.main_39.Spring.review.entity.Review;
 import com.main_39.Spring.review.service.ReviewService;
+import com.main_39.Spring.store.entity.Store;
+import com.main_39.Spring.store.service.StoreService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,12 +27,16 @@ public class CommentController {
     private final CommentMapper mapper;
     private final ReviewService reviewService;
 
+    private final StoreService storeService;
+
     public CommentController(CommentService commentService,
                              CommentMapper mapper,
-                             ReviewService reviewService) {
+                             ReviewService reviewService,
+                             StoreService storeService) {
         this.commentService = commentService;
         this.mapper = mapper;
         this.reviewService = reviewService;
+        this.storeService = storeService;
     }
 
 //    @PostMapping("/review/{review-id}/comment/ask")
@@ -43,14 +48,29 @@ public class CommentController {
 //                new SingleResponseDto<>(mapper.commentToCommentResponseDto(comment)),
 //        HttpStatus.CREATED);
 //    }
+
+//    @PostMapping("/review/{review-id}/comment/ask")
+//    public ResponseEntity postComment(@Valid @RequestBody CommentPostDto commentPostDto) {
+//        Comment comment = mapper.commentPostDtoToComment(commentPostDto);
+//
+//        Review review = reviewService.findReview(commentPostDto.getReviewId());
+//        comment.setReview(review);
+//
+//        Comment posted = commentService.createdComment(comment);
+//        CommentResponseDto response = mapper.commentToCommentResponseDto(posted);
+//
+//        return new ResponseEntity<>(
+//                new SingleResponseDto<>(response), HttpStatus.CREATED);
+//    }
     @PostMapping("/review/{review-id}/comment/ask")
-    public ResponseEntity postComment(@Valid @RequestBody CommentPostDto commentPostDto) {
+    public ResponseEntity postComment(@PathVariable("review-id") long reviewId,
+            @Valid @RequestBody CommentPostDto commentPostDto) {
         Comment comment = mapper.commentPostDtoToComment(commentPostDto);
 
-        Review review = reviewService.findReview(commentPostDto.getReviewId());
-        comment.setReview(review);
+        Store store = storeService.findStore(commentPostDto.getStoreId());
+        comment.setStore(store);
 
-        Comment posted = commentService.createdComment(comment);
+        Comment posted = commentService.createdComment(reviewId, comment);
         CommentResponseDto response = mapper.commentToCommentResponseDto(posted);
 
         return new ResponseEntity<>(

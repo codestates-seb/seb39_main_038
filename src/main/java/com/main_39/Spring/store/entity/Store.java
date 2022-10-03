@@ -39,7 +39,14 @@ public class Store {
 
     private String storeImage;
 
-    private String storeType;
+//    @Enumerated(value = EnumType.STRING)
+//    @Column(nullable = false, length = 20)
+//    private StoreType storeType = StoreType.all;
+
+    /**
+     * 타입별 필터
+     */
+    private StoreType storeType = StoreType.all;
 
     private String storeTime;
 
@@ -51,6 +58,26 @@ public class Store {
 
     private String storeTag;
 
+    /**
+     * 타입별 필터
+     */
+    public enum StoreType {
+        all("전체 보기"),
+        western("양식"),
+        korean("한식"),
+        chinese("중식"),
+        japanese("일식"),
+        snackbar("분식"),
+        nightsnack("야식"),
+        cafe("카페/디저트");
+
+        @Getter
+        private String type;
+
+        StoreType(String type){
+            this.type = type;
+        }
+    }
 
     /**
      * store : menu = 1 : N
@@ -90,18 +117,13 @@ public class Store {
     public int getTotalGrade() {
         return reviews.size();
     }
-
-    /**
-     * total comment
-     * store : comment = 1:N
-     */
-
-    @OneToMany(mappedBy = "store", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    private List<Comment> comments = new ArrayList<>();
-
     public int getTotalComment() {
         return comments.size();
     }
 
-
+    /**
+     * store : comment = 1 : N
+     */
+    @OneToMany(mappedBy = "store", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private List<Comment> comments = new ArrayList<>();
 }

@@ -26,6 +26,16 @@ public class Review extends Auditable {
 
     private int reviewGrade;
 
+//     추가
+//    @Formula("(select count(1) from review where review.reviewId = reviewId)")
+//    private int reviewCount;
+//    private int avg;
+//
+//    public void avgGrade() {
+//        this.avg = Math.round((this.reviewGrade)/reviewCount);
+//    }
+
+
     /**
      * 리뷰 : 댓글 = 1 : 1 양방향
      * 리뷰 삭제시 댓글도 삭제
@@ -38,6 +48,7 @@ public class Review extends Auditable {
      * 카카오 : 리뷰 = 1 : N 단방향
      * 카카오 삭제시 리뷰도 삭제
      */
+     // 포스트맨 위한 주석 처리
     @ManyToOne
     @JoinColumn(name = "kakao_id")
     private Kakao kakao;
@@ -45,12 +56,6 @@ public class Review extends Auditable {
     public void setKakao(Kakao kakao) {
         this.kakao = kakao;
     }
-
-//    public void setKakao(Kakao kakao) {
-//        this.kakao = kakao;
-//        if(!kakao.getReviews().contains(this))
-//            kakao.getReviews().add(this);
-//    }
 
     /**
      * 스토어 : 리뷰 = 1 : N

@@ -1,5 +1,6 @@
 package com.main_39.Spring.review.dto;
 
+import com.main_39.Spring.comment.dto.CommentResponseDto;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -8,20 +9,20 @@ import java.util.List;
 @Getter
 public class ReviewsResponseDto {
     private long storeId;
-    private List<ReviewResponseDto> stores;
+    private List<ReviewStoreResponseDto> reviews;
+    private List<CommentResponseDto> comment;
     private int totalReview;
     private int totalGrade;
     private int totalComment;
 
-//    private CommentResponseDto comment;
-
-
     @Builder
-    public ReviewsResponseDto(Long storeId, List<ReviewResponseDto> stores, int totalReview, int totalComment, int totalGrade) {
+    public ReviewsResponseDto(Long storeId, int totalReview, int totalGrade, int totalComment,
+                              List<ReviewStoreResponseDto> reviews, List<CommentResponseDto> comment) {
         this.storeId = storeId;
-        this.stores = stores;
+        this.reviews = reviews;
+        this.comment = comment;
         this.totalReview = totalReview;
-        this.totalGrade = this.totalGrade;
-        this.totalComment = this.totalComment;
+        this.totalGrade = totalGrade;
+        this.totalComment = totalComment;
     }
 }

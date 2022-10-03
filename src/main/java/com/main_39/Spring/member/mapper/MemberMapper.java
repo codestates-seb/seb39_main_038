@@ -22,9 +22,9 @@ public interface MemberMapper {
         if(store != null) { //가게 등록 하신 사장님만 가게 등록
             storeResponseDto = new StoreResponseDto(
                     store.getStoreId(), store.getStorePhone(), store.getStoreNumber(), store.getStoreStatus(), store.getStoreName(),
-                    store.getStoreContent(), store.getStoreImage(), store.getStoreType(), store.getStoreTime(), store.getStoreWaitTime(),
+                    store.getStoreContent(), store.getStoreImage(), store.getStoreTime(), store.getStoreWaitTime(),
                     store.getStoreAddress(), store.getStorePayment(), store.getStoreTag(), store.getTotalReview(), store.getTotalGrade(),
-                    store.getTotalComment()
+                    store.getTotalComment(), store.getStoreType()
             );
         }
 //        if(store != null) { //가게 등록 하신 사장님만 가게 등록

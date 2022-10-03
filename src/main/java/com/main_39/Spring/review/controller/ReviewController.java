@@ -30,8 +30,6 @@ public class ReviewController {
     private final StoreService storeService;
     private final MemberService memberService;
 
-
-
     public ReviewController(ReviewService reviewService,
                             ReviewMapper mapper,
                             StoreService storeService,
@@ -40,9 +38,9 @@ public class ReviewController {
         this.mapper = mapper;
         this.storeService = storeService;
         this.memberService = memberService;
-
     }
 
+    // 포스트맨 테스트 사용
 //    @PostMapping("/store/{store-id}/review/ask")
 //    public ResponseEntity postReview(@PathVariable("store-id") long storeId,
 //                                     @Valid @RequestBody ReviewPostDto reviewPostDto) {
@@ -54,12 +52,14 @@ public class ReviewController {
 //                HttpStatus.CREATED);
 //    }
 
+    // 포스트맨 위한 주석 처리
         @PostMapping("/store/{store-id}/review/ask")
         public ResponseEntity postReview(@PathVariable("store-id") long storeId,
                                          @Valid @RequestBody ReviewPostDto reviewPostDto) {
 
             Review review = mapper.reviewPostDtoToReview(reviewPostDto);
 
+            // 포스트맨 위해 주석 처리
             Kakao kakao = memberService.findVerifiedKakao(reviewPostDto.getKakaoId());
             review.setKakao(kakao);
 
@@ -81,21 +81,6 @@ public class ReviewController {
         return new ResponseEntity<>(mapper.reviewToStoreResponseDto(store), HttpStatus.OK);
     }
 
-//    @PatchMapping("/review/{review-id}")
-//    public ResponseEntity patchReview(
-//            @PathVariable("review-id") @Positive long reviewId,
-//            @Valid @RequestBody ReviewPatchDto reviewPatchDto) {
-//
-//        reviewPatchDto.setReviewId(reviewId);
-//
-//        Review response =
-//                reviewService.updateReview(mapper.reviewPatchDtoToReview(reviewPatchDto));
-//
-//        return new ResponseEntity<>(
-//                new SingleResponseDto<>(mapper.reviewToReviewResponseDto(response)),
-//                HttpStatus.OK);
-//    }
-
     @GetMapping("/review")
     public ResponseEntity getReviews(@Positive @RequestParam int page,
                                     @Positive @RequestParam(required = false, defaultValue = "15") int size){
@@ -107,13 +92,6 @@ public class ReviewController {
                 new MultiResponseDto<>(responses, pageReviews),
                 HttpStatus.OK);
     }
-
-//    @GetMapping("/{kakao-id}")
-//    public ResponseEntity getReview(@PathVariable("kakao-id") @Positive long kakaoId,
-//                                    @Positive @RequestParam int page,
-//                                    @Positive @RequestParam(required = false, defaultValue = "15")
-//        Page<Kakao> pageKakaos = kakao
-
 
     @DeleteMapping("/review/{review-id}")
     public ResponseEntity deleteReview(

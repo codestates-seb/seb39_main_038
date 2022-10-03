@@ -20,4 +20,5 @@ public class StorePostDto {
         private String storeAddress;
         private String storePayment;
         private String storeTag;
+
 }

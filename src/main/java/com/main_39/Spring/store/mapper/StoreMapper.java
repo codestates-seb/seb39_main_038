@@ -16,15 +16,4 @@ public interface StoreMapper {
     StoreResponseDto storeToStoreResponseDto(Store store);
     List<StoreResponseDto> storesToStoreResponseDtos(List<Store> stores);
 
-
-//    default StoreListResponseDto storeToStoreResponseDto(Store store) {
-//        List<Review> stores = store.getReviews();
-//
-//        StoreListResponseDto storeListResponseDto = new StoreListResponseDto(
-//                storeToStoreResponseDtos(storeReviews),
-//                store.getTotalReview());
-//        return storeListResponseDto;
-//
-//    }
-
 }
