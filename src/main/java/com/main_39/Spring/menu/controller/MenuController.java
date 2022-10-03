@@ -1,5 +1,6 @@
 package com.main_39.Spring.menu.controller;
 
+import com.amazonaws.services.s3.AmazonS3;
 import com.main_39.Spring.menu.MenuMapper;
 import com.main_39.Spring.menu.dto.MenuDetailResponse;
 import com.main_39.Spring.menu.dto.MenuRequest;

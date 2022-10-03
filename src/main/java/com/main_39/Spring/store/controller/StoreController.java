@@ -1,6 +1,7 @@
 package com.main_39.Spring.store.controller;
 
 
+import com.amazonaws.services.s3.AmazonS3;
 import com.main_39.Spring.dto.MultiResponseDto;
 import com.main_39.Spring.dto.SingleResponseDto;
 import com.main_39.Spring.member.entity.Local;
