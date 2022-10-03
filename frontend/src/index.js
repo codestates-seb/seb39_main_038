@@ -10,7 +10,14 @@ import App from './App';
 
 axios.defaults.withCredentials = true;
 const queryClient = new QueryClient({
-  defaultOptions: { queries: { suspense: true } },
+  defaultOptions: {
+    queries: {
+      suspense: true,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    },
+  },
 });
 const root = reactDOM.createRoot(document.getElementById('root'));
 
