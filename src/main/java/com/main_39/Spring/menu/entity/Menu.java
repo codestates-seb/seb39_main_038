@@ -51,17 +51,23 @@ public class Menu {
         this.name = name;
     }
 
+    public void addPrice(int price) {
+        this.price = price;
+    }
+
+    public void addContent(String content) {
+        this.content = content;
+    }
+
+    public void addImage(String image) {
+        this.image = image;
+    }
+
     public void addStore(Store store) {
         this.store = store;
         if(!store.getMenus().contains(this))
             store.getMenus().add(this);
     }
-
-
-    public void addPrice(int price) {
-        this.price = price;
-    }
-
 
     public void addMenuId(Long menuId) {
         this.menuId = menuId;

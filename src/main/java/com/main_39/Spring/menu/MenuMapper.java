@@ -47,6 +47,7 @@ public interface MenuMapper {
                         .menuId(menu.getMenuId())
                         .name(menu.getName())
                         .price(menu.getPrice())
+                        .content(menu.getContent())
                         .image(menu.getImage())
                         .build()).collect(Collectors.toList());
     }

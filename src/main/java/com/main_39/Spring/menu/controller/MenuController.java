@@ -41,7 +41,9 @@ public class MenuController {
     public ResponseEntity<Void> createMenu(@PathVariable("store-id") long storeId,
                                            @RequestBody MenuRequest menuRequest) {
 
-        menuService.createMenu(storeId, mapper.menuRequestToMenu(menuRequest));
+        Store store = storeService.findVerifiedStore(storeId);
+
+        menuService.createMenu(store, mapper.menuRequestToMenu(menuRequest));
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
