@@ -26,7 +26,7 @@ function Receipt() {
         </CartTab>
         <CartListBody>
           {orderList.map((res) => (
-            <ReceiptList name={res.name} price={res.price} key={res.id} />
+            <ReceiptList name={res.name} price={res.price} />
           ))}
         </CartListBody>
         <TotalPrice>합계: 38,000원</TotalPrice>
