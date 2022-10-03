@@ -62,7 +62,13 @@ const Notice = styled.div`
   align-items: center;
   padding: 14px 20px 12px 15px;
   margin-top: -1px;
-  font-size: 12px;
+  font-size: 16px;
+  div {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 `;
 
 const MenuBar = styled.div`

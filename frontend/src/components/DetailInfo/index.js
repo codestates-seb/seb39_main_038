@@ -1,7 +1,6 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
 import React from 'react';
-import { Spinner } from '../Spinner';
+import { useRecoilValue } from 'recoil';
+import { atoms } from '../../store';
 import {
   TruckInfoBody,
   TruckInfoTitle,
@@ -11,65 +10,30 @@ import {
 } from './styles';
 
 function DetailInfo() {
-  const queryClient = useQueryClient();
-
-  const getInfoList = async () => {
-    const res = await axios.get('/store/1');
-    return res;
-  };
-
-  const { isLoading, isError, data, error } = useQuery(
-    ['getInfo'],
-    getInfoList,
-    {
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-      retry: 1,
-      retryDelay: 3000,
-
-      onSuccess: () => {
-        alert('정보 불러오기 성공');
-        queryClient.invalidateQueries(['getInfo']);
-      },
-
-      onError: (e) => {
-        alert(e);
-      },
-    },
-  );
-
-  if (isLoading) {
-    return <Spinner />;
-  }
-
-  if (isError) {
-    return alert('정보 불러오기 실패', error);
-  }
+  const foodTruckInfo = useRecoilValue(atoms.foodTruckInfo);
 
   return (
     <TruckInfoBody>
-      <TruckInfoTitle>{data}사장님 알림</TruckInfoTitle>
+      <TruckInfoTitle>사장님 알림</TruckInfoTitle>
 
-      <TruckInfoContent>
-        상단 찜 하트 꾸욱 눌러주세요. 리뷰 서비스 1당면추가 2음료
-      </TruckInfoContent>
+      <TruckInfoContent>{foodTruckInfo.content}</TruckInfoContent>
 
       <TruckInfoTitle>업체정보</TruckInfoTitle>
-
+      {console.log(foodTruckInfo)}
       <TruckInfoContent>
         <TruckInfoContentKey>
-          영업시간: <TruckInfoContentValue>10:35 - 22:00</TruckInfoContentValue>
+          영업시간:{' '}
+          <TruckInfoContentValue>{foodTruckInfo.time}</TruckInfoContentValue>
         </TruckInfoContentKey>
 
         <TruckInfoContentKey>
-          전화번호: <TruckInfoContentValue>010-1234-5678</TruckInfoContentValue>
+          전화번호:{' '}
+          <TruckInfoContentValue>{foodTruckInfo.phone}</TruckInfoContentValue>
         </TruckInfoContentKey>
 
         <TruckInfoContentKey>
           주소:{' '}
-          <TruckInfoContentValue>
-            서울특별시 강동구 길동 377-3 오륜빌딩 1층 104호(길동, 오륜빌딩)
-          </TruckInfoContentValue>
+          <TruckInfoContentValue>{foodTruckInfo.address}</TruckInfoContentValue>
         </TruckInfoContentKey>
       </TruckInfoContent>
 
@@ -77,7 +41,8 @@ function DetailInfo() {
 
       <TruckInfoContent>
         <TruckInfoContentKey>
-          결제수단: <TruckInfoContentValue>카드, 현금</TruckInfoContentValue>
+          결제수단:{' '}
+          <TruckInfoContentValue>{foodTruckInfo.payment}</TruckInfoContentValue>
         </TruckInfoContentKey>
       </TruckInfoContent>
 
@@ -85,10 +50,12 @@ function DetailInfo() {
 
       <TruckInfoContent>
         <TruckInfoContentKey>
-          상호명: <TruckInfoContentValue>맘스터치</TruckInfoContentValue>
+          상호명:{' '}
+          <TruckInfoContentValue>{foodTruckInfo.name}</TruckInfoContentValue>
         </TruckInfoContentKey>
         <TruckInfoContentKey>
-          사업자번호: <TruckInfoContentValue>7360701994</TruckInfoContentValue>
+          사업자번호:{' '}
+          <TruckInfoContentValue>{foodTruckInfo.number}</TruckInfoContentValue>
         </TruckInfoContentKey>
       </TruckInfoContent>
 

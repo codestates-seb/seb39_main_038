@@ -100,9 +100,9 @@ const CreateFood = styled.div`
   align-items: center;
   img {
     border: 1px solid #ccc;
-    width: 80px;
-    height: 100px;
     object-fit: contain;
+    width: 120px;
+    height: 120px;
   }
   button {
     padding: 5px 15px;
@@ -147,6 +147,52 @@ const SettingDoneBtn = styled.div`
   }
 `;
 
+const Toggle = styled.div`
+  display: inline-block;
+  input {
+    :checked ~ label {
+      background: #f03d3d;
+    }
+    :checked ~ label > span {
+      left: calc(100% - 2.8rem);
+      background: #fff;
+    }
+  }
+  label {
+    width: 6rem;
+    margin: 2rem;
+    height: 3rem;
+    display: block;
+    position: relative;
+    border-radius: 2rem;
+    background-color: #fff;
+    box-shadow: 0 0 1rem 3px rgba(0 0 0 / 15%);
+    transition: all 0.2s ease-in;
+    cursor: pointer;
+    span {
+      width: 2.6rem;
+      height: 2.6rem;
+      position: absolute;
+      top: 50%;
+      left: 0.2rem;
+      transform: translateY(-50%);
+      border-radius: 50%;
+      background: #f03d3d;
+    }
+  }
+`;
+
+const OpenOrClose = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  span {
+    font-size: 36px;
+    color: grey;
+    padding: 0px 0px 0px 20px;
+  }
+`;
+
 export {
   Section,
   Title,
@@ -162,4 +208,6 @@ export {
   UpdateFood,
   UpdateInput,
   SettingDoneBtn,
+  Toggle,
+  OpenOrClose,
 };

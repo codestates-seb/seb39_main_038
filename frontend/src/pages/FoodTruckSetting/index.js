@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useState } from 'react';
+import { useRecoilState } from 'recoil';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import {
   Section,
@@ -16,38 +17,70 @@ import {
   UpdateFood,
   UpdateInput,
   SettingDoneBtn,
+  Toggle,
+  OpenOrClose,
 } from './styles';
 import { Spinner } from '../../components';
+import { atoms } from '../../store';
 
-function FoodMenusList(
-  menuImg,
-  menuName,
-  menuContent,
-  onChange,
-  menuPrice,
-  deleteMutateMenu,
-) {
+function FoodMenusList(menuImg, menuName, menuContent, onChange, menuPrice) {
+  const [menuId, setMenuId] = useState(null);
+  const setFoodTruckInfo = useRecoilState(atoms.foodTruckInfo);
+
+  const deleteMenu = async () => {
+    const res = await axios.delete(`/store/1/menus/${menuId}`);
+    return res;
+  };
+
+  const patchMenu = async () => {
+    const res = await axios.patch(`/store/1/menus/${menuId}`);
+    return res;
+  };
+
+  const onSuccess = () => {
+    alert('성공');
+  };
+
+  const onError = () => {
+    alert('실패');
+  };
+
+  const onSettled = () => {
+    alert('처리종료');
+  };
+
+  const { mutate: deleteMutateMenu } = useMutation(deleteMenu, {
+    onSuccess,
+    onError,
+    onSettled,
+  });
+
+  const { mutate: patchMutateMenu } = useMutation(patchMenu, {
+    onSuccess,
+    onError,
+    onSettled,
+  });
+
   const getMenu = async () => {
-    const res = await axios.get('http://localhost:8080/store');
-    // session storage 에 담긴 사장님 ID 로 FoodTruck 중 일치하는걸 찾아 뿌리는 방식?
-    return res.data.menus;
+    const res = await axios.get(`store/1/menus`);
+    setFoodTruckInfo({ total_menu: res.total_menu });
+    return res.data;
   };
 
   const { isError, isLoading, data } = useQuery(['menus'], getMenu, {
     refetchOnWindowFocus: false,
+    refetchOnMount: false,
     refetchOnReconnect: false,
-    retry: false,
-    retryDelay: 3000,
 
-    onSuccess: () => {
-      alert('성공1');
-    },
-    onError: () => {
-      alert('실패1');
-    },
-    onSettled: () => {
-      alert('종료1');
-    },
+    // onSuccess: () => {
+    //   alert('성공1');
+    // },
+    // onError: () => {
+    //   alert('실패1');
+    // },
+    // onSettled: () => {
+    //   alert('종료1');
+    // },
   });
 
   if (isLoading) {
@@ -59,7 +92,7 @@ function FoodMenusList(
   }
 
   return data.map((res) => (
-    <UpdateInput key={res.id}>
+    <UpdateInput key={res.menu_id}>
       <img
         alt="FoodImg"
         name="menuImg"
@@ -74,13 +107,15 @@ function FoodMenusList(
           name="menuName"
           value={menuName}
           onChange={onChange}
+          onClick={setMenuId(res.menu_id)}
         />
-        {/* {console.log(menuName)} */}
+
         <input
           placeholder={res.info}
           name="menuContent"
           value={menuContent}
           onChange={onChange}
+          onClick={setMenuId(res.menu_id)}
         />
 
         <input
@@ -88,10 +123,18 @@ function FoodMenusList(
           name="menuPrice"
           value={menuPrice}
           onChange={onChange}
+          onClick={setMenuId(res.menu_id)}
         />
       </TypeInfo>
 
-      <button type="button">수정</button>
+      <button
+        type="button"
+        onClick={() => {
+          patchMutateMenu();
+        }}
+      >
+        수정
+      </button>
       <button
         type="button"
         onClick={() => {
@@ -106,8 +149,8 @@ function FoodMenusList(
 
 function HashTag({ deleteMutateTag, onKeyPress }) {
   const getHashTag = async () => {
-    const res = await axios.get('http://localhost:8080/foodtruck');
-    return res.data;
+    const res = await axios.get('http://localhost:8080/store');
+    return res.data.foodtruck;
   };
 
   const { isError, isLoading, data } = useQuery(['hashTag'], getHashTag, {
@@ -115,15 +158,15 @@ function HashTag({ deleteMutateTag, onKeyPress }) {
     refetchOnMount: false,
     refetchOnReconnect: false,
 
-    onSuccess: () => {
-      alert('태그성공');
-    },
-    onError: () => {
-      alert('태그실패');
-    },
-    onSettled: () => {
-      alert('종료');
-    },
+    // onSuccess: () => {
+    //   alert('태그성공');
+    // },
+    // onError: () => {
+    //   alert('태그실패');
+    // },
+    // onSettled: () => {
+    //   alert('종료');
+    // },
   });
 
   if (isLoading) {
@@ -151,6 +194,8 @@ function HashTag({ deleteMutateTag, onKeyPress }) {
 
 function FoodTruckSetting() {
   const [dropDown, setDropDown] = useState('종류를 선택하세요');
+  const [toggleStatus, setToggleStatus] = useState(false);
+
   const [inputs, setInputs] = useState({
     img: '',
     name: '',
@@ -201,7 +246,7 @@ function FoodTruckSetting() {
   };
 
   const postMenu = async () => {
-    const res = await axios.post('http://localhost:8080/store', {
+    const res = await axios.post(`/store/1/menus`, {
       menus: [
         {
           name: newMenuName,
@@ -243,13 +288,8 @@ function FoodTruckSetting() {
     return res;
   };
 
-  const deleteMenu = async () => {
-    const res = await axios.delete(`/menus/1`);
-    return res;
-  };
-
   const patchTag = async () => {
-    const res = await axios.patch('/tag/1');
+    const res = await axios.patch(``);
     return res;
   };
 
@@ -284,12 +324,6 @@ function FoodTruckSetting() {
   });
 
   const { mutate: deleteMutateTag } = useMutation(deleteTag, {
-    onSuccess,
-    onError,
-    onSettled,
-  });
-
-  const { mutate: deleteMutateMenu } = useMutation(deleteMenu, {
     onSuccess,
     onError,
     onSettled,
@@ -419,6 +453,28 @@ function FoodTruckSetting() {
           onChange={onChange}
         />
       </CreateFoodTruck>
+      <OpenOrClose>
+        <Toggle>
+          <input
+            type="checkbox"
+            onChange={() => {
+              setToggleStatus(!toggleStatus);
+            }}
+            onClick={() => {
+              if (toggleStatus === false) {
+                window.confirm('정말로 영업을 임시중단 하시겠습니까?');
+              }
+            }}
+            checked={toggleStatus}
+            id="toggle"
+            hidden
+          />
+          <label htmlFor="toggle">
+            <span />
+          </label>
+        </Toggle>
+        <span>{toggleStatus ? '영업 임시중단' : '영업중'}</span>
+      </OpenOrClose>
 
       <AddFood>
         <Title>가게 메뉴 추가</Title>
@@ -471,7 +527,6 @@ function FoodTruckSetting() {
             menuContent={menuContent}
             onChange={onChange}
             menuPrice={menuPrice}
-            deleteMutateMenu={deleteMutateMenu}
           />
 
           <SettingDoneBtn>
