@@ -7,7 +7,7 @@ function FoodTrucks() {
   const { data } = useFoodList();
 
   const createFoodTruck = () => {
-    return data?.data.map((item) => {
+    return data?.data.data.map((item) => {
       return <FoodTruck key={item.storeId} id={item} data={item} />;
     });
   };
