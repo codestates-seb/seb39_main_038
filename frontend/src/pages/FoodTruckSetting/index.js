@@ -27,9 +27,6 @@ function FoodMenusList(
   menuPrice,
   deleteMutateMenu,
 ) {
-  // const queryClient = useQueryClient();
-  // queryClient.invalidateQueries(['menus']);
-
   const getMenu = async () => {
     const res = await axios.get('http://localhost:8080/store');
     // session storage 에 담긴 사장님 ID 로 FoodTruck 중 일치하는걸 찾아 뿌리는 방식?
@@ -78,7 +75,7 @@ function FoodMenusList(
           value={menuName}
           onChange={onChange}
         />
-
+        {/* {console.log(menuName)} */}
         <input
           placeholder={res.info}
           name="menuContent"
@@ -115,9 +112,8 @@ function HashTag({ deleteMutateTag, onKeyPress }) {
 
   const { isError, isLoading, data } = useQuery(['hashTag'], getHashTag, {
     refetchOnWindowFocus: false,
+    refetchOnMount: false,
     refetchOnReconnect: false,
-    retry: false,
-    retryDelay: 3000,
 
     onSuccess: () => {
       alert('태그성공');

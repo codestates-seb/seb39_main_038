@@ -18,13 +18,9 @@ function Receipt() {
   const resetReceipt = useResetRecoilState(atoms.orderList);
 
   const orderedMenu = () => {
-    axios.post('http://localhost:8080/foodtruck', {
-      orderMenus: [
-        {
-          menuId: orderList.id,
-          count: orderList.count,
-        },
-      ],
+    axios.post('/order', {
+      kakao_id: 'id',
+      data: [{ menu_id: orderList.id, count: orderList.count }],
     });
   };
 
@@ -45,6 +41,18 @@ function Receipt() {
     onError,
     onSettled,
   });
+  const singlePrice = orderList.map((res) => {
+    return res.price;
+  });
+
+  const totalPrice = () => {
+    let total = 0;
+    for (let i = 0; i < singlePrice.length; i += 1) {
+      const price = singlePrice[i];
+      total += price;
+    }
+    return total;
+  };
 
   return (
     <StickyBody>
@@ -57,10 +65,16 @@ function Receipt() {
         </CartTab>
         <CartListBody>
           {orderList.map((res) => (
-            <ReceiptList name={res.name} price={res.price} key={res.id} />
+            <ReceiptList
+              name={res.name}
+              price={res.price}
+              key={res.id}
+              id={res.id}
+              count={res.count}
+            />
           ))}
         </CartListBody>
-        <TotalPrice>합계: 38,000원</TotalPrice>
+        <TotalPrice>{totalPrice()}</TotalPrice>
       </Cart>
 
       <OrderBtn>
