@@ -1,10 +1,14 @@
 package com.main_39.Spring.menu.controller;
 
 import com.main_39.Spring.menu.MenuMapper;
+import com.main_39.Spring.menu.dto.MenuDetailResponse;
 import com.main_39.Spring.menu.dto.MenuRequest;
 import com.main_39.Spring.menu.dto.MenuResponse;
+import com.main_39.Spring.menu.dto.MenusResponse;
 import com.main_39.Spring.menu.entity.Menu;
 import com.main_39.Spring.menu.service.MenuService;
+import com.main_39.Spring.store.entity.Store;
+import com.main_39.Spring.store.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,22 +21,26 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/menu")
 @RequiredArgsConstructor
 public class MenuController {
 
     private final MenuService menuService;
+
+    private final StoreService storeService;
 
     private final MenuMapper mapper;
 
     /**
      * 메뉴 등록
      */
-    @PostMapping
-    public ResponseEntity<Void> createMenu(@RequestBody MenuRequest menuRequest) {
+    @PostMapping("/store/{store-id}/menus")
+    public ResponseEntity<Void> createMenu(@PathVariable("store-id") long storeId,
+                                           @RequestBody MenuRequest menuRequest) {
 
-        menuService.createMenu(mapper.menuRequestToMenu(menuRequest));
+        menuService.createMenu(storeId, mapper.menuRequestToMenu(menuRequest));
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -40,26 +48,28 @@ public class MenuController {
     /**
      * 단일 메뉴 불러오기
      */
-    @GetMapping("/{menu-id}")
-    public ResponseEntity<MenuResponse> getMenu(@PathVariable("menu-id") long menuId) {
+    @GetMapping("/store/{store-id}/menus/{menu-id}")
+    public ResponseEntity<MenuDetailResponse> getMenu(@PathVariable("menu-id") long menuId) {
 
         Menu findMenu = menuService.findVerifiedMenu(menuId);
 
-        return new ResponseEntity<>(mapper.menuToMenuResponse(findMenu), HttpStatus.OK);
+        return new ResponseEntity<>(mapper.menuToMenuDetailResponse(findMenu), HttpStatus.OK);
     }
     /**
-     * TODO : 상점별 메뉴 불러오기
+     * 상점별 메뉴 불러오기
      */
-    @GetMapping("/{store-id}/menus")
-    public ResponseEntity getMenus() {
+    @GetMapping("/store/{store-id}/menus")
+    public ResponseEntity<MenusResponse> getMenuByStore(@PathVariable("store-id") long storeId) {
 
-        return new ResponseEntity("", HttpStatus.OK);
+        Store store = storeService.findStore(storeId);
+
+        return new ResponseEntity<>(mapper.menusToMenusResponse(store), HttpStatus.OK);
     }
 
     /**
      * 메뉴 수정
      */
-    @PatchMapping("/{menu-id}")
+    @PatchMapping("/store/{store-id}/menus/{menu-id}")
     public ResponseEntity<Void> updateMenu(@PathVariable("menu-id") long menuId,
                                            @RequestBody MenuRequest menuRequest) {
 
@@ -71,7 +81,7 @@ public class MenuController {
     /**
      * 메뉴 삭제
      */
-    @DeleteMapping("/{menu-id}")
+    @DeleteMapping("/store/{store-Id}/menus/{menu-id}")
     public ResponseEntity<Void> deleteMenu(@PathVariable("menu-id") long menuId) {
 
         menuService.deleteMenu(menuId);

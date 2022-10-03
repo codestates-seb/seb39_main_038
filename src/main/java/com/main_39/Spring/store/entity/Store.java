@@ -1,13 +1,15 @@
 package com.main_39.Spring.store.entity;
 
 import com.main_39.Spring.member.entity.Local;
+import com.main_39.Spring.menu.entity.Menu;
 import com.main_39.Spring.order.entity.OrderMenu;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Getter
@@ -42,8 +44,12 @@ public class Store {
 
     private String storeType;
 
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
+    private List<Menu> menus = new ArrayList<>();
 
-
+    public int getTotalMenu() {
+        return menus.size();
+    }
 
 
 //    public Store(String storeName) {
