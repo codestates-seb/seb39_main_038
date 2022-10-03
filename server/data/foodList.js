@@ -31,6 +31,9 @@ for (let i = 0; i < data.length; i++) {
     storeType: null,
     storeWaittime: waittime[randomRange(0, 5)],
     storeTag: tag[randomRange(0, 4)],
+    totalGrade: 4,
+    totalReview: 100,
+    totalComment: 100,
   };
   data[i] = result;
 }
