@@ -1,7 +1,7 @@
 import React from 'react';
 import { CartList, FoodName, CartListAdd } from './styles';
 
-function ReceiptList({ name, price }) {
+function ReceiptList({ name, price, count }) {
   return (
     <CartList>
       <div>
@@ -14,7 +14,7 @@ function ReceiptList({ name, price }) {
           </div>
           <div>
             <div type="button">-</div>
-            <span>1</span>
+            <span>{count}</span>
             <div type="button">+</div>
           </div>
         </CartListAdd>
