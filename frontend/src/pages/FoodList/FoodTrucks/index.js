@@ -28,7 +28,7 @@ function FoodTrucks() {
     for (const page of data.pages) result.push(...page.data.data);
 
     return result.map((item) => {
-      return <FoodTruck key={item.storeId} id={item} data={item} />;
+      return <FoodTruck key={item.storeId} data={item} />;
     });
   };
 
