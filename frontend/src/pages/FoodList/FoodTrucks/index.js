@@ -34,9 +34,6 @@ function FoodTrucks() {
 
   return (
     <FoodListContainer>
-      <button type="button" onClick={fetchNextPage}>
-        클릭
-      </button>
       <FoodListWrapper>{createFoodTruck()}</FoodListWrapper>
       {hasNextPage ? (
         <Spinner
