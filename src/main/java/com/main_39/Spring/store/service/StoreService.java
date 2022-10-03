@@ -21,12 +21,13 @@ public class StoreService {
 
     public Store createdStore(Store store) {
         verifyExistsName(store.getStoreName());
+
+
         return storeRepository.save(store);
     }
 
     public Store updateStore(Store store) {
         Store findStore = findVerifiedStore(store.getStoreId());
-
 
         Optional.ofNullable(store.getStorePhone())
                 .ifPresent(phone -> findStore.setStorePhone(phone));
@@ -42,8 +43,16 @@ public class StoreService {
                 .ifPresent(image -> findStore.setStoreImage(image));
         Optional.ofNullable(store.getStoreType())
                 .ifPresent(type -> findStore.setStoreType(type));
-
-
+        Optional.ofNullable(store.getStoreTime())
+                .ifPresent(time -> findStore.setStoreTime(time));
+        Optional.ofNullable(store.getStoreWaitTime())
+                .ifPresent(waitTime -> findStore.setStoreWaitTime(waitTime));
+        Optional.ofNullable(store.getStoreAddress())
+                .ifPresent(address -> findStore.setStoreAddress(address));
+        Optional.ofNullable(store.getStorePayment())
+                .ifPresent(payment -> findStore.setStorePayment(payment));
+        Optional.ofNullable(store.getStoreTag())
+                .ifPresent(tag -> findStore.setStoreTag(tag));
 
         return storeRepository.save(findStore);
 

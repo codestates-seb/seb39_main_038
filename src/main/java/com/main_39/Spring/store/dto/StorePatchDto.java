@@ -14,6 +14,11 @@ public class StorePatchDto {
         private String storeContent;
         private String storeImage;
         private String storeType;
+        private String storeTime;
+        private String storeWaitTime;
+        private String storeAddress;
+        private String storePayment;
+        private String storeTag;
 
         public void setStoreId(long storeId) {
                 this.storeId = storeId;

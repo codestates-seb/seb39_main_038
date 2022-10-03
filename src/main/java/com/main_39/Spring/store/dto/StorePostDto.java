@@ -7,7 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class StorePostDto {
         private long storeId;
-        private long memberId;
+        private long localId;
         private String storePhone;
         private String storeNumber;
         private String storeStatus;
@@ -15,4 +15,9 @@ public class StorePostDto {
         private String storeContent;
         private String storeImage;
         private String storeType;
+        private String storeTime;
+        private String storeWaitTime;
+        private String storeAddress;
+        private String storePayment;
+        private String storeTag;
 }
