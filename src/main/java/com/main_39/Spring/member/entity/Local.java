@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -49,7 +50,7 @@ public class Local {
     private Role role = Role.SELLER;
 
     //외래키
-    @OneToOne(mappedBy = "local")
+    @OneToOne(mappedBy = "local", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private Store store;
 
     public enum Role{
