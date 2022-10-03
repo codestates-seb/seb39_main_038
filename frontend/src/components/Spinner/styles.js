@@ -9,8 +9,8 @@ const Container = styled.div`
 `;
 
 const SpinnerContainer = styled.div`
-  width: 150px;
-  height: 150px;
+  width: ${({ width }) => width + 60 || 150};
+  height: ${({ height }) => height + 60 || 150};
   display: inline-block;
   overflow: hidden;
   background: none;
@@ -37,8 +37,8 @@ const spinnerKeyframes = keyframes`
 const SpinnerItem = styled.div`
   box-sizing: content-box;
   position: absolute;
-  width: 90px;
-  height: 90px;
+  width: ${({ width }) => width || 90};
+  height: ${({ height }) => height || 90};
   border: 15px solid ${({ color }) => color};
   border-top-color: transparent;
   border-radius: 50%;
