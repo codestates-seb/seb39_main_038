@@ -33,8 +33,17 @@ function FoodModal({ closeModal }) {
   const goBusket = () => {
     closeModal();
     setOrderList((prev) => {
-      const result = { name, price, count };
-      return [...prev, result];
+      const data = { name, price, count };
+      if (prev.length === 0) return [...prev, data];
+      const index = prev.findIndex((item) => item.name === name);
+      if (index === -1) return [...prev, data];
+      const result = [];
+      for (let i = 0; i < prev.length; i += 1) {
+        const total = prev[i].count + count;
+        if (index === i) result.push({ ...prev[i], count: total });
+        else result.push(prev[i]);
+      }
+      return result;
     });
   };
 
