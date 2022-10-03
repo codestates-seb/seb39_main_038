@@ -42,7 +42,7 @@ function ProviderLogin() {
 
   return (
     <Form.Container>
-      <Logo />
+      <Logo>YAPICK</Logo>
       <Form.Wrapper onSubmit={hanldeOnSumbmit}>
         <LoginInner>
           <Form.Input

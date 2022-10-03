@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, SvgIcon } from '../../../components';
-import { ButtonInner, TextBox, Text } from './styles';
+import { ButtonInner, TextBox, Text, Logo } from './styles';
 import { KAKAO_API, TEXT, ALERT } from '../../../constants';
 
 function ConsumerLogin() {
@@ -16,6 +16,7 @@ function ConsumerLogin() {
 
   return (
     <Form.Container onSubmit={handleOnSubmit(KAKAO_API.URI())}>
+      <Logo>YAPICK</Logo>
       <Form.Wrapper>
         <ButtonInner>
           <Form.Button type="submit" color="#ffeb00">
