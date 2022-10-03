@@ -13,8 +13,8 @@ app.get("/store", (req, res) => {
   const { page, size, type } = req.query;
 
   const pageInfo = (data) => ({
-    page,
-    size,
+    page: Number(page),
+    size: Number(page),
     totalElements: data.length,
     totalPages: parseInt(data.length / size, 10) + 1,
   });
