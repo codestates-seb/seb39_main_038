@@ -11,6 +11,7 @@ import { DetailInfo } from './DetailInfo';
 import { DetailReview } from './DetailReview';
 import { Receipt } from './Receipt';
 import { SvgIcon } from './SvgIcon';
+import { ErrorBoundary } from './ErrorBoundary';
 
 export {
   Banner,
@@ -26,4 +27,5 @@ export {
   DetailReview,
   Receipt,
   SvgIcon,
+  ErrorBoundary,
 };

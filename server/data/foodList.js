@@ -11,26 +11,37 @@ const waittime = [
   "40분 이상",
 ];
 
-const name = [
-  "중식 푸드트럭",
-  "일식 푸드트럭",
-  "한식 푸드트럭",
-  "양식 푸드트럭",
+const menus = [
+  { name: "양식 푸드트럭", type: "western" },
+  { name: "한식 푸드트럭", type: "korean" },
+  { name: "중식 푸드트럭", type: "chinese" },
+  { name: "일식 푸드트럭", type: "japanese" },
+  { name: "분식 푸드트럭", type: "snackbar" },
+  { name: "야식 푸드트럭", type: "nightsnack" },
+  { name: "카페 푸드트럭", type: "cafe" },
 ];
 
 const tag = ["카드 환영", "시원한 맥주", "얼음물 무료", "맛집"];
 
 for (let i = 0; i < data.length; i++) {
+  const menu = menus[randomRange(0, 7)];
   const result = {
     storeId: i + 1,
-    localId: i + 1,
+    storePhone: "010-2222-2222",
+    storeNumber: "010-3333-3333",
     storeStatus: true,
-    storeName: name[randomRange(0, 4)],
+    storeName: menu.name,
+    storeContent: "가게 정보",
     storeImage:
       "https://www.yogiyo.co.kr/mobile/image/default_restaurant_logo.png",
-    storeType: null,
+    storeType: menu.type,
+    storeTime: "오후 10시까지",
     storeWaittime: waittime[randomRange(0, 5)],
+    storeAddress: "가게 주소",
     storeTag: tag[randomRange(0, 4)],
+    totalGrade: 4,
+    totalReview: 100,
+    totalComment: 100,
   };
   data[i] = result;
 }

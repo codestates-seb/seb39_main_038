@@ -6,12 +6,12 @@ import {
   SpinnerItem,
 } from './styles';
 
-function Spinner({ color }) {
+function Spinner({ color, size }) {
   return (
     <Container>
-      <SpinnerContainer>
+      <SpinnerContainer size={size}>
         <SpinnerWrpper>
-          <SpinnerItem color={color} />
+          <SpinnerItem color={color} size={size} />
         </SpinnerWrpper>
       </SpinnerContainer>
     </Container>

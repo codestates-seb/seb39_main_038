@@ -1,8 +1,15 @@
 import styled from 'styled-components';
+import { COLOR } from '../../../constants';
 
 const Logo = styled.div`
   height: 45px;
-  background-color: red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 40px;
+  letter-spacing: 2px;
+  font-family: 'Anton', sans-serif;
+  color: ${COLOR.NAVY};
 `;
 
 const LoginInner = styled.div`
