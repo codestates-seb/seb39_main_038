@@ -15,7 +15,16 @@ import {
 } from './styles';
 
 function FoodTruck({
-  data: { storeId, storeName, storeTag, storeWaittime, storeImage },
+  data: {
+    storeId,
+    storeName,
+    storeTag,
+    storeWaittime,
+    storeImage,
+    totalGrade,
+    totalReview,
+    totalComment,
+  },
 }) {
   const navigate = useNavigate();
   const handleOnClick = () => navigate(`/${ROUTE.FOODLIST.PATH}/${storeId}`);
@@ -27,9 +36,9 @@ function FoodTruck({
         <FoodTruckTextInner>
           <FoodTruckTitle>{storeName}</FoodTruckTitle>
           <FoodTruckContentBox>
-            <FoodTruckText color="#ffa800">★ {5}</FoodTruckText>
-            <FoodTruckText>리뷰 {100}</FoodTruckText>
-            <FoodTruckText none>답변 {100}</FoodTruckText>
+            <FoodTruckText color="#ffa800">★ {totalGrade}</FoodTruckText>
+            <FoodTruckText>리뷰 {totalReview}</FoodTruckText>
+            <FoodTruckText none>답변 {totalComment}</FoodTruckText>
           </FoodTruckContentBox>
           <FoodTruckTagBox>
             <FoodTruckTag>{storeTag}</FoodTruckTag>

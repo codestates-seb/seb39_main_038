@@ -1,5 +1,5 @@
 import { atom } from 'recoil';
-import { storge } from './storge';
+import { storge } from '../utils/storge';
 import { MENU } from '../constants';
 
 const sessionStorageEffect =

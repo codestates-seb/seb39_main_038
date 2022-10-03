@@ -49,8 +49,8 @@ function GlobalNav() {
   return (
     <NavContainer>
       <NavWrapper>
-        <Link to={ROUTE.HOME.PATH}>
-          <NavLogo />
+        <Link to={ROUTE.HOME.PATH} style={{ textDecoration: 'none' }}>
+          <NavLogo>YAPICK</NavLogo>
         </Link>
         {isLoginComponent()}
       </NavWrapper>
