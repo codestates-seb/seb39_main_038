@@ -104,9 +104,9 @@ function FoodDetail() {
               정보
             </InfoTabBtn>
           </MenuBar>
-          {menu === '메뉴' ? <DetailFoodList /> : null}
-          {menu === '리뷰' ? <DetailReview /> : null}
-          {menu === '정보' ? <DetailInfo /> : null}
+          {menu === '메뉴' ? <DetailFoodList id={id} /> : null}
+          {menu === '리뷰' ? <DetailReview id={id} /> : null}
+          {menu === '정보' ? <DetailInfo id={id} /> : null}
         </MenuSection>
       </MainBody>
       <Receipt />
