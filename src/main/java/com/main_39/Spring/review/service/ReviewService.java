@@ -2,6 +2,7 @@ package com.main_39.Spring.review.service;
 
 import com.main_39.Spring.exception.BusinessLogicException;
 import com.main_39.Spring.exception.ExceptionCode;
+import com.main_39.Spring.member.service.MemberService;
 import com.main_39.Spring.review.entity.Review;
 import com.main_39.Spring.review.repository.ReviewRepository;
 import com.main_39.Spring.store.entity.Store;
@@ -18,11 +19,16 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final StoreService storeService;
 
+    private final MemberService memberService;
+
+
     public ReviewService(ReviewRepository reviewRepository,
-                         StoreService storeService) {
+                         StoreService storeService,
+                         MemberService memberService) {
 
         this.reviewRepository = reviewRepository;
         this.storeService = storeService;
+        this.memberService = memberService;
     }
 
     public Review createdReview(long storeId, Review review) {
@@ -33,6 +39,8 @@ public class ReviewService {
         return reviewRepository.save(review);
 
     }
+
+
 
     public Review updateReview(Review review) {
         Review findReview = findVerifiedReview(review.getReviewId());

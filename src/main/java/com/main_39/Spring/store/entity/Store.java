@@ -69,11 +69,12 @@ public class Store {
     @JoinColumn(name = "local_id")
     private Local local;
 
-//    public void setLocal(Local local) {
-//        this.local = local;
-//        if(!local.getStores().contains(this))
-//            local.getStores().add(this);
-//    }
+    public void setLocal(Local local) {
+        this.local = local;
+        if(local.getStore() !=this) {
+            local.setStore(this);
+        }
+    }
 
     /**
      * total review
