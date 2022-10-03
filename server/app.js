@@ -32,8 +32,12 @@ app.get("/store", (req, res) => {
   });
 });
 
+app.get("/store/:id", (req, res) => {
+  const { id } = req.params;
+  return res.status(200).json({ data: foodListData[id] });
+});
+
 app.post("/local/mypage", (req, res) => {
-  console.log(1);
   return res.status(200).json({
     data: {
       avatar: null,
