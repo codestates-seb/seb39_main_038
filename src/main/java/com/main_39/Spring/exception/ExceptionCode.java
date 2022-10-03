@@ -66,7 +66,11 @@ public enum ExceptionCode {
     /**
      * 주문
      */
-    ORDER_NOT_FOUND(226,8001, "존재하지 않는 주문입니다.");
+    ORDER_NOT_FOUND(226,8001, "존재하지 않는 주문입니다."),
+    /**
+     * 답변
+     */
+    COMMENT_NOT_EXITS(226, 9001, "존재하지 않는 답변입니다.");
 
     @Getter
     private final int status;

@@ -7,7 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class StoreResponseDto {
         private long storeId;
-        private long localId;
+//        private long localId;
         private String storePhone;
         private String storeNumber;
         private String storeStatus;
@@ -15,4 +15,15 @@ public class StoreResponseDto {
         private String storeContent;
         private String storeImage;
         private String storeType;
+        private String storeTime;
+        private String storeWaitTime;
+        private String storeAddress;
+        private String storePayment;
+        private String storeTag;
+
+        private int totalReview;
+        private int totalGrade;
+        private int totalComment;
+
+//        private List<ReviewResponseDto> reviews;
 }
