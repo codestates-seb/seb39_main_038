@@ -107,7 +107,11 @@ public class StoreService {
 
     public void deleteStore(long storeId){
         Store findStore = findVerifiedStore(storeId);
-        if(findStore.getStoreImage() != null) amazonS3.deleteObject(bucket,findStore.getStoreImage());
+        if(findStore.getStoreImage() != null){
+            int index = findStore.getStoreImage().indexOf("/",8);
+            String key = findStore.getStoreImage().substring(index+1);
+            amazonS3.deleteObject(bucket,key);
+        }
         storeRepository.delete(findStore);
 
     }
