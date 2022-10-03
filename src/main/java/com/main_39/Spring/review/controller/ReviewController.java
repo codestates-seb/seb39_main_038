@@ -2,6 +2,8 @@ package com.main_39.Spring.review.controller;
 
 import com.main_39.Spring.dto.MultiResponseDto;
 import com.main_39.Spring.dto.SingleResponseDto;
+import com.main_39.Spring.member.entity.Kakao;
+import com.main_39.Spring.member.service.MemberService;
 import com.main_39.Spring.review.dto.ReviewPostDto;
 import com.main_39.Spring.review.dto.ReviewResponseDto;
 import com.main_39.Spring.review.dto.ReviewsResponseDto;
@@ -26,35 +28,48 @@ public class ReviewController {
     private final ReviewService reviewService;
     private final ReviewMapper mapper;
     private final StoreService storeService;
+    private final MemberService memberService;
+
+
 
     public ReviewController(ReviewService reviewService,
                             ReviewMapper mapper,
-                            StoreService storeService) {
+                            StoreService storeService,
+                            MemberService memberService) {
         this.reviewService = reviewService;
         this.mapper = mapper;
         this.storeService = storeService;
+        this.memberService = memberService;
+
     }
 
-//    @PostMapping("/ask")
-//    public ResponseEntity postReview(@Valid @RequestBody ReviewPostDto reviewPostDto) {
+//    @PostMapping("/store/{store-id}/review/ask")
+//    public ResponseEntity postReview(@PathVariable("store-id") long storeId,
+//                                     @Valid @RequestBody ReviewPostDto reviewPostDto) {
 //
 //        Review review =
-//                reviewService.createdReview(mapper.reviewPostDtoToReview(reviewPostDto));
+//                reviewService.createdReview(storeId, mapper.reviewPostDtoToReview(reviewPostDto));
 //        return new ResponseEntity<>(
 //                new SingleResponseDto<>(mapper.reviewToReviewResponseDto(review)),
 //                HttpStatus.CREATED);
 //    }
 
-    @PostMapping("/store/{store-id}/review/ask")
-    public ResponseEntity postReview(@PathVariable("store-id") long storeId,
-            @Valid @RequestBody ReviewPostDto reviewPostDto) {
+        @PostMapping("/store/{store-id}/review/ask")
+        public ResponseEntity postReview(@PathVariable("store-id") long storeId,
+                                         @Valid @RequestBody ReviewPostDto reviewPostDto) {
 
-        Review review =
-                reviewService.createdReview(storeId, mapper.reviewPostDtoToReview(reviewPostDto));
-        return new ResponseEntity<>(
-                new SingleResponseDto<>(mapper.reviewToReviewResponseDto(review)),
-                HttpStatus.CREATED);
-    }
+            Review review = mapper.reviewPostDtoToReview(reviewPostDto);
+
+            Kakao kakao = memberService.findVerifiedKakao(reviewPostDto.getKakaoId());
+            review.setKakao(kakao);
+
+            Review posted = reviewService.createdReview(storeId, review);
+            ReviewResponseDto response = mapper.reviewToReviewResponseDto(posted);
+
+
+            return new ResponseEntity<>(
+                    new SingleResponseDto<>(response), HttpStatus.CREATED);
+        }
 
     /**
      * 상점별 리뷰 불러오기
