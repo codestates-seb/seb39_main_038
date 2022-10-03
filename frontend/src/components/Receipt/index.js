@@ -14,6 +14,9 @@ import { atoms } from '../../store';
 function Receipt() {
   const orderList = useRecoilValue(atoms.orderList);
   const resetReceipt = useResetRecoilState(atoms.orderList);
+  const total = orderList.reduce(
+    (acc, curr) => acc.price * acc.count + curr.price * curr.count,
+  );
 
   return (
     <StickyBody>
@@ -26,10 +29,15 @@ function Receipt() {
         </CartTab>
         <CartListBody>
           {orderList.map((res) => (
-            <ReceiptList name={res.name} price={res.price} />
+            <ReceiptList
+              key={res.name}
+              name={res.name}
+              price={res.price}
+              count={res.count}
+            />
           ))}
         </CartListBody>
-        <TotalPrice>합계: 38,000원</TotalPrice>
+        <TotalPrice>합계: {total}원</TotalPrice>
       </Cart>
 
       <OrderBtn>
