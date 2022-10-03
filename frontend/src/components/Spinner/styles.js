@@ -9,8 +9,8 @@ const Container = styled.div`
 `;
 
 const SpinnerContainer = styled.div`
-  width: ${({ width }) => width + 60 || 150};
-  height: ${({ height }) => height + 60 || 150};
+  width: 150px;
+  height: 150px;
   display: inline-block;
   overflow: hidden;
   background: none;
@@ -37,9 +37,10 @@ const spinnerKeyframes = keyframes`
 const SpinnerItem = styled.div`
   box-sizing: content-box;
   position: absolute;
-  width: ${({ width }) => width || 90};
-  height: ${({ height }) => height || 90};
+  width: ${({ size }) => size};
+  height: ${({ size }) => size};
   border: 15px solid ${({ color }) => color};
+  border-width: ${({ size }) => parseInt(size / 6, 10)};
   border-top-color: transparent;
   border-radius: 50%;
   animation: ${spinnerKeyframes} 1s linear infinite;
@@ -49,6 +50,7 @@ const SpinnerItem = styled.div`
 
 SpinnerItem.defaultProps = {
   color: '#f4b504',
+  size: 90,
 };
 
 export { Container, SpinnerContainer, SpinnerWrpper, SpinnerItem };
