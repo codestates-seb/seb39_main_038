@@ -13,13 +13,14 @@ const sessionStorageEffect =
   };
 
 const atoms = {
+  menuQuery: atom({ key: 'menu', default: MENU[0].query }),
+
   isLogin: atom({
     key: 'isLogin',
     default: { state: false, type: null },
     effects: [sessionStorageEffect('isLogin')],
   }),
 
-  menuQuery: atom({ key: 'menu', default: MENU[0].query }),
   modal: atom({
     key: 'modal',
     default: { food: false, order: false, email: false },
@@ -27,7 +28,9 @@ const atoms = {
 
   menuOrder: atom({
     key: 'menuOrder',
-    default: [{ name: '', price: null, id: null }],
+    default: [
+      { storeId: null, name: null, price: null, info: null, img: null },
+    ],
   }),
 
   orderList: atom({
