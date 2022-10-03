@@ -81,7 +81,7 @@ public class StoreController {
 
     @GetMapping
     public ResponseEntity getStores(@Positive @RequestParam int page,
-                                    @Positive @RequestParam int size) {
+                                    @Positive @RequestParam(required = false, defaultValue = "15") int size){
         Page<Store> pageStores = storeService.findStores(page -1, size);
         List<Store> stores = pageStores.getContent();
 
