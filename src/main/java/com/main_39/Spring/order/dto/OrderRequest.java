@@ -1,5 +1,6 @@
 package com.main_39.Spring.order.dto;
 
+import com.main_39.Spring.order.entity.PaymentType;
 import lombok.Getter;
 
 import java.util.List;
@@ -8,4 +9,6 @@ import java.util.List;
 public class OrderRequest {
 
     private List<OrderMenuRequest> orderMenus;
+
+    private PaymentType paymentType;
 }

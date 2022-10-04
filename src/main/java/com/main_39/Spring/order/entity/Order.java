@@ -34,6 +34,8 @@ public class Order extends Auditable {
     @OneToMany(mappedBy = "order", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<OrderMenu> orderMenus = new ArrayList<>();
 
+    private PaymentType paymentType;
+
     private int count;
 
     public void addKakao(Kakao kakao) {
@@ -46,6 +48,9 @@ public class Order extends Auditable {
         this.orderMenus = orderMenus;
     }
 
+    public void addPaymentType(PaymentType paymentType) {
+        this.paymentType = paymentType;
+    }
     public int getTotalCount() {
         return orderMenus.stream()
                 .mapToInt(OrderMenu::getCount)
