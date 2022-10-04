@@ -6,7 +6,6 @@ import com.main_39.Spring.menu.dto.MenuRequest;
 import com.main_39.Spring.menu.entity.Menu;
 import com.main_39.Spring.menu.repository.MenuRepository;
 import com.main_39.Spring.store.entity.Store;
-import com.main_39.Spring.store.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,14 +17,11 @@ public class MenuService {
 
     private final MenuRepository menuRepository;
 
-    private final StoreService storeService;
-
     /**
      * 메뉴 등록하기
      */
-    public void createMenu(long storeId, Menu menu) {
+    public void createMenu(Store store, Menu menu) {
 
-        Store store = storeService.findStore(storeId);
         menu.addStore(store);
 
         menuRepository.save(menu);
@@ -41,6 +37,10 @@ public class MenuService {
                 .ifPresent(updateMenu::addName);
         Optional.of(requestDto.getPrice())
                 .ifPresent(updateMenu::addPrice);
+        Optional.ofNullable(requestDto.getImage())
+                .ifPresent(updateMenu::addImage);
+        Optional.ofNullable(requestDto.getContent())
+                .ifPresent(updateMenu::addContent);
 
         menuRepository.save(updateMenu);
     }

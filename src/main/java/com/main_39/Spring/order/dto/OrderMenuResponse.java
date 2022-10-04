@@ -4,14 +4,14 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class OrderMenuResponseDto {
+public class OrderMenuResponse {
     private long menuId;
     private String name;
     private int price;
     private int count;
 
     @Builder
-    public OrderMenuResponseDto(long menuId, String name, int price, int count) {
+    public OrderMenuResponse(long menuId, String name, int price, int count) {
         this.menuId = menuId;
         this.name = name;
         this.price = price;
