@@ -50,7 +50,7 @@ public class Local {
     private Role role = Role.SELLER;
 
     //외래키
-    @OneToOne(mappedBy = "local", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToOne(mappedBy = "local")
     private Store store;
 
     public enum Role{
