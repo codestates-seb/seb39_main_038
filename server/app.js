@@ -1,7 +1,7 @@
 /* /store?page={page}&size={size}&type={chinese} */
 const express = require("express");
 const cors = require("cors");
-const { foodListData } = require("./data");
+const { foodListData, createFoods } = require("./data");
 
 const app = express();
 const PORT = 80;
@@ -35,6 +35,13 @@ app.get("/store", (req, res) => {
 app.get("/store/:id", (req, res) => {
   const { id } = req.params;
   return res.status(200).json({ data: foodListData[id] });
+});
+
+app.get("/store/:id/menus", (req, res) => {
+  const { id } = req.params;
+  return res
+    .status(200)
+    .json({ storeId: Number(id), storeMenu: createFoods(id) });
 });
 
 app.post("/local/mypage", (req, res) => {
