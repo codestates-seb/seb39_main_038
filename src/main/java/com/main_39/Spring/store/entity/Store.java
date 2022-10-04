@@ -133,7 +133,8 @@ public class Store {
     }
 
     public double getTotalGrade() {
-        long total = reviews.stream().mapToInt(review -> review.getReviewGrade()).sum();
+        long total = 0;
+        total = reviews.stream().mapToInt(review -> review.getReviewGrade()).sum();
         double avg = (double)total / (double)reviews.size();
         avg = Math.round(avg * 10) / 10.0;
         return avg;
