@@ -72,9 +72,14 @@ public class ReviewService {
     }
 
     private void saveImageToS3(Review review){
-        String data = review.getReviewImage().split(",")[1];
+        String data;
+        try{
+            data = review.getReviewImage().split(",")[1];
+        }catch(ArrayIndexOutOfBoundsException e){
+            System.out.println("리뷰 이미지 삽입 실패");
+            throw new BusinessLogicException(ExceptionCode.REVIEW_NOT_EXISTS);
+        }
         String s3FileName = "reviews/"+ review.getReviewId();
-
         byte[] decodeByte = Base64.getDecoder().decode(data);
         InputStream inputStream = new ByteArrayInputStream(decodeByte);
         ObjectMetadata objectMetadata = new ObjectMetadata();

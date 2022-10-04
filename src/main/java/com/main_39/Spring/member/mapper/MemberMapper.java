@@ -6,13 +6,18 @@ import com.main_39.Spring.member.dto.LocalDto;
 import com.main_39.Spring.member.dto.OAuthToken;
 import com.main_39.Spring.member.entity.Kakao;
 import com.main_39.Spring.member.entity.Local;
+import com.main_39.Spring.order.dto.OrderResponse;
+import com.main_39.Spring.order.mapper.OrderMapper;
 import com.main_39.Spring.store.dto.StoreResponseDto;
 import com.main_39.Spring.store.entity.Store;
 import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
 
-@Mapper(componentModel =  "spring")
+import java.util.List;
+
+@Mapper(componentModel =  "spring", uses = OrderMapper.class)
 public interface MemberMapper {
-
+    OrderMapper orderMapper = Mappers.getMapper(OrderMapper.class);
     Local localPostToLocal(LocalDto.Post localPost);
     LocalDto.postResponse localToLocalPostResponse(Local local);
     default LocalDto.response localToLocalDtoResponse(Local local){
@@ -45,7 +50,11 @@ public interface MemberMapper {
                 .build();
     }
 
-    KakaoDto.response kakaoToKakaoDtoResponse(Kakao kakao);
+    default KakaoDto.response kakaoToKakaoDtoResponse(Kakao kakao){
+        List<OrderResponse> orderResponses = orderMapper.orderToOrderResponse(kakao.getOrders());
+        return new KakaoDto.response(kakao.getKakaoId(),kakao.getConnectedAt(),kakao.getNickname(),kakao.getProfileImage(),
+                kakao.getThumbnailImage(),kakao.getEmail(),kakao.getMileage(),kakao.getRole(),orderResponses);
+    }
 
     default LocalDto.searchIdResponse localToLocalDtoSearchIdResponse(Local local){
         return new LocalDto.searchIdResponse(local.getEmail());

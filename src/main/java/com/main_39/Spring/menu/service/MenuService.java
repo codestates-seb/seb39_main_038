@@ -58,7 +58,13 @@ public class MenuService {
     }
 
     private void saveImageToS3(Menu menu){
-        String data = menu.getImage().split(",")[1];
+        String data;
+        try{
+            data = menu.getImage().split(",")[1];
+        }catch(ArrayIndexOutOfBoundsException e){
+            System.out.println("메뉴 이미지 수정 실패");
+            throw new BusinessLogicException(ExceptionCode.MENU_PATCH_WRONG_ACCESS);
+        }
         String s3FileName = "menus/" + menu.getMenuId();
         byte[] decodeByte = Base64.getDecoder().decode(data);
         InputStream inputStream = new ByteArrayInputStream(decodeByte);
