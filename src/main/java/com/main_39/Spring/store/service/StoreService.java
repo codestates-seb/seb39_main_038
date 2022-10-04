@@ -119,6 +119,14 @@ public class StoreService {
     }
 
     /**
+     * 푸드트럭 타입별 푸드트럭 목록 불러오기
+     */
+    public Page<Store> findByStoreType(Store.StoreType storeType, int page, int size) {
+        return storeRepository.findByStoreType(storeType,PageRequest.of(page, size,
+                Sort.by("storeId").descending()));
+    }
+
+    /**
      * 푸드트럭 삭제
      */
     public void deleteStore(long storeId){
