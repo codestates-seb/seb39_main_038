@@ -3,25 +3,21 @@ import { useSetRecoilState } from 'recoil';
 import { atoms } from '../../store';
 import { CustomModal } from '../CustomModal';
 import { Section, Menu, MenuInfo, Name, Info, Price, MenuImg } from './styles';
-import { useModal } from '../../hooks';
+import { useModal, useDetailFoodList } from '../../hooks';
 
-const foods = [
-  { name: '치킨', info: '바삭한 치킨', price: 10000, img: null },
-  { name: '피자', info: '바삭한 피자', price: 10000, img: null },
-];
-
-function DetailFoodList() {
+function DetailFoodList({ id }) {
   const [openFood, closeFood] = useModal('food');
   const setMenuOrder = useSetRecoilState(atoms.menuOrder);
+  const { data } = useDetailFoodList(id);
 
-  const handleOnClick = (data) => () => {
+  const handleOnClick = (value, storeId) => () => {
     openFood();
-    setMenuOrder({ ...data });
+    setMenuOrder({ storeId, ...value });
   };
 
   const createFoodMenuList = () => {
-    return foods.map((menu) => (
-      <Menu key={menu.name} onClick={handleOnClick(menu)}>
+    return data?.data.storeMenu.map((menu) => (
+      <Menu key={menu.name} id={id} onClick={handleOnClick(menu, id)}>
         <MenuInfo>
           <Name>{menu.name}</Name>
           <Info>{menu.info}</Info>
