@@ -10,5 +10,7 @@ public class OrderRequest {
 
     private List<OrderMenuRequest> orderMenus;
 
+    private String orderRequest;
+
     private PaymentType paymentType;
 }

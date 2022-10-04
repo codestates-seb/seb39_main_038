@@ -36,7 +36,7 @@ public class Order extends Auditable {
 
     private PaymentType paymentType;
 
-    private int count;
+    private String orderRequest;
 
     public void addKakao(Kakao kakao) {
         this.kakao = kakao;
@@ -50,6 +50,10 @@ public class Order extends Auditable {
 
     public void addPaymentType(PaymentType paymentType) {
         this.paymentType = paymentType;
+    }
+
+    public void addOrderRequest(String orderRequest) {
+        this.orderRequest = orderRequest;
     }
     public int getTotalCount() {
         return orderMenus.stream()
