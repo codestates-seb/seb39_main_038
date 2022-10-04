@@ -1,11 +1,13 @@
 package com.main_39.Spring.member.dto;
 
 import com.main_39.Spring.member.entity.Kakao;
+import com.main_39.Spring.order.dto.OrderResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 
 public class KakaoDto {
@@ -39,5 +41,6 @@ public class KakaoDto {
         private String email;
         private long mileage;
         private Kakao.Role role;
+        private List<OrderResponse> orders;
     }
 }

@@ -225,7 +225,13 @@ public class MemberService {
      * S3에 이미지 저장 후 URL 반환
      * */
     private void saveAvatarToS3(Local local){
-        String data = local.getAvatar().split(",")[1];
+        String data;
+        try{
+            data = local.getAvatar().split(",")[1];
+        }catch(ArrayIndexOutOfBoundsException e){
+            System.out.println("S3에 회원 프로필 입력 실패");
+            throw new BusinessLogicException(ExceptionCode.OAUTH_USERINFO_REQUEST_FAILED);
+        }
         String s3FileName =  "avatars/" + local.getEmail();
 
         byte[] decodeByte = Base64.getDecoder().decode(data);

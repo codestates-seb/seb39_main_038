@@ -72,9 +72,14 @@ public class StoreService {
     }
 
     private void saveImageToS3(Store store){
-        String data = store.getStoreImage().split(",")[1];
+        String data;
+        try{
+            data = store.getStoreImage().split(",")[1];
+        }catch(ArrayIndexOutOfBoundsException e){
+            System.out.println("가게 이미지 변경 실패");
+            throw new BusinessLogicException(ExceptionCode.STORE_PATCH_WRONG_ACCESS);
+        }
         String s3FileName = "stores/" + store.getStoreId();
-
         byte[] decodeByte = Base64.getDecoder().decode(data);
         InputStream inputStream = new ByteArrayInputStream(decodeByte);
         ObjectMetadata objectMetadata = new ObjectMetadata();
