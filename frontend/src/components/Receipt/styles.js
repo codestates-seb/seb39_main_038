@@ -67,7 +67,6 @@ const OrderButton = styled.button`
   font-weight: bold;
   width: 100%;
   padding: 10px 15px;
-  min-width: 320px;
 
   @media screen and (max-width: ${SCREEN.TABLET}) {
     position: fixed;

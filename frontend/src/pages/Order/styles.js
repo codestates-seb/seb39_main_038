@@ -1,17 +1,26 @@
 import styled, { css } from 'styled-components';
-import { COLOR } from '../../constants';
+import { COLOR, SCREEN } from '../../constants';
 
 const { ORDER_URI } = process.env;
 
 const OrderContainer = styled.div`
   max-width: 1020px;
   margin: 0 auto;
-  padding: 20px 0px;
+  padding: 20px 10px;
+  display: flex;
+  gap: 20px;
+  @media screen and (max-width: ${SCREEN.TABLET}) {
+    flex-direction: column;
+  }
 `;
 
 const OrderWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  width: 66.6666%;
+  @media screen and (max-width: ${SCREEN.TABLET}) {
+    width: 100%;
+  }
 `;
 
 const OrderTitle = styled.h1`
