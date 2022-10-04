@@ -27,12 +27,6 @@ public interface MemberMapper {
                     store.getTotalComment()
             );
         }
-//        if(store != null) { //가게 등록 하신 사장님만 가게 등록
-//            storeResponseDto = new StoreResponseDto(
-//                    store.getStoreId(), store.getLocal().getLocalId(), store.getStorePhone(), store.getStoreNumber(), store.getStoreStatus(), store.getStoreName(),
-//                    store.getStoreContent(), store.getStoreImage(), store.getStoreType()
-//            );
-//        }
         LocalDto.response response = new LocalDto.response(
                 local.getLocalId(),storeResponseDto,local.getAvatar(),local.getName(),local.getEmail(),local.getPhone(),
                 local.getRole()

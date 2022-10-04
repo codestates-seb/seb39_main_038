@@ -1,11 +1,13 @@
 package com.main_39.Spring.order.service;
 
+import com.amazonaws.services.s3.AmazonS3;
 import com.main_39.Spring.exception.BusinessLogicException;
 import com.main_39.Spring.exception.ExceptionCode;
 import com.main_39.Spring.menu.service.MenuService;
 import com.main_39.Spring.order.entity.Order;
 import com.main_39.Spring.order.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,9 +17,6 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final MenuService menuService;
 
-    /**
-     * 주문 요청
-     */
     public void createOrder(Order order) {
         orderRepository.save(order);
     }
