@@ -6,14 +6,14 @@ const Section = styled.section`
   margin: 0 auto;
   font-size: 14px;
   background-color: white;
-  padding: 10px 10px 0px 10px;
+  padding: 20px 0px;
 
   @media screen and (max-width: 767px) {
     padding-bottom: 40px;
   }
   @media screen and (min-width: 768px) {
-    gap: 20px;
     display: flex;
+    gap: 20px;
   }
 `;
 
