@@ -45,7 +45,7 @@ public class StoreController {
     public ResponseEntity postStore(@Valid @RequestBody StorePostDto storePostDto) {
 
         Store store = mapper.storePostDtoToStore(storePostDto);
-
+        System.out.println(storePostDto.getLocalId());
         Local local = memberService.findVerifiedLocal(storePostDto.getLocalId());
         store.setLocal(local);
 
