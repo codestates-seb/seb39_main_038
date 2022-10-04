@@ -15,6 +15,7 @@ import {
   EditorWrapper,
   Editor,
 } from './styles';
+// import { storge } from '../../store';
 
 function DetailReview() {
   return (
