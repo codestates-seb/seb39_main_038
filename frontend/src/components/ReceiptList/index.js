@@ -1,7 +1,14 @@
 import React from 'react';
 import { useRecoilState } from 'recoil';
 import { atoms } from '../../store';
-import { CartList, FoodName, CartListAdd } from './styles';
+import {
+  CartListContainer,
+  FoodName,
+  CartListWrapper,
+  CartListInner,
+  Button,
+  Text,
+} from './styles';
 
 function ReceiptList({ name, price, count, idx }) {
   const [orderList, setOrderList] = useRecoilState(atoms.orderList);
@@ -32,29 +39,28 @@ function ReceiptList({ name, price, count, idx }) {
   };
 
   return (
-    <CartList>
-      <div>
-        <FoodName>{name}</FoodName>
+    <CartListContainer>
+      <FoodName>{name}</FoodName>
 
-        <CartListAdd>
-          <div>
-            <button type="button" onClick={deleteOrderItem}>
-              x
-            </button>
-            <span>{price}</span>
-          </div>
-          <div>
-            <button type="button" onClick={plusCount}>
-              +
-            </button>
-            <span>{count}</span>
-            <button type="button" onClick={minusCount}>
-              -
-            </button>
-          </div>
-        </CartListAdd>
-      </div>
-    </CartList>
+      <CartListWrapper>
+        <CartListInner>
+          <Button type="button" color="#ccc" onClick={deleteOrderItem}>
+            ×
+          </Button>
+          <Text color="#666666">{price}원</Text>
+        </CartListInner>
+
+        <CartListInner>
+          <Button type="button" onClick={plusCount}>
+            ＋
+          </Button>
+          <Text color="#666666">{count}</Text>
+          <Button type="button" onClick={minusCount}>
+            －
+          </Button>
+        </CartListInner>
+      </CartListWrapper>
+    </CartListContainer>
   );
 }
 

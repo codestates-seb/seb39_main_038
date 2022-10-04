@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useNavigate } from 'react-router-dom';
 import { atoms } from '../../../store';
 import { Modal, ModalText } from '../Modal';
-import { COLOR } from '../../../constants';
+import { ROUTE, COLOR } from '../../../constants';
 import {
   FoodModalBody,
   FoodModalImage,
@@ -18,7 +19,10 @@ function FoodModal({ closeModal }) {
   const [count, setCount] = useState(1);
   const isMadal = useRecoilValue(atoms.modal);
   const setOrderList = useSetRecoilState(atoms.orderList);
-  const { name, info, price } = useRecoilValue(atoms.menuOrder);
+  const { name, info, price, storeId, storeName } = useRecoilValue(
+    atoms.menuOrder,
+  );
+  const navigate = useNavigate();
   if (!isMadal.food) return null;
 
   const plusCount = () => {
@@ -33,10 +37,21 @@ function FoodModal({ closeModal }) {
   const goBusket = () => {
     closeModal();
     setOrderList((prev) => {
-      const data = { name, price, count };
+      const data = { name, price, count, storeId, storeName };
       if (prev.length === 0) return [...prev, data];
+
+      const isCheck = prev.every((item) => item.storeId === storeId);
+      if (!isCheck) {
+        const bool = window.confirm(
+          '이전 가게 내역이 남아있습니다. 장바구니를 비우시겠습니까?',
+        );
+        if (bool) return [data];
+        return prev;
+      }
+
       const index = prev.findIndex((item) => item.name === name);
       if (index === -1) return [...prev, data];
+
       const result = [];
       for (let i = 0; i < prev.length; i += 1) {
         const total = prev[i].count + count;
@@ -47,7 +62,10 @@ function FoodModal({ closeModal }) {
     });
   };
 
-  const goOrder = () => {};
+  const goOrder = () => {
+    goBusket();
+    navigate(`/${ROUTE.ORDER.PATH}`, { state: storeId });
+  };
 
   return (
     <Modal title="메뉴상세" width={450} height={600} closeModal={closeModal}>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   OrderContainer,
   OrderWrapper,
@@ -17,6 +17,7 @@ import {
   DiscountButton,
   RadioBox,
 } from './styles';
+import { Receipt } from '../../components';
 
 function Order() {
   const [radio, setRadio] = useState({ value: 'card', togle: true });
@@ -24,10 +25,6 @@ function Order() {
   const handleOnChange = (e) => {
     setRadio({ value: e.target.value, togle: !radio.togle });
   };
-
-  useEffect(() => {
-    console.log(radio);
-  }, [radio]);
 
   return (
     <OrderContainer>
@@ -93,6 +90,7 @@ function Order() {
           </OrderContent>
         </OrderBox>
       </OrderWrapper>
+      <Receipt order />
     </OrderContainer>
   );
 }
