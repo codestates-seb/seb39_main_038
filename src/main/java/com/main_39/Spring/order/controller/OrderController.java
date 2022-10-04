@@ -29,8 +29,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class OrderController {
     private final OrderService orderService;
 
-    private final MemberService memberService;
-
     private final OrderMapper mapper;
 
     @PostMapping("/orders")

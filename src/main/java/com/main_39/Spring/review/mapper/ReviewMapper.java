@@ -25,12 +25,12 @@ public interface ReviewMapper {
         ReviewsResponseDto reviewsResponseDto = new ReviewsResponseDto(
                 store.getStoreId(),
                 store.getTotalReview(),
+                store.getTotalGrade(),
                 store.getTotalComment(),
-                (int) store.getTotalGrade(),
-                reviewToStoreResponseDtos(reviews),
-                reviewToCommandResponseDtos(comments));
+                reviewToReviewResponseDtos(reviews));
         return reviewsResponseDto;
     }
+
     default List<ReviewStoreResponseDto> reviewToStoreResponseDtos(List<Review> storeReviews) {
         return storeReviews.stream()
                 .map(review -> ReviewStoreResponseDto

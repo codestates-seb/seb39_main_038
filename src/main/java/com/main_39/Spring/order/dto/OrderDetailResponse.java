@@ -12,8 +12,6 @@ import java.util.List;
 public class OrderDetailResponse {
     private long orderId;
 
-    private long kakaoId;
-
     private List<OrderMenuResponse> orderMenus;
 
     private int totalCount;
@@ -21,6 +19,8 @@ public class OrderDetailResponse {
     private int totalPrice;
 
     private PaymentType paymentType;
+
+    private String orderRequest;
 
     private LocalDateTime createdAt;
 }
