@@ -32,6 +32,28 @@ app.get("/store", (req, res) => {
   });
 });
 
+app.get("/store/:id", (req, res) => {
+  const { id } = req.params;
+  return res.status(200).json({ data: foodListData[id] });
+});
+
+app.post("/local/mypage", (req, res) => {
+  return res.status(200).json({
+    data: {
+      avatar: null,
+      email: "abs@naver.com",
+      name: "홍길동",
+      phone: "010-2222-2222",
+    },
+  });
+});
+
+app.post("/kakao/mypage", (req, res) => {
+  return res.status(200).json({
+    data: { email: "abs@naver.com", nickname: "홍길동", profileImage: null },
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`http://localhost:${PORT}`);
 });

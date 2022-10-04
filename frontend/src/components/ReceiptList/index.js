@@ -3,14 +3,32 @@ import { useRecoilState } from 'recoil';
 import { atoms } from '../../store';
 import { CartList, FoodName, CartListAdd } from './styles';
 
-function ReceiptList({ name, price, id, count }) {
+function ReceiptList({ name, price, count, idx }) {
   const [orderList, setOrderList] = useRecoilState(atoms.orderList);
-  const deleteHandler = () => {
-    console.log(orderList[id].count);
-    setOrderList(orderList.filter((e) => e.id !== id));
+
+  const deleteOrderItem = () => {
+    const result = [];
+    // eslint-disable-next-line no-restricted-syntax
+    for (const value of orderList) result.push({ ...value });
+    result.splice(idx, 1);
+    setOrderList(result);
   };
-  const onKeyPressHandler = () => {
-    window.confirm('해당 음식을 제외하겠습니까?');
+
+  const plusCount = () => {
+    const result = [];
+    // eslint-disable-next-line no-restricted-syntax
+    for (const value of orderList) result.push({ ...value });
+    result[idx].count += 1;
+    setOrderList(result);
+  };
+
+  const minusCount = () => {
+    const result = [];
+    // eslint-disable-next-line no-restricted-syntax
+    for (const value of orderList) result.push({ ...value });
+    if (result[idx].count === 1) return;
+    result[idx].count -= 1;
+    setOrderList(result);
   };
 
   return (
@@ -20,41 +38,19 @@ function ReceiptList({ name, price, id, count }) {
 
         <CartListAdd>
           <div>
-            <div
-              role="button"
-              tabIndex="0"
-              onKeyPress={onKeyPressHandler}
-              onClick={deleteHandler}
-            >
+            <button type="button" onClick={deleteOrderItem}>
               x
-            </div>
+            </button>
             <span>{price}</span>
           </div>
           <div>
-            <div
-              role="button"
-              tabIndex="0"
-              onKeyPress={onKeyPressHandler}
-              onClick={() => {
-                if (count === 1) {
-                  deleteHandler();
-                }
-                return count - 1;
-              }}
-            >
-              -
-            </div>
-            <span>{count}</span>
-            <div
-              role="button"
-              tabIndex="0"
-              onKeyPress={onKeyPressHandler}
-              onClick={() => {
-                // count += 1;
-              }}
-            >
+            <button type="button" onClick={plusCount}>
               +
-            </div>
+            </button>
+            <span>{count}</span>
+            <button type="button" onClick={minusCount}>
+              -
+            </button>
           </div>
         </CartListAdd>
       </div>

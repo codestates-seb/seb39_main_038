@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useRecoilValue } from 'recoil';
 import { atoms } from './store';
 import { ROUTE } from './constants';
-import { GlobalNav, Spinner } from './components';
+import { ErrorBoundary, GlobalNav, Spinner } from './components';
 
 const Home = React.lazy(() => import('./pages/Home'));
 const Login = React.lazy(() => import('./pages/Login'));
@@ -25,25 +25,32 @@ function App() {
   axios.defaults.headers.common.Login = type;
 
   return (
-    <React.Suspense fallback={<Spinner />}>
+    <>
       <GlobalNav />
-      <Routes>
-        <Route path={ROUTE.HOME.PATH} element={<Home />} />
-        <Route path={`${ROUTE.FOODLIST.PATH}/*`} element={<FoodList />} />
-        <Route path={`${ROUTE.FOODLIST.PATH}/*`} element={<FoodList />} />
-        <Route path={ROUTE.LOGIN.PATH} element={<Login />} />
-        <Route path={ROUTE.REGISTER.PATH} element={<Register />} />
-        <Route path={ROUTE.IDINQUIRY.PATH} element={<IdInquiry />} />
-        <Route path={ROUTE.PWINQUIRY.PATH} element={<PwInquiry />} />
-        <Route path={ROUTE.BASKET.PATH} element={<Basket />} />
-        <Route path={ROUTE.ORDER.PATH} element={<Order />} />
-        <Route path={ROUTE.MYPAGE.PATH} element={<MyPage />} />
-        <Route path={ROUTE.PWCHANGE.PATH} element={<PwChange />} />
-        <Route path={`${ROUTE.MYPAGE.PATH}/*`} element={<FoodTruckSetting />} />
-        <Route path={ROUTE.NOTFOUND.PATH} element={<NotFound />} />
-        <Route path={ROUTE.REVIEW.PATH} element={<Review />} />
-      </Routes>
-    </React.Suspense>
+      <ErrorBoundary>
+        <React.Suspense fallback={<Spinner />}>
+          <Routes>
+            <Route path={ROUTE.HOME.PATH} element={<Home />} />
+            <Route path={`${ROUTE.FOODLIST.PATH}/*`} element={<FoodList />} />
+            <Route path={`${ROUTE.FOODLIST.PATH}/*`} element={<FoodList />} />
+            <Route path={ROUTE.LOGIN.PATH} element={<Login />} />
+            <Route path={ROUTE.REGISTER.PATH} element={<Register />} />
+            <Route path={ROUTE.IDINQUIRY.PATH} element={<IdInquiry />} />
+            <Route path={ROUTE.PWINQUIRY.PATH} element={<PwInquiry />} />
+            <Route path={ROUTE.BASKET.PATH} element={<Basket />} />
+            <Route path={ROUTE.ORDER.PATH} element={<Order />} />
+            <Route path={ROUTE.MYPAGE.PATH} element={<MyPage />} />
+            <Route path={ROUTE.PWCHANGE.PATH} element={<PwChange />} />
+            <Route
+              path={`${ROUTE.MYPAGE.PATH}/*`}
+              element={<FoodTruckSetting />}
+            />
+            <Route path={ROUTE.NOTFOUND.PATH} element={<NotFound />} />
+            <Route path={ROUTE.REVIEW.PATH} element={<Review />} />
+          </Routes>
+        </React.Suspense>
+      </ErrorBoundary>
+    </>
   );
 }
 

@@ -1,9 +1,13 @@
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes, css } from 'styled-components';
 
 const Container = styled.div`
   display: flex;
-  width: 100%;
-  height: 100%;
+  ${({ scroll }) =>
+    !scroll &&
+    css`
+      width: 100%;
+      height: 100%;
+    `}
   justify-content: center;
   align-items: center;
 `;
