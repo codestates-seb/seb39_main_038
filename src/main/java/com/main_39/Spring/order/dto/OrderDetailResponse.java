@@ -1,5 +1,6 @@
 package com.main_39.Spring.order.dto;
 
+import com.main_39.Spring.order.entity.PaymentType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,6 +19,8 @@ public class OrderDetailResponse {
     private int totalCount;
 
     private int totalPrice;
+
+    private PaymentType paymentType;
 
     private LocalDateTime createdAt;
 }
