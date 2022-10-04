@@ -39,29 +39,9 @@ public class CommentController {
         this.storeService = storeService;
     }
 
-//    @PostMapping("/review/{review-id}/comment/ask")
-//    public ResponseEntity postComment(@PathVariable("review-id") @Positive long reviewId,
-//            @Valid @RequestBody CommentPostDto commentPostDto) {
-//        Comment comment =
-//                commentService.createdComment(reviewId, mapper.commentPostDtoToComment(commentPostDto));
-//        return new ResponseEntity<>(
-//                new SingleResponseDto<>(mapper.commentToCommentResponseDto(comment)),
-//        HttpStatus.CREATED);
-//    }
-
-    //    @PostMapping("/review/{review-id}/comment/ask")
-//    public ResponseEntity postComment(@Valid @RequestBody CommentPostDto commentPostDto) {
-//        Comment comment = mapper.commentPostDtoToComment(commentPostDto);
-//
-//        Review review = reviewService.findReview(commentPostDto.getReviewId());
-//        comment.setReview(review);
-//
-//        Comment posted = commentService.createdComment(comment);
-//        CommentResponseDto response = mapper.commentToCommentResponseDto(posted);
-//
-//        return new ResponseEntity<>(
-//                new SingleResponseDto<>(response), HttpStatus.CREATED);
-//    }
+    /**
+     * 답변 등록
+     */
     @PostMapping("/review/{review-id}/comment/ask")
     public ResponseEntity postComment(@PathVariable("review-id") long reviewId,
                                       @Valid @RequestBody CommentPostDto commentPostDto) {
@@ -77,6 +57,9 @@ public class CommentController {
                 new SingleResponseDto<>(response), HttpStatus.CREATED);
     }
 
+    /**
+     * 헤당 리뷰의 답변 불러오기
+     */
     @GetMapping("/review/{review-id}/comment")
     public ResponseEntity getComment(@PathVariable("review-id") @Positive long reviewId,
                                      @Positive @RequestParam int page,
@@ -90,7 +73,9 @@ public class CommentController {
                 HttpStatus.OK);
     }
 
-
+    /**
+     * 답변 삭제
+     */
     @DeleteMapping("/review/{review-id}/{comment-id}")
     public ResponseEntity deleteComment(@PathVariable("review-id") @Positive long reviewId,
                                         @PathVariable("comment-id") @Positive long commentId) {

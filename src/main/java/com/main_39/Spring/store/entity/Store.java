@@ -1,6 +1,5 @@
 package com.main_39.Spring.store.entity;
 
-import com.main_39.Spring.comment.dto.CommentResponseDto;
 import com.main_39.Spring.comment.entity.Comment;
 import com.main_39.Spring.member.entity.Local;
 import com.main_39.Spring.menu.entity.Menu;
@@ -19,48 +18,56 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 public class Store {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long storeId;
 
-    @Column(nullable = false)
+    @Column(length=20, nullable = false)
     private String storePhone;
 
-    @Column(nullable = false)
+    @Column(length=20, nullable = false)
     private String storeNumber;
 
+    /**
+     * 스토어 상태별 필터
+     */
     @Enumerated(value = EnumType.STRING)
     @Column(length = 20, nullable = false)
     private StoreStatus storeStatus = StoreStatus.OPEN;
 
-    @Column(nullable = false)
+    @Column(length= 50, nullable = false)
     private String storeName;
 
     @Column(nullable = false)
     private String storeContent;
 
+    @Column(length = 255)
     private String storeImage;
 
     /**
-     * 타입별 필터
+     * 스토어 타입별 필터
      */
     @Enumerated(value = EnumType.STRING)
     @Column(length = 20, nullable = false)
     private StoreType storeType = StoreType.all;
 
+    @Column(length = 100, nullable = false)
     private String storeTime;
 
+    @Column(length = 50, nullable = false)
     private String storeWaitTime;
 
+    @Column(length = 255, nullable = false)
     private String storeAddress;
 
+    @Column(length = 100, nullable = false)
     private String storePayment;
 
+    @Column(length = 50, nullable = false)
     private String storeTag;
 
     /**
-     * 타입별 필터
+     * 스토어 타입
      */
     public enum StoreType {
         all("전체 보기"),
@@ -81,7 +88,7 @@ public class Store {
     }
 
     /**
-     * 가게 상태
+     * 스토어 상태
      */
     public enum StoreStatus {
         OPEN("주문 가능"),
@@ -98,7 +105,7 @@ public class Store {
     }
 
     /**
-     * store : menu = 1 : N
+     * store : menu = 1 : N 양방향
      */
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
     private List<Menu> menus = new ArrayList<>();
@@ -122,8 +129,7 @@ public class Store {
     }
 
     /**
-     * total review
-     * store : review = 1: N
+     * store : review = 1: N 양방향
      */
     @OneToMany(mappedBy = "store", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Review> reviews = new ArrayList<>();
@@ -145,7 +151,7 @@ public class Store {
     }
 
     /**
-     * store : comment = 1 : N
+     * store : comment = 1 : N 양방향
      */
     @OneToMany(mappedBy = "store", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Comment> comments = new ArrayList<>();

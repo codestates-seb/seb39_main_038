@@ -27,12 +27,9 @@ public class CommentService {
         this.reviewService = reviewService;
     }
 
-
-//    public Comment createdComment(Comment comment) {
-//
-//        return commentRepository.save(comment);
-//    }
-
+    /**
+     * 답변 생성
+     */
     public Comment createdComment(long reviewId, Comment comment) {
         Review review = reviewService.findReview(reviewId);
         comment.addReview(review);
@@ -40,15 +37,17 @@ public class CommentService {
         return commentRepository.save(comment);
     }
 
-//    public Comment findComment(long commentId) {
-//        return findComment(commentId);
-//    }
-
+    /**
+     * 전체 답변(리뷰 포함) 조회
+     */
     public Page<Comment> findComment(long reviewId, int page, int size) {
         return commentRepository.findByReview_ReviewId(reviewId, PageRequest.of(page, size,
                 Sort.by("commentId").descending()));
     }
 
+    /**
+     * 답변 삭제
+     */
     public void deleteComment(long reviewId, long commentId) {
         reviewService.findVerifiedReview(reviewId);
         Comment findComment = findVerifiedComment(commentId);
@@ -57,9 +56,8 @@ public class CommentService {
     }
 
     /**
-     * 예외 처리 추가
+     * 답변이 존재하는지 확인
      */
-
     public Comment findVerifiedComment(long commentId) {
         Optional<Comment> optionalComment =
                 commentRepository.findById(commentId);

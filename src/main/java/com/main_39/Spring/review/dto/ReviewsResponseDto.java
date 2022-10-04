@@ -9,7 +9,6 @@ import java.util.List;
 public class ReviewsResponseDto {
     private long storeId;
     private List<ReviewResponseDto> reviews;
-
     private int totalReview;
     private double totalGrade;
     private int totalComment;

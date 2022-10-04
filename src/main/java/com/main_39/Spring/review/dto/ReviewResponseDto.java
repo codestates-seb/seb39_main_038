@@ -14,25 +14,19 @@ public class ReviewResponseDto {
     private int reviewGrade;
     private LocalDateTime createdAt;
 
-
-//    private int totalReview;
-//    private int totalGrade;
-//    private int totalComment;
-//    private List<CommentResponseDto> comments;
     /**
      * Entity 사용시 무한 루프 발생
      */
     private CommentResponseDto comment;
 
     @Builder
-    public ReviewResponseDto(long reviewId, String reviewContent, String reviewImage, int reviewGrade, LocalDateTime createdAt,
-                             CommentResponseDto comment) {
+    public ReviewResponseDto(long reviewId, String reviewContent, String reviewImage, int reviewGrade,
+                             LocalDateTime createdAt, CommentResponseDto comment) {
         this.reviewId = reviewId;
         this.reviewContent = reviewContent;
         this.reviewImage = reviewImage;
         this.reviewGrade = reviewGrade;
         this.createdAt = createdAt;
         this.comment = comment;
-
     }
 }

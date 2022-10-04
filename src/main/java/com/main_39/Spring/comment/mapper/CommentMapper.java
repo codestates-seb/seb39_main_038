@@ -11,7 +11,6 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface CommentMapper {
     Comment commentPostDtoToComment(CommentPostDto commentPostDto);
-    Comment commentPatchDtoToComment(CommentPatchDto commentPatchDto);
     CommentResponseDto commentToCommentResponseDto(Comment comment);
     List<CommentResponseDto> commentToCommentResponseDtos(List<Comment> comments);
 }

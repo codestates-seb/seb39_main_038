@@ -8,23 +8,10 @@ import org.mapstruct.Mapper;
 
 import java.util.List;
 
-
 @Mapper(componentModel = "spring")
 public interface StoreMapper {
     Store storePostDtoToStore(StorePostDto storePostDto);
     Store storePatchDtoToStore(StorePatchDto storePatchDto);
     StoreResponseDto storeToStoreResponseDto(Store store);
     List<StoreResponseDto> storesToStoreResponseDtos(List<Store> stores);
-
-
-//    default StoreListResponseDto storeToStoreResponseDto(Store store) {
-//        List<Review> stores = store.getReviews();
-//
-//        StoreListResponseDto storeListResponseDto = new StoreListResponseDto(
-//                storeToStoreResponseDtos(storeReviews),
-//                store.getTotalReview());
-//        return storeListResponseDto;
-//
-//    }
-
 }

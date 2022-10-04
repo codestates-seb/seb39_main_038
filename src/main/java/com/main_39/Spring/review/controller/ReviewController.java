@@ -30,8 +30,6 @@ public class ReviewController {
     private final StoreService storeService;
     private final MemberService memberService;
 
-
-
     public ReviewController(ReviewService reviewService,
                             ReviewMapper mapper,
                             StoreService storeService,
@@ -40,36 +38,27 @@ public class ReviewController {
         this.mapper = mapper;
         this.storeService = storeService;
         this.memberService = memberService;
-
     }
 
-//    @PostMapping("/store/{store-id}/review/ask")
-//    public ResponseEntity postReview(@PathVariable("store-id") long storeId,
-//                                     @Valid @RequestBody ReviewPostDto reviewPostDto) {
-//
-//        Review review =
-//                reviewService.createdReview(storeId, mapper.reviewPostDtoToReview(reviewPostDto));
-//        return new ResponseEntity<>(
-//                new SingleResponseDto<>(mapper.reviewToReviewResponseDto(review)),
-//                HttpStatus.CREATED);
-//    }
+    /**
+     * 리뷰 등록
+     */
+    @PostMapping("/store/{store-id}/review/ask")
+    public ResponseEntity postReview(@PathVariable("store-id") long storeId,
+                                     @Valid @RequestBody ReviewPostDto reviewPostDto) {
 
-        @PostMapping("/store/{store-id}/review/ask")
-        public ResponseEntity postReview(@PathVariable("store-id") long storeId,
-                                         @Valid @RequestBody ReviewPostDto reviewPostDto) {
+        Review review = mapper.reviewPostDtoToReview(reviewPostDto);
 
-            Review review = mapper.reviewPostDtoToReview(reviewPostDto);
+        Kakao kakao = memberService.findVerifiedKakao(reviewPostDto.getKakaoId());
+        review.setKakao(kakao);
 
-            Kakao kakao = memberService.findVerifiedKakao(reviewPostDto.getKakaoId());
-            review.setKakao(kakao);
-
-            Review posted = reviewService.createdReview(storeId, review);
-            ReviewResponseDto response = mapper.reviewToReviewResponseDto(posted);
+        Review posted = reviewService.createdReview(storeId, review);
+        ReviewResponseDto response = mapper.reviewToReviewResponseDto(posted);
 
 
-            return new ResponseEntity<>(
-                    new SingleResponseDto<>(response), HttpStatus.CREATED);
-        }
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(response), HttpStatus.CREATED);
+    }
 
     /**
      * 상점별 리뷰 불러오기
@@ -81,21 +70,9 @@ public class ReviewController {
         return new ResponseEntity<>(mapper.reviewToStoreResponseDto(store), HttpStatus.OK);
     }
 
-//    @PatchMapping("/review/{review-id}")
-//    public ResponseEntity patchReview(
-//            @PathVariable("review-id") @Positive long reviewId,
-//            @Valid @RequestBody ReviewPatchDto reviewPatchDto) {
-//
-//        reviewPatchDto.setReviewId(reviewId);
-//
-//        Review response =
-//                reviewService.updateReview(mapper.reviewPatchDtoToReview(reviewPatchDto));
-//
-//        return new ResponseEntity<>(
-//                new SingleResponseDto<>(mapper.reviewToReviewResponseDto(response)),
-//                HttpStatus.OK);
-//    }
-
+    /**
+     * 전체 리뷰(답변 포함) 불러오기
+     */
     @GetMapping("/review")
     public ResponseEntity getReviews(@Positive @RequestParam int page,
                                     @Positive @RequestParam(required = false, defaultValue = "15") int size){
@@ -108,13 +85,9 @@ public class ReviewController {
                 HttpStatus.OK);
     }
 
-//    @GetMapping("/{kakao-id}")
-//    public ResponseEntity getReview(@PathVariable("kakao-id") @Positive long kakaoId,
-//                                    @Positive @RequestParam int page,
-//                                    @Positive @RequestParam(required = false, defaultValue = "15")
-//        Page<Kakao> pageKakaos = kakao
-
-
+    /**
+     * 리뷰 삭제
+     */
     @DeleteMapping("/review/{review-id}")
     public ResponseEntity deleteReview(
             @PathVariable("review-id") @Positive long reviewId) {
@@ -123,5 +96,4 @@ public class ReviewController {
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
-
 }
