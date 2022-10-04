@@ -10,14 +10,14 @@ public class ReviewsResponseDto {
     private long storeId;
     private List<ReviewResponseDto> stores;
     private int totalReview;
-    private int totalGrade;
+    private double totalGrade;
     private int totalComment;
 
 //    private CommentResponseDto comment;
 
 
     @Builder
-    public ReviewsResponseDto(Long storeId, List<ReviewResponseDto> stores, int totalReview, int totalComment, int totalGrade) {
+    public ReviewsResponseDto(Long storeId, List<ReviewResponseDto> stores, int totalReview, int totalComment, double totalGrade) {
         this.storeId = storeId;
         this.stores = stores;
         this.totalReview = totalReview;
