@@ -49,11 +49,7 @@ public interface MemberMapper {
                 .build();
     }
 
-    default KakaoDto.response kakaoToKakaoDtoResponse(Kakao kakao){
-        List<OrderResponse> orderResponses = orderMapper.orderToOrderResponse(kakao.getOrders());
-        return new KakaoDto.response(kakao.getKakaoId(),kakao.getConnectedAt(),kakao.getNickname(),kakao.getProfileImage(),
-                kakao.getThumbnailImage(),kakao.getEmail(),kakao.getMileage(),kakao.getRole(),orderResponses);
-    }
+    KakaoDto.response kakaoToKakaoDtoResponse(Kakao kakao);
 
     default LocalDto.searchIdResponse localToLocalDtoSearchIdResponse(Local local){
         return new LocalDto.searchIdResponse(local.getEmail());
