@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { useRecoilValue } from 'recoil';
-import { atoms } from '../../store';
+import React, { useState } from 'react';
 import {
   OrderContainer,
   OrderWrapper,
@@ -23,16 +21,10 @@ import { Receipt } from '../../components';
 
 function Order() {
   const [radio, setRadio] = useState({ value: 'card', togle: true });
-  const orderList = useRecoilValue(atoms.orderList);
-  console.log(orderList);
 
   const handleOnChange = (e) => {
     setRadio({ value: e.target.value, togle: !radio.togle });
   };
-
-  useEffect(() => {
-    console.log(radio);
-  }, [radio]);
 
   return (
     <OrderContainer>

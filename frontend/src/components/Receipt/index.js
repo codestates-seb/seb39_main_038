@@ -1,3 +1,4 @@
+/* global IMP */
 import React from 'react';
 import { useRecoilValue, useResetRecoilState } from 'recoil';
 import { useNavigate } from 'react-router-dom';
@@ -15,6 +16,10 @@ import {
 import { ReceiptList } from '../ReceiptList';
 import { atoms } from '../../store';
 import { ROUTE } from '../../constants';
+
+const { IMP_KEY } = process.env;
+
+IMP.init(IMP_KEY);
 
 function Receipt({ order }) {
   const orderList = useRecoilValue(atoms.orderList);
@@ -44,7 +49,29 @@ function Receipt({ order }) {
 
   const goOrder = () => navigate(`/${ROUTE.ORDER.PATH}`);
 
-  const goPay = () => {};
+  const goPay = () => {
+    IMP.request_pay(
+      {
+        pg: 'html5_inicis',
+        pay_method: 'card',
+        merchant_uid: 'ORD20180131-0000012',
+        name: '노르웨이 회전 의자',
+        amount: 100,
+        buyer_email: 'gildong@gmail.com',
+        buyer_name: '홍길동',
+        buyer_tel: '010-4242-4242',
+        buyer_addr: '서울특별시 강남구 신사동',
+        buyer_postcode: '01181',
+      },
+      (rsp) => {
+        if (rsp.success) {
+          console.log('success');
+        } else {
+          console.log('error');
+        }
+      },
+    );
+  };
 
   return (
     <StickyBody>
