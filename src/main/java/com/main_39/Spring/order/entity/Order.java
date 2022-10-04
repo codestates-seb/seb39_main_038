@@ -38,7 +38,8 @@ public class Order extends Auditable {
 
     public void addKakao(Kakao kakao) {
         this.kakao = kakao;
-        kakao.getOrders().add(this);
+        if(!kakao.getOrders().contains(this))
+            kakao.addOrders(this);
     }
 
     public void addOrderMenus(List<OrderMenu> orderMenus) {

@@ -51,6 +51,12 @@ public class Kakao {
     @OneToMany(mappedBy = "kakao", cascade = CascadeType.ALL)
     private List<Order> orders = new ArrayList<>();
 
+    public void addOrders(Order order){
+        this.orders.add(order);
+        if(order.getKakao() == null)
+            order.addKakao(this);
+    }
+
     public int getTotalOrder() {
         return orders.size();
     }
