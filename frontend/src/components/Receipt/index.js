@@ -9,6 +9,7 @@ import {
   OrderButton,
   Button,
   CartTitle,
+  BlankOrderBox,
 } from './styles';
 import { ReceiptList } from '../ReceiptList';
 import { atoms } from '../../store';
@@ -44,7 +45,13 @@ function Receipt() {
             리셋
           </Button>
         </CartTab>
-        <CartListBody>{createReceiptList()}</CartListBody>
+        <CartListBody>
+          {orderList.length ? (
+            createReceiptList()
+          ) : (
+            <BlankOrderBox>장바구니에 상품이 없습니다.</BlankOrderBox>
+          )}
+        </CartListBody>
         <TotalPrice>합계: {totalPrice()}원</TotalPrice>
       </Cart>
 

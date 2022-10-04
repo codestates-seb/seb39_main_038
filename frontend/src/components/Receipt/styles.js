@@ -5,7 +5,7 @@ const StickyBody = styled.div`
   width: 33.333%;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 10px;
   @media screen and (max-width: ${SCREEN.TABLET}) {
     width: 100%;
   }
@@ -31,12 +31,13 @@ const CartTab = styled.div`
   align-items: center;
   background-color: ${COLOR.NAVY};
   color: ${COLOR.YELLOW};
-  padding: 10px 10px 10px 15px;
+  padding: 10px 15px;
 `;
 
 const CartTitle = styled.h1`
   color: ${COLOR.YELLOW};
   font-weight: 600;
+  font-size: 16px;
 `;
 
 const TotalPrice = styled.div`
@@ -52,10 +53,11 @@ const TotalPrice = styled.div`
 `;
 
 const Button = styled.button`
-  padding: 2px 10px;
+  padding: 1px 10px;
   border: 1px solid ${COLOR.WHITE};
   background-color: transparent;
   color: ${COLOR.WHITE};
+  font-size: 10px;
 `;
 
 const OrderButton = styled.button`
@@ -73,6 +75,17 @@ const OrderButton = styled.button`
   }
 `;
 
+const BlankOrderBox = styled.div`
+  width: 100%;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 200;
+  color: #666666;
+`;
+
 export {
   StickyBody,
   CartListBody,
@@ -82,4 +95,5 @@ export {
   OrderButton,
   CartTitle,
   Button,
+  BlankOrderBox,
 };
