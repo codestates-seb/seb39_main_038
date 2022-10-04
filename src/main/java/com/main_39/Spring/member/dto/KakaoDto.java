@@ -41,6 +41,5 @@ public class KakaoDto {
         private String email;
         private long mileage;
         private Kakao.Role role;
-        private List<OrderResponse> orders;
     }
 }
