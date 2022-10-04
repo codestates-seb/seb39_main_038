@@ -22,7 +22,7 @@ public class StoreResponseDto {
         private String storeTag;
 
         private int totalReview;
-        private int totalGrade;
+        private double totalGrade;
         private int totalComment;
 
 //        private List<ReviewResponseDto> reviews;
