@@ -26,10 +26,9 @@ public interface MemberMapper {
         // store 수정으로 인한 수정
         if(store != null) { //가게 등록 하신 사장님만 가게 등록
             storeResponseDto = new StoreResponseDto(
-                    store.getStoreId(), store.getStorePhone(), store.getStoreNumber(), store.getStoreStatus(), store.getStoreName(),
-                    store.getStoreContent(), store.getStoreImage(), store.getStoreType(), store.getStoreTime(), store.getStoreWaitTime(),
-                    store.getStoreAddress(), store.getStorePayment(), store.getStoreTag(), store.getTotalReview(), store.getTotalGrade(),
-                    store.getTotalComment()
+                    store.getStoreId(), store.getStorePhone(), store.getStoreNumber(), store.getStoreStatus(), store.getStoreName(), store.getStoreContent(),
+                    store.getStoreImage(), store.getStoreType(), store.getStoreTime(), store.getStoreWaitTime(), store.getStoreAddress(),
+                    store.getStorePayment(), store.getStoreTag(), store.getTotalReview(), store.getTotalGrade(), store.getTotalComment()
             );
         }
         LocalDto.response response = new LocalDto.response(

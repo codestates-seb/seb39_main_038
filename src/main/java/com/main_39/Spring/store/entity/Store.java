@@ -1,5 +1,6 @@
 package com.main_39.Spring.store.entity;
 
+import com.main_39.Spring.comment.dto.CommentResponseDto;
 import com.main_39.Spring.comment.entity.Comment;
 import com.main_39.Spring.member.entity.Local;
 import com.main_39.Spring.menu.entity.Menu;
@@ -29,7 +30,9 @@ public class Store {
     @Column(nullable = false)
     private String storeNumber;
 
-    private String storeStatus;
+    @Enumerated(value = EnumType.STRING)
+    @Column(length = 20, nullable = false)
+    private StoreStatus storeStatus = StoreStatus.OPEN;
 
     @Column(nullable = false)
     private String storeName;
@@ -39,7 +42,12 @@ public class Store {
 
     private String storeImage;
 
-    private String storeType;
+    /**
+     * 타입별 필터
+     */
+    @Enumerated(value = EnumType.STRING)
+    @Column(length = 20, nullable = false)
+    private StoreType storeType = StoreType.all;
 
     private String storeTime;
 
@@ -51,6 +59,43 @@ public class Store {
 
     private String storeTag;
 
+    /**
+     * 타입별 필터
+     */
+    public enum StoreType {
+        all("전체 보기"),
+        western("양식"),
+        korean("한식"),
+        chinese("중식"),
+        japanese("일식"),
+        snackbar("분식"),
+        nightsnack("야식"),
+        cafe("카페/디저트");
+
+        @Getter
+        private String type;
+
+        StoreType(String type){
+            this.type = type;
+        }
+    }
+
+    /**
+     * 가게 상태
+     */
+    public enum StoreStatus {
+        OPEN("주문 가능"),
+        BRAKE("재료 준비중"),
+        CLOSE("주문 마감");
+
+        @Getter
+        private String status;
+
+        StoreStatus(String status) {
+            this.status = status;
+        }
+
+    }
 
     /**
      * store : menu = 1 : N
@@ -94,17 +139,13 @@ public class Store {
         return avg;
     }
 
-    /**
-     * total comment
-     * store : comment = 1:N
-     */
-
-    @OneToMany(mappedBy = "store", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    private List<Comment> comments = new ArrayList<>();
-
     public int getTotalComment() {
         return comments.size();
     }
 
-
+    /**
+     * store : comment = 1 : N
+     */
+    @OneToMany(mappedBy = "store", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private List<Comment> comments = new ArrayList<>();
 }
