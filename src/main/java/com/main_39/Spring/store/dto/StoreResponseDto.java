@@ -1,20 +1,35 @@
 package com.main_39.Spring.store.dto;
 
+import com.main_39.Spring.store.entity.Store;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class StoreResponseDto {
+public class StoreResponseDto<T> {
         private long storeId;
-//        private long localId;
         private String storePhone;
         private String storeNumber;
-        private String storeStatus;
+        /**
+         * 가게 상태
+         */
+        private Store.StoreStatus storeStatus;
+        public String getStoreStatus() {
+                return storeStatus.getStatus();
+        }
+        //        private String storeStatus;
         private String storeName;
         private String storeContent;
         private String storeImage;
-        private String storeType;
+//        private String storeType;
+        /**
+         * 타입별 필터
+         */
+        private Store.StoreType storeType;
+        public String getStoreType() {
+                return storeType.getType();
+
+        }
         private String storeTime;
         private String storeWaitTime;
         private String storeAddress;
@@ -24,6 +39,4 @@ public class StoreResponseDto {
         private int totalReview;
         private double totalGrade;
         private int totalComment;
-
-//        private List<ReviewResponseDto> reviews;
 }
