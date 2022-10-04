@@ -57,7 +57,13 @@ const Notice = styled.div`
   border: 1px solid lightgrey;
   padding: 10px 15px;
   margin-top: -1px;
-  font-size: 12px;
+  font-size: 16px;
+  div {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 `;
 
 const MenuBar = styled.div`
