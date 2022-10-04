@@ -1,88 +1,39 @@
-import axios from 'axios';
-import { useRecoilState } from 'recoil';
-import { useQuery } from '@tanstack/react-query';
 import React from 'react';
-import { Spinner } from '../Spinner';
-import { Section, Menu, MenuInfo, Name, Info, Price, MenuImg } from './styles';
+import { useSetRecoilState } from 'recoil';
 import { atoms } from '../../store';
+import { CustomModal } from '../CustomModal';
+import { Section, Menu, MenuInfo, Name, Info, Price, MenuImg } from './styles';
+import { useModal, useDetailFoodList } from '../../hooks';
 
-const getMenuList = async () => {
-  const res = await axios.get(
-    'http://ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/store/1/menus',
-  );
-  return res.data.menus;
-};
+function DetailFoodList({ storeId, storeName }) {
+  const [openFood, closeFood] = useModal('food');
+  const setMenuOrder = useSetRecoilState(atoms.menuOrder);
+  const { data } = useDetailFoodList(storeId);
 
-function FoodMenuList() {
-  const [receipt, setReceipt] = useRecoilState(atoms.menuOrder);
-  const [orderList, setOrderList] = useRecoilState(atoms.orderList);
+  const handleOnClick = (id, name, value) => () => {
+    openFood();
+    setMenuOrder({ storeId: id, storeName: name, ...value });
+  };
 
-  const [defaultObj, ...rest] = receipt;
-  // setOrderList(rest)
+  const createFoodMenuList = () => {
+    return data?.data.storeMenu.map((menu) => (
+      <Menu key={menu.name} onClick={handleOnClick(storeId, storeName, menu)}>
+        <MenuInfo>
+          <Name>{menu.name}</Name>
+          <Info>{menu.info}</Info>
+          <Price>{menu.price}</Price>
+        </MenuInfo>
+        <MenuImg>
+          <img alt="menuImg" src={menu.img} />
+        </MenuImg>
+      </Menu>
+    ));
+  };
 
-  const { isLoading, isError, data, error } = useQuery(
-    ['getMenu'],
-    getMenuList,
-    {
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-      onSuccess: () => {
-        alert('성공');
-      },
-      onError: () => {
-        alert('실패');
-      },
-    },
-  );
-
-  if (isLoading) {
-    return <Spinner />;
-  }
-
-  if (isError) {
-    return alert('음식을 불러오지 못했습니다.', error.message);
-  }
-
-  return data.map((menu) => (
-    <Menu
-      key={menu.id}
-      onClick={() => {
-        setOrderList(rest, () => {
-          console.log('re', orderList);
-        });
-        if (receipt === '123') {
-          return defaultObj;
-        }
-
-        return setReceipt([
-          ...receipt,
-          {
-            count: 1,
-            id: menu.id,
-            name: menu.name,
-            price: menu.price,
-          },
-        ]);
-      }}
-    >
-      {console.log(orderList)}
-      <MenuInfo>
-        <Name>{menu.name}</Name>
-        <Info>{menu.content}</Info>
-        <Price>{menu.price}</Price>
-      </MenuInfo>
-      <MenuImg>
-        <img alt="menuImg" src={menu.image} />
-      </MenuImg>
-    </Menu>
-  ));
-}
-
-function DetailFoodList() {
   return (
     <Section>
-      <FoodMenuList />
+      {createFoodMenuList()}
+      <CustomModal.Food closeModal={closeFood} />
     </Section>
   );
 }

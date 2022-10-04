@@ -62,15 +62,15 @@ function FoodMenusList() {
   };
 
   const onSuccess = () => {
-    alert('성공');
+    alert('성공2');
   };
 
   const onError = () => {
-    alert('실패');
+    alert('실패2');
   };
 
   const onSettled = () => {
-    alert('처리종료');
+    alert('처리종료2');
   };
 
   const { mutate: deleteMutateMenu } = useMutation(deleteMenu, {

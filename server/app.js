@@ -1,7 +1,7 @@
 /* /store?page={page}&size={size}&type={chinese} */
 const express = require("express");
 const cors = require("cors");
-const { foodListData } = require("./data");
+const { foodListData, createFoods } = require("./data");
 
 const app = express();
 const PORT = 80;
@@ -29,6 +29,35 @@ app.get("/store", (req, res) => {
   return res.status(200).json({
     data: filterData.slice((page - 1) * size, page * size),
     pageInfo: pageInfo(filterData),
+  });
+});
+
+app.get("/store/:id", (req, res) => {
+  const { id } = req.params;
+  return res.status(200).json({ data: foodListData[id] });
+});
+
+app.get("/store/:id/menus", (req, res) => {
+  const { id } = req.params;
+  return res
+    .status(200)
+    .json({ storeId: Number(id), storeMenu: createFoods(id) });
+});
+
+app.post("/local/mypage", (req, res) => {
+  return res.status(200).json({
+    data: {
+      avatar: null,
+      email: "abs@naver.com",
+      name: "홍길동",
+      phone: "010-2222-2222",
+    },
+  });
+});
+
+app.post("/kakao/mypage", (req, res) => {
+  return res.status(200).json({
+    data: { email: "abs@naver.com", nickname: "홍길동", profileImage: null },
   });
 });
 

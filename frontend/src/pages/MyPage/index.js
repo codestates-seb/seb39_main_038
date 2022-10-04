@@ -1,10 +1,7 @@
 import React from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
 import { useRecoilValue } from 'recoil';
-import { API_URI, ROUTE } from '../../constants';
 import { atoms } from '../../store';
+import { useMyPage } from '../../hooks';
 import {
   MyPageContainer,
   InfoInner,
@@ -21,66 +18,25 @@ import {
 } from './styles';
 
 function MyPage() {
-  const navigate = useNavigate();
   const { type } = useRecoilValue(atoms.isLogin);
-
-  const fetchLocalMypage = (loginType) => {
-    return async () => {
-      let api;
-      if (loginType === 'local') api = API_URI.LOCAL_MYPAGE;
-      if (loginType === 'kakao') api = API_URI.KAKAO_MYPAGE;
-      const response = await axios.post(api, {});
-      console.log(api, response.data);
-      return response;
-    };
-  };
-
-  const { data, isError } = useQuery(['mypage'], fetchLocalMypage(type));
-  if (isError) return navigate(`/${ROUTE.NOTFOUND.PATH}`, { replace: true });
-
-  const createUserInfo = () => {
-    if (!data) return null;
-    if (type === 'local') {
-      console.log('data', data);
-      const { avatar, email, name, phone } = data.data.data;
-      return (
-        <>
-          <TextBox>
-            <Text size={14}>{`닉네임: ${name}`}</Text>
-            <Text size={14}>{`이메일: ${email}`}</Text>
-            <Text size={14}>{`핸드폰 번호: ${phone}`}</Text>
-          </TextBox>
-          <AvatarBox>
-            <Avatar src={avatar} alt="avatar" />
-            <Button>수정</Button>
-          </AvatarBox>
-        </>
-      );
-    }
-    if (type === 'kakao') {
-      console.log('data', data);
-      const { email, nickname, profileImage } = data.data.data;
-      return (
-        <>
-          <TextBox>
-            <Text size={14}>{`닉네임: ${nickname}`}</Text>
-            <Text size={14}>{`이메일: ${email}`}</Text>
-          </TextBox>
-          <AvatarBox>
-            <Avatar src={profileImage} alt="avatar" />
-            <Button>수정</Button>
-          </AvatarBox>
-        </>
-      );
-    }
-    return null;
-  };
+  const { data } = useMyPage();
+  const { avatar, email, name, phone } = data.data.data;
 
   return (
     <MyPageContainer>
       <InfoInner>
         <Header>유저정보</Header>
-        <InfoContent>{createUserInfo()}</InfoContent>
+        <InfoContent>
+          <TextBox>
+            <Text size={14}>{`닉네임: ${name}`}</Text>
+            <Text size={14}>{`이메일: ${email}`}</Text>
+            {phone ? <Text size={14}>{`핸드폰 번호: ${phone}`}</Text> : null}
+          </TextBox>
+          <AvatarBox>
+            <Avatar src={avatar} alt="avatar" />
+            <Button>수정</Button>
+          </AvatarBox>
+        </InfoContent>
       </InfoInner>
       <OrderInner>
         <Header>주문조회</Header>
@@ -97,7 +53,7 @@ function MyPage() {
           </ButtonBox>
         </OrderContent>
       </OrderInner>
-      {type === 'kakao' ? <Button>가게 설정</Button> : null}
+      {type === 'local' ? <Button>가게 설정</Button> : null}
     </MyPageContainer>
   );
 }
