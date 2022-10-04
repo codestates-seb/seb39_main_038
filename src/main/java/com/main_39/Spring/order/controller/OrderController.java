@@ -34,12 +34,12 @@ public class OrderController {
 
         Kakao kakao = memberService.findVerifiedKakao(kakaoId);
 
-        orderService.createOrder(mapper.orderPostDtoToOrder(orderRequest, kakao));
+        orderService.createOrder(mapper.orderRequestToOrder(orderRequest, kakao));
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @GetMapping("/{order-id}")
+    @GetMapping("/detail/{order-id}")
     public ResponseEntity<OrderDetailResponse> findOrder(@PathVariable("order-id") long orderId) {
 
         Order findOrder = orderService.findOrder(orderId);

@@ -17,11 +17,11 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = "spring")
 public interface OrderMapper {
 
-    default Order orderPostDtoToOrder(OrderRequest requestDto, Kakao kakao) {
+    default Order orderRequestToOrder(OrderRequest orderRequest, Kakao kakao) {
 
         Order order = new Order();
 
-        List<OrderMenu> orderMenus = requestDto.getOrderMenus()
+        List<OrderMenu> orderMenus = orderRequest.getOrderMenus()
                 .stream()
                 .map(orderMenuRequest -> {
                     Menu menu = new Menu();
@@ -33,7 +33,7 @@ public interface OrderMapper {
                             .build();
                     return orderMenu;
                 }).collect(Collectors.toList());
-
+        order.addPaymentType(orderRequest.getPaymentType());
         order.addKakao(kakao);
         order.addOrderMenus(orderMenus);
 
@@ -48,6 +48,7 @@ public interface OrderMapper {
         orderDetailResponse.setKakaoId(order.getKakao().getKakaoId());
         orderDetailResponse.setTotalCount(order.getTotalCount());
         orderDetailResponse.setTotalPrice(order.getTotalPrice());
+        orderDetailResponse.setPaymentType(order.getPaymentType());
         orderDetailResponse.setCreatedAt(order.getCreatedAt());
         orderDetailResponse.setOrderMenus(orderMenusToOrderMenuResponseDtos(orderMenus));
         return orderDetailResponse;
@@ -84,6 +85,7 @@ public interface OrderMapper {
                         .orderId(order.getOrderId())
                         .totalCount(order.getTotalCount())
                         .totalPrice(order.getTotalPrice())
+                        .paymentType(order.getPaymentType())
                         .createdAt(order.getCreatedAt())
                         .build()).collect(Collectors.toList());
     }
