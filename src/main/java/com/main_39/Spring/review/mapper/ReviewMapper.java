@@ -27,8 +27,7 @@ public interface ReviewMapper {
                 store.getTotalReview(),
                 store.getTotalGrade(),
                 store.getTotalComment(),
-                reviewToStoreResponseDtos(reviews),
-                reviewToCommandResponseDtos(comments));
+                reviewToReviewResponseDtos(reviews));
         return reviewsResponseDto;
     }
 
