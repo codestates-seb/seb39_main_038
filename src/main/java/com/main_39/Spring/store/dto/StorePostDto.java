@@ -7,8 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class StorePostDto {
         private long storeId;
-        // crud test
-//        private long localId;
+        private long localId;
         private String storePhone;
         private String storeNumber;
         private String storeStatus;
