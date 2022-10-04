@@ -1,5 +1,6 @@
 import React from 'react';
 import { useRecoilValue, useResetRecoilState } from 'recoil';
+import { useNavigate } from 'react-router-dom';
 import {
   StickyBody,
   CartListBody,
@@ -13,10 +14,15 @@ import {
 } from './styles';
 import { ReceiptList } from '../ReceiptList';
 import { atoms } from '../../store';
+import { ROUTE } from '../../constants';
 
-function Receipt() {
+function Receipt({ order }) {
   const orderList = useRecoilValue(atoms.orderList);
   const resetReceipt = useResetRecoilState(atoms.orderList);
+  const navigate = useNavigate();
+  console.log(order);
+  console.log(orderList);
+
   const totalPrice = () => {
     let sum = 0;
     for (let i = 0; i < orderList.length; i += 1)
@@ -36,11 +42,15 @@ function Receipt() {
     ));
   };
 
+  const goOrder = () => navigate(`/${ROUTE.ORDER.PATH}`);
+
+  const goPay = () => {};
+
   return (
     <StickyBody>
       <Cart>
         <CartTab>
-          <CartTitle>장바구니</CartTitle>
+          <CartTitle>{order ? orderList[0].storeName : '장바구니'}</CartTitle>
           <Button type="button" onClick={resetReceipt}>
             리셋
           </Button>
@@ -54,8 +64,11 @@ function Receipt() {
         </CartListBody>
         <TotalPrice>합계: {totalPrice()}원</TotalPrice>
       </Cart>
-
-      <OrderButton>바로 주문하기 </OrderButton>
+      {order ? (
+        <OrderButton onClick={goPay}>결제하기</OrderButton>
+      ) : (
+        <OrderButton onClick={goOrder}>바로 주문하기 </OrderButton>
+      )}
     </StickyBody>
   );
 }

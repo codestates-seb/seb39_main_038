@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { useRecoilValue } from 'recoil';
+import { atoms } from '../../store';
 import {
   OrderContainer,
   OrderWrapper,
@@ -17,9 +19,12 @@ import {
   DiscountButton,
   RadioBox,
 } from './styles';
+import { Receipt } from '../../components';
 
 function Order() {
   const [radio, setRadio] = useState({ value: 'card', togle: true });
+  const orderList = useRecoilValue(atoms.orderList);
+  console.log(orderList);
 
   const handleOnChange = (e) => {
     setRadio({ value: e.target.value, togle: !radio.togle });
@@ -93,6 +98,7 @@ function Order() {
           </OrderContent>
         </OrderBox>
       </OrderWrapper>
+      <Receipt order />
     </OrderContainer>
   );
 }
