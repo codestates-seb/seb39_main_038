@@ -8,18 +8,16 @@ import java.util.List;
 
 @Getter
 @Setter
-public class OrderResponseDto {
+public class OrderDetailResponse {
     private long orderId;
-    //    private long kakaoId;
-    private List<OrderMenuResponseDto> orderMenus;
+
+    private long kakaoId;
+
+    private List<OrderMenuResponse> orderMenus;
 
     private int totalCount;
 
     private int totalPrice;
 
     private LocalDateTime createdAt;
-
-//    public void addKakao(Kakao kakao) {
-//        this.kakao_id = kakao.getKakao_id();
-//    }
 }

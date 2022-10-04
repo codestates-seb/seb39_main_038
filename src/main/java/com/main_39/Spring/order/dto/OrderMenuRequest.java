@@ -3,7 +3,7 @@ package com.main_39.Spring.order.dto;
 import lombok.Getter;
 
 @Getter
-public class OrderMenuPostRequestDto {
+public class OrderMenuRequest {
     private long menuId;
     private int count;
 }

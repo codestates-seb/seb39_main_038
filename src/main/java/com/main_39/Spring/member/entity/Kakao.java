@@ -1,14 +1,19 @@
 package com.main_39.Spring.member.entity;
 
+import com.main_39.Spring.order.entity.Order;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Getter
@@ -42,6 +47,13 @@ public class Kakao {
     @Enumerated(value = EnumType.STRING)
     @Column(length = 20, nullable = false)
     private Role role = Role.CUSTOMER;
+
+    @OneToMany(mappedBy = "kakao", cascade = CascadeType.ALL)
+    private List<Order> orders = new ArrayList<>();
+
+    public int getTotalOrder() {
+        return orders.size();
+    }
 
     @Builder
     Kakao(Long kakaoId, String nickname, String connectedAt, String profileImage, String thumbnailImage, String email, String refreshToken){
