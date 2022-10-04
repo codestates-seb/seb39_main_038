@@ -41,7 +41,8 @@ public class MenuController {
     public ResponseEntity<Void> createMenu(@PathVariable("store-id") long storeId,
                                            @RequestBody MenuRequest menuRequest) {
 
-        Store store = storeService.findVerifiedStore(storeId);
+        // storeService 수정으로 인한 수정
+        Store store = storeService.verifyExistsStore(storeId);
 
         menuService.createMenu(store, mapper.menuRequestToMenu(menuRequest));
 

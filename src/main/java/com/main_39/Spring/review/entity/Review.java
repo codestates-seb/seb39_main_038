@@ -10,7 +10,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,10 +19,13 @@ public class Review extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reviewId;
 
+    @Column(nullable = false)
     private String reviewContent;
 
+    @Column(length = 255)
     private String reviewImage;
 
+    @Column(nullable = false)
     private int reviewGrade;
 
     /**
@@ -32,7 +34,6 @@ public class Review extends Auditable {
      */
     @OneToOne(mappedBy = "review", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private Comment comment;
-
 
     /**
      * 카카오 : 리뷰 = 1 : N 단방향
@@ -46,14 +47,8 @@ public class Review extends Auditable {
         this.kakao = kakao;
     }
 
-//    public void setKakao(Kakao kakao) {
-//        this.kakao = kakao;
-//        if(!kakao.getReviews().contains(this))
-//            kakao.getReviews().add(this);
-//    }
-
     /**
-     * 스토어 : 리뷰 = 1 : N
+     * 스토어 : 리뷰 = 1 : N 양방향 
      */
     @ManyToOne
     @JoinColumn(name = "store_id")
