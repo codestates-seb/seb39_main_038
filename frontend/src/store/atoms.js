@@ -27,13 +27,36 @@ const atoms = {
 
   menuOrder: atom({
     key: 'menuOrder',
-    default: [{ name: '', price: null, id: null }],
+    default: [{ name: '', price: null, id: null, count: null }],
   }),
 
   orderList: atom({
     key: 'orderList',
     default: [],
     effects: [sessionStorageEffect('orderList')],
+  }),
+
+  foodTruckInfo: atom({
+    key: 'Info',
+    default: {
+      store_id: null,
+      store_phone: '',
+      store_number: '',
+      store_status: '',
+      store_name: '',
+      store_content: '',
+      store_image: '',
+      store_type: '',
+      store_time: '',
+      store_waittime: '',
+      store_address: '',
+      store_payment: '',
+      store_tag: '',
+      total_review: null,
+      total_grade: null,
+      total_comment: null,
+      total_menu: null,
+    },
   }),
 };
 

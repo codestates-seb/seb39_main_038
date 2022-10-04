@@ -27,6 +27,7 @@ const CartListAdd = styled.div`
   > div > div {
     font-size: 14px;
     padding: 6px 12px;
+    cursor: pointer;
   }
   > div > span {
     padding: 5px;
