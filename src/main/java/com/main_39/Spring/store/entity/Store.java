@@ -90,7 +90,7 @@ public class Store {
     public double getTotalGrade() {
         long total = reviews.stream().mapToInt(review -> review.getReviewGrade()).sum();
         double avg = (double)total / (double)reviews.size();
-        avg = Math.round(avg * 100) / 100.0;
+        avg = Math.round(avg * 10) / 10.0;
         return avg;
     }
 
