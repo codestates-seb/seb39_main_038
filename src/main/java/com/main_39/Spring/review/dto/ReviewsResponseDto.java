@@ -12,11 +12,11 @@ public class ReviewsResponseDto {
     private List<ReviewStoreResponseDto> reviews;
     private List<CommentResponseDto> comment;
     private int totalReview;
-    private int totalGrade;
+    private double totalGrade;
     private int totalComment;
 
     @Builder
-    public ReviewsResponseDto(Long storeId, int totalReview, int totalGrade, int totalComment,
+    public ReviewsResponseDto(Long storeId, int totalReview, double totalGrade, int totalComment,
                               List<ReviewStoreResponseDto> reviews, List<CommentResponseDto> comment) {
         this.storeId = storeId;
         this.reviews = reviews;
