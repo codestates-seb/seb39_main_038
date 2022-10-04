@@ -17,11 +17,7 @@ function DetailFoodList({ storeId, storeName }) {
 
   const createFoodMenuList = () => {
     return data?.data.storeMenu.map((menu) => (
-      <Menu
-        key={menu.name}
-        id={storeId}
-        onClick={handleOnClick(storeId, storeName, menu)}
-      >
+      <Menu key={menu.name} onClick={handleOnClick(storeId, storeName, menu)}>
         <MenuInfo>
           <Name>{menu.name}</Name>
           <Info>{menu.info}</Info>
