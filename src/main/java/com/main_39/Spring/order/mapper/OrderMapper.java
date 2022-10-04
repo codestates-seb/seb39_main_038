@@ -34,6 +34,7 @@ public interface OrderMapper {
                     return orderMenu;
                 }).collect(Collectors.toList());
         order.addPaymentType(orderRequest.getPaymentType());
+        order.addOrderRequest(orderRequest.getOrderRequest());
         order.addKakao(kakao);
         order.addOrderMenus(orderMenus);
 
@@ -45,16 +46,16 @@ public interface OrderMapper {
 
         OrderDetailResponse orderDetailResponse = new OrderDetailResponse();
         orderDetailResponse.setOrderId(order.getOrderId());
-        orderDetailResponse.setKakaoId(order.getKakao().getKakaoId());
         orderDetailResponse.setTotalCount(order.getTotalCount());
         orderDetailResponse.setTotalPrice(order.getTotalPrice());
+        orderDetailResponse.setOrderRequest(order.getOrderRequest());
         orderDetailResponse.setPaymentType(order.getPaymentType());
         orderDetailResponse.setCreatedAt(order.getCreatedAt());
-        orderDetailResponse.setOrderMenus(orderMenusToOrderMenuResponseDtos(orderMenus));
+        orderDetailResponse.setOrderMenus(orderMenusToOrderMenuResponses(orderMenus));
         return orderDetailResponse;
     }
 
-    default List<OrderMenuResponse> orderMenusToOrderMenuResponseDtos(
+    default List<OrderMenuResponse> orderMenusToOrderMenuResponses(
             List<OrderMenu> orderMenus) {
         return orderMenus.stream()
                 .map(orderMenu -> OrderMenuResponse
@@ -70,7 +71,6 @@ public interface OrderMapper {
         List<Order> orders = kakao.getOrders();
 
         OrdersResponse ordersResponse = new OrdersResponse(
-                kakao.getKakaoId(),
                 orderToOrderResponse(orders),
                 kakao.getTotalOrder());
 
@@ -83,8 +83,10 @@ public interface OrderMapper {
                 .map(order -> OrderResponse
                         .builder()
                         .orderId(order.getOrderId())
+                        .orderMenu(orderMenusToOrderMenuResponses(order.getOrderMenus()))
                         .totalCount(order.getTotalCount())
                         .totalPrice(order.getTotalPrice())
+                        .orderRequest(order.getOrderRequest())
                         .paymentType(order.getPaymentType())
                         .createdAt(order.getCreatedAt())
                         .build()).collect(Collectors.toList());

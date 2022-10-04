@@ -45,7 +45,8 @@ public class StoreController {
     public ResponseEntity postStore(@Valid @RequestBody StorePostDto storePostDto) {
 
         Store store = mapper.storePostDtoToStore(storePostDto);
-
+        System.out.println("회원 아이디 : " + storePostDto.getLocalId());
+        System.out.println("가게 타입 : " + store.getStoreType());
         Local local = memberService.findVerifiedLocal(storePostDto.getLocalId());
         store.setLocal(local);
 
