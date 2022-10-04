@@ -49,7 +49,7 @@ public class Local {
     @Column(nullable = false, length = 20)
     private Role role = Role.SELLER;
 
-    //외래키
+    //외래키 수정
     @OneToOne(mappedBy = "local")
     private Store store;
 
