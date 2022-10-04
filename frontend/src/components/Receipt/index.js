@@ -6,7 +6,9 @@ import {
   Cart,
   CartTab,
   TotalPrice,
-  OrderBtn,
+  OrderButton,
+  Button,
+  CartTitle,
 } from './styles';
 import { ReceiptList } from '../ReceiptList';
 import { atoms } from '../../store';
@@ -14,41 +16,39 @@ import { atoms } from '../../store';
 function Receipt() {
   const orderList = useRecoilValue(atoms.orderList);
   const resetReceipt = useResetRecoilState(atoms.orderList);
-  const total = () => {
-    let n = 0;
-    for (let i = 0; i < orderList.length; i += 1) {
-      const sum = orderList[i].price * orderList[i].count;
-      n += sum;
-    }
-    return n;
+  const totalPrice = () => {
+    let sum = 0;
+    for (let i = 0; i < orderList.length; i += 1)
+      sum += orderList[i].price * orderList[i].count;
+    return sum;
+  };
+
+  const createReceiptList = () => {
+    return orderList.map((item, index) => (
+      <ReceiptList
+        key={item.name}
+        name={item.name}
+        price={item.price}
+        count={item.count}
+        idx={index}
+      />
+    ));
   };
 
   return (
     <StickyBody>
       <Cart>
         <CartTab>
-          <div>장바구니</div>
-          <button type="button" onClick={resetReceipt}>
+          <CartTitle>장바구니</CartTitle>
+          <Button type="button" onClick={resetReceipt}>
             리셋
-          </button>
+          </Button>
         </CartTab>
-        <CartListBody>
-          {orderList.map((item, index) => (
-            <ReceiptList
-              key={item.name}
-              name={item.name}
-              price={item.price}
-              count={item.count}
-              idx={index}
-            />
-          ))}
-        </CartListBody>
-        <TotalPrice>합계: {total()}원</TotalPrice>
+        <CartListBody>{createReceiptList()}</CartListBody>
+        <TotalPrice>합계: {totalPrice()}원</TotalPrice>
       </Cart>
 
-      <OrderBtn>
-        <button type="button">바로 주문하기</button>
-      </OrderBtn>
+      <OrderButton>바로 주문하기 </OrderButton>
     </StickyBody>
   );
 }
