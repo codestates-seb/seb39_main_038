@@ -1,5 +1,6 @@
 package com.main_39.Spring.store.dto;
 
+import com.main_39.Spring.store.entity.Store;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -14,7 +15,7 @@ public class StorePostDto {
         private String storeName;
         private String storeContent;
         private String storeImage;
-        private String storeType;
+        private Store.StoreType storeType;
         private String storeTime;
         private String storeWaitTime;
         private String storeAddress;
