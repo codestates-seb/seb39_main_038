@@ -38,18 +38,25 @@ public class Comment extends Auditable {
             review.setComment(this);
         }
     }
-    
+
+    public void addReview(Review review) {
+        this.review = review;
+    }
+
     /**
-     * 스토어 : 댓글 = 1:N 양방향
+     * 스토어 : 댓글 = 1: N 양방향
      */
     @ManyToOne
-    @JoinColumn(name = "store_id")
+    @JoinColumn(name="store_id")
     private Store store;
 
-    public void addStore(Store store) {
+    public void setStore(Store store) {
         this.store = store;
-        if(store.getComments().contains(this))
-            store.getComments().add(this);
     }
+//    public void addStore(Store store) {
+//        this.store = store;
+//        if(store.getComments().contains(this))
+//            store.getComments().add(this);
+//    }
 
 }
