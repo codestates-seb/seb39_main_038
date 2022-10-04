@@ -7,7 +7,9 @@ import { Section, Menu, MenuInfo, Name, Info, Price, MenuImg } from './styles';
 import { atoms } from '../../store';
 
 const getMenuList = async () => {
-  const res = await axios.get('http://localhost:8080/store');
+  const res = await axios.get(
+    'http://ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/store/1/menus',
+  );
   return res.data.menus;
 };
 

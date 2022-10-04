@@ -29,7 +29,9 @@ function FoodDetail() {
   const [foodTruckInfo, setFoodTruckInfo] = useRecoilState(atoms.foodTruckInfo);
 
   const getInfoList = async () => {
-    const res = await axios.get('/store/1');
+    const res = await axios.get(
+      'http://ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/store/1',
+    );
     return res.data;
   };
 
