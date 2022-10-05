@@ -3,6 +3,7 @@ import { useFoodList } from './useFoodList';
 import { useMyPage } from './useMyPage';
 import { useFoodDetail } from './useFoodDetail';
 import { useDetailFoodList } from './useDetailFoodList';
+import { useOrderList } from './useOrderList';
 import { usePay } from './usePay';
 
 export {
@@ -12,4 +13,5 @@ export {
   useFoodDetail,
   useDetailFoodList,
   usePay,
+  useOrderList,
 };
