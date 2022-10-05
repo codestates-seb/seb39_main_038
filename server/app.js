@@ -51,6 +51,9 @@ app.post("/local/mypage", (req, res) => {
       email: "abs@naver.com",
       name: "홍길동",
       phone: "010-2222-2222",
+      store: {
+        storeId: 1,
+      },
     },
   });
 });
