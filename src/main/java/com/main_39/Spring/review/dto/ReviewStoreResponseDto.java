@@ -12,7 +12,6 @@ public class ReviewStoreResponseDto {
     private String reviewImage;
     private int reviewGrade;
     private LocalDateTime createdAt;
-
     @Builder
     public ReviewStoreResponseDto(long reviewId, String reviewContent, String reviewImage, int reviewGrade, LocalDateTime createdAt) {
         this.reviewId = reviewId;

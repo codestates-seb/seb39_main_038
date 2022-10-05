@@ -7,7 +7,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public class ReviewPostDto {
     private long kakaoId;
-//    private long storeId;
     private String reviewContent;
     private String reviewImage;
     private int reviewGrade;

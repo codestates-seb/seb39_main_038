@@ -8,16 +8,16 @@ import com.main_39.Spring.store.entity.Store;
 import org.mapstruct.Mapper;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface ReviewMapper {
     Review reviewPostDtoToReview(ReviewPostDto reviewPostDto);
-    Review reviewPatchDtoToReview(ReviewPatchDto reviewPatchDto);
     ReviewResponseDto reviewToReviewResponseDto(Review review);
-
     List<ReviewResponseDto> reviewToReviewResponseDtos(List<Review> reviews);
 
+    /**
+     * 푸드트럭별 상점 조회
+     */
     default ReviewsResponseDto reviewToStoreResponseDto(Store store) {
         List<Review> reviews = store.getReviews();
         List<Comment> comments = store.getComments();
@@ -29,29 +29,5 @@ public interface ReviewMapper {
                 store.getTotalComment(),
                 reviewToReviewResponseDtos(reviews));
         return reviewsResponseDto;
-    }
-
-    default List<ReviewStoreResponseDto> reviewToStoreResponseDtos(List<Review> storeReviews) {
-        return storeReviews.stream()
-                .map(review -> ReviewStoreResponseDto
-                        .builder()
-                        .reviewId(review.getReviewId())
-                        .reviewContent(review.getReviewContent())
-                        .reviewImage(review.getReviewImage())
-                        .reviewGrade(review.getReviewGrade())
-                        .createdAt(review.getCreatedAt())
-                        .build())
-                .collect(Collectors.toList());
-    }
-
-    default List<CommentResponseDto> reviewToCommandResponseDtos(List<Comment> commentReviews) {
-        return commentReviews.stream()
-                .map(review -> CommentResponseDto
-                        .builder()
-                        .commentId(review.getCommentId())
-                        .commentContent(review.getCommentContent())
-                        .createdAt(review.getCreatedAt())
-                        .build())
-                .collect(Collectors.toList());
     }
 }

@@ -10,32 +10,35 @@ public class StoreResponseDto<T> {
         private long storeId;
         private String storePhone;
         private String storeNumber;
+
         /**
          * 가게 상태
          */
         private Store.StoreStatus storeStatus;
+
         public String getStoreStatus() {
                 return storeStatus.getStatus();
         }
-        //        private String storeStatus;
+
         private String storeName;
         private String storeContent;
         private String storeImage;
-//        private String storeType;
+
         /**
          * 타입별 필터
          */
         private Store.StoreType storeType;
+
         public String getStoreType() {
                 return storeType.getType();
 
         }
+
         private String storeTime;
         private String storeWaitTime;
         private String storeAddress;
         private String storePayment;
         private String storeTag;
-
         private int totalReview;
         private double totalGrade;
         private int totalComment;

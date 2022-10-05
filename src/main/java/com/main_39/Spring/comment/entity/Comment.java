@@ -18,6 +18,7 @@ public class Comment extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long commentId;
 
+    @Column(nullable = false)
     private String commentContent;
 
     public Comment(Long commentId, String commentContent) {
@@ -53,10 +54,4 @@ public class Comment extends Auditable {
     public void setStore(Store store) {
         this.store = store;
     }
-//    public void addStore(Store store) {
-//        this.store = store;
-//        if(store.getComments().contains(this))
-//            store.getComments().add(this);
-//    }
-
 }

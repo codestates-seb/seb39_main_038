@@ -32,14 +32,20 @@ public class StoreService {
         this.amazonS3 = amazonS3;
     }
 
+    /**
+     * 푸드트럭 등록
+     */
     public Store createdStore(Store store) {
         verifyExistsName(store.getStoreName());
         if(store.getStoreImage() != null) saveImageToS3(store);
         return storeRepository.save(store);
     }
 
+    /**
+     * 푸드트럭 수정
+     */
     public Store updateStore(Store store) {
-        Store findStore = findVerifiedStore(store.getStoreId());
+        Store findStore = verifyExistsStore(store.getStoreId());
 
         Optional.ofNullable(store.getStorePhone())
                 .ifPresent(phone -> findStore.setStorePhone(phone));
@@ -68,9 +74,11 @@ public class StoreService {
                 .ifPresent(tag -> findStore.setStoreTag(tag));
 
         return storeRepository.save(findStore);
-
     }
 
+    /**
+     * 푸드트럭 이미지
+     */
     private void saveImageToS3(Store store){
         String data;
         try{
@@ -95,33 +103,46 @@ public class StoreService {
         store.setStoreImage(amazonS3.getUrl(bucket,s3FileName).toString());
     }
 
+    /**
+     * 특정 푸드트럭 불러오기
+     */
     public Store findStore(long storeId) {
-        return findVerifiedStore(storeId);
+        return verifyExistsStore(storeId);
     }
 
+    /**
+     * 푸드트럭 목록 불러오기
+     */
     public Page<Store> findStores(int page, int size) {
         return storeRepository.findAll(PageRequest.of(page, size,
                 Sort.by("storeId").descending()));
     }
 
-//    public Page<Store> findStoreMenu(long menuId, int page, int size) {
-//        return storeRepository.findByStoreMenu(menuId, PageRequest.of(page, size,
-//                Sort.by("storeId").descending()));
-//    }
+    /**
+     * 푸드트럭 타입별 푸드트럭 목록 불러오기
+     */
+    public Page<Store> findByStoreType(Store.StoreType storeType, int page, int size) {
+        return storeRepository.findByStoreType(storeType,PageRequest.of(page, size,
+                Sort.by("storeId").descending()));
+    }
 
-
+    /**
+     * 푸드트럭 삭제
+     */
     public void deleteStore(long storeId){
-        Store findStore = findVerifiedStore(storeId);
+        Store findStore = verifyExistsStore(storeId);
         if(findStore.getStoreImage() != null){
             int index = findStore.getStoreImage().indexOf("/",8);
             String key = findStore.getStoreImage().substring(index+1);
             amazonS3.deleteObject(bucket,key);
         }
         storeRepository.delete(findStore);
-
     }
 
-    public Store findVerifiedStore(long storeId) {
+    /**
+     * 푸드트럭이 존재하는지 확인
+     */
+    public Store verifyExistsStore(long storeId) {
         Optional<Store> optionalStore =
                 storeRepository.findById(storeId);
         Store findStore =
@@ -130,18 +151,12 @@ public class StoreService {
         return findStore;
     }
 
-
+    /**
+     * 이미 사용중인 푸드트럭명인지 확인
+     */
     private void verifyExistsName(String storeName) {
         Optional<Store> store = storeRepository.findByName(storeName);
         if(store.isPresent())
             throw new BusinessLogicException(ExceptionCode.STORE_NAME_DUPLICATE);
     }
-
-//    private Store findVerifiedStoreByQuery(long storeId) {
-//        Optional<Store> optionalStore = storeRepository.findByStore(storeId);
-//        Store findStore =
-//                optionalStore.orElseThrow(()    ->
-//                        new BusinessLogicException(ExceptionCode.STORE_NOT_EXISTS));
-//        return findStore;
-//    }
 }

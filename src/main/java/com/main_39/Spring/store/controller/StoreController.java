@@ -1,7 +1,5 @@
 package com.main_39.Spring.store.controller;
 
-
-import com.amazonaws.services.s3.AmazonS3;
 import com.main_39.Spring.dto.MultiResponseDto;
 import com.main_39.Spring.dto.SingleResponseDto;
 import com.main_39.Spring.member.entity.Local;
@@ -22,7 +20,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.util.List;
 
-
 @RestController
 @RequestMapping("/store")
 @Validated
@@ -40,7 +37,9 @@ public class StoreController {
         this.memberService = memberService;
     }
 
-
+    /**
+     * 푸드트럭 등록
+     */
     @PostMapping("/ask")
     public ResponseEntity postStore(@Valid @RequestBody StorePostDto storePostDto) {
 
@@ -57,17 +56,9 @@ public class StoreController {
                 new SingleResponseDto<>(response), HttpStatus.CREATED);
     }
 
-//    @PostMapping("/ask")
-//    public ResponseEntity postStore(@Valid @RequestBody StorePostDto storePostDto) {
-//
-//        Store store =
-//                storeService.createdStore(mapper.storePostDtoToStore(storePostDto));
-//
-//            return new ResponseEntity<>(
-//                    new SingleResponseDto<>(mapper.storeToStoreResponseDto(store)),
-//            HttpStatus.CREATED);
-//    }
-
+    /**
+     * 푸드트럭 수정
+     */
     @PatchMapping("/{store-id}")
     public ResponseEntity patchStore(
             @PathVariable("store-id") @Positive long storeId,
@@ -83,7 +74,9 @@ public class StoreController {
                 HttpStatus.OK);
     }
 
-
+    /**
+     * 특정 푸드트럭 불러오기
+     */
     @GetMapping("/{store-id}")
     public ResponseEntity getStore(@PathVariable("store-id") @Positive long storeId) {
 
@@ -92,23 +85,20 @@ public class StoreController {
                 new SingleResponseDto<>(mapper.storeToStoreResponseDto(store)), HttpStatus.OK);
     }
 
-
-//    @GetMapping("/{store-id}/menu")
-//    public ResponseEntity getStoreMenu(@PathVariable("store-id") @Positive long storeId,
-//                                       @RequestParam @Positive int page,
-//                                       @RequestParam(required = false, defaultValue = "15") @Positive int size) {
-//        Page<Store> pageMenu = storeService.findStoreMenu(menuId, page-1, size);
-//        List<Store> menu = pageMenu.getContent();
-//        List<StoreResponseDto> responses = mapper.storesToStoreResponseDtos(menu);
-//
-//        return new ResponseEntity<>(
-//                new SingleResponseDto<>(responses, pageMenu), HttpStatus.OK);
-//    }
-
+    /**
+     * 푸드트럭 목록 불러오기
+     */
     @GetMapping
     public ResponseEntity getStores(@Positive @RequestParam int page,
-                                    @Positive @RequestParam(required = false, defaultValue = "15") int size){
-        Page<Store> pageStores = storeService.findStores(page -1, size);
+                                    @Positive @RequestParam(required = false, defaultValue = "15") int size,
+                                    @RequestParam Store.StoreType type){
+        Page<Store> pageStores;
+
+        if(type!= Store.StoreType.all) {
+            pageStores = storeService.findByStoreType(type, page -1, size);
+        } else {
+            pageStores = storeService.findStores(page -1, size);
+        }
         List<Store> stores = pageStores.getContent();
 
         return new ResponseEntity<>(
@@ -117,6 +107,9 @@ public class StoreController {
                 HttpStatus.OK);
     }
 
+    /**
+     * 푸드트럭 삭제
+     */
     @DeleteMapping("/{store-id}")
     public ResponseEntity deleteStore(
             @PathVariable("store-id") @Positive long storeId) {

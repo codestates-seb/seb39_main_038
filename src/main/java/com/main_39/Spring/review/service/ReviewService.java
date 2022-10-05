@@ -44,33 +44,20 @@ public class ReviewService {
         this.amazonS3 = amazonS3;
     }
 
+    /**
+     * 리뷰 작성
+     */
     public Review createdReview(long storeId, Review review) {
-//        verifyExistsGrade(review.getReviewGrade());
         Store store = storeService.findStore(storeId);
         review.addStore(store);
 
         if(review.getReviewImage() != null) saveImageToS3(review);
         return reviewRepository.save(review);
-
     }
 
-
-
-    public Review updateReview(Review review) {
-        Review findReview = findVerifiedReview(review.getReviewId());
-
-        Optional.ofNullable(review.getReviewContent())
-                .ifPresent(content -> findReview.setReviewContent(content));
-        Optional.ofNullable(review.getReviewImage())
-                .ifPresent(image -> {findReview.setReviewImage(image);
-                                    saveImageToS3(findReview);});
-        Optional.ofNullable(review.getReviewGrade())
-                .ifPresent(grade -> findReview.setReviewGrade(grade));
-
-
-        return reviewRepository.save(findReview);
-    }
-
+    /**
+     * 리뷰 이미지 저장
+     */
     private void saveImageToS3(Review review){
         String data;
         try{
@@ -94,13 +81,22 @@ public class ReviewService {
         review.setReviewImage(amazonS3.getUrl(bucket,s3FileName).toString());
     }
 
+    /**
+     * 리뷰 불러오기
+     */
     public Review findReview(long reviewId) { return findVerifiedReview(reviewId); }
 
+    /**
+     * 전체 리뷰 불러오기
+     */
     public Page<Review> findReviews(int page, int size) {
         return reviewRepository.findAll(PageRequest.of(page, size,
                 Sort.by("reviewId").descending()));
     }
 
+    /**
+     * 리뷰 삭제
+     */
     public void deleteReview(long reviewId) {
         Review findReview = findVerifiedReview(reviewId);
         if(findReview.getReviewImage() != null){
@@ -122,10 +118,4 @@ public class ReviewService {
                         new BusinessLogicException(ExceptionCode.REVIEW_NOT_EXISTS));
         return findReview;
     }
-
-//    private void verifyExistsGrade(Number reviewGrade) {
-//        Optional<Review> review = reviewRepository.findByGrade(reviewGrade);
-//        if(review.isPresent())
-//            throw new BusinessLogicException(ExceptionCode.REVIEW_INVALID_GRADE);
-//    }
 }
