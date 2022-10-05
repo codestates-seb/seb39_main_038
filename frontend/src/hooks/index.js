@@ -5,6 +5,7 @@ import { useFoodDetail } from './useFoodDetail';
 import { useDetailFoodList } from './useDetailFoodList';
 import { useOrderList } from './useOrderList';
 import { usePay } from './usePay';
+import { useReview } from './useReview';
 
 export {
   useModal,
@@ -14,4 +15,5 @@ export {
   useDetailFoodList,
   usePay,
   useOrderList,
+  useReview,
 };
