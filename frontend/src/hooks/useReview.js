@@ -7,29 +7,38 @@ const fetchReview = (id) => async () => {
   return response;
 };
 
-const fetchDeleteReiew = async (data) => {
+const fetchDeleteReview = async (data) => {
   const { sid, rid } = data;
   await axios.delete(`${API_URI.FOODREVIEW(sid)}/${rid}`);
 };
 
-const fetchUpdateReiew = async (data) => {
+const fetchUpdateReview = async (data) => {
   const { sid, rid, value } = data;
   await axios.patch(`${API_URI.FOODREVIEW(sid)}/${rid}`, value);
+};
+
+const fetchCreateReview = async (data) => {
+  const { sid, value } = data;
+  await axios.post(`${API_URI.FOODREVIEW(sid)}/ask`, value);
 };
 
 function useReview(id) {
   const queryClient = useQueryClient();
   const { data } = useQuery(['review', id], fetchReview(id));
 
-  const { mutate: deleteMutate } = useMutation(fetchDeleteReiew, {
+  const { mutate: deleteMutate } = useMutation(fetchDeleteReview, {
     onSuccess: () => queryClient.invalidateQueries(['review', id]),
   });
 
-  const { mutate: updateMutate } = useMutation(fetchUpdateReiew, {
+  const { mutate: updateMutate } = useMutation(fetchUpdateReview, {
     onSuccess: () => queryClient.invalidateQueries(['review', id]),
   });
 
-  return { data, deleteMutate, updateMutate };
+  const { mutate: createMutate } = useMutation(fetchCreateReview, {
+    onSuccess: () => queryClient.invalidateQueries(['review', id]),
+  });
+
+  return { data, deleteMutate, updateMutate, createMutate };
 }
 
 export { useReview };
