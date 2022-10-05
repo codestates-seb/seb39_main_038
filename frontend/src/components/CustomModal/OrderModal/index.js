@@ -12,6 +12,9 @@ import {
 
 function OrderModal({ closeModal }) {
   const isMadal = useRecoilValue(atoms.modal);
+  const orderData = useRecoilValue(atoms.orderData);
+  console.log(orderData);
+
   if (!isMadal.order) return null;
   return (
     <Modal title="주문상세" width={450} height={450} closeModal={closeModal}>
