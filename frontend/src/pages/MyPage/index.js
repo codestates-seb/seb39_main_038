@@ -21,6 +21,8 @@ import {
 import { ROUTE } from '../../constants';
 import { CustomModal } from '../../components';
 
+const { AVATAR_IMG } = process.env;
+
 function MyPage() {
   const navigate = useNavigate();
   const { type } = useRecoilValue(atoms.isLogin);
@@ -64,7 +66,7 @@ function MyPage() {
             {phone ? <Text size={14}>{`핸드폰 번호: ${phone}`}</Text> : null}
           </TextBox>
           <AvatarBox>
-            <Avatar src={avatar} alt="avatar" />
+            <Avatar src={avatar || AVATAR_IMG} alt="avatar" />
             <Button>수정</Button>
           </AvatarBox>
         </InfoContent>
