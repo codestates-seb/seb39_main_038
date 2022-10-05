@@ -3,6 +3,7 @@ import styled from 'styled-components';
 const ServerErrorContainer = styled.div`
   height: calc(100vh - 80px);
   display: flex;
+  min-height: 300px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
