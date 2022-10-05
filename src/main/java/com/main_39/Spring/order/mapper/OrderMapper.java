@@ -62,6 +62,7 @@ public interface OrderMapper {
                         .builder()
                         .menuId(orderMenu.getMenu().getMenuId())
                         .storeId(orderMenu.getMenu().getStore().getStoreId())
+                        .storeName(orderMenu.getMenu().getStore().getStoreName())
                         .name(orderMenu.getMenu().getName())
                         .price(orderMenu.getMenu().getPrice())
                         .count(orderMenu.getCount())
