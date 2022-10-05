@@ -9,38 +9,58 @@ import {
   OrderModalBox,
   OrderModalTitle,
 } from './styles';
+import { dateFormat } from '../../../utils';
 
 function OrderModal({ closeModal }) {
   const isMadal = useRecoilValue(atoms.modal);
   const orderData = useRecoilValue(atoms.orderData);
-  console.log(orderData);
 
   if (!isMadal.order) return null;
+  const createModalBox = () => {
+    return orderData.orderMenu.map((item) => {
+      return (
+        <OrderModalBox key={item.menuId}>
+          <ModalText>
+            {item.name} × {item.count}
+          </ModalText>
+          <ModalText>{item.price}원</ModalText>
+        </OrderModalBox>
+      );
+    });
+  };
+
+  const total = () => {
+    let n = 0;
+    orderData.orderMenu.forEach((item) => {
+      n += item.price * item.count;
+    });
+    return n;
+  };
+
   return (
     <Modal title="주문상세" width={450} height={450} closeModal={closeModal}>
       <OrderModalBody>
-        <OrderModalTitle>BBQ-신논현점</OrderModalTitle>
+        <OrderModalTitle>{orderData.orderMenu[0].storeName}</OrderModalTitle>
         <OrderMenuBox>
           <ModalText as="h2" size={20}>
             주문내역
           </ModalText>
-          <OrderModalBox>
-            <ModalText>치즈스틱 × 1</ModalText>
-            <ModalText>2,500원</ModalText>
-          </OrderModalBox>
+          {createModalBox()}
         </OrderMenuBox>
         <OrderModalBox>
           <ModalText>주문시간</ModalText>
-          <ModalText>2022년 9월 22일</ModalText>
+          <ModalText>
+            {dateFormat(new Date(orderData.createdAt), '. ')}
+          </ModalText>
         </OrderModalBox>
         <OrderModalBox>
           <ModalText>상품합계</ModalText>
-          <ModalText>6,900원</ModalText>
+          <ModalText>{total()}원</ModalText>
         </OrderModalBox>
         <OrderModalBox>
           <ModalText color={COLOR.YELLOW}>결제금액</ModalText>
           <ModalText size={24} color={COLOR.YELLOW}>
-            6,900원
+            {total()}원
           </ModalText>
         </OrderModalBox>
         <OrderModalBox none>
