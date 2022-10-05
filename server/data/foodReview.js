@@ -5,6 +5,7 @@ for (let i = 0; i < 100; i++) {
   for (let i = 0; i < 5; i++) {
     const obj = {
       reviewId: i,
+      reviewName: "홍길동",
       reviewContent: "내용",
       reviewImage: null,
       reviewGrade: 5,
