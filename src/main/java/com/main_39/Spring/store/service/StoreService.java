@@ -4,6 +4,8 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.main_39.Spring.exception.BusinessLogicException;
 import com.main_39.Spring.exception.ExceptionCode;
+import com.main_39.Spring.review.entity.Review;
+import com.main_39.Spring.review.repository.ReviewRepository;
 import com.main_39.Spring.store.entity.Store;
 import com.main_39.Spring.store.repository.StoreRepository;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,20 +18,24 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Base64;
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class StoreService {
     private final StoreRepository storeRepository;
     private final AmazonS3 amazonS3;
+    private final ReviewRepository reviewRepository;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
     public StoreService(StoreRepository storeRepository,
-                        AmazonS3 amazonS3) {
+                        AmazonS3 amazonS3,
+                        ReviewRepository reviewRepository) {
         this.storeRepository = storeRepository;
         this.amazonS3 = amazonS3;
+        this.reviewRepository = reviewRepository;
     }
 
     /**
@@ -107,7 +113,10 @@ public class StoreService {
      * 특정 푸드트럭 불러오기
      */
     public Store findStore(long storeId) {
-        return verifyExistsStore(storeId);
+        Store store =  verifyExistsStore(storeId);
+        List<Review> reviews = reviewRepository.findByStore_StoreId(storeId, Sort.by("reviewId").descending());
+        store.setReviews(reviews);
+        return store;
     }
 
     /**
