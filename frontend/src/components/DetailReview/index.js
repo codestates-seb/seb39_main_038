@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   ReviewContainer,
   Rating,
@@ -13,6 +14,7 @@ import {
   Image,
 } from './styles';
 import { useReview } from '../../hooks';
+import { ROUTE } from '../../constants';
 import { dateFormat } from '../../utils';
 
 /* 답장 기능 주석 처리
@@ -37,7 +39,8 @@ import { dateFormat } from '../../utils';
 */
 
 function DetailReview({ storeId }) {
-  const { data, deleteMutate, updateMutate } = useReview(storeId);
+  const navigate = useNavigate();
+  const { data, deleteMutate } = useReview(storeId);
 
   const createStar = (n) => {
     let stars = '';
@@ -45,9 +48,10 @@ function DetailReview({ storeId }) {
     return stars;
   };
 
-  const goUpdate = (sid, rid, value) => () => {
-    updateMutate({ sid, rid, value });
-  };
+  const goUpdate = (sid, rid) => () =>
+    navigate(`/${ROUTE.REVIEW.PATH}`, {
+      state: { storeId: sid, reviewId: rid },
+    });
 
   const goDelete = (sid, rid) => () => {
     const isCheck = window.confirm('정말 지우시겠습니까?');
@@ -69,13 +73,7 @@ function DetailReview({ storeId }) {
               </Text>
             </TextWrapper>
             <ButtonWrapper>
-              <Button
-                onClick={goUpdate(storeId, item.reviewId, {
-                  reviewContent: '수정된 내용',
-                })}
-              >
-                수정
-              </Button>
+              <Button onClick={goUpdate(storeId, item.reviewId)}>수정</Button>
               <Button onClick={goDelete(storeId, item.reviewId)}>삭제</Button>
             </ButtonWrapper>
           </Header>
