@@ -20,11 +20,13 @@ import {
 import { Receipt } from '../../components';
 
 function Order() {
+  const [request, setRequest] = useState('');
   const [radio, setRadio] = useState({ value: 'card', togle: true });
 
-  const handleOnChange = (e) => {
+  const handleOnChangeRadio = (e) =>
     setRadio({ value: e.target.value, togle: !radio.togle });
-  };
+
+  const hanldeOnChangeAreaText = (e) => setRequest(e.target.value);
 
   return (
     <OrderContainer>
@@ -33,7 +35,10 @@ function Order() {
         <OrderBox>
           <OrderHeader>주문시 요청사항</OrderHeader>
           <OrderContent>
-            <TextEditor placeholder="주문시 요청사항을 입력해주세요." />
+            <TextEditor
+              placeholder="주문시 요청사항을 입력해주세요."
+              onChange={hanldeOnChangeAreaText}
+            />
             <LimitBox>
               <Text>최대 100자까지 입력 가능합니다.</Text>
               <Text>100 / 100</Text>
@@ -53,7 +58,7 @@ function Order() {
                   name="selector"
                   type="radio"
                   value="card"
-                  onChange={handleOnChange}
+                  onChange={handleOnChangeRadio}
                 />
                 <Icon width={22} height={24} position="-36px -46px" />
                 <Text size={12} color="#999999">
@@ -66,7 +71,7 @@ function Order() {
                   name="selector"
                   type="radio"
                   value="cash"
-                  onChange={handleOnChange}
+                  onChange={handleOnChangeRadio}
                 />
                 <Icon width={24} height={24} position="-39px -7px" />
                 <Text size={12} color="#999999">
@@ -90,7 +95,7 @@ function Order() {
           </OrderContent>
         </OrderBox>
       </OrderWrapper>
-      <Receipt order />
+      <Receipt order request={request} type={radio.value} />
     </OrderContainer>
   );
 }

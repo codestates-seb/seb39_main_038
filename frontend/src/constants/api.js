@@ -28,6 +28,8 @@ const API_URI = {
   KAKAO_MYPAGE: `${API_HOST}/kakao/mypage`,
   PWCHANGE: `${API_HOST}/change/password`,
   FOODLIST: `${API_HOST}/store`,
+  ORDER: `${API_HOST}/order/orders`,
+  PAYMENT: `${API_HOST}/payment/verify`,
 };
 
 export { KAKAO_API, API_URI };
