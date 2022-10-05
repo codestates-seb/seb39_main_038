@@ -32,7 +32,6 @@ public class ReviewController {
     private final ReviewMapper mapper;
     private final StoreService storeService;
     private final KakaoRepository kakaoRepository;
-
     private final MemberService memberService;
 
     public ReviewController(ReviewService reviewService,
