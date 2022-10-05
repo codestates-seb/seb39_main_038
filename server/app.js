@@ -127,6 +127,12 @@ app.get("/store/:id/reviews", (req, res) => {
   return res.status(200).json(foodReviewData[id]);
 });
 
+app.delete("/store/:id/reviews/:reviewId", (req, res) => {
+  const { id, reviewId } = req.params;
+  foodReviewData[id].reviews.splice(reviewId, 1);
+  return res.status(200).end();
+});
+
 app.listen(PORT, () => {
   console.log(`http://localhost:${PORT}`);
 });
