@@ -133,6 +133,14 @@ app.delete("/store/:id/reviews/:reviewId", (req, res) => {
   return res.status(200).end();
 });
 
+app.patch("/store/:id/reviews/:reviewId", (req, res) => {
+  const { id, reviewId } = req.params;
+  for (const key in req.body) {
+    foodReviewData[id].reviews[reviewId][key] = req.body[key];
+  }
+  return res.status(200).end();
+});
+
 app.listen(PORT, () => {
   console.log(`http://localhost:${PORT}`);
 });
