@@ -5,7 +5,7 @@ import UpdateReview from './UpdateReview';
 
 function Review() {
   const location = useLocation();
-  return location.state ? (
+  return location.state.type !== 'post' ? (
     <UpdateReview
       reviewId={location.state.reviewId}
       storeId={location.state.storeId}
