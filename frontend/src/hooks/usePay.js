@@ -5,6 +5,7 @@ import { useRecoilValue } from 'recoil';
 import { useQueryClient } from '@tanstack/react-query';
 import { atoms } from '../store';
 import { randomRange, dateFormat } from '../utils';
+import { API_URI } from '../constants';
 
 const { IMP_KEY } = process.env;
 
@@ -20,7 +21,15 @@ function usePay(id) {
 
   const data = queryClinet.getQueryData(['foodDetail', id]);
 
-  const goPay = (orderRequest, paymentType) => {
+  const payWithCash = async (orderRequest, paymentType) => {
+    await axios.post(`${API_URI.ORDER}`, {
+      orderMenus,
+      orderRequest,
+      paymentType,
+    });
+  };
+
+  const payWithCard = (orderRequest, paymentType) => {
     IMP.request_pay(
       {
         pg: 'html5_inicis',
@@ -30,7 +39,7 @@ function usePay(id) {
           100000,
         )}`,
         name: data?.data.data.storeName,
-        amount: 100,
+        amount: 1,
         buyer_tel: data?.data.data.storePhone,
         buyer_addr: data?.data.data.storeAddress,
         buyer_postcode: data?.data.data.storeId,
@@ -39,12 +48,8 @@ function usePay(id) {
       async (rsp) => {
         const { imp_uid: impUid } = rsp;
         if (rsp.success) {
-          await axios.post(`API/payment/verify/${impUid}`);
-          await axios.post('API/order/orders', {
-            orderMenus,
-            orderRequest,
-            paymentType,
-          });
+          await axios.post(`${API_URI.PAYMENT}/${impUid}`);
+          await payWithCash(orderRequest, paymentType);
         } else {
           alert('결제 모듈을 사용할 수 없습니다.');
         }
@@ -52,7 +57,7 @@ function usePay(id) {
     );
   };
 
-  return { orderList, goPay };
+  return { payWithCard, payWithCash };
 }
 
 export { usePay };
