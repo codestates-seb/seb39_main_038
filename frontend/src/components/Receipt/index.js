@@ -17,11 +17,11 @@ import { atoms } from '../../store';
 import { ROUTE } from '../../constants';
 import { usePay } from '../../hooks';
 
-function Receipt({ order }) {
+function Receipt({ order, request, type }) {
   const orderList = useRecoilValue(atoms.orderList);
   const resetReceipt = useResetRecoilState(atoms.orderList);
   const navigate = useNavigate();
-  usePay(orderList[0]?.storeId);
+  const { payWithCard, payWithCash } = usePay(orderList[0]?.storeId);
 
   const totalPrice = () => {
     let sum = 0;
@@ -43,6 +43,10 @@ function Receipt({ order }) {
   };
 
   const goOrder = () => navigate(`/${ROUTE.ORDER.PATH}`);
+  const goPay = () => {
+    if (type === 'card') payWithCard(request, type);
+    else payWithCash(request, type);
+  };
 
   return (
     <StickyBody>
@@ -63,7 +67,7 @@ function Receipt({ order }) {
         <TotalPrice>합계: {totalPrice()}원</TotalPrice>
       </Cart>
       {order ? (
-        <OrderButton onClick={() => {}}>결제하기</OrderButton>
+        <OrderButton onClick={goPay}>결제하기</OrderButton>
       ) : (
         <OrderButton onClick={goOrder}>바로 주문하기 </OrderButton>
       )}
