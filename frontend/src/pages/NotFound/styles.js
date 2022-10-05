@@ -7,6 +7,7 @@ const NotFoundContainer = styled.div`
   align-items: center;
   justify-content: center;
   gap: 30px;
+  min-height: 300px;
 `;
 
 const Title = styled.h1`
