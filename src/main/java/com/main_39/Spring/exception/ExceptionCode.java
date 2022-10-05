@@ -47,6 +47,8 @@ public enum ExceptionCode {
     STORE_POST_INVALID_TITLE(226,5008, "잘못된 가게명 형식입니다."),
     STORE_POST_INVALID_CATEGORY(226,5009, "잘못된 카테고리입니다."),
     STORE_NAME_DUPLICATE(226,5010, "이미 사용중인 가게명 입니다."),
+    STORE_NUMBER_DUPLICATE(226,5011,"이미 사용중인 사업자 번호 입니다."),
+    STORE_PHONE_DUPLICATE(226,5012, "이미 사용중인 가게 번호 입니다."),
     /**
      * 리뷰
      */
