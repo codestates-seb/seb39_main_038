@@ -1,5 +1,5 @@
 import React from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { useNavigate } from 'react-router-dom';
 import { atoms } from '../../store';
 import { useMyPage, useOrderList, useModal } from '../../hooks';
@@ -25,12 +25,14 @@ const { AVATAR_IMG } = process.env;
 
 function MyPage() {
   const navigate = useNavigate();
+  const setOrderData = useSetRecoilState(atoms.orderData);
   const { type } = useRecoilValue(atoms.isLogin);
   const { data: orderListData } = useOrderList();
   const { data: userData } = useMyPage();
   const [openOrder, closeOrder] = useModal('order');
 
   const { avatar, email, name, phone, store } = userData.data.data;
+  const goModal = (item) => () => setOrderData(item);
   const goAsk = () =>
     navigate(`/${ROUTE.REVIEW.PATH}`, {
       state: { storeId: store.storeId, type: 'post' },
@@ -39,7 +41,7 @@ function MyPage() {
   const createOrderContent = () => {
     return orderListData.data.orders?.map((item) => {
       return (
-        <OrderContent key={item.orderId}>
+        <OrderContent key={item.orderId} onClick={goModal(item)}>
           <TextBox>
             <Text size={14}>{item.orderMenu[0].storeName}</Text>
             <Text size={12} color="#999999">
