@@ -29,6 +29,7 @@ const InfoContent = styled.div`
 const AvatarBox = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 4px;
 `;
 
 const TextBox = styled.div`
@@ -43,7 +44,6 @@ const Text = styled.span`
 `;
 
 const Avatar = styled.img`
-  border: 1px solid #000;
   width: 64px;
   height: 64px;
 `;
