@@ -6,13 +6,17 @@ import lombok.Getter;
 @Getter
 public class OrderMenuResponse {
     private long menuId;
+    private long storeId;
+    private String storeName;
     private String name;
     private int price;
     private int count;
 
     @Builder
-    public OrderMenuResponse(long menuId, String name, int price, int count) {
+    public OrderMenuResponse(long menuId, long storeId, String storeName, String name, int price, int count) {
         this.menuId = menuId;
+        this.storeId = storeId;
+        this.storeName = storeName;
         this.name = name;
         this.price = price;
         this.count = count;
