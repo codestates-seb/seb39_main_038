@@ -19,7 +19,7 @@ function FoodModal({ closeModal }) {
   const [count, setCount] = useState(1);
   const isMadal = useRecoilValue(atoms.modal);
   const setOrderList = useSetRecoilState(atoms.orderList);
-  const { name, info, price, storeId, storeName } = useRecoilValue(
+  const { name, info, price, menuId, storeId, storeName } = useRecoilValue(
     atoms.menuOrder,
   );
   const navigate = useNavigate();
@@ -37,7 +37,7 @@ function FoodModal({ closeModal }) {
   const goBusket = () => {
     closeModal();
     setOrderList((prev) => {
-      const data = { name, price, count, storeId, storeName };
+      const data = { name, price, count, menuId, storeId, storeName };
       if (prev.length === 0) return [...prev, data];
 
       const isCheck = prev.every((item) => item.storeId === storeId);
