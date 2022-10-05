@@ -1,4 +1,5 @@
 import React, { useState, useRef, useCallback } from 'react';
+import { useLocation } from 'react-router-dom';
 import {
   Container,
   EditorWrapper,
@@ -11,15 +12,25 @@ import {
   View,
   FileInput,
 } from './styles';
+import { useReview } from '../../hooks';
 
 function AskReview() {
   const [imgSrc, setImgSrc] = useState(null);
   const [text, setText] = useState(null);
+  const location = useLocation();
+  const { createMutate } = useReview(location.state.storeId);
 
   const fileLoderRef = useRef(null);
 
   const handleOnClick = () => fileLoderRef.current.click();
   const handleOnChangeEditer = (e) => setText(e.target.value);
+
+  const hanldeOnPost = () => {
+    createMutate({
+      sid: location.state.storeId,
+      value: { reviewContent: text, reviewImage: imgSrc },
+    });
+  };
 
   const handleOnChangeFile = useCallback((e) => {
     const file = e.target.files[0];
@@ -55,7 +66,7 @@ function AskReview() {
             {text}
           </Text>
         </View>
-        <Button>전송</Button>
+        <Button onClick={hanldeOnPost}>전송</Button>
       </ViewWrapper>
 
       <FileInput
