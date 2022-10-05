@@ -1,7 +1,9 @@
 import React from 'react';
 import { useRecoilValue } from 'recoil';
+import { useNavigate } from 'react-router-dom';
 import { atoms } from '../../store';
-import { useMyPage } from '../../hooks';
+import { useMyPage, useOrderList, useModal } from '../../hooks';
+import { dateFormat } from '../../utils';
 import {
   MyPageContainer,
   InfoInner,
@@ -16,11 +18,37 @@ import {
   ButtonBox,
   Button,
 } from './styles';
+import { ROUTE } from '../../constants';
+import { CustomModal } from '../../components';
 
 function MyPage() {
+  const navigate = useNavigate();
   const { type } = useRecoilValue(atoms.isLogin);
-  const { data } = useMyPage();
-  const { avatar, email, name, phone } = data.data.data;
+  const { data: orderListData } = useOrderList();
+  const { data: userData } = useMyPage();
+  const [openOrder, closeOrder] = useModal('order');
+
+  const { avatar, email, name, phone } = userData.data.data;
+  const goAsk = (id) => navigate(`/${ROUTE.REVIEW.PATH}`, { state: id });
+
+  const createOrderContent = () => {
+    return orderListData.data.orders?.map((item) => {
+      return (
+        <OrderContent key={item.orderId}>
+          <TextBox>
+            <Text size={14}>{item.orderMenu[0].storeName}</Text>
+            <Text size={12} color="#999999">
+              주문날짜: {dateFormat(new Date(item.createdAt), '.')}
+            </Text>
+          </TextBox>
+          <ButtonBox>
+            <Button onClick={goAsk}>리뷰쓰기</Button>
+            <Button onClick={openOrder}>주문상세</Button>
+          </ButtonBox>
+        </OrderContent>
+      );
+    });
+  };
 
   return (
     <MyPageContainer>
@@ -40,20 +68,10 @@ function MyPage() {
       </InfoInner>
       <OrderInner>
         <Header>주문조회</Header>
-        <OrderContent>
-          <TextBox>
-            <Text size={14}>KFC</Text>
-            <Text size={12} color="#999999">
-              주문날짜: 2020.09.21
-            </Text>
-          </TextBox>
-          <ButtonBox>
-            <Button>리뷰쓰기</Button>
-            <Button>주문상세</Button>
-          </ButtonBox>
-        </OrderContent>
+        {createOrderContent()}
       </OrderInner>
       {type === 'local' ? <Button>가게 설정</Button> : null}
+      <CustomModal.Order closeModal={closeOrder} />
     </MyPageContainer>
   );
 }
