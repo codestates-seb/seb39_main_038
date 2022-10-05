@@ -20,7 +20,6 @@ public interface ReviewMapper {
      */
     default ReviewsResponseDto reviewToStoreResponseDto(Store store) {
         List<Review> reviews = store.getReviews();
-        List<Comment> comments = store.getComments();
 
         ReviewsResponseDto reviewsResponseDto = new ReviewsResponseDto(
                 store.getStoreId(),
