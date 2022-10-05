@@ -38,7 +38,7 @@ function FoodDetail() {
     totalGrade,
     totalComment,
     totalMenu,
-    storeWaittime,
+    storeWaitTime,
     storeTag,
   } = data.data.data;
 
@@ -62,7 +62,7 @@ function FoodDetail() {
                 대기시간
               </Text>
               <Text color="#333333" size={13}>
-                {storeWaittime}
+                {storeWaitTime}
               </Text>
             </InfoItem>
             <InfoItem>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Route } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { atoms } from '../../store';
 import { useMyPage } from '../../hooks';
@@ -16,6 +17,9 @@ import {
   ButtonBox,
   Button,
 } from './styles';
+import { COLOR, ROUTE } from '../../constants';
+import FoodTruckSetting from '../FoodTruckSetting';
+import { Spinner } from '../../components';
 
 function MyPage() {
   const { type } = useRecoilValue(atoms.isLogin);
@@ -53,7 +57,20 @@ function MyPage() {
           </ButtonBox>
         </OrderContent>
       </OrderInner>
-      {type === 'local' ? <Button>가게 설정</Button> : null}
+      {type === 'local' ? (
+        <Button
+          onClick={() => {
+            <React.Suspense fallback={<Spinner color={COLOR.NAVY} size={50} />}>
+              <Route
+                path={ROUTE.MYPAGE.FOODTRUCKSETTING.PATH}
+                element={<FoodTruckSetting />}
+              />
+            </React.Suspense>;
+          }}
+        >
+          가게 설정
+        </Button>
+      ) : null}
     </MyPageContainer>
   );
 }

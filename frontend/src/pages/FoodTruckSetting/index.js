@@ -1,7 +1,7 @@
 import axios from 'axios';
-import React, { useState } from 'react';
-import { useSetRecoilState } from 'recoil';
-import { useQuery, useMutation } from '@tanstack/react-query';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { useMutation } from '@tanstack/react-query';
 import {
   Section,
   Title,
@@ -20,18 +20,22 @@ import {
   OpenOrClose,
 } from './styles';
 import { Spinner, ErrorBoundary } from '../../components';
-import { atoms } from '../../store';
 import { COLOR } from '../../constants';
 
+import { useFoodDetail, useDetailFoodList } from '../../hooks';
+
 function FoodMenusList() {
+  const { id } = useParams();
+  const { data } = useDetailFoodList(id);
+
   const [menuId, setMenuId] = useState(null);
-  const setFoodTruckInfo = useSetRecoilState(atoms.foodTruckInfo);
   const [inputs, setInputs] = useState({
     menuName: '',
     menuPrice: '',
     menuContent: '',
     menuImg: null,
   });
+
   const { menuName, menuPrice, menuContent, menuImg } = inputs;
 
   const onChange = (e) => {
@@ -43,14 +47,14 @@ function FoodMenusList() {
 
   const deleteMenu = async () => {
     const res = await axios.delete(
-      `http://ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/store/2/menus/${menuId}`,
+      `http://ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/store/${id}/menus/${menuId}`,
     );
     return res;
   };
 
   const patchMenu = async () => {
     const res = await axios.patch(
-      `http://ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/store/2/menus/${menuId}`,
+      `http://ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/store/${id}/menus/${menuId}`,
       {
         name: menuName,
         price: menuPrice,
@@ -85,47 +89,14 @@ function FoodMenusList() {
     onSettled,
   });
 
-  const getMenu = async () => {
-    const res = await axios.get(
-      'http://ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/store/1/menus',
-    );
-    console.log('getRes', res.data);
-    setFoodTruckInfo({ total_menu: res.data.totalMenu });
-    return res.data.menus;
-  };
-
-  const { isError, isLoading, data } = useQuery(['menus'], getMenu, {
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
-    refetchOnReconnect: false,
-
-    // onSuccess: () => {
-    //   alert('성공1');
-    // },
-    // onError: () => {
-    //   alert('실패1');
-    // },
-    // onSettled: () => {
-    //   alert('종료1');
-    // },
-  });
-
-  if (isLoading) {
-    return <Spinner />;
-  }
-
-  if (isError) {
-    return alert('음식들을 불러오지 못했습니다.');
-  }
-
-  return data.map((res) => (
+  return data.data.menus.map((res) => (
     <UpdateInput key={res.menuId}>
       <img
         alt="FoodImg"
         name={`menuImg${menuId}`}
         value={menuImg}
         onChange={onChange}
-        src={res.img}
+        src={res.image}
       />
 
       <TypeInfo>
@@ -185,7 +156,7 @@ function UpdateForm({
   onChange,
   handleTypeChange,
   dropDown,
-  storeType,
+  type,
   name,
   time,
   address,
@@ -194,32 +165,38 @@ function UpdateForm({
   tag,
   ask,
 }) {
-  const getInfo = async () => {
-    const res = await axios.get(
-      `http://ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/store/1/menus`,
-    );
-    return res.data;
-  };
-  const { data } = useQuery(['getInfo'], getInfo, {
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
-    refetchOnReconnect: false,
-  });
+  const { id } = useParams();
+  const { data } = useFoodDetail(id);
+
+  const {
+    storeName,
+    storeImage,
+    storeContent,
+    storeTag,
+    storeTime,
+    storePhone,
+    storeAddress,
+    storeNumber,
+    // storeType,
+  } = data.data.data;
+
   return (
     <CreateFoodTruck>
       <MainImg>
         <div>
-          <img alt="FoodTruckImg" name="img" value={img} onChange={onChange} />
+          <img
+            alt="FoodTruckImg"
+            name="img"
+            src={storeImage}
+            value={img}
+            onChange={onChange}
+          />
         </div>
 
         <Dropdown>
           <select type="button" onChange={handleTypeChange} value={dropDown}>
-            {storeType.map((e) => {
-              return (
-                <option key={e.id} selected={data.store_type}>
-                  {e.value}
-                </option>
-              );
+            {type.map((e) => {
+              return <option key={e.id}>{e.value}</option>;
             })}
           </select>
         </Dropdown>
@@ -229,7 +206,7 @@ function UpdateForm({
         <li>
           <TypeInfo>
             <input
-              placeholder="상호이름 (필수)"
+              placeholder={storeName}
               name="name"
               value={name}
               onChange={onChange}
@@ -240,7 +217,7 @@ function UpdateForm({
         <li>
           <TypeInfo>
             <input
-              placeholder="영업시간 (필수)"
+              placeholder={storeTime}
               name="time"
               value={time}
               onChange={onChange}
@@ -251,7 +228,7 @@ function UpdateForm({
         <li>
           <TypeInfo>
             <input
-              placeholder="주소 (필수)"
+              placeholder={storeAddress}
               name="address"
               value={address}
               onChange={onChange}
@@ -262,7 +239,7 @@ function UpdateForm({
         <li>
           <TypeInfo>
             <input
-              placeholder="전화번호 (필수)"
+              placeholder={storePhone}
               name="phone"
               value={phone}
               onChange={onChange}
@@ -273,7 +250,7 @@ function UpdateForm({
         <li>
           <TypeInfo>
             <input
-              placeholder="사업자번호 (필수)"
+              placeholder={storeNumber}
               name="number"
               value={number}
               onChange={onChange}
@@ -283,11 +260,16 @@ function UpdateForm({
       </ul>
 
       <DeleteTag>
-        <input placeholder="태그" value={tag} name="tag" onChange={onChange} />
+        <input
+          placeholder={storeTag}
+          value={tag}
+          name="tag"
+          onChange={onChange}
+        />
 
         <HashTagBtn
           onClick={() => {
-            alert('하단 가게설정 완료를 눌러주세요');
+            alert('적용 완료');
           }}
         >
           해시태그 변경
@@ -295,7 +277,7 @@ function UpdateForm({
       </DeleteTag>
 
       <textarea
-        placeholder="소개내용 (선택)"
+        placeholder={storeContent}
         name="ask"
         value={ask}
         onChange={onChange}
@@ -307,6 +289,17 @@ function UpdateForm({
 function FoodTruckSetting() {
   const [dropDown, setDropDown] = useState('종류를 선택하세요');
   const [toggleStatus, setToggleStatus] = useState(false);
+  const [storeId, setStoreId] = useState(false);
+
+  const { id } = useParams();
+  const { data } = useFoodDetail(id);
+  useEffect(() => {
+    if (data.data.message === '해당 가게를 찾을 수 없습니다.') {
+      setStoreId(false);
+    } else {
+      setStoreId(data.data.data.storeId);
+    }
+  }, []);
 
   const [inputs, setInputs] = useState({
     img: null,
@@ -351,7 +344,7 @@ function FoodTruckSetting() {
 
   const postMenu = async () => {
     const res = await axios.post(
-      `http://ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/store/1/menus`,
+      `http://ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/store/${id}/menus`,
       {
         name: newMenuName,
         price: newMenuPrice,
@@ -366,7 +359,30 @@ function FoodTruckSetting() {
     const res = await axios.post(
       'http://ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/store/ask',
       {
-        localId: 1,
+        localId: id,
+        storePhone: phone,
+        storeNumber: number,
+        storeStatus: toggleStatus ? 'BRAKE' : 'OPEN',
+        storeName: name,
+        storeContent: ask,
+        // storeImage: img,
+        storeType: dropDown,
+        storeTime: time,
+        storeWaitTime: '15분~30분',
+        storeAddress: address,
+        storePayment: '현금',
+        storeTag: tag,
+      },
+    );
+    console.log(res.data);
+    return res;
+  };
+  console.log(storeId);
+  const patchInfo = async () => {
+    const res = await axios.patch(
+      `http://ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/store/${id}`,
+      {
+        localId: id,
         storePhone: phone,
         storeNumber: number,
         storeStatus: toggleStatus ? 'BRAKE' : 'OPEN',
@@ -385,31 +401,9 @@ function FoodTruckSetting() {
     return res;
   };
 
-  const patchInfo = async () => {
-    const res = await axios.patch(
-      'http://ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/store/1',
-      {
-        localId: 1,
-        storePhone: phone,
-        storeNumber: number,
-        storeStatus: toggleStatus ? 'BRAKE' : 'OPEN',
-        storeName: name,
-        storeContent: ask,
-        storeImage: img,
-        storeType: dropDown,
-        storeTime: time,
-        storeWaittime: '15분~30분',
-        storeAddress: address,
-        storePayment: '현금',
-        storeTag: tag,
-      },
-    );
-    return res;
-  };
-
   const deleteInfo = async () => {
     const res = await axios.delete(
-      'http://ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/store/1',
+      `http://ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/store/${id}`,
     );
     return res;
   };
@@ -450,7 +444,7 @@ function FoodTruckSetting() {
     onSettled,
   });
 
-  const storeType = [
+  const type = [
     { id: null, value: '종류를 선택하세요' },
     { id: 1, value: 'korean' },
     { id: 2, value: 'chinese' },
@@ -478,126 +472,128 @@ function FoodTruckSetting() {
           </button>
           <Title>가게 설정</Title>
 
-          <CreateFoodTruck>
-            <MainImg>
-              <div>
-                <img
-                  alt="FoodTruckImg"
-                  name="img"
-                  value={img}
+          {storeId ? (
+            <UpdateForm
+              img={img}
+              onChange={onChange}
+              handleTypeChange={handleTypeChange}
+              dropDown={dropDown}
+              type={type}
+              name={name}
+              time={time}
+              address={address}
+              phone={phone}
+              number={number}
+              tag={tag}
+              ask={ask}
+            />
+          ) : (
+            <CreateFoodTruck>
+              <MainImg>
+                <div>
+                  <img
+                    alt="FoodTruckImg"
+                    name="img"
+                    value={img}
+                    onChange={onChange}
+                  />
+                </div>
+
+                <Dropdown>
+                  <select
+                    type="button"
+                    onChange={handleTypeChange}
+                    value={dropDown}
+                  >
+                    {type.map((e) => {
+                      return <option key={e.id}>{e.value}</option>;
+                    })}
+                  </select>
+                </Dropdown>
+              </MainImg>
+
+              <ul>
+                <li>
+                  <TypeInfo>
+                    <input
+                      placeholder="상호이름 (필수)"
+                      name="name"
+                      value={name}
+                      onChange={onChange}
+                    />
+                  </TypeInfo>
+                </li>
+
+                <li>
+                  <TypeInfo>
+                    <input
+                      placeholder="영업시간 (필수)"
+                      name="time"
+                      value={time}
+                      onChange={onChange}
+                    />
+                  </TypeInfo>
+                </li>
+
+                <li>
+                  <TypeInfo>
+                    <input
+                      placeholder="주소 (필수)"
+                      name="address"
+                      value={address}
+                      onChange={onChange}
+                    />
+                  </TypeInfo>
+                </li>
+
+                <li>
+                  <TypeInfo>
+                    <input
+                      placeholder="전화번호 (필수)"
+                      name="phone"
+                      value={phone}
+                      onChange={onChange}
+                    />
+                  </TypeInfo>
+                </li>
+
+                <li>
+                  <TypeInfo>
+                    <input
+                      placeholder="사업자번호 (필수)"
+                      name="number"
+                      value={number}
+                      onChange={onChange}
+                    />
+                  </TypeInfo>
+                </li>
+              </ul>
+
+              <DeleteTag>
+                <input
+                  placeholder="태그"
+                  value={tag}
+                  name="tag"
                   onChange={onChange}
                 />
-              </div>
-              {0 ? (
-                <UpdateForm
-                  img={img}
-                  onChange={onChange}
-                  handleTypeChange={handleTypeChange}
-                  dropDown={dropDown}
-                  storeType={storeType}
-                  name={name}
-                  time={time}
-                  address={address}
-                  phone={phone}
-                  number={number}
-                  tag={tag}
-                  ask={ask}
-                />
-              ) : null}
-              <Dropdown>
-                <select
-                  type="button"
-                  onChange={handleTypeChange}
-                  value={dropDown}
+
+                <HashTagBtn
+                  onClick={() => {
+                    alert('하단 가게설정 완료를 눌러주세요');
+                  }}
                 >
-                  {storeType.map((e) => {
-                    return <option key={e.id}>{e.value}</option>;
-                  })}
-                </select>
-              </Dropdown>
-            </MainImg>
+                  해시태그 변경
+                </HashTagBtn>
+              </DeleteTag>
 
-            <ul>
-              <li>
-                <TypeInfo>
-                  <input
-                    placeholder="상호이름 (필수)"
-                    name="name"
-                    value={name}
-                    onChange={onChange}
-                  />
-                </TypeInfo>
-              </li>
-
-              <li>
-                <TypeInfo>
-                  <input
-                    placeholder="영업시간 (필수)"
-                    name="time"
-                    value={time}
-                    onChange={onChange}
-                  />
-                </TypeInfo>
-              </li>
-
-              <li>
-                <TypeInfo>
-                  <input
-                    placeholder="주소 (필수)"
-                    name="address"
-                    value={address}
-                    onChange={onChange}
-                  />
-                </TypeInfo>
-              </li>
-
-              <li>
-                <TypeInfo>
-                  <input
-                    placeholder="전화번호 (필수)"
-                    name="phone"
-                    value={phone}
-                    onChange={onChange}
-                  />
-                </TypeInfo>
-              </li>
-
-              <li>
-                <TypeInfo>
-                  <input
-                    placeholder="사업자번호 (필수)"
-                    name="number"
-                    value={number}
-                    onChange={onChange}
-                  />
-                </TypeInfo>
-              </li>
-            </ul>
-
-            <DeleteTag>
-              <input
-                placeholder="태그"
-                value={tag}
-                name="tag"
+              <textarea
+                placeholder="소개내용 (선택)"
+                name="ask"
+                value={ask}
                 onChange={onChange}
               />
-
-              <HashTagBtn
-                onClick={() => {
-                  alert('하단 가게설정 완료를 눌러주세요');
-                }}
-              >
-                해시태그 변경
-              </HashTagBtn>
-            </DeleteTag>
-
-            <textarea
-              placeholder="소개내용 (선택)"
-              name="ask"
-              value={ask}
-              onChange={onChange}
-            />
-          </CreateFoodTruck>
+            </CreateFoodTruck>
+          )}
 
           <OpenOrClose>
             <Toggle>
@@ -672,13 +668,17 @@ function FoodTruckSetting() {
             <UpdateFood>
               <Title>가게 메뉴 편집</Title>
 
-              <FoodMenusList />
+              {storeId ? <FoodMenusList /> : null}
 
               <SettingDoneBtn>
                 <button
                   type="button"
                   onClick={() => {
-                    postMutateInfo();
+                    if (!storeId) {
+                      postMutateInfo();
+                    } else {
+                      alert('이미 가게가 있습니다');
+                    }
                   }}
                 >
                   가게 등록
@@ -686,7 +686,11 @@ function FoodTruckSetting() {
                 <button
                   type="button"
                   onClick={() => {
-                    patchMutateInfo();
+                    if (storeId) {
+                      patchMutateInfo();
+                    } else {
+                      alert('가게를 먼저 만드셔야 합니다');
+                    }
                   }}
                 >
                   가게 업데이트
