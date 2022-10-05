@@ -61,6 +61,67 @@ app.post("/kakao/mypage", (req, res) => {
   });
 });
 
+app.get("/order/orders", (req, res) => {
+  const orders = {
+    orders: [
+      {
+        orderId: 1,
+        orderMenu: [
+          {
+            menuId: 1,
+            name: "치킨 1",
+            price: 5000,
+            count: 1,
+            storeId: 1,
+            storeName: "양식 푸드트럭 1",
+          },
+          {
+            menuId: 2,
+            name: "피자 1",
+            price: 5000,
+            count: 1,
+            storeId: 1,
+            storeName: "양식 푸드트럭 1",
+          },
+        ],
+        createdAt: new Date(),
+        totalCount: 2,
+        totalPrice: 10000,
+        paymentType: "",
+        orderRequest: "",
+      },
+      {
+        orderId: 2,
+        orderMenu: [
+          {
+            menuId: 1,
+            name: "치킨 2",
+            price: 5000,
+            count: 1,
+            storeId: 2,
+            storeName: "양식 푸드트럭 2",
+          },
+          {
+            menuId: 2,
+            name: "피자 2",
+            price: 5000,
+            count: 1,
+            storeId: 2,
+            storeName: "양식 푸드트럭 2",
+          },
+        ],
+        createdAt: new Date(),
+        totalCount: 2,
+        totalPrice: 10000,
+        paymentType: "",
+        orderRequest: "",
+      },
+    ],
+    totalOrder: 2,
+  };
+  return res.status(200).json(orders);
+});
+
 app.listen(PORT, () => {
   console.log(`http://localhost:${PORT}`);
 });
