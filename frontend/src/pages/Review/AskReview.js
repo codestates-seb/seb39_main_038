@@ -17,6 +17,7 @@ import { useReview } from '../../hooks';
 function AskReview() {
   const [imgSrc, setImgSrc] = useState(null);
   const [text, setText] = useState(null);
+  const [star, setStar] = useState(1);
   const location = useLocation();
   const { createMutate } = useReview(location.state.storeId);
 
@@ -24,11 +25,12 @@ function AskReview() {
 
   const handleOnClick = () => fileLoderRef.current.click();
   const handleOnChangeEditer = (e) => setText(e.target.value);
+  const handleOnchange = (e) => setStar(e.target.value);
 
   const hanldeOnPost = () => {
     createMutate({
       sid: location.state.storeId,
-      value: { reviewContent: text, reviewImage: imgSrc },
+      value: { reviewContent: text, reviewImage: imgSrc, reviewGrade: star },
     });
   };
 
@@ -41,6 +43,22 @@ function AskReview() {
     };
   }, []);
 
+  const createSelect = () => {
+    const stars = [1, 2, 3, 4, 5];
+    return (
+      <label style={{ marginRight: 2 }}>
+        별점을 선택해주세요.
+        <select value={undefined} onChange={handleOnchange}>
+          {stars.map((item) => (
+            <option key={item} value={item}>
+              {item}
+            </option>
+          ))}
+        </select>
+      </label>
+    );
+  };
+
   return (
     <Container>
       <EditorWrapper>
@@ -49,6 +67,7 @@ function AskReview() {
             리뷰작성
           </Text>
           <Button onClick={handleOnClick}>사진 업로드</Button>
+          {createSelect()}
         </Header>
         <Editor
           onChange={handleOnChangeEditer}
