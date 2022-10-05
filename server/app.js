@@ -130,6 +130,23 @@ app.get("/store/:id/reviews", (req, res) => {
   return res.status(200).json(foodReviewData[id]);
 });
 
+app.post("/store/:id/reviews/ask", (req, res) => {
+  const { id } = req.params;
+  const { reviewImage, reviewContent } = req.body;
+  console.log(
+    foodReviewData[id].reviews.unshift({
+      reviewId: foodReviewData[id].reviews.length + 1,
+      reviewName: "홍길동",
+      reviewContent: reviewContent,
+      reviewImage: reviewImage,
+      reviewGrade: 5,
+      createdAt: new Date(),
+      comment: null,
+    })
+  );
+  return res.status(200).end();
+});
+
 app.delete("/store/:id/reviews/:reviewId", (req, res) => {
   const { id, reviewId } = req.params;
   foodReviewData[id].reviews.splice(reviewId, 1);
