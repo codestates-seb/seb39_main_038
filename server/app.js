@@ -132,14 +132,14 @@ app.get("/store/:id/reviews", (req, res) => {
 
 app.post("/store/:id/reviews/ask", (req, res) => {
   const { id } = req.params;
-  const { reviewImage, reviewContent } = req.body;
+  const { reviewImage, reviewContent, reviewGrade } = req.body;
   console.log(
     foodReviewData[id].reviews.unshift({
       reviewId: foodReviewData[id].reviews.length + 1,
       reviewName: "홍길동",
       reviewContent: reviewContent,
       reviewImage: reviewImage,
-      reviewGrade: 5,
+      reviewGrade: reviewGrade,
       createdAt: new Date(),
       comment: null,
     })
