@@ -10,6 +10,9 @@ import java.time.LocalDateTime;
 public class ReviewResponseDto {
     private long reviewId;
     private String reviewContent;
+
+    // 추가
+    private String nickname;
     private String reviewImage;
     private int reviewGrade;
     private LocalDateTime createdAt;
@@ -21,9 +24,10 @@ public class ReviewResponseDto {
 
     @Builder
     public ReviewResponseDto(long reviewId, String reviewContent, String reviewImage, int reviewGrade,
-                             LocalDateTime createdAt, CommentResponseDto comment) {
+                             String nickname, LocalDateTime createdAt, CommentResponseDto comment) {
         this.reviewId = reviewId;
         this.reviewContent = reviewContent;
+        this.nickname = nickname;
         this.reviewImage = reviewImage;
         this.reviewGrade = reviewGrade;
         this.createdAt = createdAt;

@@ -55,8 +55,8 @@ public class ReviewController {
 
         Review review = mapper.reviewPostDtoToReview(reviewPostDto);
 
-        Kakao kakao = memberService.findKakaoNickname(reviewPostDto.getNickname());
-        review.setKakao(kakao);
+//        Kakao kakao = memberService.findKakaoNickname(reviewPostDto.getNickname());
+//        review.setKakao(kakao);
 
         Review posted = reviewService.createdReview(storeId, review);
         ReviewResponseDto response = mapper.reviewToReviewResponseDto(posted);
@@ -69,11 +69,28 @@ public class ReviewController {
     /**
      * 상점별 리뷰 불러오기
      */
+//    @GetMapping("/store/{store-id}/reviews")
+//    public ResponseEntity<ReviewsResponseDto> getReviewByStore(@PathVariable("store-id") long storeId) {
+//        Store store = storeService.findStore(storeId);
+//
+//        return new ResponseEntity<>(mapper.reviewToStoreResponseDto(store), HttpStatus.OK);
+//    }
+
     @GetMapping("/store/{store-id}/reviews")
     public ResponseEntity<ReviewsResponseDto> getReviewByStore(@PathVariable("store-id") long storeId) {
+
         Store store = storeService.findStore(storeId);
 
-        return new ResponseEntity<>(mapper.reviewToStoreResponseDto(store), HttpStatus.OK);
+//        Review review = mapper.reviewToStoreResponseDto(reviewResponseDto);
+////
+////        Kakao kakao = memberService.findKakaoNickname(reviewResponseDto.getNickname());
+////        review.setKakao(kakao);
+////
+//        Review getReviewStore = reviewService.findReview(review.getReviewId());
+//        ReviewResponseDto responseDto = mapper.reviewToReviewResponseDto(getReviewStore);
+
+
+        return new ResponseEntity<>(mapper.reviewsToStoreResponseDto(store), HttpStatus.OK);
     }
 
     /**
@@ -81,7 +98,7 @@ public class ReviewController {
      */
     @GetMapping("/review")
     public ResponseEntity getReviews(@Positive @RequestParam int page,
-                                    @Positive @RequestParam(required = false, defaultValue = "15") int size){
+                                     @Positive @RequestParam(required = false, defaultValue = "15") int size){
         Page<Review> pageReviews = reviewService.findReviews(page -1, size);
         List<Review> reviews = pageReviews.getContent();
         List<ReviewResponseDto> responses = mapper.reviewToReviewResponseDtos(reviews);
