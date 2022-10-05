@@ -95,6 +95,22 @@ public class ReviewService {
     }
 
     /**
+     * 리뷰 수정
+     */
+    public Review updateReview(Review review) {
+        Review findReview = findVerifiedReview(review.getReviewId());
+
+        Optional.ofNullable(review.getReviewContent())
+                .ifPresent(content -> findReview.setReviewContent(content));
+        Optional.ofNullable(review.getReviewImage())
+                .ifPresent(image -> findReview.setReviewImage(image));
+        Optional.ofNullable(review.getReviewGrade())
+                .ifPresent(grade -> findReview.setReviewGrade(grade));
+
+        return reviewRepository.save(findReview);
+    }
+
+    /**
      * 리뷰 삭제
      */
     public void deleteReview(long reviewId) {

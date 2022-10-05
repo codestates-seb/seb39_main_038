@@ -42,4 +42,5 @@ public class StoreResponseDto<T> {
         private int totalReview;
         private double totalGrade;
         private int totalComment;
+        private int totalMenu;
 }

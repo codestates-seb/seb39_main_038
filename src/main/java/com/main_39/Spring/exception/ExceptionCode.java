@@ -34,6 +34,7 @@ public enum ExceptionCode {
     AUTH_REQUIRED_LOGIN(226,4002, "로그인이 필요합니다."),
     NOT_MATCH_USER_INFO	(226,4003, "유저 정보가 일치하지 않습니다."),
     NOT_EXISTS_USER_INFO(226,4004, "해당 유저 정보가 존재하지 않습니다."),
+    NOT_EXITS_NICKNAME(226, 4005, "해당 닉네임이 존재하지 않습니다."),
     /**
      * 가게
      */

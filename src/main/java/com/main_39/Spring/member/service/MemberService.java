@@ -304,6 +304,19 @@ public class MemberService {
     }
 
     /**
+     * 닉네임으로 회원 찾기
+     */
+    @Transactional(readOnly = true)
+    public Kakao findKakaoNickname(String nickname) {
+        Optional<Kakao> optionalKakao = kaKaoRepository.findByNickname(nickname);
+
+        Kakao findKakao =
+                optionalKakao.orElseThrow(() ->
+                        new BusinessLogicException(ExceptionCode.NOT_EXITS_NICKNAME));
+        return findKakao;
+    }
+
+    /**
      * 로컬 이메일로 회원 찾기
      * */
     @Transactional(readOnly = true)
