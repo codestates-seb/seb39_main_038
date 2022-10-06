@@ -3,7 +3,9 @@ import { useFoodList } from './useFoodList';
 import { useMyPage } from './useMyPage';
 import { useFoodDetail } from './useFoodDetail';
 import { useDetailFoodList } from './useDetailFoodList';
+import { useOrderList } from './useOrderList';
 import { usePay } from './usePay';
+import { useReview } from './useReview';
 
 export {
   useModal,
@@ -12,4 +14,6 @@ export {
   useFoodDetail,
   useDetailFoodList,
   usePay,
+  useOrderList,
+  useReview,
 };

@@ -317,7 +317,6 @@ function FoodTruckSetting() {
 
   const { id } = useParams();
   const { data } = useFoodDetail(id);
-
   useEffect(() => {
     if (data.data.message === '해당 가게를 찾을 수 없습니다.') {
       setStoreId(false);

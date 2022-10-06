@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   ReviewContainer,
   Rating,
@@ -11,66 +12,97 @@ import {
   ButtonWrapper,
   Button,
   Image,
-  Answer,
-  EditorWrapper,
-  Editor,
 } from './styles';
-// import { storge } from '../../store';
+import { useReview } from '../../hooks';
+import { ROUTE } from '../../constants';
+import { dateFormat } from '../../utils';
 
-function DetailReview() {
+/* 답장 기능 주석 처리
+<EditorWrapper>
+  <Editor placeholder="클린리뷰 특성상 재생성도 불가능하며 수정도 불가능합니다. 신중하게 작성해주세요." />
+  <Button>전송</Button>
+</EditorWrap
+<Answer>
+  <Header>
+    <TextWrapper>
+      <Text as="h1">사장님</Text>
+      <Text size={12} color="#999999">
+        2022-09-21
+      </Text>
+    </TextWrapper>
+    <Button>삭제</Button>
+  </Header>
+  <Text size={14} color="#666666">
+    안녕하세용~~~~ 감사합니다.
+  </Text>
+</Answer>
+*/
+
+function DetailReview({ storeId }) {
+  const navigate = useNavigate();
+  const { data, deleteMutate } = useReview(storeId);
+
+  const createStar = (n) => {
+    let stars = '';
+    for (let i = 0; i < parseInt(n, 10); i += 1) stars += '★';
+    return stars;
+  };
+
+  const goUpdate = (sid, rid) => () =>
+    navigate(`/${ROUTE.REVIEW.PATH}`, {
+      state: { storeId: sid, reviewId: rid },
+    });
+
+  const goDelete = (sid, rid) => () => {
+    const isCheck = window.confirm('정말 지우시겠습니까?');
+    if (isCheck) return deleteMutate({ sid, rid });
+    return null;
+  };
+
+  const createComment = () => {
+    return data?.data.reviews.map((item) => {
+      return (
+        <Comment key={item.reviewId}>
+          <Header>
+            <TextWrapper>
+              <Text as="h1" size={16} color="#333333">
+                {item.reviewName}님
+              </Text>
+              <Text size={12} color="#999999">
+                {dateFormat(new Date(item.createdAt), '-')}
+              </Text>
+            </TextWrapper>
+            <ButtonWrapper>
+              <Button onClick={goUpdate(storeId, item.reviewId)}>수정</Button>
+              <Button onClick={goDelete(storeId, item.reviewId)}>삭제</Button>
+            </ButtonWrapper>
+          </Header>
+          <TextWrapper>
+            <Text as="h1" size={14} color="#ffa400">
+              별점
+            </Text>
+            <Star>{createStar(item.reviewGrade)}</Star>
+          </TextWrapper>
+
+          {item.reviewImage ? (
+            <Image alt="food" src={item.reviewImage} />
+          ) : null}
+
+          <Text size={14} color="#666666">
+            {item.reviewContent}
+          </Text>
+        </Comment>
+      );
+    });
+  };
+
   return (
     <ReviewContainer>
       <Rating>
         <TotalRate>5.0</TotalRate>
         <Star header>★★★★★</Star>
       </Rating>
-      <Comment>
-        <Header>
-          <TextWrapper>
-            <Text as="h1" size={16} color="#333333">
-              김재원님
-            </Text>
-            <Text size={12} color="#999999">
-              2022-09-21
-            </Text>
-          </TextWrapper>
-          <ButtonWrapper>
-            <Button>답변</Button>
-            <Button>삭제</Button>
-          </ButtonWrapper>
-        </Header>
-        <TextWrapper>
-          <Text as="h1" size={14} color="#ffa400">
-            별점
-          </Text>
-          <Star>★★★★★</Star>
-        </TextWrapper>
-        <Image alt="food" />
-        <Text size={14} color="#666666">
-          사장님도 친절하시고, 양도 많고 엄청 신선했습니다! 많이 시켜먹을 것
-          같습니다!
-        </Text>
-
-        <EditorWrapper>
-          <Editor placeholder="클린리뷰 특성상 재생성도 불가능하며 수정도 불가능합니다. 신중하게 작성해주세요." />
-          <Button>전송</Button>
-        </EditorWrapper>
-
-        <Answer>
-          <Header>
-            <TextWrapper>
-              <Text as="h1">사장님</Text>
-              <Text size={12} color="#999999">
-                2022-09-21
-              </Text>
-            </TextWrapper>
-            <Button>삭제</Button>
-          </Header>
-          <Text size={14} color="#666666">
-            안녕하세용~~~~ 감사합니다.
-          </Text>
-        </Answer>
-      </Comment>
+      {createComment()}
     </ReviewContainer>
   );
 }

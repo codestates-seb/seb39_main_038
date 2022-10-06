@@ -14,6 +14,8 @@ import {
   FoodTruckTime,
 } from './styles';
 
+const { FOODTRUCK_IMG } = process.env;
+
 function FoodTruck({
   data: {
     storeId,
@@ -32,7 +34,7 @@ function FoodTruck({
   return (
     <FoodTruckContainer onClick={handleOnClick}>
       <FoodTruckWrapper>
-        <FoodTruckImage src={storeImage} />
+        <FoodTruckImage src={storeImage || FOODTRUCK_IMG} />
         <FoodTruckTextInner>
           <FoodTruckTitle>{storeName}</FoodTruckTitle>
           <FoodTruckContentBox>

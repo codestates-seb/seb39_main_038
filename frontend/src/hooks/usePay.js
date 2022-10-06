@@ -39,7 +39,7 @@ function usePay(id) {
           100000,
         )}`,
         name: data?.data.data.storeName,
-        amount: 1,
+        amount: 100,
         buyer_tel: data?.data.data.storePhone,
         buyer_addr: data?.data.data.storeAddress,
         buyer_postcode: data?.data.data.storeId,
