@@ -24,9 +24,7 @@ import { COLOR } from '../../constants';
 
 import { useFoodDetail, useDetailFoodList } from '../../hooks';
 
-function FoodMenusList({ storeId }) {
-  const { data } = useDetailFoodList(storeId);
-
+function FoodMenusList({ storeId, props }) {
   const [menuId, setMenuId] = useState(null);
   const [inputs, setInputs] = useState({
     menuName: '',
@@ -93,34 +91,33 @@ function FoodMenusList({ storeId }) {
     // e.target.reset();
   };
 
-  return data.data.menus.map((res) => (
+  return (
     <UpdateInput>
-      {/* key={index}> */}
       <img
-        alt="FoodImg"
+        alt="FoodImage"
         name="menuImg"
         value={menuImg}
         onChange={onChange}
-        src={res.image}
+        src={props.image}
       />
 
       <TypeInfo onSubmit={formHandler}>
         <input
-          placeholder={res.name}
+          placeholder={props.name}
           name="menuName"
           value={menuName}
           onChange={onChange}
         />
 
         <input
-          placeholder={res.content}
+          placeholder={props.content}
           name="menuContent"
           value={menuContent}
           onChange={onChange}
         />
 
         <input
-          placeholder={res.price}
+          placeholder={props.price}
           name="menuPrice"
           value={menuPrice}
           onChange={onChange}
@@ -129,7 +126,7 @@ function FoodMenusList({ storeId }) {
 
       <button
         type="button"
-        value={res.menuId}
+        value={props.menuId}
         onClick={(e) => {
           setMenuId(e.value);
           if (
@@ -157,14 +154,24 @@ function FoodMenusList({ storeId }) {
         제거
       </button>
     </UpdateInput>
-  ));
+  );
+}
+
+function MenuList({ storeId }) {
+  const { data } = useDetailFoodList(storeId);
+  console.log(data.data.menus);
+  const createList = () => {
+    return data.data.menus.map((props) => (
+      <FoodMenusList key={props.menuId} props={props} storeId={storeId} />
+    ));
+  };
+  return createList;
 }
 
 function UpdateForm({
   img,
   onChange,
   handleTypeChange,
-  dropDown,
   name,
   time,
   address,
@@ -172,9 +179,12 @@ function UpdateForm({
   number,
   tag,
   ask,
+  categories,
 }) {
   const { id } = useParams();
   const { data } = useFoodDetail(id);
+
+  const [dropDown] = useState('한식');
 
   const {
     storeName,
@@ -185,9 +195,15 @@ function UpdateForm({
     storePhone,
     storeAddress,
     storeNumber,
-    // storeType,
+    storeType,
   } = data.data.data;
-  console.log(data.data);
+
+  // const renderType = () => {
+  //   useEffect(() => {
+  //     setDropDown(storeType);
+  //   });
+  // };
+
   return (
     <CreateFoodTruck>
       <MainImg>
@@ -203,35 +219,21 @@ function UpdateForm({
 
         <Dropdown>
           <select type="button" onChange={handleTypeChange} value={dropDown}>
-            {/* {storeType === 'korean' ? selected=true : ''}
-{storeType === 'chinese' ? selected=true : ''}
-{storeType === 'western' ? selected=true : ''}
-{storeType === 'japanese' ? selected=true : ''}
-{storeType === 'snackbar' ? selected=true : ''}
-{storeType === 'cafe' ? selected=true : ''}
-{storeType === 'nightsnack' ? selected=true : ''} */}
-            <option>종류를 선택해주세요</option>
-            <option id="1" value="korean">
-              한식
-            </option>
-            <option id="2" value="chinese">
-              중식
-            </option>
-            <option id="3" value="western">
-              양식
-            </option>
-            <option id="4" value="japanese">
-              일식
-            </option>
-            <option id="5" value="snackbar">
-              분식
-            </option>
-            <option id="6" value="cafe">
-              디저트
-            </option>
-            <option id="7" value="nightsnack">
-              야식
-            </option>
+            {categories.map((res, index) => {
+              if (res.type === storeType) {
+                // true시 dropDown을 바꾸기 위해 setDropDown(res.type) 사용
+                return (
+                  <option id={`${index}`} value={res.value}>
+                    {res.type}
+                  </option>
+                );
+              }
+              return (
+                <option id={`${index}`} value={res.value}>
+                  {res.type}
+                </option>
+              );
+            })}
           </select>
         </Dropdown>
       </MainImg>
@@ -321,12 +323,13 @@ function UpdateForm({
 }
 
 function FoodTruckSetting() {
-  const [dropDown, setDropDown] = useState('종류를 선택하세요');
+  const [dropDown, setDropDown] = useState(null);
   const [toggleStatus, setToggleStatus] = useState(false);
   const [storeId, setStoreId] = useState(false);
 
   const { id } = useParams();
   const { data } = useFoodDetail(id);
+
   useEffect(() => {
     if (data.data.message === '해당 가게를 찾을 수 없습니다.') {
       setStoreId(false);
@@ -485,6 +488,16 @@ function FoodTruckSetting() {
     onSettled,
   });
 
+  const categories = [
+    { value: 'korean', type: '한식' },
+    { value: 'chinese', type: '중식' },
+    { value: 'western', type: '양식' },
+    { value: 'japanese', type: '일식' },
+    { value: 'snackbar', type: '분식' },
+    { value: 'cafe', type: '디저트' },
+    { value: 'nightsnack', type: '야식' },
+  ];
+
   return (
     <ErrorBoundary>
       <React.Suspense fallback={<Spinner color={COLOR.NAVY} size={100} />}>
@@ -507,7 +520,6 @@ function FoodTruckSetting() {
               img={img}
               onChange={onChange}
               handleTypeChange={handleTypeChange}
-              dropDown={dropDown}
               name={name}
               time={time}
               address={address}
@@ -515,6 +527,7 @@ function FoodTruckSetting() {
               number={number}
               tag={tag}
               ask={ask}
+              categories={categories}
             />
           ) : (
             <CreateFoodTruck>
@@ -534,28 +547,13 @@ function FoodTruckSetting() {
                     onChange={handleTypeChange}
                     value={dropDown}
                   >
-                    <option>종류를 선택해주세요</option>
-                    <option id="1" value="korean">
-                      한식
-                    </option>
-                    <option id="2" value="chinese">
-                      중식
-                    </option>
-                    <option id="3" value="western">
-                      양식
-                    </option>
-                    <option id="4" value="japanese">
-                      일식
-                    </option>
-                    <option id="5" value="snackbar">
-                      분식
-                    </option>
-                    <option id="6" value="cafe">
-                      디저트
-                    </option>
-                    <option id="7" value="nightsnack">
-                      야식
-                    </option>
+                    {categories.map((res, index) => {
+                      return (
+                        <option id={`${index}`} value={res.value}>
+                          {res.type}
+                        </option>
+                      );
+                    })}
                   </select>
                 </Dropdown>
               </MainImg>
@@ -725,7 +723,7 @@ function FoodTruckSetting() {
             <UpdateFood>
               <Title>가게 메뉴 편집</Title>
 
-              {storeId ? <FoodMenusList storeId={storeId} /> : null}
+              {storeId ? <MenuList storeId={storeId} /> : null}
 
               <SettingDoneBtn>
                 <button
