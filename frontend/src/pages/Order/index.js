@@ -21,7 +21,7 @@ import { Receipt } from '../../components';
 
 function Order() {
   const [request, setRequest] = useState('');
-  const [radio, setRadio] = useState({ value: 'card', togle: true });
+  const [radio, setRadio] = useState({ value: 'CARD', togle: true });
 
   const handleOnChangeRadio = (e) =>
     setRadio({ value: e.target.value, togle: !radio.togle });

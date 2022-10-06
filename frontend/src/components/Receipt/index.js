@@ -45,7 +45,7 @@ function Receipt({ order, request, type }) {
 
   const goOrder = () => navigate(`/${ROUTE.ORDER.PATH}`);
   const goPay = () => {
-    if (type === 'card') payWithCard(request, type);
+    if (type === 'CARD') payWithCard(request, type);
     else payWithCash(request, type);
     navigate(`/${ROUTE.FOODLIST.PATH}`);
   };
