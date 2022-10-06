@@ -14,10 +14,15 @@ const sessionStorageEffect =
 
 const atoms = {
   menuQuery: atom({ key: 'menu', default: MENU[0].query }),
+  storeId: atom({
+    key: 'storeId',
+    default: null,
+    effects: [sessionStorageEffect('storeId')],
+  }),
 
   isLogin: atom({
     key: 'isLogin',
-    default: { state: false, type: null },
+    default: { state: false, type: null, init: 0 },
     effects: [sessionStorageEffect('isLogin')],
   }),
 
