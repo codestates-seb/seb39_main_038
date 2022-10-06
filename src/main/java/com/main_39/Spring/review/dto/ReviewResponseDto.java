@@ -9,6 +9,8 @@ import java.time.LocalDateTime;
 @Getter
 public class ReviewResponseDto {
     private long reviewId;
+    //카카오 Id 일치 여부
+    private boolean auth;
     private String reviewContent;
 
     // 추가
@@ -23,9 +25,10 @@ public class ReviewResponseDto {
     private CommentResponseDto comment;
 
     @Builder
-    public ReviewResponseDto(long reviewId, String reviewContent, String reviewImage, int reviewGrade,
+    public ReviewResponseDto(long reviewId, boolean auth, String reviewContent, String reviewImage, int reviewGrade,
                              String nickname, LocalDateTime createdAt, CommentResponseDto comment) {
         this.reviewId = reviewId;
+        this.auth = auth;
         this.reviewContent = reviewContent;
         this.nickname = nickname;
         this.reviewImage = reviewImage;
