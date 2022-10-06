@@ -6,7 +6,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.main_39.Spring.config.oauth.LocalDetails;
 import com.main_39.Spring.exception.BusinessLogicException;
 import com.main_39.Spring.exception.ExceptionCode;
+import com.main_39.Spring.member.dto.LocalDto;
 import com.main_39.Spring.member.entity.Local;
+import com.main_39.Spring.member.mapper.MemberMapper;
 import com.main_39.Spring.member.repository.LocalRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseCookie;
@@ -38,6 +40,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     private final AuthenticationManager authenticationManager;
     private final LocalRepository localRepository;
+    private final MemberMapper memberMapper;
 
 
     /**
@@ -133,6 +136,14 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .maxAge(60 * 60 * 24 * 30 * 2) // 2달
                 .build();
         response.addHeader("Set-Cookie",local_refresh_cookie.toString());
+
+        //로컬 회원정보 반환
+        LocalDto.response posted = memberMapper.localToLocalDtoResponse(local);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(posted);
+        response.getWriter().write(json);
 
         System.out.println("로컬 토큰 발행 완료");
     }
