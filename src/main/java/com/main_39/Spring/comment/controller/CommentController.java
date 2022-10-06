@@ -135,7 +135,7 @@ public class CommentController {
         if(local == null) throw new BusinessLogicException(ExceptionCode.STORE_PATCH_WRONG_ACCESS);
 
         Comment comment = commentService.findVerifiedComment(commentId);
-        if(comment.getStore().getLocal().getLocalId() != local.getLocalId()) throw new BusinessLogicException(ExceptionCode.REVIEW_DELETE_NO_AUTHORITY);
+        if(comment.getStore().getStoreId() != local.getStore().getStoreId()) throw new BusinessLogicException(ExceptionCode.REVIEW_DELETE_NO_AUTHORITY);
 
         System.out.println("#delete Comment");
         commentService.deleteComment(reviewId, commentId);
