@@ -90,7 +90,7 @@ public class ReviewController {
         if(kakao == null) throw new BusinessLogicException(ExceptionCode.AUTH_REQUIRED_LOGIN);
 
         Store store = storeService.findStore(storeId);
-
+        //임시로 주석 처리
 //        Review review = mapper.reviewKakaoesponseDto(reviewResponseDto);
 //
 //        Kakao kakao = memberService.findKakaoNickname(reviewResponseDto.getNickname());
