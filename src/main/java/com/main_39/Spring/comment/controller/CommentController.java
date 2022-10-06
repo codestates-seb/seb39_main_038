@@ -111,9 +111,9 @@ public class CommentController {
         if(local == null) throw new BusinessLogicException(ExceptionCode.AUTH_REQUIRED_LOGIN);
 
         Comment comment = mapper.commentPatchDtoToComment(commentPatchDto);
-        Comment response = commentService.updateComment(comment);
+        if(commentPatchDto.getStoreId() != local.getStore().getStoreId()) throw new BusinessLogicException(ExceptionCode.REVIEW_PATCH_WRONG_ACCESS);
 
-        if(response.getStore().getLocal().getLocalId() != local.getLocalId()) throw new BusinessLogicException(ExceptionCode.REVIEW_PATCH_WRONG_ACCESS);
+        Comment response = commentService.updateComment(comment);
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(mapper.commentToCommentResponseDto(response)),
