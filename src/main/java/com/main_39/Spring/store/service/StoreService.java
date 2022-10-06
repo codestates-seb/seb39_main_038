@@ -42,7 +42,7 @@ public class StoreService {
      * 푸드트럭 등록
      */
     public Store createdStore(Store store) {
-        verifyExistsName(store.getStoreName());
+        verifyExistsInfo(store.getStoreName(), store.getStoreNumber(), store.getStorePhone());
         if(store.getStoreImage() != null) saveImageToS3(store);
         return storeRepository.save(store);
     }
@@ -52,6 +52,7 @@ public class StoreService {
      */
     public Store updateStore(Store store) {
         Store findStore = verifyExistsStore(store.getStoreId());
+        verifyExistsInfo(store.getStoreName(), store.getStoreNumber(), store.getStorePhone());
 
         Optional.ofNullable(store.getStorePhone())
                 .ifPresent(phone -> findStore.setStorePhone(phone));
@@ -161,11 +162,19 @@ public class StoreService {
     }
 
     /**
-     * 이미 사용중인 푸드트럭명인지 확인
+     * 푸드트럭명, 사업자번호, 전화번호 중복 확인
      */
-    private void verifyExistsName(String storeName) {
-        Optional<Store> store = storeRepository.findByName(storeName);
-        if(store.isPresent())
+    private void verifyExistsInfo(String storeName, String storeNumber, String storePhone) {
+        Optional<Store> name = storeRepository.findByName(storeName);
+        Optional<Store> number = storeRepository.findByNumber(storeNumber);
+        Optional<Store> phone = storeRepository.findByPhone(storePhone);
+
+        if(name.isPresent()) {
             throw new BusinessLogicException(ExceptionCode.STORE_NAME_DUPLICATE);
+        } else if(number.isPresent()) {
+            throw new BusinessLogicException(ExceptionCode.STORE_NUMBER_DUPLICATE);
+        } else if(phone.isPresent()) {
+            throw new BusinessLogicException(ExceptionCode.STORE_PHONE_DUPLICATE);
+        }
     }
 }

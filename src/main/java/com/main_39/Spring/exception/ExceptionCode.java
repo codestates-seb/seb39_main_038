@@ -34,6 +34,7 @@ public enum ExceptionCode {
     AUTH_REQUIRED_LOGIN(226,4002, "로그인이 필요합니다."),
     NOT_MATCH_USER_INFO	(226,4003, "유저 정보가 일치하지 않습니다."),
     NOT_EXISTS_USER_INFO(226,4004, "해당 유저 정보가 존재하지 않습니다."),
+    NOT_EXITS_NICKNAME(226, 4005, "해당 닉네임이 존재하지 않습니다."),
     /**
      * 가게
      */
@@ -47,6 +48,8 @@ public enum ExceptionCode {
     STORE_POST_INVALID_TITLE(226,5008, "잘못된 가게명 형식입니다."),
     STORE_POST_INVALID_CATEGORY(226,5009, "잘못된 카테고리입니다."),
     STORE_NAME_DUPLICATE(226,5010, "이미 사용중인 가게명 입니다."),
+    STORE_NUMBER_DUPLICATE(226,5011,"이미 사용중인 사업자 번호 입니다."),
+    STORE_PHONE_DUPLICATE(226,5012, "이미 사용중인 가게 번호 입니다."),
     /**
      * 리뷰
      */

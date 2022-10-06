@@ -3,7 +3,9 @@ package com.main_39.Spring.review.controller;
 import com.main_39.Spring.dto.MultiResponseDto;
 import com.main_39.Spring.dto.SingleResponseDto;
 import com.main_39.Spring.member.entity.Kakao;
+import com.main_39.Spring.member.repository.KakaoRepository;
 import com.main_39.Spring.member.service.MemberService;
+import com.main_39.Spring.review.dto.ReviewPatchDto;
 import com.main_39.Spring.review.dto.ReviewPostDto;
 import com.main_39.Spring.review.dto.ReviewResponseDto;
 import com.main_39.Spring.review.dto.ReviewsResponseDto;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @Validated
@@ -28,15 +31,18 @@ public class ReviewController {
     private final ReviewService reviewService;
     private final ReviewMapper mapper;
     private final StoreService storeService;
+    private final KakaoRepository kakaoRepository;
     private final MemberService memberService;
 
     public ReviewController(ReviewService reviewService,
                             ReviewMapper mapper,
                             StoreService storeService,
+                            KakaoRepository kakaoRepository,
                             MemberService memberService) {
         this.reviewService = reviewService;
         this.mapper = mapper;
         this.storeService = storeService;
+        this.kakaoRepository = kakaoRepository;
         this.memberService = memberService;
     }
 
@@ -49,8 +55,8 @@ public class ReviewController {
 
         Review review = mapper.reviewPostDtoToReview(reviewPostDto);
 
-        Kakao kakao = memberService.findVerifiedKakao(reviewPostDto.getKakaoId());
-        review.setKakao(kakao);
+//        Kakao kakao = memberService.findKakaoNickname(reviewPostDto.getNickname());
+//        review.setKakao(kakao);
 
         Review posted = reviewService.createdReview(storeId, review);
         ReviewResponseDto response = mapper.reviewToReviewResponseDto(posted);
@@ -63,11 +69,28 @@ public class ReviewController {
     /**
      * 상점별 리뷰 불러오기
      */
+//    @GetMapping("/store/{store-id}/reviews")
+//    public ResponseEntity<ReviewsResponseDto> getReviewByStore(@PathVariable("store-id") long storeId) {
+//        Store store = storeService.findStore(storeId);
+//
+//        return new ResponseEntity<>(mapper.reviewToStoreResponseDto(store), HttpStatus.OK);
+//    }
+
     @GetMapping("/store/{store-id}/reviews")
     public ResponseEntity<ReviewsResponseDto> getReviewByStore(@PathVariable("store-id") long storeId) {
+
         Store store = storeService.findStore(storeId);
 
-        return new ResponseEntity<>(mapper.reviewToStoreResponseDto(store), HttpStatus.OK);
+//        Review review = mapper.reviewToStoreResponseDto(reviewResponseDto);
+////
+////        Kakao kakao = memberService.findKakaoNickname(reviewResponseDto.getNickname());
+////        review.setKakao(kakao);
+////
+//        Review getReviewStore = reviewService.findReview(review.getReviewId());
+//        ReviewResponseDto responseDto = mapper.reviewToReviewResponseDto(getReviewStore);
+
+
+        return new ResponseEntity<>(mapper.reviewsToStoreResponseDto(store), HttpStatus.OK);
     }
 
     /**
@@ -75,7 +98,7 @@ public class ReviewController {
      */
     @GetMapping("/review")
     public ResponseEntity getReviews(@Positive @RequestParam int page,
-                                    @Positive @RequestParam(required = false, defaultValue = "15") int size){
+                                     @Positive @RequestParam(required = false, defaultValue = "15") int size){
         Page<Review> pageReviews = reviewService.findReviews(page -1, size);
         List<Review> reviews = pageReviews.getContent();
         List<ReviewResponseDto> responses = mapper.reviewToReviewResponseDtos(reviews);
@@ -86,11 +109,28 @@ public class ReviewController {
     }
 
     /**
+     * 리뷰 수정
+     */
+    @PatchMapping("/store/{store-id}/review/{review-id}")
+    public ResponseEntity patchReview(@PathVariable("store-id") long storeId,
+                                      @PathVariable("review-id") @Positive long reviewId,
+                                      @Valid @RequestBody ReviewPatchDto reviewPatchDto) {
+        reviewPatchDto.setReviewId(reviewId);
+
+        Review response =
+                reviewService.updateReview(mapper.reviewPatchDtoToReview(reviewPatchDto));
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(mapper.reviewToReviewResponseDto(response)),
+                HttpStatus.OK);
+    }
+
+    /**
      * 리뷰 삭제
      */
-    @DeleteMapping("/review/{review-id}")
-    public ResponseEntity deleteReview(
-            @PathVariable("review-id") @Positive long reviewId) {
+    @DeleteMapping("/store/{store-id}/review/{review-id}")
+    public ResponseEntity deleteReview(@PathVariable("store-id") long storeId,
+                                       @PathVariable("review-id") @Positive long reviewId) {
         System.out.println("#delete Review");
         reviewService.deleteReview(reviewId);
 

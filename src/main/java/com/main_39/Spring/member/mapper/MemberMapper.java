@@ -28,7 +28,7 @@ public interface MemberMapper {
             storeResponseDto = new StoreResponseDto(
                     store.getStoreId(), store.getStorePhone(), store.getStoreNumber(), store.getStoreStatus(), store.getStoreName(), store.getStoreContent(),
                     store.getStoreImage(), store.getStoreType(), store.getStoreTime(), store.getStoreWaitTime(), store.getStoreAddress(),
-                    store.getStorePayment(), store.getStoreTag(), store.getTotalReview(), store.getTotalGrade(), store.getTotalComment()
+                    store.getStorePayment(), store.getStoreTag(), store.getTotalReview(), store.getTotalGrade(), store.getTotalComment(), store.getTotalMenu()
             );
         }
         LocalDto.response response = new LocalDto.response(
