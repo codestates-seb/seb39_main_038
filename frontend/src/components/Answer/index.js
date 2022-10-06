@@ -51,13 +51,13 @@ function Answer({ item, storeId }) {
           <TextWrapper>
             <Text as="h1">사장님</Text>
             <Text size={12} color="#999999">
-              {dateFormat(new Date(item.comment.createdAt), '-')}
+              {dateFormat(new Date(item?.comment.createdAt), '-')}
             </Text>
           </TextWrapper>
           <Button>삭제</Button>
         </Header>
         <Text size={14} color="#666666">
-          {item.comment.commentContent}
+          {item?.comment.commentContent}
         </Text>
       </AnswerContainer>
     </>
