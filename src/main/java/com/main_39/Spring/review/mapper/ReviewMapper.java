@@ -27,19 +27,19 @@ public interface ReviewMapper {
         return reviews.stream()
                 .map(review -> {
                     CommentResponseDto commentResponseDto = commentMapper.commentToCommentResponseDto(review.getComment());
-                    Kakao kakao = null;
-                    Local local = null;
+
+                    Kakao kakao = review.getKakao();
+                    Local local = review.getLocal();
+
                     boolean isAuthor = false;
                     String nickname = "존재하지 않는 회원";
-                    if(login.equals("kakao")){
-                        kakao = review.getKakao();
-                        if(kakao != null) nickname = kakao.getNickname();
-                        if(kakao != null && Id == kakao.getKakaoId()) isAuthor = true;
-                    }else if(login.equals("local")){
-                        local = review.getLocal();
-                        if(local != null) nickname = local.getName();
-                        if(local != null && Id == local.getLocalId()) isAuthor = true;
-                    }
+
+                    if(kakao != null) nickname = kakao.getNickname();
+                    if(local != null) nickname = local.getName();
+
+                    if(kakao != null && Id == kakao.getKakaoId()) isAuthor = true;
+                    if(local != null && Id == local.getLocalId()) isAuthor = true;
+
                     ReviewResponseDto reviewResponseDto = ReviewResponseDto.builder()
                             .reviewId(review.getReviewId())
                             .auth(isAuthor) //카카오  Id비교
