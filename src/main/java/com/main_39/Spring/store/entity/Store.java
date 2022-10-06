@@ -109,6 +109,7 @@ public class Store {
     /**
      * store : menu = 1 : N 양방향
      */
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
     private List<Menu> menus = new ArrayList<>();
 
@@ -156,6 +157,7 @@ public class Store {
     /**
      * store : comment = 1 : N 양방향
      */
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "store", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Comment> comments = new ArrayList<>();
 }
