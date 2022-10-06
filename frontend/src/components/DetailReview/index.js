@@ -97,20 +97,22 @@ function DetailReview({ storeId }) {
               <Button onClick={goAnswer(item.reviewId, text)}>전송</Button>
             </EditorWrapper>
           ) : null}
-          <Answer>
-            <Header>
-              <TextWrapper>
-                <Text as="h1">사장님</Text>
-                <Text size={12} color="#999999">
-                  {dateFormat(new Date(item.comment.createdAt), '-')}
-                </Text>
-              </TextWrapper>
-              <Button>삭제</Button>
-            </Header>
-            <Text size={14} color="#666666">
-              {item.comment.commentContent}
-            </Text>
-          </Answer>
+          {item.comment ? (
+            <Answer>
+              <Header>
+                <TextWrapper>
+                  <Text as="h1">사장님</Text>
+                  <Text size={12} color="#999999">
+                    {dateFormat(new Date(item.comment.createdAt), '-')}
+                  </Text>
+                </TextWrapper>
+                <Button>삭제</Button>
+              </Header>
+              <Text size={14} color="#666666">
+                {item.comment.commentContent}
+              </Text>
+            </Answer>
+          ) : null}
         </Comment>
       );
     });
