@@ -42,10 +42,12 @@ function MyPage() {
 
   const { avatar, email, name, phone, store } = userData.data.data;
   const goModal = (item) => () => setOrderData(item);
-  const goAsk = () =>
+  const goAsk = () => {
+    console.log('ASK');
     navigate(`/${ROUTE.REVIEW.PATH}`, {
       state: { storeId: store.storeId, type: 'post' },
     });
+  };
 
   const createOrderContent = () => {
     return orderListData.data.orders?.map((item) => {
