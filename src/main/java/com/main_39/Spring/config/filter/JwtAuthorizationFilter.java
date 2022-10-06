@@ -177,7 +177,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
             //Authorization (세션에 추가)
             LocalDetails localDetails = new LocalDetails(local);
-            Authentication authentication = new UsernamePasswordAuthenticationToken(localDetails.getUsername(),localDetails.getPassword(),localDetails.getAuthorities());
+            Authentication authentication = new UsernamePasswordAuthenticationToken(localDetails,localDetails.getPassword(),localDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
 
