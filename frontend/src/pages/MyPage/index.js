@@ -40,17 +40,18 @@ function MyPage() {
 
   if (!state) return <div />;
 
-  const { avatar, email, name, phone, store } = userData.data.data;
+  const { avatar, email, name, phone } = userData.data.data;
   const goModal = (item) => () => setOrderData(item);
-  const goAsk = () => {
-    console.log('ASK');
+
+  const goAsk = (id) => () => {
     navigate(`/${ROUTE.REVIEW.PATH}`, {
-      state: { storeId: store.storeId, type: 'post' },
+      state: { storeId: id, type: 'post' },
     });
   };
 
   const createOrderContent = () => {
     return orderListData.data.orders?.map((item) => {
+      console.log(orderListData.data.orders.orderMenu[0].storeId);
       return (
         <OrderContent key={item.orderId} onClick={goModal(item)}>
           <TextBox>
@@ -60,7 +61,11 @@ function MyPage() {
             </Text>
           </TextBox>
           <ButtonBox>
-            <Button onClick={goAsk}>리뷰쓰기</Button>
+            <Button
+              onClick={goAsk(orderListData.data.orders.orderMenu[0].storeId)}
+            >
+              리뷰쓰기
+            </Button>
             <Button onClick={openOrder}>주문상세</Button>
           </ButtonBox>
         </OrderContent>
