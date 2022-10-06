@@ -39,6 +39,7 @@ function Answer({ item, storeId }) {
         storeId,
         reviewId: item.reviewId,
         commentId: item.comment.commentId,
+        commentContent: text,
       },
     });
   };
