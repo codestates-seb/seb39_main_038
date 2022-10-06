@@ -27,7 +27,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Entity
-public class Local implements Users{
+public class Local{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long localId;
