@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import axios from 'axios';
 import {
   NavContainer,
@@ -15,6 +15,7 @@ import { atoms } from '../../store';
 function GlobalNav() {
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useRecoilState(atoms.isLogin);
+  const orderList = useRecoilValue(atoms.orderList);
 
   const handleOnClick = async () => {
     const isCheck = window.confirm('정말 로그아웃 하시겠습니까?');
@@ -25,6 +26,12 @@ function GlobalNav() {
     navigate(ROUTE.HOME.PATH);
   };
 
+  const goBasKet = () => {
+    if (orderList.length === 0)
+      return alert('장바구니에 상품이 존재하지 않습니다.');
+    return navigate(`/${ROUTE.FOODLIST.PATH}/${orderList[0].storeId}`);
+  };
+
   const isLoginComponent = () => {
     if (isLogin.state)
       return (
@@ -32,9 +39,9 @@ function GlobalNav() {
           <NavButton onClick={handleOnClick} color={COLOR.YELLOW}>
             {ROUTE.LOGOUT.NAME}
           </NavButton>
-          <Link to={ROUTE.BASKET.PATH}>
-            <NavButton color={COLOR.WHITE}>{ROUTE.BASKET.NAME}</NavButton>
-          </Link>
+          <NavButton onClick={goBasKet} color={COLOR.WHITE}>
+            {ROUTE.BASKET.NAME}
+          </NavButton>
         </ButtonInner>
       );
 
