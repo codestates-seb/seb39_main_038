@@ -58,7 +58,7 @@ public class Local {
     @OneToOne(mappedBy = "local")
     private Store store;
 
-    @OneToMany(mappedBy = "local", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "local", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Order> orders = new ArrayList<>();
 
     public void addOrders(Order order) {
