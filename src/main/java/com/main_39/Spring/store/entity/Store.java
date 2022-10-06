@@ -146,6 +146,11 @@ public class Store {
         return menus.size() > 0;
     }
 
+    // 추가
+    public boolean hasReview() {
+        return reviews.size() > 0;
+    }
+
     public double getTotalGrade() {
         long total = 0;
         total = reviews.stream().mapToInt(review -> review.getReviewGrade()).sum();

@@ -169,7 +169,8 @@ public class ReviewController {
     public ResponseEntity deleteReview(@PathVariable("store-id") long storeId,
                                        @PathVariable("review-id") @Positive long reviewId) {
         System.out.println("#delete Review");
-        reviewService.deleteReview(reviewId);
+        Store store = storeService.findStore(storeId);
+        reviewService.deleteReview(store, reviewId);
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
