@@ -10,6 +10,7 @@ import { sha256 } from '../../../utils';
 
 function ProviderLogin() {
   const setIsLogin = useSetRecoilState(atoms.isLogin);
+  const setStoreId = useSetRecoilState(atoms.storeId);
   const navigate = useNavigate();
 
   const postUserData = async (email, password) => {
@@ -20,6 +21,7 @@ function ProviderLogin() {
     const response = await axios.post(API_URI.LOGIN, userInfo);
     if (response.status === 226) return alert(response.data?.message);
     setIsLogin({ state: true, type: 'local' });
+    setStoreId(response.data.store);
     return navigate(ROUTE.HOME.PATH);
   };
 

@@ -14,11 +14,11 @@ function Login() {
   const isLogin = useRecoilValue(atoms.isLogin);
 
   useEffect(() => {
-    if (isLogin.state) {
+    if (isLogin.state && isLogin.init !== 0) {
       alert('접근할 수 없습니다.');
       navigate('/');
     }
-  }, [isLogin.state, navigate]);
+  }, [isLogin.state, isLogin.init, navigate]);
 
   if (isLogin.state) return <div />;
 
