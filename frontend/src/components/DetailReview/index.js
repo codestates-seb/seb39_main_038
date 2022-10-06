@@ -82,8 +82,8 @@ function DetailReview({ storeId }) {
   return (
     <ReviewContainer>
       <Rating>
-        <TotalRate>5.0</TotalRate>
-        <Star header>★★★★★</Star>
+        <TotalRate>{data?.data.totalGrade}</TotalRate>
+        <Star header>{createStar(data?.data.totalGrade)}</Star>
       </Rating>
       {createComment()}
     </ReviewContainer>
