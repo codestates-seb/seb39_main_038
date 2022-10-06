@@ -1,6 +1,7 @@
 package com.main_39.Spring.order.mapper;
 
 import com.main_39.Spring.member.entity.Kakao;
+import com.main_39.Spring.member.entity.Local;
 import com.main_39.Spring.menu.entity.Menu;
 import com.main_39.Spring.order.dto.OrderMenuResponse;
 import com.main_39.Spring.order.dto.OrderRequest;
@@ -17,7 +18,7 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = "spring")
 public interface OrderMapper {
 
-    default Order orderRequestToOrder(OrderRequest orderRequest, Kakao kakao) {
+    default Order orderRequestToOrderByKakao(OrderRequest orderRequest, Kakao kakao) {
 
         Order order = new Order();
 
@@ -36,6 +37,30 @@ public interface OrderMapper {
         order.addPaymentType(orderRequest.getPaymentType());
         order.addOrderRequest(orderRequest.getOrderRequest());
         order.addKakao(kakao);
+        order.addOrderMenus(orderMenus);
+
+        return order;
+    }
+
+    default Order orderRequestToOrderByLocal(OrderRequest orderRequest, Local local) {
+
+        Order order = new Order();
+
+        List<OrderMenu> orderMenus = orderRequest.getOrderMenus()
+                .stream()
+                .map(orderMenuRequest -> {
+                    Menu menu = new Menu();
+                    menu.addMenuId(orderMenuRequest.getMenuId());
+                    OrderMenu orderMenu = OrderMenu.builder()
+                            .order(order)
+                            .menu(menu)
+                            .count(orderMenuRequest.getCount())
+                            .build();
+                    return orderMenu;
+                }).collect(Collectors.toList());
+        order.addPaymentType(orderRequest.getPaymentType());
+        order.addOrderRequest(orderRequest.getOrderRequest());
+        order.addLocal(local);
         order.addOrderMenus(orderMenus);
 
         return order;
@@ -69,12 +94,22 @@ public interface OrderMapper {
                         .build()).collect(Collectors.toList());
     }
 
-    default OrdersResponse orderToOrdersResponse(Kakao kakao) {
+    default OrdersResponse orderToOrdersResponseByKakao(Kakao kakao) {
         List<Order> orders = kakao.getOrders();
 
         OrdersResponse ordersResponse = new OrdersResponse(
                 orderToOrderResponse(orders),
                 kakao.getTotalOrder());
+
+        return ordersResponse;
+    }
+
+    default OrdersResponse orderToOrdersResponseByLocal(Local local) {
+        List<Order> orders = local.getOrders();
+
+        OrdersResponse ordersResponse = new OrdersResponse(
+                orderToOrderResponse(orders),
+                local.getTotalOrder());
 
         return ordersResponse;
     }
