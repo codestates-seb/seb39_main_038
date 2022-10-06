@@ -33,6 +33,8 @@ function GlobalNav() {
     return navigate(`/${ROUTE.FOODLIST.PATH}/${orderList[0].storeId}`);
   };
 
+  const goMyPage = () => navigate(`/${ROUTE.MYPAGE.PATH}`);
+
   const isLoginComponent = () => {
     if (isLogin.state)
       return (
@@ -42,6 +44,9 @@ function GlobalNav() {
           </NavButton>
           <NavButton onClick={goBasKet} color={COLOR.WHITE}>
             {ROUTE.BASKET.NAME}
+          </NavButton>
+          <NavButton onClick={goMyPage} color={COLOR.WHITE}>
+            마이페이지
           </NavButton>
         </ButtonInner>
       );
