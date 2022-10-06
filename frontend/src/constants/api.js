@@ -30,6 +30,7 @@ const API_URI = {
   FOODLIST: `${API_HOST}/store`,
   ORDER: `${API_HOST}/order/orders`,
   PAYMENT: `${API_HOST}/payment/verify`,
+  FOODREVIEW: (id) => `${API_HOST}/store/${id}/reviews`,
 };
 
 export { KAKAO_API, API_URI };

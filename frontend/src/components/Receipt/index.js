@@ -69,7 +69,9 @@ function Receipt({ order, request, type }) {
       {order ? (
         <OrderButton onClick={goPay}>결제하기</OrderButton>
       ) : (
-        <OrderButton onClick={goOrder}>바로 주문하기 </OrderButton>
+        <OrderButton disabled={!orderList.length} onClick={goOrder}>
+          바로 주문하기
+        </OrderButton>
       )}
     </StickyBody>
   );

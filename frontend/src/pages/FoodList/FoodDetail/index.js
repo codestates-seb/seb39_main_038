@@ -36,12 +36,12 @@ function FoodDetail() {
     storeImage,
     storeContent,
     totalGrade,
-    totalComment,
-    totalMenu,
     storeWaitTime,
     storeTag,
+    totalMenu,
+    totalReview,
   } = data.data.data;
-  console.log(data.data.data);
+
   return (
     <Section>
       <MainBody>
@@ -96,7 +96,7 @@ function FoodDetail() {
               type="button"
               onClick={handleOnClick('리뷰')}
             >
-              클린리뷰 {totalComment}
+              클린리뷰 {totalReview}
             </ReviewTabBtn>
             <InfoTabBtn
               menu={menu}
