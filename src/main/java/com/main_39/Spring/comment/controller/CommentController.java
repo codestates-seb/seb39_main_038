@@ -1,5 +1,6 @@
 package com.main_39.Spring.comment.controller;
 
+import com.main_39.Spring.comment.dto.CommentPatchDto;
 import com.main_39.Spring.comment.dto.CommentPostDto;
 import com.main_39.Spring.comment.dto.CommentResponseDto;
 import com.main_39.Spring.comment.entity.Comment;
@@ -74,10 +75,25 @@ public class CommentController {
     }
 
     /**
+     * 답변 수정
+     */
+    @PatchMapping("/review/{review-id}/{comment-id}")
+    public ResponseEntity patchComment(@PathVariable("review-id") @Positive long reviewId,
+                                       @PathVariable("comment-id") @Positive long commentId,
+                                       @Valid @RequestBody CommentPatchDto commentPatchDto) {
+        commentPatchDto.setCommentId(commentId);
+        Comment response =
+                commentService.updateComment(mapper.commentPatchDtoToComment(commentPatchDto));
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(mapper.commentToCommentResponseDto(response)),
+                HttpStatus.OK);
+    }
+    /**
      * 답변 삭제
      */
     @DeleteMapping("/review/{review-id}/{comment-id}")
-    public ResponseEntity deleteComment(@PathVariable("review-id") @Positive long reviewId,
+    public ResponseEntity deleteComment(@PathVariable("review-id") long reviewId,
                                         @PathVariable("comment-id") @Positive long commentId) {
         System.out.println("#delete Comment");
         commentService.deleteComment(reviewId, commentId);

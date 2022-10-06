@@ -10,8 +10,6 @@ import java.time.LocalDateTime;
 public class ReviewResponseDto {
     private long reviewId;
     private String reviewContent;
-
-    // 추가
     private String nickname;
     private String reviewImage;
     private int reviewGrade;
