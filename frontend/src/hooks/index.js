@@ -6,6 +6,7 @@ import { useDetailFoodList } from './useDetailFoodList';
 import { useOrderList } from './useOrderList';
 import { usePay } from './usePay';
 import { useReview } from './useReview';
+import { useAnswer } from './useAnswer';
 
 export {
   useModal,
@@ -16,4 +17,5 @@ export {
   usePay,
   useOrderList,
   useReview,
+  useAnswer,
 };
