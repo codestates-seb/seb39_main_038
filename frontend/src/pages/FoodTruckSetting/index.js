@@ -24,9 +24,8 @@ import { COLOR } from '../../constants';
 
 import { useFoodDetail, useDetailFoodList } from '../../hooks';
 
-function FoodMenusList() {
-  const { id } = useParams();
-  const { data } = useDetailFoodList(id);
+function FoodMenusList({ storeId }) {
+  const { data } = useDetailFoodList(storeId);
 
   const [menuId, setMenuId] = useState(null);
   const [inputs, setInputs] = useState({
@@ -47,14 +46,14 @@ function FoodMenusList() {
 
   const deleteMenu = async () => {
     const res = await axios.delete(
-      `http://ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/store/${id}/menus/${menuId}`,
+      `http://ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/store/${storeId}/menus/${menuId}`,
     );
     return res;
   };
 
   const patchMenu = async () => {
     const res = await axios.patch(
-      `http://ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/store/${id}/menus/${menuId}`,
+      `http://ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/store/${storeId}/menus/${menuId}`,
       {
         name: menuName,
         price: menuPrice,
@@ -89,59 +88,69 @@ function FoodMenusList() {
     onSettled,
   });
 
+  const formHandler = (e) => {
+    e.preventDefault();
+    // e.target.reset();
+  };
+
   return data.data.menus.map((res) => (
-    <UpdateInput key={res.menuId}>
+    <UpdateInput>
+      {/* key={index}> */}
       <img
         alt="FoodImg"
-        name={`menuImg${menuId}`}
+        name="menuImg"
         value={menuImg}
         onChange={onChange}
         src={res.image}
       />
 
-      <TypeInfo>
+      <TypeInfo onSubmit={formHandler}>
         <input
           placeholder={res.name}
-          name={`menuName${menuId}`}
+          name="menuName"
           value={menuName}
           onChange={onChange}
-          onClick={() => {
-            setMenuId(res.menuId);
-          }}
         />
 
         <input
           placeholder={res.content}
-          name={`menuContent${menuId}`}
+          name="menuContent"
           value={menuContent}
           onChange={onChange}
-          onClick={() => {
-            setMenuId(res.menuId);
-          }}
         />
 
         <input
           placeholder={res.price}
-          name={`menuPrice${menuId}`}
+          name="menuPrice"
           value={menuPrice}
           onChange={onChange}
-          onClick={() => {
-            setMenuId(res.menuId);
-          }}
         />
       </TypeInfo>
 
       <button
         type="button"
-        onClick={() => {
-          patchMutateMenu();
+        value={res.menuId}
+        onClick={(e) => {
+          setMenuId(e.value);
+          if (
+            menuPrice &&
+            menuContent &&
+            menuName
+            //  && menuImg
+          ) {
+            patchMutateMenu();
+          } else {
+            alert('모든 정보를 입력해 주세요');
+          }
         }}
       >
         수정
       </button>
       <button
         type="button"
-        onClick={() => {
+        onClick={(e) => {
+          setMenuId(e.value);
+          alert('음식 제거 완료');
           deleteMutateMenu();
         }}
       >
@@ -156,7 +165,6 @@ function UpdateForm({
   onChange,
   handleTypeChange,
   dropDown,
-  type,
   name,
   time,
   address,
@@ -179,7 +187,7 @@ function UpdateForm({
     storeNumber,
     // storeType,
   } = data.data.data;
-
+  console.log(data.data);
   return (
     <CreateFoodTruck>
       <MainImg>
@@ -195,9 +203,35 @@ function UpdateForm({
 
         <Dropdown>
           <select type="button" onChange={handleTypeChange} value={dropDown}>
-            {type.map((e) => {
-              return <option key={e.id}>{e.value}</option>;
-            })}
+            {/* {storeType === 'korean' ? selected=true : ''}
+{storeType === 'chinese' ? selected=true : ''}
+{storeType === 'western' ? selected=true : ''}
+{storeType === 'japanese' ? selected=true : ''}
+{storeType === 'snackbar' ? selected=true : ''}
+{storeType === 'cafe' ? selected=true : ''}
+{storeType === 'nightsnack' ? selected=true : ''} */}
+            <option>종류를 선택해주세요</option>
+            <option id="1" value="korean">
+              한식
+            </option>
+            <option id="2" value="chinese">
+              중식
+            </option>
+            <option id="3" value="western">
+              양식
+            </option>
+            <option id="4" value="japanese">
+              일식
+            </option>
+            <option id="5" value="snackbar">
+              분식
+            </option>
+            <option id="6" value="cafe">
+              디저트
+            </option>
+            <option id="7" value="nightsnack">
+              야식
+            </option>
           </select>
         </Dropdown>
       </MainImg>
@@ -365,7 +399,7 @@ function FoodTruckSetting() {
         storeStatus: toggleStatus ? 'BRAKE' : 'OPEN',
         storeName: name,
         storeContent: ask,
-        // storeImage: img,
+        storeImage: img,
         storeType: dropDown,
         storeTime: time,
         storeWaitTime: '15분~30분',
@@ -374,13 +408,17 @@ function FoodTruckSetting() {
         storeTag: tag,
       },
     );
-    console.log(res.data);
+    console.log(res.data.message);
+    if (res.data.message) {
+      alert(res.data.message);
+    }
+
     return res;
   };
   console.log(storeId);
   const patchInfo = async () => {
     const res = await axios.patch(
-      `http://ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/store/${id}`,
+      `http://ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/store/${storeId}`,
       {
         localId: id,
         storePhone: phone,
@@ -397,13 +435,16 @@ function FoodTruckSetting() {
         storeTag: tag,
       },
     );
-    console.log(res.data);
+    console.log(res.data.message);
+    if (res.data.message) {
+      alert(res.data.message);
+    }
     return res;
   };
 
   const deleteInfo = async () => {
     const res = await axios.delete(
-      `http://ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/store/${id}`,
+      `http://ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/store/${storeId}`,
     );
     return res;
   };
@@ -444,17 +485,6 @@ function FoodTruckSetting() {
     onSettled,
   });
 
-  const type = [
-    { id: null, value: '종류를 선택하세요' },
-    { id: 1, value: 'korean' },
-    { id: 2, value: 'chinese' },
-    { id: 3, value: 'western' },
-    { id: 4, value: 'japanese' },
-    { id: 5, value: 'snackbar' },
-    { id: 6, value: 'cafe' },
-    { id: 7, value: 'nightsnack' },
-  ];
-
   return (
     <ErrorBoundary>
       <React.Suspense fallback={<Spinner color={COLOR.NAVY} size={100} />}>
@@ -462,13 +492,13 @@ function FoodTruckSetting() {
           <button
             type="button"
             onClick={() => {
-              if (window.confirm('정말 본인 푸드트럭을 해체 하시겠습니까?')) {
-                alert('푸드트럭을 해체 하였습니다.');
+              if (window.confirm('정말 본인 푸드트럭을 폐업 하시겠습니까?')) {
+                alert('푸드트럭을 폐업 하였습니다.');
                 deleteMutateInfo();
               }
             }}
           >
-            가게 해체
+            가게 폐업
           </button>
           <Title>가게 설정</Title>
 
@@ -478,7 +508,6 @@ function FoodTruckSetting() {
               onChange={onChange}
               handleTypeChange={handleTypeChange}
               dropDown={dropDown}
-              type={type}
               name={name}
               time={time}
               address={address}
@@ -505,9 +534,28 @@ function FoodTruckSetting() {
                     onChange={handleTypeChange}
                     value={dropDown}
                   >
-                    {type.map((e) => {
-                      return <option key={e.id}>{e.value}</option>;
-                    })}
+                    <option>종류를 선택해주세요</option>
+                    <option id="1" value="korean">
+                      한식
+                    </option>
+                    <option id="2" value="chinese">
+                      중식
+                    </option>
+                    <option id="3" value="western">
+                      양식
+                    </option>
+                    <option id="4" value="japanese">
+                      일식
+                    </option>
+                    <option id="5" value="snackbar">
+                      분식
+                    </option>
+                    <option id="6" value="cafe">
+                      디저트
+                    </option>
+                    <option id="7" value="nightsnack">
+                      야식
+                    </option>
                   </select>
                 </Dropdown>
               </MainImg>
@@ -658,7 +706,16 @@ function FoodTruckSetting() {
               <button
                 type="button"
                 onClick={() => {
-                  postMutateMenu();
+                  if (
+                    // newMenuImg &&
+                    newMenuName &&
+                    newMenuContent &&
+                    newMenuPrice
+                  ) {
+                    postMutateMenu();
+                  } else {
+                    alert('모든 정보를 입력해 주세요');
+                  }
                 }}
               >
                 추가
@@ -668,14 +725,26 @@ function FoodTruckSetting() {
             <UpdateFood>
               <Title>가게 메뉴 편집</Title>
 
-              {storeId ? <FoodMenusList /> : null}
+              {storeId ? <FoodMenusList storeId={storeId} /> : null}
 
               <SettingDoneBtn>
                 <button
                   type="button"
                   onClick={() => {
                     if (!storeId) {
-                      postMutateInfo();
+                      if (
+                        phone &&
+                        number &&
+                        name &&
+                        ask &&
+                        dropDown &&
+                        time &&
+                        address
+                      ) {
+                        postMutateInfo();
+                      } else {
+                        alert('태그를 제외한 모두 입력 하셔야 합니다');
+                      }
                     } else {
                       alert('이미 가게가 있습니다');
                     }
@@ -687,7 +756,19 @@ function FoodTruckSetting() {
                   type="button"
                   onClick={() => {
                     if (storeId) {
-                      patchMutateInfo();
+                      if (
+                        phone &&
+                        number &&
+                        name &&
+                        ask &&
+                        dropDown &&
+                        time &&
+                        address
+                      ) {
+                        patchMutateInfo();
+                      } else {
+                        alert('태그를 제외한 모두 입력 하셔야 합니다');
+                      }
                     } else {
                       alert('가게를 먼저 만드셔야 합니다');
                     }
