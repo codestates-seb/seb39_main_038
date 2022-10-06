@@ -14,7 +14,7 @@ import { dateFormat } from '../../utils';
 function Answer({ item, storeId }) {
   const [toggle, isToggle] = useState(false);
   const [text, setText] = useState('');
-  const { createMutate } = useAnswer(storeId);
+  const { createMutate, updateMutate, deleteMutate } = useAnswer(storeId);
 
   const handleOnClick = () => isToggle(!toggle);
   const handleOnChange = (e) => setText(e.target.value);
@@ -32,9 +32,31 @@ function Answer({ item, storeId }) {
     isToggle(!toggle);
   };
 
+  const updateData = () => {
+    updateMutate({
+      id: item.reviewId,
+      value: {
+        storeId,
+        reviewId: item.reviewId,
+        commentId: item.comment.commentId,
+      },
+    });
+  };
+
+  const deleteData = () => {
+    deleteMutate({
+      id: item.reviewId,
+      value: { commentId: item.comment.commentId },
+    });
+  };
+
   return (
     <>
-      {!item.comment ? <Button onClick={handleOnClick}> 답변 </Button> : null}
+      {!item.comment ? (
+        <Button onClick={handleOnClick}> 답변 </Button>
+      ) : (
+        <Button onClick={handleOnClick}> 수정 </Button>
+      )}
 
       {toggle ? (
         <EditorWrapper>
@@ -42,7 +64,7 @@ function Answer({ item, storeId }) {
             onChange={handleOnChange}
             placeholder="클린리뷰 특성상 재생성도 불가능하며 수정도 불가능합니다. 신중하게 작성해주세요."
           />
-          <Button onClick={postData}>전송</Button>
+          <Button onClick={!item.comment ? postData : updateData}>전송</Button>
         </EditorWrapper>
       ) : null}
 
@@ -55,7 +77,7 @@ function Answer({ item, storeId }) {
                 {dateFormat(new Date(item?.comment.createdAt), '-')}
               </Text>
             </TextWrapper>
-            <Button>삭제</Button>
+            <Button onClick={deleteData}>삭제</Button>
           </Header>
           <Text size={14} color="#666666">
             {item?.comment.commentContent}
