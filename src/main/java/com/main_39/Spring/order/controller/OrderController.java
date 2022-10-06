@@ -1,9 +1,11 @@
 package com.main_39.Spring.order.controller;
 
 import com.main_39.Spring.config.oauth.KakaoDetails;
+import com.main_39.Spring.config.oauth.LocalDetails;
 import com.main_39.Spring.exception.BusinessLogicException;
 import com.main_39.Spring.exception.ExceptionCode;
 import com.main_39.Spring.member.entity.Kakao;
+import com.main_39.Spring.member.entity.Local;
 import com.main_39.Spring.member.service.MemberService;
 import com.main_39.Spring.order.dto.OrderDetailResponse;
 import com.main_39.Spring.order.dto.OrdersResponse;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,13 +38,24 @@ public class OrderController {
 
     @PostMapping("/orders")
     public ResponseEntity<Void> createOrder(Authentication authentication, //인증된 유저정보를 가진 Authentication객체
-                                            @RequestBody OrderRequest orderRequest) {
-        //Authentication -> KakaoDetails -> Kakao 가져옴 (인가할때 역순)
-        KakaoDetails kakaoDetails = (KakaoDetails)authentication.getPrincipal();
-        Kakao kakao = kakaoDetails.getKakao();
-        // 인증 객체가 없다면 로그인 안내
-        if(kakao == null) throw new BusinessLogicException(ExceptionCode.AUTH_REQUIRED_LOGIN);
-        orderService.createOrder(mapper.orderRequestToOrder(orderRequest, kakao));
+                                                   @RequestHeader(value = "login") String login,
+                                                   @RequestBody OrderRequest orderRequest) {
+
+        if(login.equals("kakao")) {
+            //Authentication -> KakaoDetails -> Kakao 가져옴 (인가할때 역순)
+            KakaoDetails kakaoDetails = (KakaoDetails)authentication.getPrincipal();
+            Kakao kakao = kakaoDetails.getKakao();
+            // 인증 객체가 없다면 로그인 안내
+            if(kakao == null) throw new BusinessLogicException(ExceptionCode.AUTH_REQUIRED_LOGIN);
+            orderService.createOrder(mapper.orderRequestToOrderByKakao(orderRequest, kakao));
+
+        } else if(login.equals("local")) {
+            LocalDetails localDetails = (LocalDetails)authentication.getPrincipal();
+            Local local = localDetails.getLocal();
+            // 인증 객체가 없다면 로그인 안내
+            if(local == null) throw new BusinessLogicException(ExceptionCode.AUTH_REQUIRED_LOGIN);
+            orderService.createOrder(mapper.orderRequestToOrderByLocal(orderRequest, local));
+        }
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -55,15 +69,23 @@ public class OrderController {
     }
 
     @GetMapping("/orders")
-    public ResponseEntity<OrdersResponse> findOrderByUser(Authentication authentication) {
+    public ResponseEntity<OrdersResponse> findOrderByUser(Authentication authentication,
+                                                          @RequestHeader("login") String login) {
 
-        //Authentication -> KakaoDetails -> Kakao 가져옴 (인가할때 역순)
-        KakaoDetails kakaoDetails = (KakaoDetails)authentication.getPrincipal();
-        Kakao kakao = kakaoDetails.getKakao();
-        // 인증 객체가 없다면 로그인 안내
-        if(kakao == null) throw new BusinessLogicException(ExceptionCode.AUTH_REQUIRED_LOGIN);
+        if(login.equals("local")) {
 
-        return new ResponseEntity<>(mapper.orderToOrdersResponse(kakao), HttpStatus.OK);
+            LocalDetails localDetails = (LocalDetails)authentication.getPrincipal();
+            Local local = localDetails.getLocal();
+
+            return ResponseEntity.ok(mapper.orderToOrdersResponseByLocal(local));
+
+        } else {
+
+            KakaoDetails kakaoDetails = (KakaoDetails)authentication.getPrincipal();
+            Kakao kakao = kakaoDetails.getKakao();
+
+            return ResponseEntity.ok(mapper.orderToOrdersResponseByKakao(kakao));
+        }
     }
 }
 

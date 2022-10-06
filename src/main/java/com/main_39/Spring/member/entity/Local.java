@@ -1,5 +1,6 @@
 package com.main_39.Spring.member.entity;
 
+import com.main_39.Spring.order.entity.Order;
 import com.main_39.Spring.store.entity.Store;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,10 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Getter
@@ -53,6 +57,18 @@ public class Local {
     @OneToOne(mappedBy = "local")
     private Store store;
 
+    @OneToMany(mappedBy = "local", cascade = CascadeType.ALL)
+    private List<Order> orders = new ArrayList<>();
+
+    public void addOrders(Order order) {
+        this.orders.add(order);
+        if(order.getLocal() == null)
+            order.addLocal(this);
+    }
+
+    public int getTotalOrder() {
+        return orders.size();
+    }
     public enum Role{
         SELLER("ROLE_SELLER"),
         ADMIN("ROLE_ADMIN");

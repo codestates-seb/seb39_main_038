@@ -2,6 +2,7 @@ package com.main_39.Spring.order.entity;
 
 import com.main_39.Spring.audit.Auditable;
 import com.main_39.Spring.member.entity.Kakao;
+import com.main_39.Spring.member.entity.Local;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -31,6 +32,10 @@ public class Order extends Auditable {
     @JoinColumn(name = "kakao_id")
     private Kakao kakao;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "local_id")
+    private Local local;
+
     @OneToMany(mappedBy = "order", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<OrderMenu> orderMenus = new ArrayList<>();
 
@@ -42,6 +47,12 @@ public class Order extends Auditable {
         this.kakao = kakao;
         if(!kakao.getOrders().contains(this))
             kakao.addOrders(this);
+    }
+
+    public void addLocal(Local local) {
+        this.local = local;
+        if(!local.getOrders().contains(this))
+            local.addOrders(this);
     }
 
     public void addOrderMenus(List<OrderMenu> orderMenus) {
