@@ -51,7 +51,7 @@ function MyPage() {
 
   const createOrderContent = () => {
     return orderListData.data.orders?.map((item) => {
-      console.log(orderListData.data.orders.orderMenu[0].storeId);
+      console.log(orderListData.data.orders);
       return (
         <OrderContent key={item.orderId} onClick={goModal(item)}>
           <TextBox>
@@ -61,11 +61,7 @@ function MyPage() {
             </Text>
           </TextBox>
           <ButtonBox>
-            <Button
-              onClick={goAsk(orderListData.data.orders.orderMenu[0].storeId)}
-            >
-              리뷰쓰기
-            </Button>
+            <Button onClick={goAsk(1)}>리뷰쓰기</Button>
             <Button onClick={openOrder}>주문상세</Button>
           </ButtonBox>
         </OrderContent>
