@@ -4,6 +4,7 @@ import com.main_39.Spring.comment.dto.CommentResponseDto;
 import com.main_39.Spring.comment.entity.Comment;
 import com.main_39.Spring.comment.mapper.CommentMapper;
 import com.main_39.Spring.member.entity.Kakao;
+import com.main_39.Spring.member.entity.Local;
 import com.main_39.Spring.review.dto.*;
 import com.main_39.Spring.review.entity.Review;
 import com.main_39.Spring.store.entity.Store;
@@ -22,15 +23,23 @@ public interface ReviewMapper {
     Review reviewPatchDtoToReview(ReviewPatchDto reviewPatchDto);
     List<ReviewResponseDto> reviewToReviewResponseDtos(List<Review> reviews);
 
-    default List<ReviewResponseDto> reviewsToReviewResponseDtos(List<Review> reviews,long kakaoId){
+    default List<ReviewResponseDto> reviewsToReviewResponseDtos(List<Review> reviews,long Id,String login){
         return reviews.stream()
                 .map(review -> {
                     CommentResponseDto commentResponseDto = commentMapper.commentToCommentResponseDto(review.getComment());
-                    Kakao kakao = review.getKakao();
+                    Kakao kakao = null;
+                    Local local = null;
                     boolean isAuthor = false;
                     String nickname = "존재하지 않는 회원";
-                    if(kakao != null) nickname = kakao.getNickname();
-                    if(kakao != null && kakaoId == kakao.getKakaoId()) isAuthor = true;
+                    if(login.equals("kakao")){
+                        kakao = review.getKakao();
+                        if(kakao != null) nickname = kakao.getNickname();
+                        if(kakao != null && Id == kakao.getKakaoId()) isAuthor = true;
+                    }else if(login.equals("local")){
+                        local = review.getLocal();
+                        if(local != null) nickname = local.getName();
+                        if(local != null && Id == local.getLocalId()) isAuthor = true;
+                    }
                     ReviewResponseDto reviewResponseDto = ReviewResponseDto.builder()
                             .reviewId(review.getReviewId())
                             .auth(isAuthor) //카카오  Id비교
@@ -49,7 +58,7 @@ public interface ReviewMapper {
     /**
      * 푸드트럭별 상점 조회
      */
-    default ReviewsResponseDto reviewsToStoreResponseDto(Store store, long kakaoId) {
+    default ReviewsResponseDto reviewsToStoreResponseDto(Store store, long Id,String login) {
         List<Review> reviews = store.getReviews();
         ReviewsResponseDto reviewsResponseDto = new ReviewsResponseDto(
 //            reviewsResponseDto = new ReviewsResponseDto(
@@ -58,7 +67,7 @@ public interface ReviewMapper {
                 store.getTotalGrade(),
                 store.getTotalComment(),
                 store.getTotalMenu(),
-                reviewsToReviewResponseDtos(reviews,kakaoId)); //카카오
+                reviewsToReviewResponseDtos(reviews,Id,login)); //카카오
         return reviewsResponseDto;
     }
 }
