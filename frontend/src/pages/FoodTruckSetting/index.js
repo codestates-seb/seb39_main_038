@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   Section,
   Title,
@@ -23,15 +23,16 @@ import { Spinner, ErrorBoundary } from '../../components';
 import { COLOR } from '../../constants';
 
 import { useFoodDetail, useDetailFoodList } from '../../hooks';
+import { withAuth } from '../../components/Hoc';
 
 function FoodMenusList({ storeId, props }) {
-  const [menuId, setMenuId] = useState(null);
   const [inputs, setInputs] = useState({
     menuName: '',
     menuPrice: '',
     menuContent: '',
     menuImg: null,
   });
+  const queryClient = useQueryClient();
 
   const { menuName, menuPrice, menuContent, menuImg } = inputs;
 
@@ -42,16 +43,16 @@ function FoodMenusList({ storeId, props }) {
     });
   };
 
-  const deleteMenu = async () => {
+  const deleteMenu = async (e) => {
     const res = await axios.delete(
-      `http://ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/store/${storeId}/menus/${menuId}`,
+      `http://ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/store/${storeId}/menus/${e}`,
     );
     return res;
   };
 
-  const patchMenu = async () => {
+  const patchMenu = async (e) => {
     const res = await axios.patch(
-      `http://ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/store/${storeId}/menus/${menuId}`,
+      `http://ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/store/${storeId}/menus/${e}`,
       {
         name: menuName,
         price: menuPrice,
@@ -62,8 +63,9 @@ function FoodMenusList({ storeId, props }) {
     return res;
   };
 
-  const onSuccess = () => {
-    alert('성공2');
+  const onSuccess = (e) => {
+    console.log(e);
+    queryClient.invalidateQueries('detailfoodlist');
   };
 
   const onError = () => {
@@ -126,16 +128,14 @@ function FoodMenusList({ storeId, props }) {
 
       <button
         type="button"
-        value={props.menuId}
-        onClick={(e) => {
-          setMenuId(e.value);
+        onClick={() => {
           if (
             menuPrice &&
             menuContent &&
             menuName
             //  && menuImg
           ) {
-            patchMutateMenu();
+            patchMutateMenu(props.menuId);
           } else {
             alert('모든 정보를 입력해 주세요');
           }
@@ -145,10 +145,10 @@ function FoodMenusList({ storeId, props }) {
       </button>
       <button
         type="button"
-        onClick={(e) => {
-          setMenuId(e.value);
+        onClick={() => {
           alert('음식 제거 완료');
-          deleteMutateMenu();
+          console.log(props.menuId);
+          deleteMutateMenu(props.menuId);
         }}
       >
         제거
@@ -159,19 +159,21 @@ function FoodMenusList({ storeId, props }) {
 
 function MenuList({ storeId }) {
   const { data } = useDetailFoodList(storeId);
-  console.log(data.data.menus);
-  const createList = () => {
-    return data.data.menus.map((props) => (
-      <FoodMenusList key={props.menuId} props={props} storeId={storeId} />
-    ));
-  };
-  return createList;
+  const queryClient = useQueryClient();
+  queryClient.invalidateQueries('detailfoodlist');
+  // console.log(data.data.menus);
+  return (
+    <>
+      {data.data.menus.map((props) => (
+        <FoodMenusList key={props.menuId} props={props} storeId={storeId} />
+      ))}
+    </>
+  );
 }
 
 function UpdateForm({
   img,
   onChange,
-  handleTypeChange,
   name,
   time,
   address,
@@ -180,11 +182,12 @@ function UpdateForm({
   tag,
   ask,
   categories,
+  dropDown,
+  handleTypeChange,
 }) {
   const { id } = useParams();
   const { data } = useFoodDetail(id);
-
-  const [dropDown] = useState('한식');
+  // console.log(data);
 
   const {
     storeName,
@@ -195,14 +198,7 @@ function UpdateForm({
     storePhone,
     storeAddress,
     storeNumber,
-    storeType,
   } = data.data.data;
-
-  // const renderType = () => {
-  //   useEffect(() => {
-  //     setDropDown(storeType);
-  //   });
-  // };
 
   return (
     <CreateFoodTruck>
@@ -220,16 +216,8 @@ function UpdateForm({
         <Dropdown>
           <select type="button" onChange={handleTypeChange} value={dropDown}>
             {categories.map((res, index) => {
-              if (res.type === storeType) {
-                // true시 dropDown을 바꾸기 위해 setDropDown(res.type) 사용
-                return (
-                  <option id={`${index}`} value={res.value}>
-                    {res.type}
-                  </option>
-                );
-              }
               return (
-                <option id={`${index}`} value={res.value}>
+                <option key={res.type} id={`${index}`} value={res.value}>
                   {res.type}
                 </option>
               );
@@ -323,7 +311,7 @@ function UpdateForm({
 }
 
 function FoodTruckSetting() {
-  const [dropDown, setDropDown] = useState(null);
+  const [dropDown, setDropDown] = useState('한식');
   const [toggleStatus, setToggleStatus] = useState(false);
   const [storeId, setStoreId] = useState(false);
 
@@ -334,7 +322,7 @@ function FoodTruckSetting() {
     if (data.data.message === '해당 가게를 찾을 수 없습니다.') {
       setStoreId(false);
     } else {
-      setStoreId(data.data.data.storeId);
+      setStoreId(data);
     }
   }, []);
 
@@ -377,8 +365,9 @@ function FoodTruckSetting() {
 
   const handleTypeChange = (e) => {
     setDropDown(e.target.value);
+    // console.log('hehe', dropDown);
   };
-
+  // console.log('mento', handleTypeChange());
   const postMenu = async () => {
     const res = await axios.post(
       `http://ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/store/${id}/menus`,
@@ -453,7 +442,7 @@ function FoodTruckSetting() {
   };
 
   const onSuccess = () => {
-    alert('성공2');
+    // queryClient.invalidateQueries(['']);
   };
 
   const onError = () => {
@@ -520,6 +509,7 @@ function FoodTruckSetting() {
               img={img}
               onChange={onChange}
               handleTypeChange={handleTypeChange}
+              dropDown={dropDown}
               name={name}
               time={time}
               address={address}
@@ -549,7 +539,11 @@ function FoodTruckSetting() {
                   >
                     {categories.map((res, index) => {
                       return (
-                        <option id={`${index}`} value={res.value}>
+                        <option
+                          key={res.type}
+                          id={`${index}`}
+                          value={res.value}
+                        >
                           {res.type}
                         </option>
                       );
@@ -783,4 +777,4 @@ function FoodTruckSetting() {
   );
 }
 
-export default FoodTruckSetting;
+export default withAuth(FoodTruckSetting);

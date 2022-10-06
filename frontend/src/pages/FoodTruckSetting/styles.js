@@ -3,7 +3,7 @@ import styled from 'styled-components';
 const Section = styled.div`
   margin: 0 auto;
   max-width: 1020px;
-  padding: 10px 20px 40px 20px;
+  padding: 10px 80px 40px;
   button {
     padding: 5px 15px;
     background-color: white;
@@ -49,10 +49,11 @@ const CreateFoodTruck = styled.div`
     height: 200px;
     border: 1px solid #ccc;
     width: 100%;
+    resize: none;
   }
 `;
 
-const TypeInfo = styled.div`
+const TypeInfo = styled.form`
   > input {
     border: 1px solid lightgrey;
     margin-top: -1px;
@@ -75,7 +76,7 @@ const HashTagBtn = styled.button`
 `;
 
 const Hash = styled.div`
-  font-size: 12px;
+  font-size: 14px;
   display: flex;
   align-items: center;
   > button {
@@ -110,7 +111,7 @@ const CreateFood = styled.div`
     height: 120px;
   }
   button {
-    padding: 5px 15px;
+    padding: 10px 30px;
     background-color: white;
   }
 `;
@@ -122,7 +123,7 @@ const UpdateFood = styled.div`
 const UpdateInput = styled.div`
   display: flex;
   padding: 0px 0px 20px 0px;
-  gap: 10px;
+  gap: 7px;
   align-items: center;
   img {
     border: 1px solid #ccc;
@@ -131,7 +132,7 @@ const UpdateInput = styled.div`
     height: 120px;
   }
   button {
-    padding: 5px 15px;
+    padding: 5px 10px;
     background-color: white;
   }
 `;

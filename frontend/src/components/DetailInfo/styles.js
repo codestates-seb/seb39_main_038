@@ -1,8 +1,10 @@
 import styled from 'styled-components';
 
 const TruckInfoBody = styled.div`
-  margin: 20px;
   line-height: 30px;
+  border: 1px solid #ccc;
+  margin: 10px 0px 0px;
+  padding: 10px;
 `;
 
 const TruckInfoTitle = styled.div`
