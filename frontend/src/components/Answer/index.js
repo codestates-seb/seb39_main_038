@@ -14,11 +14,12 @@ import { dateFormat } from '../../utils';
 function Answer({ item, storeId }) {
   const [toggle, isToggle] = useState(false);
   const [text, setText] = useState('');
-  const { createMutate } = useAnswer();
+  const { createMutate } = useAnswer(storeId);
 
   const handleOnClick = () => isToggle(!toggle);
   const handleOnChange = (e) => setText(e.target.value);
   console.log('item', item);
+  console.log('storeId', storeId);
   return (
     <>
       <Button onClick={handleOnClick}> 답변 </Button>
@@ -35,7 +36,7 @@ function Answer({ item, storeId }) {
                 id: storeId,
                 value: {
                   storeId,
-                  reviewId: item.reviewIdv,
+                  reviewId: item.reviewId,
                   commentContent: text,
                 },
               });
