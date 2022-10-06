@@ -18,11 +18,23 @@ function Answer({ item, storeId }) {
 
   const handleOnClick = () => isToggle(!toggle);
   const handleOnChange = (e) => setText(e.target.value);
-  console.log('item', item);
-  console.log('storeId', storeId);
+
+  const postData = () => {
+    createMutate({
+      id: item.reviewId,
+      value: {
+        storeId,
+        reviewId: item.reviewId,
+        commentContent: text,
+      },
+    });
+
+    isToggle(!toggle);
+  };
+
   return (
     <>
-      <Button onClick={handleOnClick}> 답변 </Button>
+      {!item.comment ? <Button onClick={handleOnClick}> 답변 </Button> : null}
 
       {toggle ? (
         <EditorWrapper>
@@ -30,20 +42,7 @@ function Answer({ item, storeId }) {
             onChange={handleOnChange}
             placeholder="클린리뷰 특성상 재생성도 불가능하며 수정도 불가능합니다. 신중하게 작성해주세요."
           />
-          <Button
-            onClick={() => {
-              createMutate({
-                id: storeId,
-                value: {
-                  storeId,
-                  reviewId: item.reviewId,
-                  commentContent: text,
-                },
-              });
-            }}
-          >
-            전송
-          </Button>
+          <Button onClick={postData}>전송</Button>
         </EditorWrapper>
       ) : null}
 
