@@ -61,7 +61,7 @@ function MyPage() {
             </Text>
           </TextBox>
           <ButtonBox>
-            <Button onClick={goAsk(1)}>리뷰쓰기</Button>
+            <Button onClick={goAsk(item.orderMenu[0].storeId)}>리뷰쓰기</Button>
             <Button onClick={openOrder}>주문상세</Button>
           </ButtonBox>
         </OrderContent>
