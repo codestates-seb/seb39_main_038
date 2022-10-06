@@ -3,6 +3,7 @@ package com.main_39.Spring.review.entity;
 import com.main_39.Spring.audit.Auditable;
 import com.main_39.Spring.comment.entity.Comment;
 import com.main_39.Spring.member.entity.Kakao;
+import com.main_39.Spring.member.entity.Local;
 import com.main_39.Spring.store.entity.Store;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -42,6 +43,10 @@ public class Review extends Auditable {
     @ManyToOne
     @JoinColumn(name = "kakao_id")
     private Kakao kakao;
+
+    @ManyToOne
+    @JoinColumn(name = "local_id")
+    private Local local;
 
     public void setKakao(Kakao kakao) {
         this.kakao = kakao;

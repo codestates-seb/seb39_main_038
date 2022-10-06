@@ -1,11 +1,13 @@
 package com.main_39.Spring.review.controller;
 
 import com.main_39.Spring.config.oauth.KakaoDetails;
+import com.main_39.Spring.config.oauth.LocalDetails;
 import com.main_39.Spring.dto.MultiResponseDto;
 import com.main_39.Spring.dto.SingleResponseDto;
 import com.main_39.Spring.exception.BusinessLogicException;
 import com.main_39.Spring.exception.ExceptionCode;
 import com.main_39.Spring.member.entity.Kakao;
+import com.main_39.Spring.member.entity.Local;
 import com.main_39.Spring.member.repository.KakaoRepository;
 import com.main_39.Spring.member.service.MemberService;
 import com.main_39.Spring.review.dto.ReviewPatchDto;
@@ -82,28 +84,31 @@ public class ReviewController {
 
     @GetMapping("/store/{store-id}/reviews")
     public ResponseEntity<ReviewsResponseDto> getReviewByStore(@PathVariable("store-id") long storeId,
+                                                               @RequestHeader(value = "login") String login,
                                                                Authentication authentication) {
         KakaoDetails kakaoDetails;
+        LocalDetails localDetails;
         Kakao kakao = null;
-        if(authentication != null) {
-            kakaoDetails = (KakaoDetails) authentication.getPrincipal();
-            kakao = kakaoDetails.getKakao();
+        Local local = null;
+        long Id = -1;
+        if(login.equals("kakao")){
+            if(authentication != null) {
+                kakaoDetails = (KakaoDetails) authentication.getPrincipal();
+                kakao = kakaoDetails.getKakao();
+            }
+            if(kakao != null)
+                Id = kakao.getKakaoId();
+        }else if(login.equals("local")){
+            if(authentication != null){
+                localDetails = (LocalDetails) authentication.getPrincipal();
+                local = localDetails.getLocal();
+            }
+            if(local != null)
+                Id = local.getLocalId();
         }
-
-        long kakaoId = -1;
-        if(kakao != null)
-            kakaoId = kakao.getKakaoId();
-
-        System.out.println("인증된 회원 : " + kakaoId);
-
         Store store = storeService.findStore(storeId);
-        //임시로 주석 처리
-//        Review review = mapper.reviewKakaoesponseDto(reviewResponseDto);
-//
-//        Kakao kakao = memberService.findKakaoNickname(reviewResponseDto.getNickname());
-//        review.getKakao(kakao);
 
-        return new ResponseEntity<>(mapper.reviewsToStoreResponseDto(store,kakaoId), HttpStatus.OK);
+        return new ResponseEntity<>(mapper.reviewsToStoreResponseDto(store,Id,login), HttpStatus.OK);
     }
 
     /**

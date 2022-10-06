@@ -20,7 +20,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Entity
-public class Kakao {
+public class Kakao implements Users{
     @Id
     @Column(nullable = false, updatable = false, unique = true)
     private Long kakaoId;
