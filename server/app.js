@@ -39,9 +39,7 @@ app.get("/store/:id", (req, res) => {
 
 app.get("/store/:id/menus", (req, res) => {
   const { id } = req.params;
-  return res
-    .status(200)
-    .json({ storeId: Number(id), storeMenu: createFoods(id) });
+  return res.status(200).json({ storeId: Number(id), menus: createFoods(id) });
 });
 
 app.post("/local/mypage", (req, res) => {
