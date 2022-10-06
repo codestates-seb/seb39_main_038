@@ -57,14 +57,33 @@ public class ReviewController {
      */
     @PostMapping("/store/{store-id}/reviews/ask")
     public ResponseEntity postReview(@PathVariable("store-id") long storeId,
-                                     @Valid @RequestBody ReviewPostDto reviewPostDto) {
+                                     @Valid @RequestBody ReviewPostDto reviewPostDto,
+                                     @RequestHeader(value = "login") String login,
+                                     Authentication authentication) {
+
+        LocalDetails localDetails;
+        KakaoDetails kakaoDetails;
+        Local local = null;
+        Kakao kakao = null;
+        long Id = -1;
+        if(login.equals("kakao")){
+            if(authentication != null){
+                kakaoDetails = (KakaoDetails) authentication.getPrincipal();
+                kakao = kakaoDetails.getKakao();
+            }
+            if(kakao != null) Id = kakao.getKakaoId();
+        }else if(login.equals("local")){
+            if(authentication != null){
+                localDetails = (LocalDetails) authentication.getPrincipal();
+                local = localDetails.getLocal();
+            }
+            if(local != null) Id = local.getLocalId();
+        }
+
 
         Review review = mapper.reviewPostDtoToReview(reviewPostDto);
 
-//        Kakao kakao = memberService.findKakaoNickname(reviewPostDto.getNickname());
-//        review.setKakao(kakao);
-
-        Review posted = reviewService.createdReview(storeId, review);
+        Review posted = reviewService.createdReview(storeId, review, Id, login);
         ReviewResponseDto response = mapper.reviewToReviewResponseDto(posted);
 
 
@@ -107,7 +126,7 @@ public class ReviewController {
                 Id = local.getLocalId();
         }
         Store store = storeService.findStore(storeId);
-
+        System.out.println("로그인한 아이디: " + Id);
         return new ResponseEntity<>(mapper.reviewsToStoreResponseDto(store,Id,login), HttpStatus.OK);
     }
 
