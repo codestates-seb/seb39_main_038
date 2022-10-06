@@ -50,7 +50,7 @@ public interface ReviewMapper {
                 store.getTotalGrade(),
                 store.getTotalComment(),
                 store.getTotalMenu(),
-                reviewsToReviewResponseDtos(reviews,kakaoId));
+                reviewsToReviewResponseDtos(reviews,kakaoId)); //카카오
         return reviewsResponseDto;
     }
 }
