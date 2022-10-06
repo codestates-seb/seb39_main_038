@@ -1,7 +1,10 @@
 package com.main_39.Spring.review.controller;
 
+import com.main_39.Spring.config.oauth.KakaoDetails;
 import com.main_39.Spring.dto.MultiResponseDto;
 import com.main_39.Spring.dto.SingleResponseDto;
+import com.main_39.Spring.exception.BusinessLogicException;
+import com.main_39.Spring.exception.ExceptionCode;
 import com.main_39.Spring.member.entity.Kakao;
 import com.main_39.Spring.member.repository.KakaoRepository;
 import com.main_39.Spring.member.service.MemberService;
@@ -17,6 +20,7 @@ import com.main_39.Spring.store.service.StoreService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -78,16 +82,21 @@ public class ReviewController {
 
     @GetMapping("/store/{store-id}/reviews")
     public ResponseEntity<ReviewsResponseDto> getReviewByStore(@PathVariable("store-id") long storeId,
-                                                               @Valid @RequestBody ReviewResponseDto reviewResponseDto) {
+                                                               @Valid @RequestBody ReviewResponseDto reviewResponseDto,
+                                                               Authentication authentication) {
+
+        KakaoDetails kakaoDetails = (KakaoDetails)authentication.getPrincipal();
+        Kakao kakao = kakaoDetails.getKakao();
+        if(kakao == null) throw new BusinessLogicException(ExceptionCode.AUTH_REQUIRED_LOGIN);
 
         Store store = storeService.findStore(storeId);
 
-        Review review = mapper.reviewKakaoesponseDto(reviewResponseDto);
+//        Review review = mapper.reviewKakaoesponseDto(reviewResponseDto);
+//
+//        Kakao kakao = memberService.findKakaoNickname(reviewResponseDto.getNickname());
+//        review.getKakao(kakao);
 
-        Kakao kakao = memberService.findKakaoNickname(reviewResponseDto.getNickname());
-        review.getKakao(kakao);
-
-        return new ResponseEntity<>(mapper.reviewsToStoreResponseDto(store), HttpStatus.OK);
+        return new ResponseEntity<>(mapper.reviewsToStoreResponseDto(store,kakao.getKakaoId()), HttpStatus.OK);
     }
 
     /**
