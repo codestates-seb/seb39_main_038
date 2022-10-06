@@ -40,11 +40,11 @@ public class Review extends Auditable {
      * 카카오 : 리뷰 = 1 : N 단방향
      * 카카오 삭제시 리뷰도 삭제
      */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "kakao_id")
     private Kakao kakao;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "local_id")
     private Local local;
 
