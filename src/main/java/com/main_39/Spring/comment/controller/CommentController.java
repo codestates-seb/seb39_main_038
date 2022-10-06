@@ -62,7 +62,7 @@ public class CommentController {
         if(local == null) throw new BusinessLogicException(ExceptionCode.AUTH_REQUIRED_LOGIN);
 
         Comment comment = mapper.commentPostDtoToComment(commentPostDto);
-        if(comment.getStore().getLocal().getLocalId() != local.getLocalId()) throw new BusinessLogicException(ExceptionCode.REVIEW_PATCH_WRONG_ACCESS);
+        if(local.getStore() == null || commentPostDto.getStoreId() != local.getStore().getStoreId()) throw new BusinessLogicException(ExceptionCode.REVIEW_PATCH_WRONG_ACCESS);
 
 
         Store store = storeService.findStore(commentPostDto.getStoreId());
@@ -111,7 +111,7 @@ public class CommentController {
         if(local == null) throw new BusinessLogicException(ExceptionCode.AUTH_REQUIRED_LOGIN);
 
         Comment comment = mapper.commentPatchDtoToComment(commentPatchDto);
-        if(commentPatchDto.getStoreId() != local.getStore().getStoreId()) throw new BusinessLogicException(ExceptionCode.REVIEW_PATCH_WRONG_ACCESS);
+        if(local.getStore() == null || commentPatchDto.getStoreId() != local.getStore().getStoreId()) throw new BusinessLogicException(ExceptionCode.REVIEW_PATCH_WRONG_ACCESS);
 
         Comment response = commentService.updateComment(comment);
 
@@ -135,11 +135,11 @@ public class CommentController {
         if(local == null) throw new BusinessLogicException(ExceptionCode.STORE_PATCH_WRONG_ACCESS);
 
         Comment comment = commentService.findVerifiedComment(commentId);
-        if(comment.getStore().getStoreId() != local.getStore().getStoreId()) throw new BusinessLogicException(ExceptionCode.REVIEW_DELETE_NO_AUTHORITY);
+        if(local.getStore() == null || comment.getStore().getStoreId() != local.getStore().getStoreId()) throw new BusinessLogicException(ExceptionCode.REVIEW_DELETE_NO_AUTHORITY);
 
         System.out.println("#delete Comment");
         commentService.deleteComment(reviewId, commentId);
-
+        System.out.println("삭제된 답글 : " + commentId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }
