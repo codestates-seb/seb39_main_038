@@ -6,14 +6,19 @@ import com.main_39.Spring.comment.dto.CommentResponseDto;
 import com.main_39.Spring.comment.entity.Comment;
 import com.main_39.Spring.comment.mapper.CommentMapper;
 import com.main_39.Spring.comment.service.CommentService;
+import com.main_39.Spring.config.oauth.LocalDetails;
 import com.main_39.Spring.dto.MultiResponseDto;
 import com.main_39.Spring.dto.SingleResponseDto;
+import com.main_39.Spring.exception.BusinessLogicException;
+import com.main_39.Spring.exception.ExceptionCode;
+import com.main_39.Spring.member.entity.Local;
 import com.main_39.Spring.review.service.ReviewService;
 import com.main_39.Spring.store.entity.Store;
 import com.main_39.Spring.store.service.StoreService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -80,11 +85,24 @@ public class CommentController {
     @PatchMapping("/review/{review-id}/{comment-id}")
     public ResponseEntity patchComment(@PathVariable("review-id") @Positive long reviewId,
                                        @PathVariable("comment-id") @Positive long commentId,
-                                       @Valid @RequestBody CommentPatchDto commentPatchDto) {
+                                       @Valid @RequestBody CommentPatchDto commentPatchDto,
+                                       Authentication authentication) {
         commentPatchDto.setCommentId(commentId);
-        Comment response =
-                commentService.updateComment(mapper.commentPatchDtoToComment(commentPatchDto));
 
+        LocalDetails localDetails;
+        Local local = null;
+        if(authentication != null){
+            localDetails = (LocalDetails) authentication.getPrincipal();
+            local = localDetails.getLocal();
+        }
+
+        if(local == null) throw new BusinessLogicException(ExceptionCode.AUTH_REQUIRED_LOGIN);
+
+        Comment comment = mapper.commentPatchDtoToComment(commentPatchDto);
+        if(comment.getStore().getLocal().getLocalId() != local.getLocalId()) throw new BusinessLogicException(ExceptionCode.REVIEW_PATCH_WRONG_ACCESS);
+
+
+        Comment response = commentService.updateComment(comment);
         return new ResponseEntity<>(
                 new SingleResponseDto<>(mapper.commentToCommentResponseDto(response)),
                 HttpStatus.OK);
@@ -94,7 +112,19 @@ public class CommentController {
      */
     @DeleteMapping("/review/{review-id}/{comment-id}")
     public ResponseEntity deleteComment(@PathVariable("review-id") long reviewId,
-                                        @PathVariable("comment-id") @Positive long commentId) {
+                                        @PathVariable("comment-id") @Positive long commentId,
+                                        Authentication authentication) {
+        LocalDetails localDetails;
+        Local local = null;
+        if(authentication != null){
+            localDetails = (LocalDetails) authentication.getPrincipal();
+            local = localDetails.getLocal();
+        }
+        if(local == null) throw new BusinessLogicException(ExceptionCode.STORE_PATCH_WRONG_ACCESS);
+
+        Comment comment = commentService.findVerifiedComment(commentId);
+        if(comment.getStore().getLocal().getLocalId() != local.getLocalId()) throw new BusinessLogicException(ExceptionCode.REVIEW_DELETE_NO_AUTHORITY);
+
         System.out.println("#delete Comment");
         commentService.deleteComment(reviewId, commentId);
 
