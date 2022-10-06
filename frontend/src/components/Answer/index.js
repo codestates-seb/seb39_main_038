@@ -7,6 +7,7 @@ import {
   Editor,
   EditorWrapper,
   Answer as AnswerContainer,
+  ButtonWrapper,
 } from './styles';
 import { useAnswer } from '../../hooks';
 import { dateFormat } from '../../utils';
@@ -42,6 +43,8 @@ function Answer({ item, storeId }) {
         commentContent: text,
       },
     });
+
+    isToggle(!toggle);
   };
 
   const deleteData = () => {
@@ -53,11 +56,7 @@ function Answer({ item, storeId }) {
 
   return (
     <>
-      {!item.comment ? (
-        <Button onClick={handleOnClick}> 답변 </Button>
-      ) : (
-        <Button onClick={handleOnClick}> 수정 </Button>
-      )}
+      {!item.comment ? <Button onClick={handleOnClick}> 답변 </Button> : null}
 
       {toggle ? (
         <EditorWrapper>
@@ -78,7 +77,11 @@ function Answer({ item, storeId }) {
                 {dateFormat(new Date(item?.comment.createdAt), '-')}
               </Text>
             </TextWrapper>
-            <Button onClick={deleteData}>삭제</Button>
+
+            <ButtonWrapper>
+              <Button onClick={handleOnClick}>수정</Button>
+              <Button onClick={deleteData}>삭제</Button>
+            </ButtonWrapper>
           </Header>
           <Text size={14} color="#666666">
             {item?.comment.commentContent}
