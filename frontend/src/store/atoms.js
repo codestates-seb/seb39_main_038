@@ -22,7 +22,7 @@ const atoms = {
 
   isLogin: atom({
     key: 'isLogin',
-    default: { state: false, type: null, init: 0 },
+    default: { state: false, type: null },
     effects: [sessionStorageEffect('isLogin')],
   }),
 
