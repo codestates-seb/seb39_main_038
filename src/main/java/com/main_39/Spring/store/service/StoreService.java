@@ -52,7 +52,6 @@ public class StoreService {
      */
     public Store updateStore(Store store) {
         Store findStore = verifyExistsStore(store.getStoreId());
-        verifyExistsInfo(store.getStoreName(), store.getStoreNumber(), store.getStorePhone());
 
         Optional.ofNullable(store.getStorePhone())
                 .ifPresent(phone -> findStore.setStorePhone(phone));
