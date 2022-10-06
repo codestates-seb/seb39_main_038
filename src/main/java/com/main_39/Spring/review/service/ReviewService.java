@@ -125,8 +125,14 @@ public class ReviewService {
     /**
      * 리뷰 삭제
      */
-    public void deleteReview(long reviewId) {
+    public void deleteReview(Store store, long reviewId) {
         Review findReview = findVerifiedReview(reviewId);
+
+        if(store.hasReview()) {
+            store.getReviews().removeIf(reviews -> reviews.getReviewId().equals(reviewId));
+            reviewRepository.deleteById(reviewId);
+        }
+
         if(findReview.getReviewImage() != null){
             int index = findReview.getReviewImage().indexOf("/",8);
             String key = findReview.getReviewImage().substring(index+1);
