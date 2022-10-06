@@ -4,6 +4,7 @@ package com.main_39.Spring.config;
 import com.main_39.Spring.config.filter.ExceptionHandlerFilter;
 import com.main_39.Spring.config.filter.JwtAuthenticationFilter;
 import com.main_39.Spring.config.filter.JwtAuthorizationFilter;
+import com.main_39.Spring.member.mapper.MemberMapper;
 import com.main_39.Spring.member.repository.KakaoRepository;
 import com.main_39.Spring.member.repository.LocalRepository;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +37,7 @@ public class SecurityConfig{
     private final KakaoRepository kakaoRepository;
     private final LocalRepository localRepository;
     private final ExceptionHandlerFilter exceptionHandlerFilter;
-
+    private final MemberMapper memberMapper;
 
     /**
      * 스프링 백엔드 보안 설정, 경로별 권한 지정, 로그인과 로그아웃을 설정하는 체인 메서드
@@ -113,7 +114,7 @@ public class SecurityConfig{
             AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
             builder
                     .addFilter(corsFilter) //cors 설정
-                    .addFilter(new JwtAuthenticationFilter(authenticationManager,localRepository))
+                    .addFilter(new JwtAuthenticationFilter(authenticationManager,localRepository,memberMapper))
                     .addFilterBefore(exceptionHandlerFilter, UsernamePasswordAuthenticationFilter.class)
                     .addFilter(new JwtAuthorizationFilter(authenticationManager,kakaoRepository,localRepository)) //Service 참조 시 빈 순환참조
                     .addFilterBefore(exceptionHandlerFilter, BasicAuthenticationFilter.class);
