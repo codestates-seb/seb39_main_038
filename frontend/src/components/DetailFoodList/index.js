@@ -20,12 +20,14 @@ function DetailFoodList({ storeId, storeName }) {
       <Menu key={menu.name} onClick={handleOnClick(storeId, storeName, menu)}>
         <MenuInfo>
           <Name>{menu.name}</Name>
-          <Info>{menu.info}</Info>
+          <Info>{menu.content}</Info>
           <Price>{menu.price}</Price>
         </MenuInfo>
-        <MenuImg>
-          <img alt="menuImg" src={menu.img} />
-        </MenuImg>
+        {menu.img ? (
+          <MenuImg>
+            <img alt="menuImg" src={menu.img} />
+          </MenuImg>
+        ) : null}
       </Menu>
     ));
   };
