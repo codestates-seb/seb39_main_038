@@ -86,7 +86,11 @@ public class ReviewController {
         KakaoDetails kakaoDetails = (KakaoDetails)authentication.getPrincipal();
         Kakao kakao = kakaoDetails.getKakao();
 
-        System.out.println("인증된 회원 : " + kakao.getKakaoId());
+        long kakaoId = -1;
+        if(kakao != null)
+            kakaoId = kakao.getKakaoId();
+
+        System.out.println("인증된 회원 : " + kakaoId);
 
         Store store = storeService.findStore(storeId);
         //임시로 주석 처리
@@ -95,7 +99,7 @@ public class ReviewController {
 //        Kakao kakao = memberService.findKakaoNickname(reviewResponseDto.getNickname());
 //        review.getKakao(kakao);
 
-        return new ResponseEntity<>(mapper.reviewsToStoreResponseDto(store,kakao.getKakaoId()), HttpStatus.OK);
+        return new ResponseEntity<>(mapper.reviewsToStoreResponseDto(store,kakaoId), HttpStatus.OK);
     }
 
     /**
