@@ -139,7 +139,7 @@ public class CommentController {
 
         System.out.println("#delete Comment");
         commentService.deleteComment(reviewId, commentId);
-
+        System.out.println("삭제된 답글 : " + commentId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }
