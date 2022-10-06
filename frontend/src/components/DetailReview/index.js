@@ -61,6 +61,7 @@ function DetailReview({ storeId }) {
 
   const createComment = () => {
     return data?.data.reviews.map((item) => {
+      console.log(data.data.reviews);
       return (
         <Comment key={item.reviewId}>
           <Header>
