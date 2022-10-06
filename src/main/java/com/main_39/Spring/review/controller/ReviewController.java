@@ -85,7 +85,7 @@ public class ReviewController {
                                                                Authentication authentication) {
         KakaoDetails kakaoDetails = (KakaoDetails)authentication.getPrincipal();
         Kakao kakao = kakaoDetails.getKakao();
-        if(kakao == null) throw new BusinessLogicException(ExceptionCode.AUTH_REQUIRED_LOGIN);
+
         System.out.println("인증된 회원 : " + kakao.getKakaoId());
 
         Store store = storeService.findStore(storeId);
