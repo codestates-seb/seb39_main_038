@@ -44,6 +44,7 @@ function MyPage() {
   const goModal = (item) => () => setOrderData(item);
 
   const goAsk = (id) => () => {
+    console.log(ROUTE.REVIEW.PATH);
     navigate(`/${ROUTE.REVIEW.PATH}`, {
       state: { storeId: id, type: 'post' },
     });
