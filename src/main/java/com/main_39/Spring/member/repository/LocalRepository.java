@@ -11,9 +11,9 @@ import java.util.Optional;
 @Repository
 public interface LocalRepository extends JpaRepository<Local,Long> {
 
-    @Override
-    @EntityGraph(attributePaths = {"local"})
-    List<Local> findAll();
+//    @Override
+//    @EntityGraph(attributePaths = {"local"})
+//    List<Local> findAll();
     Optional<Local> findByEmail(String email);
     Optional<Local> findByNameAndPhone(String name, String phone);
     Optional<Local> findByEmailAndRefreshToken(String email, String refreshToken);

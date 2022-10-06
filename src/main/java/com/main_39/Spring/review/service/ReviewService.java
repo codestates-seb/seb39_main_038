@@ -15,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,6 +23,7 @@ import java.util.Base64;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final StoreService storeService;
