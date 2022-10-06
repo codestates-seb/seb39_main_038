@@ -41,7 +41,7 @@ function FoodDetail() {
     storeWaitTime,
     storeTag,
   } = data.data.data;
-
+  console.log(data.data.data);
   return (
     <Section>
       <MainBody>
