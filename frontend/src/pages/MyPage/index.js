@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { useNavigate } from 'react-router-dom';
 import { atoms } from '../../store';
@@ -26,10 +26,19 @@ const { AVATAR_IMG } = process.env;
 function MyPage() {
   const navigate = useNavigate();
   const setOrderData = useSetRecoilState(atoms.orderData);
-  const { type } = useRecoilValue(atoms.isLogin);
+  const { type, state } = useRecoilValue(atoms.isLogin);
   const { data: orderListData } = useOrderList();
   const { data: userData } = useMyPage();
   const [openOrder, closeOrder] = useModal('order');
+
+  useEffect(() => {
+    if (!state) {
+      alert('접근할 수 없는 페이지입니다.');
+      navigate('/');
+    }
+  }, [navigate, state]);
+
+  if (!state) return <div />;
 
   const { avatar, email, name, phone, store } = userData.data.data;
   const goModal = (item) => () => setOrderData(item);

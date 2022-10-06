@@ -20,6 +20,8 @@ function Login() {
     }
   }, [isLogin.state, navigate]);
 
+  if (isLogin.state) return <div />;
+
   return (
     <>
       <LoginNav isChecked={isChecked} setIsChecked={setIsChecked} />
