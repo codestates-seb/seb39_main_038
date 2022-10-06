@@ -83,8 +83,12 @@ public class ReviewController {
     @GetMapping("/store/{store-id}/reviews")
     public ResponseEntity<ReviewsResponseDto> getReviewByStore(@PathVariable("store-id") long storeId,
                                                                Authentication authentication) {
-        KakaoDetails kakaoDetails = (KakaoDetails)authentication.getPrincipal();
-        Kakao kakao = kakaoDetails.getKakao();
+        KakaoDetails kakaoDetails;
+        Kakao kakao = null;
+        if(authentication != null) {
+            kakaoDetails = (KakaoDetails) authentication.getPrincipal();
+            kakao = kakaoDetails.getKakao();
+        }
 
         long kakaoId = -1;
         if(kakao != null)
