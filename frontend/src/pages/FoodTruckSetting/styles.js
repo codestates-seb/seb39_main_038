@@ -4,6 +4,11 @@ const Section = styled.div`
   margin: 0 auto;
   max-width: 1020px;
   padding: 10px 20px 40px 20px;
+  button {
+    padding: 5px 15px;
+    background-color: white;
+    font-weight: 900;
+  }
 `;
 
 const Title = styled.h1`
@@ -133,17 +138,12 @@ const UpdateInput = styled.div`
 
 const SettingDoneBtn = styled.div`
   padding: 50px 60px 50px 0px;
+  display: flex;
+  justify-content: end;
+  gap: 50px;
   > button {
-    float: right;
-    padding: 10px 40px 10px 40px;
+    padding: 10px 30px 10px 30px;
     background-color: white;
-  }
-  @media screen and (max-width: 767px) {
-    > button {
-      position: fixed;
-      bottom: 0px;
-      width: calc(100% - 40px);
-    }
   }
 `;
 

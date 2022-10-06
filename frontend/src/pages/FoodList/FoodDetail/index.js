@@ -36,10 +36,12 @@ function FoodDetail() {
     storeImage,
     storeContent,
     totalGrade,
-    storeWaittime,
+    totalComment,
+    totalMenu,
+    storeWaitTime,
     storeTag,
   } = data.data.data;
-
+  console.log(data.data.data);
   return (
     <Section>
       <MainBody>
@@ -60,7 +62,7 @@ function FoodDetail() {
                 대기시간
               </Text>
               <Text color="#333333" size={13}>
-                {storeWaittime}
+                {storeWaitTime}
               </Text>
             </InfoItem>
             <InfoItem>
@@ -87,14 +89,14 @@ function FoodDetail() {
               type="button"
               onClick={handleOnClick('메뉴')}
             >
-              메뉴 35
+              메뉴 {totalMenu}
             </MenuTabBtn>
             <ReviewTabBtn
               menu={menu}
               type="button"
               onClick={handleOnClick('리뷰')}
             >
-              클린리뷰 1740
+              클린리뷰 {totalComment}
             </ReviewTabBtn>
             <InfoTabBtn
               menu={menu}

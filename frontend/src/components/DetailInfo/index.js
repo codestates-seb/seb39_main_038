@@ -1,6 +1,6 @@
 import React from 'react';
-import { useRecoilValue } from 'recoil';
-import { atoms } from '../../store';
+import { useParams } from 'react-router-dom';
+import { useFoodDetail } from '../../hooks';
 import {
   TruckInfoBody,
   TruckInfoTitle,
@@ -10,30 +10,38 @@ import {
 } from './styles';
 
 function DetailInfo() {
-  const foodTruckInfo = useRecoilValue(atoms.foodTruckInfo);
+  const { id } = useParams();
+  const { data } = useFoodDetail(id);
+
+  const {
+    storeContent,
+    storeTime,
+    storePhone,
+    storeAddress,
+    storePayment,
+    storeName,
+    storeNumber,
+  } = data.data.data;
 
   return (
     <TruckInfoBody>
       <TruckInfoTitle>사장님 알림</TruckInfoTitle>
 
-      <TruckInfoContent>{foodTruckInfo.content}</TruckInfoContent>
+      <TruckInfoContent>{storeContent}</TruckInfoContent>
 
       <TruckInfoTitle>업체정보</TruckInfoTitle>
-      {console.log(foodTruckInfo)}
+
       <TruckInfoContent>
         <TruckInfoContentKey>
-          영업시간:{' '}
-          <TruckInfoContentValue>{foodTruckInfo.time}</TruckInfoContentValue>
+          영업시간: <TruckInfoContentValue>{storeTime}</TruckInfoContentValue>
         </TruckInfoContentKey>
 
         <TruckInfoContentKey>
-          전화번호:{' '}
-          <TruckInfoContentValue>{foodTruckInfo.phone}</TruckInfoContentValue>
+          전화번호: <TruckInfoContentValue>{storePhone}</TruckInfoContentValue>
         </TruckInfoContentKey>
 
         <TruckInfoContentKey>
-          주소:{' '}
-          <TruckInfoContentValue>{foodTruckInfo.address}</TruckInfoContentValue>
+          주소: <TruckInfoContentValue>{storeAddress}</TruckInfoContentValue>
         </TruckInfoContentKey>
       </TruckInfoContent>
 
@@ -42,7 +50,7 @@ function DetailInfo() {
       <TruckInfoContent>
         <TruckInfoContentKey>
           결제수단:{' '}
-          <TruckInfoContentValue>{foodTruckInfo.payment}</TruckInfoContentValue>
+          <TruckInfoContentValue>{storePayment}</TruckInfoContentValue>
         </TruckInfoContentKey>
       </TruckInfoContent>
 
@@ -50,12 +58,11 @@ function DetailInfo() {
 
       <TruckInfoContent>
         <TruckInfoContentKey>
-          상호명:{' '}
-          <TruckInfoContentValue>{foodTruckInfo.name}</TruckInfoContentValue>
+          상호명: <TruckInfoContentValue>{storeName}</TruckInfoContentValue>
         </TruckInfoContentKey>
         <TruckInfoContentKey>
           사업자번호:{' '}
-          <TruckInfoContentValue>{foodTruckInfo.number}</TruckInfoContentValue>
+          <TruckInfoContentValue>{storeNumber}</TruckInfoContentValue>
         </TruckInfoContentKey>
       </TruckInfoContent>
 
