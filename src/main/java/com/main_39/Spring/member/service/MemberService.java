@@ -64,6 +64,7 @@ public class MemberService {
     /**
      * 토큰을 획득하는 메서드
      * */
+    @Transactional
     public OAuthToken getToken(String code){
         //Post방식으로 key=value 데이터를 요청 (카카오쪽으로)
         //Retrofit2
@@ -117,6 +118,7 @@ public class MemberService {
     /**
      * 토큰 -> 유저정보
      * */
+    @Transactional
     public KakaoProfile getKaKaoProfile(OAuthToken oauthToken){
         RestTemplate rt = new RestTemplate();
 
@@ -159,6 +161,7 @@ public class MemberService {
     /**
      * 카카오 로그인 (처음 로그인 시 회원가입)
      * */
+    @Transactional
     public Kakao createKakao(Kakao kakao){
         Optional<Kakao> optionalKakao = kaKaoRepository.findById(kakao.getKakaoId());
         //마일리지 보존
@@ -173,6 +176,7 @@ public class MemberService {
     /**
      * 카카오 로그아웃
      * */
+    @Transactional
     public void logoutKakao(String access_token){
         //RestTemplate
         RestTemplate rt = new RestTemplate();
@@ -213,6 +217,7 @@ public class MemberService {
     /**
      * 로컬 회원가입
      * */
+    @Transactional
     public Local createLocal(Local local){
         //회원이 중복인지 확인
         verifyExistsLocal(local.getEmail());
@@ -224,6 +229,7 @@ public class MemberService {
     /**
      * S3에 이미지 저장 후 URL 반환
      * */
+
     private void saveAvatarToS3(Local local){
         String data;
         try{
@@ -255,6 +261,7 @@ public class MemberService {
     /**
      * 로컬 로그아웃
      * */
+    @Transactional
     public void logoutLocal(String access_token){
 
         //토큰 정보로 로컬 회원정보 찾기
@@ -340,6 +347,7 @@ public class MemberService {
     /**
      * 이름, 휴대폰 번호로 계정 찾기
      * */
+    @Transactional
     public Local verifyEmail(String name, String phone){
         Local findLocal = localRepository.findByNameAndPhone(name,phone).orElseThrow(
                 () -> new BusinessLogicException(ExceptionCode.NOT_EXISTS_USER_INFO)
@@ -350,6 +358,7 @@ public class MemberService {
     /**
      * 인증 메일 전송
      * */
+    @Transactional
     public void sendMail(Local local){
         //난수 생성
         Random r = new Random();
@@ -390,6 +399,7 @@ public class MemberService {
     /**
      * 이메일, 이름, 휴대폰 번호로 비밀번호 찾기
      * */
+    @Transactional
     public Local verifyExistLocalToStatus(String email,String authCode){
         Local findLocal = localRepository.findByEmailAndRefreshToken(email,authCode).orElseThrow(
                 () -> new BusinessLogicException(ExceptionCode.NOT_EXISTS_USER_INFO));
@@ -400,6 +410,7 @@ public class MemberService {
     /**
      * 카카오 마이 페이지
      * */
+    @Transactional
     public Kakao getKakaoInfo(String access_token){
 
         //RestTemplate
@@ -440,6 +451,7 @@ public class MemberService {
     /**
      * 로컬 마이페이지
      * */
+    @Transactional
     public Local getLocalInfo(String access_token){
         String refresh_token = "";
         long localId = 0;
@@ -463,6 +475,7 @@ public class MemberService {
     }
 
 
+    @Transactional
     public void changePassword(String email, String password){
         try{
             Local findLocal = findVerifiedLocalByEmail(email);
