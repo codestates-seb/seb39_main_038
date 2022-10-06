@@ -51,7 +51,8 @@ public class CommentService {
      * 답변 삭제
      */
     public void deleteComment(long reviewId, long commentId) {
-        reviewService.findVerifiedReview(reviewId);
+        //  수정
+//        Review review = reviewService.findVerifiedReview(reviewId);
         Comment findComment = findVerifiedComment(commentId);
 
         commentRepository.delete(findComment);
