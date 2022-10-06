@@ -33,6 +33,7 @@ function Receipt({ order, request, type }) {
   const createReceiptList = () => {
     return orderList.map((item, index) => (
       <ReceiptList
+        order={order}
         key={item.name}
         name={item.name}
         price={item.price}
@@ -46,6 +47,7 @@ function Receipt({ order, request, type }) {
   const goPay = () => {
     if (type === 'card') payWithCard(request, type);
     else payWithCash(request, type);
+    navigate(`/${ROUTE.FOODLIST.PATH}`);
   };
 
   return (
@@ -53,7 +55,7 @@ function Receipt({ order, request, type }) {
       <Cart>
         <CartTab>
           <CartTitle>{order ? orderList[0].storeName : '장바구니'}</CartTitle>
-          <Button type="button" onClick={resetReceipt}>
+          <Button disabled={order} type="button" onClick={resetReceipt}>
             리셋
           </Button>
         </CartTab>
