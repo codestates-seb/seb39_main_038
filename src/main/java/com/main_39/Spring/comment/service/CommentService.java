@@ -55,7 +55,7 @@ public class CommentService {
 //        Review review = reviewService.findVerifiedReview(reviewId);
         Comment findComment = findVerifiedComment(commentId);
 
-        commentRepository.delete(findComment);
+        commentRepository.deleteById(commentId);
     }
 
     /**
