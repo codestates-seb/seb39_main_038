@@ -89,14 +89,10 @@ public class ReviewController {
 
         Store store = storeService.findStore(storeId);
 
-//        Review review = mapper.reviewToStoreResponseDto(reviewResponseDto);
-////
-////        Kakao kakao = memberService.findKakaoNickname(reviewResponseDto.getNickname());
-////        review.setKakao(kakao);
-////
-//        Review getReviewStore = reviewService.findReview(review.getReviewId());
-//        ReviewResponseDto responseDto = mapper.reviewToReviewResponseDto(getReviewStore);
+        Review review = mapper.reviewKakaoesponseDto(reviewResponseDto);
 
+        Kakao kakao = memberService.findKakaoNickname(reviewResponseDto.getNickname());
+        review.getKakao(kakao);
 
         return new ResponseEntity<>(mapper.reviewsToStoreResponseDto(store,kakao.getKakaoId()), HttpStatus.OK);
     }

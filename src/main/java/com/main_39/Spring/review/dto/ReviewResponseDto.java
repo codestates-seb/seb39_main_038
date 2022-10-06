@@ -12,8 +12,6 @@ public class ReviewResponseDto {
     //카카오 Id 일치 여부
     private boolean auth;
     private String reviewContent;
-
-    // 추가
     private String nickname;
     private String reviewImage;
     private int reviewGrade;

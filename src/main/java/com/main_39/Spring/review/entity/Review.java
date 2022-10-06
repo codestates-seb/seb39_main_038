@@ -47,6 +47,10 @@ public class Review extends Auditable {
         this.kakao = kakao;
     }
 
+    public void getKakao(Kakao kakao) {
+        this.kakao = kakao;
+    }
+
     /**
      * 스토어 : 리뷰 = 1 : N 양방향 
      */
