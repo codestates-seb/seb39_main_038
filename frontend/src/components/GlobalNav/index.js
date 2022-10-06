@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import axios from 'axios';
 import {
   NavContainer,
@@ -15,7 +15,7 @@ import { atoms } from '../../store';
 function GlobalNav() {
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useRecoilState(atoms.isLogin);
-  const orderList = useRecoilValue(atoms.orderList);
+  const [orderList, setOrderList] = useRecoilState(atoms.orderList);
 
   const handleOnClick = async () => {
     const isCheck = window.confirm('정말 로그아웃 하시겠습니까?');
@@ -23,6 +23,7 @@ function GlobalNav() {
     if (isLogin.type === 'kakao') await axios.post(API_URI.KAKAO_LOGOUT);
     if (isLogin.type === 'local') await axios.post(API_URI.LOGOUT);
     setIsLogin({ state: false, type: null });
+    setOrderList([]);
     navigate(ROUTE.HOME.PATH);
   };
 

@@ -47,6 +47,7 @@ function Receipt({ order, request, type }) {
   const goPay = () => {
     if (type === 'CARD') payWithCard(request, type);
     else payWithCash(request, type);
+    resetReceipt();
     navigate(`/${ROUTE.FOODLIST.PATH}`);
   };
 
