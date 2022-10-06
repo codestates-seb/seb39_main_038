@@ -55,7 +55,7 @@ public class ReviewController {
     /**
      * 리뷰 등록
      */
-    @PostMapping("/store/{store-id}/review/ask")
+    @PostMapping("/store/{store-id}/reviews/ask")
     public ResponseEntity postReview(@PathVariable("store-id") long storeId,
                                      @Valid @RequestBody ReviewPostDto reviewPostDto) {
 

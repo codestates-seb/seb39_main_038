@@ -5,6 +5,8 @@ import com.main_39.Spring.store.entity.Store;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -58,6 +60,7 @@ public class Local implements Users{
     @OneToOne(mappedBy = "local")
     private Store store;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "local", cascade = CascadeType.ALL)
     private List<Order> orders = new ArrayList<>();
 
