@@ -40,7 +40,7 @@ public class Review extends Auditable {
      * 카카오 삭제시 리뷰도 삭제
      */
     @ManyToOne
-    @JoinColumn(name = "nickname")
+    @JoinColumn(name = "kakao_id")
     private Kakao kakao;
 
     public void setKakao(Kakao kakao) {

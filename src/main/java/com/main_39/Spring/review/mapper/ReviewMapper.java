@@ -3,6 +3,7 @@ package com.main_39.Spring.review.mapper;
 import com.main_39.Spring.comment.dto.CommentResponseDto;
 import com.main_39.Spring.comment.entity.Comment;
 import com.main_39.Spring.comment.mapper.CommentMapper;
+import com.main_39.Spring.member.entity.Kakao;
 import com.main_39.Spring.review.dto.*;
 import com.main_39.Spring.review.entity.Review;
 import com.main_39.Spring.store.entity.Store;
@@ -25,16 +26,23 @@ public interface ReviewMapper {
         return reviews.stream()
                 .map(review -> {
                     CommentResponseDto commentResponseDto = commentMapper.commentToCommentResponseDto(review.getComment());
-                    return ReviewResponseDto.builder()
+                    Kakao kakao = review.getKakao();
+                    boolean isAuthor = false;
+                    String nickname = "존재하지 않는 회원";
+                    if(kakao != null) nickname = kakao.getNickname();
+                    if(kakao != null && kakaoId == kakao.getKakaoId()) isAuthor = true;
+                    ReviewResponseDto reviewResponseDto = ReviewResponseDto.builder()
                             .reviewId(review.getReviewId())
-                            .auth(kakaoId == review.getKakao().getKakaoId()) //카카오  Id비교
+                            .auth(isAuthor) //카카오  Id비교
                             .reviewGrade(review.getReviewGrade())
                             .reviewImage(review.getReviewImage())
                             .reviewContent(review.getReviewContent())
                             .createdAt(review.getCreatedAt())
-                            .nickname(review.getKakao().getNickname())
+                            .nickname(nickname)
                             .comment(commentResponseDto)
                             .build();
+
+                    return reviewResponseDto;
                 }).collect(Collectors.toList());
     }
 

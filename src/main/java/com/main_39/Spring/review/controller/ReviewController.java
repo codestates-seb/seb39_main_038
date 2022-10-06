@@ -82,12 +82,19 @@ public class ReviewController {
 
     @GetMapping("/store/{store-id}/reviews")
     public ResponseEntity<ReviewsResponseDto> getReviewByStore(@PathVariable("store-id") long storeId,
-                                                               @Valid @RequestBody ReviewResponseDto reviewResponseDto,
                                                                Authentication authentication) {
+        KakaoDetails kakaoDetails;
+        Kakao kakao = null;
+        if(authentication != null) {
+            kakaoDetails = (KakaoDetails) authentication.getPrincipal();
+            kakao = kakaoDetails.getKakao();
+        }
 
-        KakaoDetails kakaoDetails = (KakaoDetails)authentication.getPrincipal();
-        Kakao kakao = kakaoDetails.getKakao();
-        if(kakao == null) throw new BusinessLogicException(ExceptionCode.AUTH_REQUIRED_LOGIN);
+        long kakaoId = -1;
+        if(kakao != null)
+            kakaoId = kakao.getKakaoId();
+
+        System.out.println("인증된 회원 : " + kakaoId);
 
         Store store = storeService.findStore(storeId);
         //임시로 주석 처리
@@ -96,7 +103,7 @@ public class ReviewController {
 //        Kakao kakao = memberService.findKakaoNickname(reviewResponseDto.getNickname());
 //        review.getKakao(kakao);
 
-        return new ResponseEntity<>(mapper.reviewsToStoreResponseDto(store,kakao.getKakaoId()), HttpStatus.OK);
+        return new ResponseEntity<>(mapper.reviewsToStoreResponseDto(store,kakaoId), HttpStatus.OK);
     }
 
     /**
