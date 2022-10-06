@@ -50,8 +50,20 @@ public class CommentController {
      */
     @PostMapping("/review/{review-id}/comment/ask")
     public ResponseEntity postComment(@PathVariable("review-id") long reviewId,
-                                      @Valid @RequestBody CommentPostDto commentPostDto) {
+                                      @Valid @RequestBody CommentPostDto commentPostDto,
+                                      Authentication authentication) {
+        LocalDetails localDetails;
+        Local local = null;
+        if(authentication != null){
+            localDetails = (LocalDetails) authentication.getPrincipal();
+            local = localDetails.getLocal();
+        }
+
+        if(local == null) throw new BusinessLogicException(ExceptionCode.AUTH_REQUIRED_LOGIN);
+
         Comment comment = mapper.commentPostDtoToComment(commentPostDto);
+        if(comment.getStore().getLocal().getLocalId() != local.getLocalId()) throw new BusinessLogicException(ExceptionCode.REVIEW_PATCH_WRONG_ACCESS);
+
 
         Store store = storeService.findStore(commentPostDto.getStoreId());
         comment.setStore(store);
@@ -87,7 +99,7 @@ public class CommentController {
                                        @PathVariable("comment-id") @Positive long commentId,
                                        @Valid @RequestBody CommentPatchDto commentPatchDto,
                                        Authentication authentication) {
-        commentPatchDto.setCommentId(commentId);
+            commentPatchDto.setCommentId(commentId);
 
         LocalDetails localDetails;
         Local local = null;
@@ -99,10 +111,10 @@ public class CommentController {
         if(local == null) throw new BusinessLogicException(ExceptionCode.AUTH_REQUIRED_LOGIN);
 
         Comment comment = mapper.commentPatchDtoToComment(commentPatchDto);
-        if(comment.getStore().getLocal().getLocalId() != local.getLocalId()) throw new BusinessLogicException(ExceptionCode.REVIEW_PATCH_WRONG_ACCESS);
-
+        if(commentPatchDto.getStoreId() != local.getStore().getStoreId()) throw new BusinessLogicException(ExceptionCode.REVIEW_PATCH_WRONG_ACCESS);
 
         Comment response = commentService.updateComment(comment);
+
         return new ResponseEntity<>(
                 new SingleResponseDto<>(mapper.commentToCommentResponseDto(response)),
                 HttpStatus.OK);

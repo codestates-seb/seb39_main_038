@@ -11,6 +11,7 @@ import com.main_39.Spring.menu.service.MenuService;
 import com.main_39.Spring.store.entity.Store;
 import com.main_39.Spring.store.service.StoreService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class MenuController {
@@ -85,10 +87,11 @@ public class MenuController {
     /**
      * 메뉴 삭제
      */
-    @DeleteMapping("/store/{store-Id}/menus/{menu-id}")
-    public ResponseEntity<Void> deleteMenu(@PathVariable("menu-id") long menuId) {
-
-        menuService.deleteMenu(menuId);
+    @DeleteMapping("/store/{store-id}/menus/{menu-id}")
+    public ResponseEntity<Void> deleteMenu(@PathVariable("store-id") long storeId,
+                                             @PathVariable("menu-id") long menuId) {
+        Store store = storeService.findStore(storeId);
+        menuService.deleteMenu(store, menuId);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
