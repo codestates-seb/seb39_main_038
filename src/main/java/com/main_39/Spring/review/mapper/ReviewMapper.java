@@ -13,8 +13,7 @@ import java.util.List;
 public interface ReviewMapper {
     Review reviewPostDtoToReview(ReviewPostDto reviewPostDto);
     ReviewResponseDto reviewToReviewResponseDto(Review review);
-//    Review reviewToStoreResponseDto(ReviewResponseDto reviewResponseDto); //수정
-
+    Review reviewKakaoesponseDto(ReviewResponseDto reviewResponseDto);
     Review reviewPatchDtoToReview(ReviewPatchDto reviewPatchDto);
     List<ReviewResponseDto> reviewToReviewResponseDtos(List<Review> reviews);
 

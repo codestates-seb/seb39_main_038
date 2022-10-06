@@ -15,9 +15,9 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 @Service
 public class CommentService {
-    private CommentRepository commentRepository;
-    private ReviewService reviewService;
-    private StoreService storeService;
+    private final CommentRepository commentRepository;
+    private final ReviewService reviewService;
+    private final StoreService storeService;
 
     public CommentService(CommentRepository commentRepository,
                           ReviewService reviewService,
@@ -53,6 +53,18 @@ public class CommentService {
         Comment findComment = findVerifiedComment(commentId);
 
         commentRepository.delete(findComment);
+    }
+
+    /**
+     * 답변 수정
+     */
+    public Comment updateComment(Comment comment) {
+        Comment findComment = findVerifiedComment(comment.getCommentId());
+
+        Optional.ofNullable(comment.getCommentContent())
+                .ifPresent(content -> findComment.setCommentContent(content));
+
+        return commentRepository.save(findComment);
     }
 
     /**

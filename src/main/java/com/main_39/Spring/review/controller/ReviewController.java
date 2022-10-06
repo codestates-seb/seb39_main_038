@@ -77,18 +77,15 @@ public class ReviewController {
 //    }
 
     @GetMapping("/store/{store-id}/reviews")
-    public ResponseEntity<ReviewsResponseDto> getReviewByStore(@PathVariable("store-id") long storeId) {
+    public ResponseEntity<ReviewsResponseDto> getReviewByStore(@PathVariable("store-id") long storeId,
+                                                               @Valid @RequestBody ReviewResponseDto reviewResponseDto) {
 
         Store store = storeService.findStore(storeId);
 
-//        Review review = mapper.reviewToStoreResponseDto(reviewResponseDto);
-////
-////        Kakao kakao = memberService.findKakaoNickname(reviewResponseDto.getNickname());
-////        review.setKakao(kakao);
-////
-//        Review getReviewStore = reviewService.findReview(review.getReviewId());
-//        ReviewResponseDto responseDto = mapper.reviewToReviewResponseDto(getReviewStore);
+        Review review = mapper.reviewKakaoesponseDto(reviewResponseDto);
 
+        Kakao kakao = memberService.findKakaoNickname(reviewResponseDto.getNickname());
+        review.getKakao(kakao);
 
         return new ResponseEntity<>(mapper.reviewsToStoreResponseDto(store), HttpStatus.OK);
     }
