@@ -4,6 +4,8 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.main_39.Spring.exception.BusinessLogicException;
 import com.main_39.Spring.exception.ExceptionCode;
+import com.main_39.Spring.member.entity.Kakao;
+import com.main_39.Spring.member.entity.Local;
 import com.main_39.Spring.member.service.MemberService;
 import com.main_39.Spring.review.entity.Review;
 import com.main_39.Spring.review.repository.ReviewRepository;
@@ -49,11 +51,19 @@ public class ReviewService {
     /**
      * 리뷰 작성
      */
-    public Review createdReview(long storeId, Review review) {
+    public Review createdReview(long storeId, Review review, long Id, String login) {
         Store store = storeService.findStore(storeId);
         review.addStore(store);
-
         if(review.getReviewImage() != null) saveImageToS3(review);
+
+        if(login.equals("local")){
+            Local local = memberService.findVerifiedLocal(Id);
+            review.setLocal(local);
+        }else if(login.equals("kakao")){
+            Kakao kakao = memberService.findVerifiedKakao(Id);
+            review.setKakao(kakao);
+        }
+
         return reviewRepository.save(review);
     }
 
