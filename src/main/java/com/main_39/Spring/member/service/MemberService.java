@@ -42,6 +42,7 @@ import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class MemberService {
     /**
      * 회원관련 비즈니스 로직을 처리하는 Service

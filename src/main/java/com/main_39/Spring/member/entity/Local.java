@@ -58,7 +58,7 @@ public class Local implements Users{
     @OneToOne(mappedBy = "local")
     private Store store;
 
-    @OneToMany(mappedBy = "local", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "local", cascade = CascadeType.ALL)
     private List<Order> orders = new ArrayList<>();
 
     public void addOrders(Order order) {
