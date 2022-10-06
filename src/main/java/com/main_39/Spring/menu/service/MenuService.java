@@ -86,17 +86,22 @@ public class MenuService {
     /**
      * 메뉴 삭제하기
      */
-    public void deleteMenu(long menuId) {
+    @Transactional
+    public void deleteMenu(Store store, long menuId) {
 
         Menu deleteMenu = findVerifiedMenu(menuId);
+
+        if(store.hasMenu()) {
+            store.getMenus().removeIf(menus -> menus.getMenuId().equals(menuId));
+            menuRepository.deleteById(menuId);
+        }
+
         if(deleteMenu.getImage() != null){
             int index = deleteMenu.getImage().indexOf("/",8);
             String key = deleteMenu.getImage().substring(index+1);
 
             amazonS3.deleteObject(bucket,key);
         }
-        menuRepository.delete(deleteMenu);
-
     }
 
     /**
