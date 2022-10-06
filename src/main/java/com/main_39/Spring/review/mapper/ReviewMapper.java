@@ -28,6 +28,8 @@ public interface ReviewMapper {
                     CommentResponseDto commentResponseDto = commentMapper.commentToCommentResponseDto(review.getComment());
                     Kakao kakao = review.getKakao();
                     boolean isAuthor = false;
+                    String nickname = "존재하지 않는 회원";
+                    if(kakao != null) nickname = kakao.getNickname();
                     if(kakao != null && kakaoId == kakao.getKakaoId()) isAuthor = true;
                     ReviewResponseDto reviewResponseDto = ReviewResponseDto.builder()
                             .reviewId(review.getReviewId())
@@ -36,7 +38,7 @@ public interface ReviewMapper {
                             .reviewImage(review.getReviewImage())
                             .reviewContent(review.getReviewContent())
                             .createdAt(review.getCreatedAt())
-                            .nickname(review.getKakao().getNickname())
+                            .nickname(nickname)
                             .comment(commentResponseDto)
                             .build();
 
