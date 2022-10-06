@@ -82,12 +82,11 @@ public class ReviewController {
 
     @GetMapping("/store/{store-id}/reviews")
     public ResponseEntity<ReviewsResponseDto> getReviewByStore(@PathVariable("store-id") long storeId,
-                                                               @Valid @RequestBody ReviewResponseDto reviewResponseDto,
                                                                Authentication authentication) {
-
         KakaoDetails kakaoDetails = (KakaoDetails)authentication.getPrincipal();
         Kakao kakao = kakaoDetails.getKakao();
         if(kakao == null) throw new BusinessLogicException(ExceptionCode.AUTH_REQUIRED_LOGIN);
+        System.out.println("인증된 회원 : " + kakao.getKakaoId());
 
         Store store = storeService.findStore(storeId);
         //임시로 주석 처리
