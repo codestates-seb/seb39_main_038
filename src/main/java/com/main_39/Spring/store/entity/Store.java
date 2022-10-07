@@ -134,8 +134,11 @@ public class Store {
     /**
      * store : review = 1: N 양방향
      */
+    // 1007 수정
+//    @OneToMany(mappedBy = "store", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+
     @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(mappedBy = "store", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "store")
     private List<Review> reviews = new ArrayList<>();
 
     public int getTotalReview() {
@@ -166,7 +169,9 @@ public class Store {
     /**
      * store : comment = 1 : N 양방향
      */
+    // 1007 수정
+//    @OneToMany(mappedBy = "store", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(mappedBy = "store", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "store")
     private List<Comment> comments = new ArrayList<>();
 }
