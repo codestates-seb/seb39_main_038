@@ -60,8 +60,10 @@ public class Local{
     @OneToOne(mappedBy = "local")
     private Store store;
 
+    // 1007 수정
+//    @OneToMany(mappedBy = "local", cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(mappedBy = "local", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "local")
     private List<Order> orders = new ArrayList<>();
 
     public void addOrders(Order order) {

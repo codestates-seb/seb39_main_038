@@ -51,7 +51,9 @@ public class Kakao{
     @Column(length = 20, nullable = false)
     private Role role = Role.CUSTOMER;
 
-    @OneToMany(mappedBy = "kakao", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    // 수정
+//    @OneToMany(mappedBy = "kakao", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "kakao",fetch = FetchType.EAGER)
     private List<Order> orders = new ArrayList<>();
 
     public void addOrders(Order order){
