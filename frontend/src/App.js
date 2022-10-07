@@ -43,7 +43,7 @@ function App() {
             <Route path={ROUTE.PWCHANGE.PATH} element={<PwChange />} />
             <Route path={`${ROUTE.MYPAGE.PATH}/*`} />
             <Route
-              path={`${ROUTE.MYPAGE.FOODTRUCKSETTING.PATH}:id`}
+              path={`${ROUTE.MYPAGE.FOODTRUCKSETTING.PATH}`}
               element={<FoodTruckSetting />}
             />
             <Route path={ROUTE.NOTFOUND.PATH} element={<NotFound />} />

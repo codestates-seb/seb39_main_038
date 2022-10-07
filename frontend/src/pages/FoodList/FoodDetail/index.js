@@ -43,7 +43,7 @@ function FoodDetail() {
   } = data.data.data;
 
   const { FOODTRUCK_IMG } = process.env;
-
+  
   return (
     <Section>
       <MainBody>
