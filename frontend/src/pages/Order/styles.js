@@ -1,16 +1,26 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+import { COLOR, SCREEN } from '../../constants';
 
 const { ORDER_URI } = process.env;
 
 const OrderContainer = styled.div`
   max-width: 1020px;
   margin: 0 auto;
-  padding: 20px 0px;
+  padding: 20px 10px;
+  display: flex;
+  gap: 20px;
+  @media screen and (max-width: ${SCREEN.TABLET}) {
+    flex-direction: column;
+  }
 `;
 
 const OrderWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  width: 66.6666%;
+  @media screen and (max-width: ${SCREEN.TABLET}) {
+    width: 100%;
+  }
 `;
 
 const OrderTitle = styled.h1`
@@ -78,6 +88,21 @@ const Button = styled.button`
   justify-content: center;
   align-items: center;
   gap: 4px;
+  border: 1px solid #ccc;
+  padding: 10px 15px;
+  cursor: pointer;
+  ${({ active }) =>
+    active &&
+    css`
+      border-color: ${COLOR.LIGHTNAVY};
+      span {
+        color: ${COLOR.LIGHTNAVY};
+      }
+    `}
+`;
+
+const RadioBox = styled.input`
+  display: none;
 `;
 
 const DiscountBox = styled.div`
@@ -114,4 +139,5 @@ export {
   ButtonBox,
   Input,
   Icon,
+  RadioBox,
 };

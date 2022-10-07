@@ -14,7 +14,7 @@ const KAKAO_API = {
 };
 
 const API_URI = {
-  KAKAO_LOGIN: `${API_HOST}/login/oauth2/code/kakao`,
+  KAKAO_LOGIN: `${API_HOST}login/oauth2/code/kakao`,
   KAKAO_LOGOUT: `${API_HOST}/kakao/logout`,
   LOGIN: `${API_HOST}/login`,
   REGISTER: `${API_HOST}/signup`,
@@ -27,6 +27,11 @@ const API_URI = {
   LOCAL_MYPAGE: `${API_HOST}/local/mypage`,
   KAKAO_MYPAGE: `${API_HOST}/kakao/mypage`,
   PWCHANGE: `${API_HOST}/change/password`,
+  FOODLIST: `${API_HOST}/store`,
+  ORDER: `${API_HOST}/order/orders`,
+  PAYMENT: `${API_HOST}/payment/verify`,
+  FOODREVIEW: (id) => `${API_HOST}/store/${id}/reviews`,
+  ANSWER: (id) => `${API_HOST}/review/${id}`,
 };
 
 export { KAKAO_API, API_URI };

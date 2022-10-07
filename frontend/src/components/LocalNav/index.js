@@ -11,12 +11,11 @@ function LocalNav() {
 
   const createNavList = () => {
     return MENU.map((item) => {
-      console.log(menuQuery, item.query);
       return (
         <NavList
           key={item.id}
-          value={item.query}
-          active={menuQuery.toString() === item.query}
+          data-value={item.query}
+          active={menuQuery === item.query}
         >
           <Navitem>{item.title}</Navitem>
         </NavList>
@@ -26,7 +25,7 @@ function LocalNav() {
 
   const handleOnClick = (e) => {
     const $li = e.target.closest('li');
-    setMenuQuery($li.value);
+    setMenuQuery($li.dataset.value);
     navigate(`/${ROUTE.FOODLIST.PATH}`);
   };
 

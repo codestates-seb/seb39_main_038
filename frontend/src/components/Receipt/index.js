@@ -1,62 +1,81 @@
 import React from 'react';
-import axios from 'axios';
-// import { useRecoilValue } from 'recoil';
-// import { selectors } from '../../store/atoms';
+import { useRecoilValue, useResetRecoilState } from 'recoil';
+import { useNavigate } from 'react-router-dom';
 import {
   StickyBody,
   CartListBody,
   Cart,
   CartTab,
   TotalPrice,
-  OrderBtn,
+  OrderButton,
+  Button,
+  CartTitle,
+  BlankOrderBox,
 } from './styles';
-// import { ReceiptList } from '../ReceiptList';
+import { ReceiptList } from '../ReceiptList';
+import { atoms } from '../../store';
+import { ROUTE } from '../../constants';
+import { usePay } from '../../hooks';
 
-function Receipt() {
-  // const menu = useRecoilValue(selectors.getCart);
+function Receipt({ order, request, type }) {
+  const orderList = useRecoilValue(atoms.orderList);
+  const resetReceipt = useResetRecoilState(atoms.orderList);
+  const navigate = useNavigate();
+  const { payWithCard, payWithCash } = usePay(orderList[0]?.storeId);
 
-  const session = () => {
-    const orderMenus = [
-      { menuId: 1, count: 2, price: 24000 },
-      { totalPrice: 24000 },
-    ];
-
-    axios
-      .post(
-        'ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com/order',
-        window.sessionStorage.getItem(orderMenus),
-      )
-      .then(() => {
-        alert('success');
-      })
-      .catch((res) => {
-        alert(res);
-      });
+  const totalPrice = () => {
+    let sum = 0;
+    for (let i = 0; i < orderList.length; i += 1)
+      sum += orderList[i].price * orderList[i].count;
+    return sum;
   };
 
-  const onClickHandlerOrder = () => {
-    session();
+  const createReceiptList = () => {
+    return orderList.map((item, index) => (
+      <ReceiptList
+        order={order}
+        key={item.name}
+        name={item.name}
+        price={item.price}
+        count={item.count}
+        idx={index}
+      />
+    ));
   };
+
+  const goOrder = () => navigate(`/${ROUTE.ORDER.PATH}`);
+  const goPay = () => {
+    if (type === 'CARD') payWithCard(request, type);
+    else payWithCash(request, type);
+    resetReceipt();
+    navigate(`/${ROUTE.FOODLIST.PATH}`);
+  };
+
   return (
     <StickyBody>
       <Cart>
         <CartTab>
-          <div>장바구니</div>
-          <button type="button">리셋</button>
+          <CartTitle>{order ? orderList[0].storeName : '장바구니'}</CartTitle>
+          <Button disabled={order} type="button" onClick={resetReceipt}>
+            리셋
+          </Button>
         </CartTab>
         <CartListBody>
-          {/* {menu.map((res) => (
-            <ReceiptList name={res.name} price={res.price} />
-          ))} */}
+          {orderList.length ? (
+            createReceiptList()
+          ) : (
+            <BlankOrderBox>장바구니에 상품이 없습니다.</BlankOrderBox>
+          )}
         </CartListBody>
-        <TotalPrice>합계: 38,000원</TotalPrice>
+        <TotalPrice>합계: {totalPrice()}원</TotalPrice>
       </Cart>
-
-      <OrderBtn>
-        <button type="button" onClick={onClickHandlerOrder}>
+      {order ? (
+        <OrderButton onClick={goPay}>결제하기</OrderButton>
+      ) : (
+        <OrderButton disabled={!orderList.length} onClick={goOrder}>
           바로 주문하기
-        </button>
-      </OrderBtn>
+        </OrderButton>
+      )}
     </StickyBody>
   );
 }

@@ -7,7 +7,7 @@ const ROUTE = {
   },
   MYPAGE: {
     PATH: 'mypage',
-    FOODTRUCKSETTING: { PATH: '/' },
+    FOODTRUCKSETTING: { PATH: 'trucksetting/:id' },
   },
   FOODLIST: {
     PATH: 'foodlist',
@@ -27,6 +27,7 @@ const ROUTE = {
   ORDER: { PATH: 'order' },
   PWCHANGE: { PATH: 'pwchange' },
   NOTFOUND: { PATH: '*', NAME: '404' },
+  REVIEW: { PATH: 'review' },
 };
 
 export { ROUTE };

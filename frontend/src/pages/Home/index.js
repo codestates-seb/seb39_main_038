@@ -11,8 +11,6 @@ function Home() {
   const navigate = useNavigate();
   const setMenuQuery = useSetRecoilState(atoms.menuQuery);
   const setIsLogin = useSetRecoilState(atoms.isLogin);
-  const isLogin = useRecoilValue(atoms.isLogin);
-  console.log(isLogin);
 
   const postAuthData = useCallback(
     async (api, code) => {
@@ -48,6 +46,7 @@ function Home() {
 
   const hanldeOnClick = (e) => {
     const $container = e.target.closest('div');
+    if (!$container.dataset.query) return;
     setMenuQuery($container.dataset.query);
     navigate(`/${ROUTE.FOODLIST.PATH}`);
   };

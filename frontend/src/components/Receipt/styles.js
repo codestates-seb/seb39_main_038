@@ -1,8 +1,13 @@
 import styled from 'styled-components';
+import { SCREEN, COLOR } from '../../constants';
 
 const StickyBody = styled.div`
-  @media screen and (min-width: 768px) {
-    width: 33.333%;
+  width: 33.333%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  @media screen and (max-width: ${SCREEN.TABLET}) {
+    width: 100%;
   }
 `;
 
@@ -15,7 +20,7 @@ const CartListBody = styled.div`
 const Cart = styled.div`
   display: flex;
   flex-direction: column;
-  @media screen and (max-width: 767px) {
+  @media screen and (max-width: ${SCREEN.TABLET}) {
     padding: 20px 0px;
   }
 `;
@@ -24,10 +29,15 @@ const CartTab = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background-color: ${COLOR.NAVY};
+  color: ${COLOR.YELLOW};
+  padding: 10px 15px;
+`;
+
+const CartTitle = styled.h1`
+  color: ${COLOR.YELLOW};
   font-weight: 600;
-  background-color: #16267d;
-  color: #f4b504;
-  padding: 10px 10px 10px 15px;
+  font-size: 16px;
 `;
 
 const TotalPrice = styled.div`
@@ -42,30 +52,47 @@ const TotalPrice = styled.div`
   font-size: 16px;
 `;
 
-const OrderBtn = styled.div`
-  > button {
-    background-color: #16267d;
-    color: #f4b504;
-    font-size: 14px;
-    font-weight: bold;
-    width: 100%;
-  }
-  @media screen and (max-width: 767px) {
-    bottom: 0px;
+const Button = styled.button`
+  padding: 1px 10px;
+  border: 1px solid ${COLOR.WHITE};
+  background-color: transparent;
+  color: ${COLOR.WHITE};
+  font-size: 10px;
+`;
+
+const OrderButton = styled.button`
+  background-color: ${COLOR.NAVY};
+  color: ${COLOR.YELLOW};
+  font-size: 14px;
+  font-weight: bold;
+  width: 100%;
+  padding: 10px 15px;
+
+  @media screen and (max-width: ${SCREEN.TABLET}) {
     position: fixed;
-    width: 100%;
-    > button {
-      padding: 10px;
-    }
-  }
-  @media screen and (min-width: 768px) {
-    display: flex;
-    padding: 35px 0px 0px;
-    gap: 15px;
-    > button {
-      padding: 10px;
-    }
+    bottom: 0;
   }
 `;
 
-export { StickyBody, CartListBody, Cart, CartTab, TotalPrice, OrderBtn };
+const BlankOrderBox = styled.div`
+  width: 100%;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 200;
+  color: #666666;
+`;
+
+export {
+  StickyBody,
+  CartListBody,
+  Cart,
+  CartTab,
+  TotalPrice,
+  OrderButton,
+  CartTitle,
+  Button,
+  BlankOrderBox,
+};

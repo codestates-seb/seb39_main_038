@@ -1,6 +1,6 @@
-import React from 'react';
-import { useRecoilState } from 'recoil';
-import { atoms } from '../../../store';
+import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { useFoodDetail } from '../../../hooks';
 import {
   Section,
   MainBody,
@@ -14,6 +14,9 @@ import {
   InfoTabBtn,
   MenuTabBtn,
   MenuSection,
+  InfoItem,
+  Text,
+  FoodTruckTag,
 } from './styles';
 import {
   DetailFoodList,
@@ -23,63 +26,93 @@ import {
 } from '../../../components';
 
 function FoodDetail() {
-  const [menu, setMenu] = useRecoilState(atoms.menuTab);
+  const { id } = useParams();
+  const { data } = useFoodDetail(id);
+  const [menu, setMenu] = useState('메뉴');
+  const handleOnClick = (tabItem) => () => setMenu(tabItem);
 
+  const {
+    storeName,
+    storeImage,
+    storeContent,
+    totalGrade,
+    storeWaitTime,
+    storeTag,
+    totalMenu,
+    totalReview,
+  } = data.data.data;
+
+  const { FOODTRUCK_IMG } = process.env;
+  
   return (
     <Section>
       <MainBody>
-        <FoodTruckName>
-          <div>맘스터치</div>
-        </FoodTruckName>
+        <FoodTruckName>{storeName}</FoodTruckName>
         <FoodTruckCapsulizedInfo>
-          <FoodTruckImg>
-            <img alt="FoodTruckImg" />
-          </FoodTruckImg>
-
+          <FoodTruckImg src={storeImage || FOODTRUCK_IMG} />
           <CapsulizedInfo>
-            <ul>
-              <li>별점</li>
-              <li>대기줄 시간</li>
-              <li>정보</li>
-            </ul>
+            <InfoItem>
+              <Text color="#999999" size={13}>
+                별점
+              </Text>
+              <Text color="#333333" size={13}>
+                {totalGrade}
+              </Text>
+            </InfoItem>
+            <InfoItem>
+              <Text color="#999999" size={13}>
+                대기시간
+              </Text>
+              <Text color="#333333" size={13}>
+                {storeWaitTime}
+              </Text>
+            </InfoItem>
+            <InfoItem>
+              <Text color="#999999" size={13}>
+                태그
+              </Text>
+              <FoodTruckTag>{storeTag}</FoodTruckTag>
+            </InfoItem>
           </CapsulizedInfo>
         </FoodTruckCapsulizedInfo>
         <Notice className="Notice">
-          <div>사장님의 알림</div>
+          <Text as="strong" color="#333333" size={12}>
+            사장님알림
+          </Text>
+          <Text color="#666666" size={12}>
+            {storeContent}
+          </Text>
         </Notice>
+
         <MenuSection>
           <MenuBar>
             <MenuTabBtn
               menu={menu}
               type="button"
-              onClick={() => {
-                setMenu('메뉴');
-              }}
+              onClick={handleOnClick('메뉴')}
             >
-              메뉴 35
+              메뉴 {totalMenu}
             </MenuTabBtn>
             <ReviewTabBtn
               menu={menu}
               type="button"
-              onClick={() => {
-                setMenu('리뷰');
-              }}
+              onClick={handleOnClick('리뷰')}
             >
-              클린리뷰 1740
+              클린리뷰 {totalReview}
             </ReviewTabBtn>
             <InfoTabBtn
               menu={menu}
               type="button"
-              onClick={() => {
-                setMenu('정보');
-              }}
+              onClick={handleOnClick('정보')}
             >
               정보
             </InfoTabBtn>
           </MenuBar>
-          {menu === '메뉴' ? <DetailFoodList /> : null}
-          {menu === '리뷰' ? <DetailReview /> : null}
-          {menu === '정보' ? <DetailInfo /> : null}
+          {menu === '메뉴' ? (
+            <DetailFoodList storeId={id} storeName={storeName} />
+          ) : null}
+          {menu === '리뷰' ? <DetailReview storeId={id} /> : null}
+          {menu === '정보' ? <DetailInfo storeId={id} /> : null}
         </MenuSection>
       </MainBody>
       <Receipt />

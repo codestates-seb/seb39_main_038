@@ -1,25 +1,71 @@
 import React from 'react';
-import { CartList, FoodName, CartListAdd } from './styles';
+import { useRecoilState } from 'recoil';
+import { atoms } from '../../store';
+import {
+  CartListContainer,
+  FoodName,
+  CartListWrapper,
+  CartListInner,
+  Button,
+  Text,
+} from './styles';
 
-function ReceiptList({ name, price }) {
+function ReceiptList({ name, price, count, idx, order }) {
+  const [orderList, setOrderList] = useRecoilState(atoms.orderList);
+
+  const deleteOrderItem = () => {
+    const result = [];
+    // eslint-disable-next-line no-restricted-syntax
+    for (const value of orderList) result.push({ ...value });
+    result.splice(idx, 1);
+    setOrderList(result);
+  };
+
+  const plusCount = () => {
+    const result = [];
+    // eslint-disable-next-line no-restricted-syntax
+    for (const value of orderList) result.push({ ...value });
+    result[idx].count += 1;
+    setOrderList(result);
+  };
+
+  const minusCount = () => {
+    const result = [];
+    // eslint-disable-next-line no-restricted-syntax
+    for (const value of orderList) result.push({ ...value });
+    if (result[idx].count === 1) return;
+    result[idx].count -= 1;
+    setOrderList(result);
+  };
+
   return (
-    <CartList>
-      <div>
-        <FoodName>{name}</FoodName>
+    <CartListContainer>
+      <FoodName>{name}</FoodName>
 
-        <CartListAdd>
-          <div>
-            <div type="button">x</div>
-            <span>{price}</span>
-          </div>
-          <div>
-            <div type="button">-</div>
-            <span>1</span>
-            <div type="button">+</div>
-          </div>
-        </CartListAdd>
-      </div>
-    </CartList>
+      <CartListWrapper>
+        <CartListInner>
+          <Button
+            disabled={order}
+            type="button"
+            color="#ccc"
+            onClick={deleteOrderItem}
+          >
+            ×
+          </Button>
+          <Text color="#666666">{price}원</Text>
+        </CartListInner>
+
+        <CartListInner>
+          <Button disabled={order} type="button" onClick={plusCount}>
+            ＋
+          </Button>
+          <Text color="#666666">{count}</Text>
+          <Button disabled={order} type="button" onClick={minusCount}>
+            －
+          </Button>
+        </CartListInner>
+      </CartListWrapper>
+    </CartListContainer>
   );
 }
 

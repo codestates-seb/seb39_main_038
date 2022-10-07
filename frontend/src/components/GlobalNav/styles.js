@@ -18,10 +18,18 @@ const NavWrapper = styled.div`
 const NavLogo = styled.h1`
   width: 120px;
   height: 38px;
-  background-color: red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Anton', sans-serif;
+  color: ${COLOR.YELLOW};
+  font-size: 40px;
+  letter-spacing: 2px;
+  text-decoration: none;
 
   @media all and (max-width: ${SCREEN.MOBILE}) {
     width: 90px;
+    font-size: 30px;
   }
 `;
 

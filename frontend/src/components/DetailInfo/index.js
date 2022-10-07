@@ -1,4 +1,6 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
+import { useFoodDetail } from '../../hooks';
 import {
   TruckInfoBody,
   TruckInfoTitle,
@@ -8,30 +10,38 @@ import {
 } from './styles';
 
 function DetailInfo() {
+  const { id } = useParams();
+  const { data } = useFoodDetail(id);
+
+  const {
+    storeContent,
+    storeTime,
+    storePhone,
+    storeAddress,
+    storePayment,
+    storeName,
+    storeNumber,
+  } = data.data.data;
+
   return (
     <TruckInfoBody>
       <TruckInfoTitle>사장님 알림</TruckInfoTitle>
 
-      <TruckInfoContent>
-        상단 찜 하트 꾸욱 눌러주세요. 리뷰 서비스 1당면추가 2음료
-      </TruckInfoContent>
+      <TruckInfoContent>{storeContent}</TruckInfoContent>
 
       <TruckInfoTitle>업체정보</TruckInfoTitle>
 
       <TruckInfoContent>
         <TruckInfoContentKey>
-          영업시간: <TruckInfoContentValue>10:35 - 22:00</TruckInfoContentValue>
+          영업시간: <TruckInfoContentValue>{storeTime}</TruckInfoContentValue>
         </TruckInfoContentKey>
 
         <TruckInfoContentKey>
-          전화번호: <TruckInfoContentValue>010-1234-5678</TruckInfoContentValue>
+          전화번호: <TruckInfoContentValue>{storePhone}</TruckInfoContentValue>
         </TruckInfoContentKey>
 
         <TruckInfoContentKey>
-          주소:{' '}
-          <TruckInfoContentValue>
-            서울특별시 강동구 길동 377-3 오륜빌딩 1층 104호(길동, 오륜빌딩)
-          </TruckInfoContentValue>
+          주소: <TruckInfoContentValue>{storeAddress}</TruckInfoContentValue>
         </TruckInfoContentKey>
       </TruckInfoContent>
 
@@ -39,7 +49,8 @@ function DetailInfo() {
 
       <TruckInfoContent>
         <TruckInfoContentKey>
-          결제수단: <TruckInfoContentValue>카드, 현금</TruckInfoContentValue>
+          결제수단:{' '}
+          <TruckInfoContentValue>{storePayment}</TruckInfoContentValue>
         </TruckInfoContentKey>
       </TruckInfoContent>
 
@@ -47,10 +58,11 @@ function DetailInfo() {
 
       <TruckInfoContent>
         <TruckInfoContentKey>
-          상호명: <TruckInfoContentValue>맘스터치</TruckInfoContentValue>
+          상호명: <TruckInfoContentValue>{storeName}</TruckInfoContentValue>
         </TruckInfoContentKey>
         <TruckInfoContentKey>
-          사업자번호: <TruckInfoContentValue>7360701994</TruckInfoContentValue>
+          사업자번호:{' '}
+          <TruckInfoContentValue>{storeNumber}</TruckInfoContentValue>
         </TruckInfoContentKey>
       </TruckInfoContent>
 

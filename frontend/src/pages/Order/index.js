@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   OrderContainer,
   OrderWrapper,
@@ -15,9 +15,19 @@ import {
   Button,
   DiscountBox,
   DiscountButton,
+  RadioBox,
 } from './styles';
+import { Receipt } from '../../components';
 
 function Order() {
+  const [request, setRequest] = useState('');
+  const [radio, setRadio] = useState({ value: 'CARD', togle: true });
+
+  const handleOnChangeRadio = (e) =>
+    setRadio({ value: e.target.value, togle: !radio.togle });
+
+  const hanldeOnChangeAreaText = (e) => setRequest(e.target.value);
+
   return (
     <OrderContainer>
       <OrderWrapper>
@@ -25,7 +35,10 @@ function Order() {
         <OrderBox>
           <OrderHeader>주문시 요청사항</OrderHeader>
           <OrderContent>
-            <TextEditor placeholder="주문시 요청사항을 입력해주세요." />
+            <TextEditor
+              placeholder="주문시 요청사항을 입력해주세요."
+              onChange={hanldeOnChangeAreaText}
+            />
             <LimitBox>
               <Text>최대 100자까지 입력 가능합니다.</Text>
               <Text>100 / 100</Text>
@@ -40,13 +53,26 @@ function Order() {
               있어요!
             </Text>
             <ButtonBox>
-              <Button>
+              <Button as="label" active={radio.togle}>
+                <RadioBox
+                  name="selector"
+                  type="radio"
+                  value="CARD"
+                  onChange={handleOnChangeRadio}
+                />
                 <Icon width={22} height={24} position="-36px -46px" />
                 <Text size={12} color="#999999">
                   신용카드
                 </Text>
               </Button>
-              <Button>
+
+              <Button as="label" active={!radio.togle}>
+                <RadioBox
+                  name="selector"
+                  type="radio"
+                  value="CASH"
+                  onChange={handleOnChangeRadio}
+                />
                 <Icon width={24} height={24} position="-39px -7px" />
                 <Text size={12} color="#999999">
                   현금
@@ -69,6 +95,7 @@ function Order() {
           </OrderContent>
         </OrderBox>
       </OrderWrapper>
+      <Receipt order request={request} type={radio.value} />
     </OrderContainer>
   );
 }

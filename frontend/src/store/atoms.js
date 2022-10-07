@@ -1,7 +1,5 @@
-import axios from 'axios';
-
-import { atom, selector } from 'recoil';
-import { storge } from './storge';
+import { atom } from 'recoil';
+import { storge } from '../utils/storge';
 import { MENU } from '../constants';
 
 const sessionStorageEffect =
@@ -22,32 +20,37 @@ const atoms = {
   }),
 
   menuQuery: atom({ key: 'menu', default: MENU[0].query }),
-  menuTab: atom({ key: 'menuTab', default: '메뉴' }),
+  loginInfo: atom({
+    key: 'loginInfo',
+    default: { storeId: null, localId: null },
+    effects: [sessionStorageEffect('storeId')],
+  }),
+
+  isLogin: atom({
+    key: 'isLogin',
+    default: { state: false, type: null },
+    effects: [sessionStorageEffect('isLogin')],
+  }),
+
   modal: atom({
     key: 'modal',
     default: { food: false, order: false, email: false },
   }),
-  tagName: atom({ key: 'tagName', default: '' }),
-};
 
-const selectors = {
-  getCart: selector({
-    key: 'getCart',
-    get: async () => {
-      const res = await axios.get('http://localhost:8080/order/1');
-      return res.data;
-    },
+  orderData: atom({ key: 'orderData', default: {} }),
+
+  menuOrder: atom({
+    key: 'menuOrder',
+    default: [
+      { storeId: null, name: null, price: null, info: null, img: null },
+    ],
   }),
-  getMenu: selector({
-    key: 'getMenu',
-    get: async () => {
-      const res = await axios.get('/store/1');
-      if (res.menu) {
-        return res.menu;
-      }
-      return alert('음식을 불러오지 못했습니다.');
-    },
+
+  orderList: atom({
+    key: 'orderList',
+    default: [],
+    effects: [sessionStorageEffect('orderList')],
   }),
 };
 
-export { atoms, selectors };
+export { atoms };

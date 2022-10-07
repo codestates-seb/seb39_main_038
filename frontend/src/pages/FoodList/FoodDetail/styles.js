@@ -1,17 +1,19 @@
 import styled from 'styled-components';
+import { COLOR } from '../../../constants';
 
 const Section = styled.section`
   max-width: 1020px;
   margin: 0 auto;
   font-size: 14px;
   background-color: white;
-  padding: 10px 10px 0px 10px;
+  padding: 20px 0px;
+
   @media screen and (max-width: 767px) {
     padding-bottom: 40px;
   }
-  @media ${(e) => e.theme.tablet} {
-    gap: 20px;
+  @media screen and (min-width: 768px) {
     display: flex;
+    gap: 20px;
   }
 `;
 
@@ -22,47 +24,46 @@ const MainBody = styled.div`
   }
 `;
 
-const FoodTruckName = styled.div`
+const FoodTruckName = styled.h1`
   font-size: 16px;
-  font-weight: 500;
-  display: flex;
-  justify-content: start;
-  align-items: center;
-  padding: 10px;
+  padding: 10px 15px;
   border: 1px solid lightgrey;
-  > div {
-    padding-top: 3px 0px 0px;
-  }
 `;
 
 const FoodTruckCapsulizedInfo = styled.div`
   display: flex;
-  justify-content: start;
   border: 1px solid lightgrey;
   margin-top: -1px;
   padding: 10px;
-  font-size: 14px;
 `;
 
-const FoodTruckImg = styled.div`
-  > img {
-    background-image: url(${(props) => props.url}), url(default);
-    line-height: 100px;
-  }
+const FoodTruckImg = styled.img`
+  width: 120px;
+  height: 120px;
 `;
 
-const CapsulizedInfo = styled.div`
-  padding: 0px 0px 0px 10px;
-  line-height: 30px;
+const CapsulizedInfo = styled.ul`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 10px 15px;
+  gap: 10px;
 `;
 
 const Notice = styled.div`
   display: flex;
+  gap: 10px;
   border: 1px solid lightgrey;
-  align-items: center;
-  padding: 14px 20px 12px 15px;
+  padding: 10px 15px;
   margin-top: -1px;
-  font-size: 12px;
+  font-size: 16px;
+  div {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 `;
 
 const MenuBar = styled.div`
@@ -114,6 +115,24 @@ const MenuSection = styled.div`
   margin: 10px 0px 0px;
 `;
 
+const InfoItem = styled.li`
+  display: flex;
+  gap: 10px;
+`;
+
+const Text = styled.span`
+  color: ${({ color }) => color};
+  font-size: ${({ size }) => size};
+`;
+
+const FoodTruckTag = styled.span`
+  font-size: 10px;
+  border: 1px solid ${COLOR.LIGHTNAVY};
+  color: ${COLOR.LIGHTNAVY};
+  padding: 1px 4px;
+  flex-shrink: 0;
+`;
+
 export {
   Section,
   MainBody,
@@ -127,4 +146,7 @@ export {
   InfoTabBtn,
   MenuTabBtn,
   MenuSection,
+  Text,
+  InfoItem,
+  FoodTruckTag,
 };

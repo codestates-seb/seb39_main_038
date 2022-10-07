@@ -7,10 +7,18 @@ import axios from 'axios';
 import './index.css';
 import { RecoilRoot } from 'recoil';
 import App from './App';
-import { theme } from './store';
 
 axios.defaults.withCredentials = true;
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      suspense: true,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    },
+  },
+});
 const root = reactDOM.createRoot(document.getElementById('root'));
 
 root.render(
@@ -22,7 +30,6 @@ root.render(
       {process.env.MODE ? (
         <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
       ) : null}
-      <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
     </QueryClientProvider>
   </Router>,
 );

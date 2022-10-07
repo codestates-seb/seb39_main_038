@@ -3,7 +3,12 @@ import styled from 'styled-components';
 const Section = styled.div`
   margin: 0 auto;
   max-width: 1020px;
-  padding: 10px 20px 40px 20px;
+  padding: 10px 80px 40px;
+  button {
+    padding: 5px 15px;
+    background-color: white;
+    font-weight: 900;
+  }
 `;
 
 const Title = styled.h1`
@@ -13,19 +18,23 @@ const Title = styled.h1`
 
 const MainImg = styled.div`
   font-size: 14px;
-  gap: 20px;
-  align-items: center;
+  align-items: start;
   padding: 0px 0px 20px 0px;
-  > img {
-    line-height: 100px;
+  display: flex;
+  div {
     background-image: url(${(props) => props.url});
-    border: 1px solid #ccc;
+    width: 50%;
+    justify-content: end;
+    display: flex;
+    img {
+      border: 1px solid #ccc;
+      line-height: 110px;
+    }
   }
-  > button {
-    padding: 2px 10px;
-    height: 50%;
-    background-color: white;
-  }
+`;
+
+const Dropdown = styled.div`
+  float: right;
 `;
 
 const CreateFoodTruck = styled.div`
@@ -40,10 +49,11 @@ const CreateFoodTruck = styled.div`
     height: 200px;
     border: 1px solid #ccc;
     width: 100%;
+    resize: none;
   }
 `;
 
-const TypeInfo = styled.div`
+const TypeInfo = styled.form`
   > input {
     border: 1px solid lightgrey;
     margin-top: -1px;
@@ -66,7 +76,7 @@ const HashTagBtn = styled.button`
 `;
 
 const Hash = styled.div`
-  font-size: 12px;
+  font-size: 14px;
   display: flex;
   align-items: center;
   > button {
@@ -74,8 +84,14 @@ const Hash = styled.div`
     padding: 0px 4px 0px 4px;
     background-color: white;
   }
-  > span {
-    padding: 0px 5px 0px 10px;
+  input {
+    width: 60px;
+    border: none;
+    cursor: pointer;
+
+    :focus {
+      border: 1px solid #ccc;
+    }
   }
 `;
 
@@ -88,12 +104,14 @@ const CreateFood = styled.div`
   padding: 0px 0px 30px 0px;
   gap: 10px;
   align-items: center;
-  > img {
+  img {
     border: 1px solid #ccc;
-    padding: 20px;
+    object-fit: contain;
+    width: 120px;
+    height: 120px;
   }
-  > button {
-    padding: 5px;
+  button {
+    padding: 10px 30px;
     background-color: white;
   }
 `;
@@ -105,31 +123,74 @@ const UpdateFood = styled.div`
 const UpdateInput = styled.div`
   display: flex;
   padding: 0px 0px 20px 0px;
-  gap: 10px;
+  gap: 7px;
   align-items: center;
-  > img {
+  img {
     border: 1px solid #ccc;
-    padding: 20px;
+    object-fit: contain;
+    width: 120px;
+    height: 120px;
   }
-  > button {
-    padding: 5px;
+  button {
+    padding: 5px 10px;
     background-color: white;
   }
 `;
 
 const SettingDoneBtn = styled.div`
-  padding: 50px 50px 50px 0px;
+  padding: 50px 60px 50px 0px;
+  display: flex;
+  justify-content: end;
+  gap: 50px;
   > button {
-    float: right;
-    padding: 10px 40px 10px 40px;
+    padding: 10px 30px 10px 30px;
     background-color: white;
   }
-  @media screen and (max-width: 767px) {
-    > button {
-      position: fixed;
-      bottom: 0px;
-      width: calc(100% - 40px);
+`;
+
+const Toggle = styled.div`
+  display: inline-block;
+  input {
+    :checked ~ label {
+      background: #f03d3d;
     }
+    :checked ~ label > span {
+      left: calc(100% - 2.8rem);
+      background: #fff;
+    }
+  }
+  label {
+    width: 6rem;
+    margin: 2rem;
+    height: 3rem;
+    display: block;
+    position: relative;
+    border-radius: 2rem;
+    background-color: #fff;
+    box-shadow: 0 0 1rem 3px rgba(0 0 0 / 15%);
+    transition: all 0.2s ease-in;
+    cursor: pointer;
+    span {
+      width: 2.6rem;
+      height: 2.6rem;
+      position: absolute;
+      top: 50%;
+      left: 0.2rem;
+      transform: translateY(-50%);
+      border-radius: 50%;
+      background: #f03d3d;
+    }
+  }
+`;
+
+const OpenOrClose = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  span {
+    font-size: 36px;
+    color: grey;
+    padding: 0px 0px 0px 20px;
   }
 `;
 
@@ -137,6 +198,7 @@ export {
   Section,
   Title,
   MainImg,
+  Dropdown,
   CreateFoodTruck,
   TypeInfo,
   HashTagBtn,
@@ -147,4 +209,6 @@ export {
   UpdateFood,
   UpdateInput,
   SettingDoneBtn,
+  Toggle,
+  OpenOrClose,
 };

@@ -1,36 +1,50 @@
 import styled from 'styled-components';
+import { COLOR } from '../../constants';
 
-const CartList = styled.div`
+const CartListContainer = styled.div`
   display: flex;
   justify-content: space-between;
   flex-direction: column;
   border-bottom: 1px solid #ccc;
-  > div {
-    padding: 10px 15px;
-  }
+  padding: 10px 15px;
 `;
 
-const FoodName = styled.div`
+const FoodName = styled.h2`
   font-size: 14px;
-  padding: 5px 12px 8px;
+  padding: 10px 0px;
 `;
 
-const CartListAdd = styled.div`
+const CartListWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  > div {
-    padding: 0px 12px;
-    width: 50%;
-    display: flex;
-    justify-content: space-between;
-  }
-  > div > div {
-    font-size: 14px;
-    padding: 6px 12px;
-  }
-  > div > span {
-    padding: 5px;
-  }
 `;
 
-export { CartList, FoodName, CartListAdd };
+const CartListInner = styled.div`
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Button = styled.button`
+  padding: 1px 2px;
+  border: 1px solid ${({ color }) => color || `${COLOR.LIGHTNAVY}`};
+  background-color: transparent;
+  color: ${({ color }) => color || `${COLOR.LIGHTNAVY}`};
+  font-size: 14px;
+`;
+
+const Text = styled.span`
+  color: ${({ color }) => color};
+  font-size: ${({ size }) => size};
+  padding-bottom: 2px;
+`;
+
+export {
+  CartListContainer,
+  FoodName,
+  CartListWrapper,
+  CartListInner,
+  Button,
+  Text,
+};

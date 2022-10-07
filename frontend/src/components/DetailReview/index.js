@@ -1,136 +1,94 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
-  Section,
+  ReviewContainer,
   Rating,
   TotalRate,
+  Star,
   Comment,
-  NameDateReply,
-  Date,
-  Rate,
-  ReplyDeleteBtn,
-  ThumnailBox,
-  OrderHistory,
-  Thumnail,
+  Header,
+  TextWrapper,
+  Text,
+  ButtonWrapper,
+  Button,
+  Image,
 } from './styles';
+import { useReview } from '../../hooks';
+import { ROUTE } from '../../constants';
+import { dateFormat } from '../../utils';
+import { Answer } from '../Answer';
 
-function DetailReview() {
+function DetailReview({ storeId }) {
+  const navigate = useNavigate();
+  const { data, deleteMutate } = useReview(storeId);
+
+  const createStar = (n) => {
+    let stars = '';
+    for (let i = 0; i < parseInt(n, 10); i += 1) stars += '★';
+    return stars;
+  };
+
+  const goUpdate = (sid, rid) => () =>
+    navigate(`/${ROUTE.REVIEW.PATH}`, {
+      state: { storeId: sid, reviewId: rid },
+    });
+
+  const goDelete = (sid, rid) => () => {
+    const isCheck = window.confirm('정말 지우시겠습니까?');
+    if (isCheck) return deleteMutate({ sid, rid });
+    return null;
+  };
+
+  const createComment = () => {
+    return data?.data.reviews.map((item) => {
+      console.log(data.data.reviews);
+      return (
+        <Comment key={item.reviewId}>
+          <Header>
+            <TextWrapper>
+              <Text as="h1" size={16} color="#333333">
+                {item.reviewName}님
+              </Text>
+              <Text size={12} color="#999999">
+                {dateFormat(new Date(item.createdAt), '-')}
+              </Text>
+            </TextWrapper>
+            {item.auth ? (
+              <ButtonWrapper>
+                <Button onClick={goUpdate(storeId, item.reviewId)}>수정</Button>
+                <Button onClick={goDelete(storeId, item.reviewId)}>삭제</Button>
+              </ButtonWrapper>
+            ) : null}
+          </Header>
+          <TextWrapper>
+            <Text as="h1" size={14} color="#ffa400">
+              별점
+            </Text>
+            <Star>{createStar(item.reviewGrade)}</Star>
+          </TextWrapper>
+
+          {item.reviewImage ? (
+            <Image alt="food" src={item.reviewImage} />
+          ) : null}
+
+          <Text size={14} color="#666666">
+            {item.reviewContent}
+          </Text>
+
+          <Answer item={item} storeId={storeId} />
+        </Comment>
+      );
+    });
+  };
+
   return (
-    <Section>
+    <ReviewContainer>
       <Rating>
-        <TotalRate>5.0</TotalRate> <span>★★★★★</span>
+        <TotalRate>{data?.data.totalGrade}</TotalRate>
+        <Star header>{createStar(data?.data.totalGrade)}</Star>
       </Rating>
-      <Comment>
-        <NameDateReply>
-          <div>
-            김재원 <Date>2022-09-20</Date>
-          </div>
-          <div>
-            <ReplyDeleteBtn type="button">답글</ReplyDeleteBtn>
-            <ReplyDeleteBtn type="button">삭제</ReplyDeleteBtn>
-          </div>
-        </NameDateReply>
-        <Rate>별점 ★★</Rate>
-        <ThumnailBox>
-          <Thumnail alt="Thumnail" />
-        </ThumnailBox>
-        <OrderHistory>주문내역</OrderHistory>
-        <div>
-          사장님도 친절하시고, 양도 많고 엄청 신선했습니다! 많이 시켜먹을 것
-          같습니다!
-        </div>
-      </Comment>
-      <Comment>
-        <NameDateReply>
-          <div>
-            김재원 <Date>2022-09-21</Date>
-          </div>
-          <div>
-            <ReplyDeleteBtn type="button">답글</ReplyDeleteBtn>
-            <ReplyDeleteBtn type="button">삭제</ReplyDeleteBtn>
-          </div>
-        </NameDateReply>
-        <Rate>별점 ★★★★</Rate>
-        <ThumnailBox>
-          <Thumnail alt="Thumnail" />
-        </ThumnailBox>
-        <div>주문내역</div>
-        <div>맛은 없는거 같아요...</div>
-      </Comment>
-      <Comment>
-        <NameDateReply>
-          <div>
-            김재원 <Date>2022-09-20</Date>
-          </div>
-          <div>
-            <ReplyDeleteBtn type="button">답글</ReplyDeleteBtn>
-            <ReplyDeleteBtn type="button">삭제</ReplyDeleteBtn>
-          </div>
-        </NameDateReply>
-        <Rate>별점 ★★</Rate>
-        <ThumnailBox>
-          <Thumnail alt="Thumnail" />
-        </ThumnailBox>
-        <div>주문내역</div>
-        <div>
-          사장님도 친절하시고, 양도 많고 엄청 신선했습니다! 많이 시켜먹을 것
-          같습니다!
-        </div>
-      </Comment>
-      <Comment>
-        <NameDateReply>
-          <div>
-            김재원 <Date>2022-09-21</Date>
-          </div>
-          <div>
-            <ReplyDeleteBtn type="button">답글</ReplyDeleteBtn>
-            <ReplyDeleteBtn type="button">삭제</ReplyDeleteBtn>
-          </div>
-        </NameDateReply>
-        <Rate>별점 ★★★★</Rate>
-        <ThumnailBox>
-          <Thumnail alt="Thumnail" />
-        </ThumnailBox>
-        <div>주문내역</div>
-        <div>맛은 없는거 같아요...</div>
-      </Comment>
-      <Comment>
-        <NameDateReply>
-          <div>
-            김재원 <Date>2022-09-20</Date>
-          </div>
-          <div>
-            <ReplyDeleteBtn type="button">답글</ReplyDeleteBtn>
-            <ReplyDeleteBtn type="button">삭제</ReplyDeleteBtn>
-          </div>
-        </NameDateReply>
-        <Rate>별점 ★★</Rate>
-        <ThumnailBox>
-          <Thumnail alt="Thumnail" />
-        </ThumnailBox>
-        <div>주문내역</div>
-        <div>
-          사장님도 친절하시고, 양도 많고 엄청 신선했습니다! 많이 시켜먹을 것
-          같습니다!
-        </div>
-      </Comment>
-      <Comment>
-        <NameDateReply>
-          <div>
-            김재원 <Date>2022-09-21</Date>
-          </div>
-          <div>
-            <ReplyDeleteBtn type="button">답글</ReplyDeleteBtn>
-            <ReplyDeleteBtn type="button">삭제</ReplyDeleteBtn>
-          </div>
-        </NameDateReply>
-        <Rate>별점 ★★★★</Rate>
-        <ThumnailBox>
-          <Thumnail alt="Thumnail" />
-        </ThumnailBox>
-        <div>주문내역</div>
-        <div>맛은 없는거 같아요..</div>
-      </Comment>
-    </Section>
+      {createComment()}
+    </ReviewContainer>
   );
 }
 
