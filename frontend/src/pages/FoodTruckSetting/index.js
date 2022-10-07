@@ -26,6 +26,7 @@ import { useFoodDetail, useDetailFoodList } from '../../hooks';
 import { withAuth } from '../../components/Hoc';
 
 function FoodMenusList({ storeId, props }) {
+  const { API_HOST } = process.env;
   const [inputs, setInputs] = useState({
     menuName: '',
     menuPrice: '',
@@ -44,27 +45,22 @@ function FoodMenusList({ storeId, props }) {
   };
 
   const deleteMenu = async (e) => {
-    const res = await axios.delete(
-      `http://ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/store/${storeId}/menus/${e}`,
-    );
+    const res = await axios.delete(`${API_HOST}${storeId}/menus/${e}`);
     return res;
   };
 
   const patchMenu = async (e) => {
-    const res = await axios.patch(
-      `http://ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/store/${storeId}/menus/${e}`,
-      {
-        name: menuName,
-        price: menuPrice,
-        content: menuContent,
-        image: menuImg,
-      },
-    );
+    const res = await axios.patch(`${API_HOST}${storeId}/menus/${e}`, {
+      name: menuName,
+      price: menuPrice,
+      content: menuContent,
+      image: menuImg,
+    });
     return res;
   };
 
-  const onSuccess = (e) => {
-    console.log(e);
+  const onSuccess = () => {
+    // console.log(e);
     queryClient.invalidateQueries('detailfoodlist');
   };
 
@@ -147,7 +143,7 @@ function FoodMenusList({ storeId, props }) {
         type="button"
         onClick={() => {
           alert('음식 제거 완료');
-          console.log(props.menuId);
+          // console.log(props.menuId);
           deleteMutateMenu(props.menuId);
         }}
       >
@@ -311,17 +307,20 @@ function UpdateForm({
 }
 
 function FoodTruckSetting() {
+  const { API_HOST } = process.env;
   const [dropDown, setDropDown] = useState('한식');
   const [toggleStatus, setToggleStatus] = useState(false);
   const [storeId, setStoreId] = useState(false);
 
   const { id } = useParams();
   const { data } = useFoodDetail(id);
+  const queryClient = useQueryClient();
+  // console.log(data.data.data.storeId);
   useEffect(() => {
-    if (data.data.message === '해당 가게를 찾을 수 없습니다.') {
+    if (data.data.data.storeId === undefined) {
       setStoreId(false);
     } else {
-      setStoreId(data);
+      setStoreId(data.data.data.storeId);
     }
   }, []);
 
@@ -368,37 +367,31 @@ function FoodTruckSetting() {
   };
   // console.log('mento', handleTypeChange());
   const postMenu = async () => {
-    const res = await axios.post(
-      `http://ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/store/${id}/menus`,
-      {
-        name: newMenuName,
-        price: newMenuPrice,
-        content: newMenuContent,
-        image: newMenuImg,
-      },
-    );
+    const res = await axios.post(`${API_HOST}store/${id}/menus`, {
+      name: newMenuName,
+      price: newMenuPrice,
+      content: newMenuContent,
+      image: newMenuImg,
+    });
     return res;
   };
 
   const postInfo = async () => {
-    const res = await axios.post(
-      'http://ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/store/ask',
-      {
-        localId: id,
-        storePhone: phone,
-        storeNumber: number,
-        storeStatus: toggleStatus ? 'BRAKE' : 'OPEN',
-        storeName: name,
-        storeContent: ask,
-        storeImage: img,
-        storeType: dropDown,
-        storeTime: time,
-        storeWaitTime: '15분~30분',
-        storeAddress: address,
-        storePayment: '현금',
-        storeTag: tag,
-      },
-    );
+    const res = await axios.post(`${API_HOST}store/ask`, {
+      localId: id,
+      storePhone: phone,
+      storeNumber: number,
+      storeStatus: toggleStatus ? 'BRAKE' : 'OPEN',
+      storeName: name,
+      storeContent: ask,
+      storeImage: img,
+      storeType: dropDown,
+      storeTime: time,
+      storeWaitTime: '15분~30분',
+      storeAddress: address,
+      storePayment: '현금',
+      storeTag: tag,
+    });
     console.log(res.data.message);
     if (res.data.message) {
       alert(res.data.message);
@@ -406,26 +399,23 @@ function FoodTruckSetting() {
 
     return res;
   };
-  console.log(storeId);
+
   const patchInfo = async () => {
-    const res = await axios.patch(
-      `http://ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/store/${storeId}`,
-      {
-        localId: id,
-        storePhone: phone,
-        storeNumber: number,
-        storeStatus: toggleStatus ? 'BRAKE' : 'OPEN',
-        storeName: name,
-        storeContent: ask,
-        storeImage: img,
-        storeType: dropDown,
-        storeTime: time,
-        storeWaittime: '15분~30분',
-        storeAddress: address,
-        storePayment: '현금',
-        storeTag: tag,
-      },
-    );
+    const res = await axios.patch(`${API_HOST}store/${storeId}`, {
+      localId: id,
+      storePhone: phone,
+      storeNumber: number,
+      storeStatus: toggleStatus ? 'BRAKE' : 'OPEN',
+      storeName: name,
+      storeContent: ask,
+      storeImage: img,
+      storeType: dropDown,
+      storeTime: time,
+      storeWaittime: '15분~30분',
+      storeAddress: address,
+      storePayment: '현금',
+      storeTag: tag,
+    });
     console.log(res.data.message);
     if (res.data.message) {
       alert(res.data.message);
@@ -434,14 +424,12 @@ function FoodTruckSetting() {
   };
 
   const deleteInfo = async () => {
-    const res = await axios.delete(
-      `http://ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/store/${storeId}`,
-    );
+    const res = await axios.delete(`${API_HOST}store/${storeId}`);
     return res;
   };
 
   const onSuccess = () => {
-    // queryClient.invalidateQueries(['']);
+    queryClient.invalidateQueries(['detailfoodlist']);
   };
 
   const onError = () => {
@@ -641,17 +629,22 @@ function FoodTruckSetting() {
                 onClick={() => {
                   if (toggleStatus === false) {
                     if (
-                      window.confirm('정말로 영업을 임시중단 하시겠습니까?') ===
-                      true
+                      window.confirm('정말로 영업을 임시중단 하시겠습니까?')
                     ) {
                       setToggleStatus(true);
+                      // console.log('f', toggleStatus);
+                    } else {
+                      setToggleStatus(false);
+                      // console.log('s', toggleStatus);
                     }
                   }
+
                   if (toggleStatus === true) {
                     setToggleStatus(!toggleStatus);
+                    // console.log('t', toggleStatus);
                   }
                 }}
-                checked={toggleStatus}
+                defaultChecked={false}
                 id="toggle"
                 hidden
               />

@@ -11,10 +11,12 @@ const withAuth = (Component) => (props) => {
 
   const navigate = useNavigate();
   useEffect(() => {
-    if (data.data.data.storeId !== /* 고정 LocalId atom 자리 */ 1) {
-      alert('로그인 정보와 다른 정보입니다.');
+    if (data.data.data.storeId) {
+      if (data.data.data.storeId !== /* 고정 LocalId atom 자리 */ 1) {
+        alert('로그인 정보와 다른 정보입니다.');
 
-      navigate(ROUTE.HOME.PATH);
+        navigate(ROUTE.HOME.PATH);
+      }
     }
   }, [navigate]);
 
