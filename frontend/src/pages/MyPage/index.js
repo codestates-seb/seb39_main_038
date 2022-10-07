@@ -50,6 +50,7 @@ function MyPage() {
     });
   };
 
+  // eslint-disable-next-line no-unused-vars
   const createOrderContent = () => {
     return orderListData.data.orders?.map((item) => {
       console.log(orderListData.data.orders);
@@ -88,7 +89,6 @@ function MyPage() {
       </InfoInner>
       <OrderInner>
         <Header>주문조회</Header>
-        {createOrderContent()}
       </OrderInner>
       {type === 'local' ? <Button>가게 설정</Button> : null}
       <CustomModal.Order closeModal={closeOrder} />
