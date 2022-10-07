@@ -6,7 +6,6 @@ import com.main_39.Spring.store.entity.Store;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.mapping.ToOne;
 
 import javax.persistence.*;
 
