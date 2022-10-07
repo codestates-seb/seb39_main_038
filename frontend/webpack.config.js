@@ -57,6 +57,10 @@ module.exports = {
   ],
   devServer: {
     historyApiFallback: true,
+    // proxy: {
+    //   '/menu':
+    //     'ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/menu',
+    // },
   },
   optimization: {
     minimizer: [new CssMinimizerPlugin()],
