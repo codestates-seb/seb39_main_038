@@ -19,7 +19,8 @@ public interface ReviewMapper {
     CommentMapper commentMapper = Mappers.getMapper(CommentMapper.class);
     Review reviewPostDtoToReview(ReviewPostDto reviewPostDto);
     ReviewResponseDto reviewToReviewResponseDto(Review review);
-    Review reviewKakaoesponseDto(ReviewResponseDto reviewResponseDto);
+
+    //    Review reviewKakaoesponseDto(ReviewResponseDto reviewResponseDto);
     Review reviewPatchDtoToReview(ReviewPatchDto reviewPatchDto);
     List<ReviewResponseDto> reviewToReviewResponseDtos(List<Review> reviews);
 
@@ -27,6 +28,7 @@ public interface ReviewMapper {
         return reviews.stream()
                 .map(review -> {
                     CommentResponseDto commentResponseDto = commentMapper.commentToCommentResponseDto(review.getComment());
+//                    CommentResponseDto commentResponseDto = commentMapper.commentToCommentResponseDto((Comment) review.getComment());
 
                     Kakao kakao = review.getKakao();
                     Local local = review.getLocal();
