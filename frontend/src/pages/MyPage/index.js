@@ -12,7 +12,6 @@ import {
   TextBox,
   Text,
   AvatarBox,
-  Avatar,
   OrderInner,
   OrderContent,
   ButtonBox,
@@ -21,7 +20,7 @@ import {
 import { ROUTE } from '../../constants';
 import { CustomModal } from '../../components';
 
-const { AVATAR_IMG } = process.env;
+// const { AVATAR_IMG } = process.env;
 
 function MyPage() {
   const navigate = useNavigate();
@@ -40,9 +39,9 @@ function MyPage() {
 
   if (!state) return <div />;
 
-  console.log(userData);
+  console.log(userData.data.data);
 
-  const { avatar = 1, email = 1, name = 1, phone = 1 } = userData.data.data;
+  const { email = 1, name = 1, phone = 1 } = userData.data.data;
   const goModal = (item) => () => setOrderData(item);
 
   const goAsk = (id) => () => {
@@ -84,7 +83,6 @@ function MyPage() {
             {phone ? <Text size={14}>{`핸드폰 번호: ${phone}`}</Text> : null}
           </TextBox>
           <AvatarBox>
-            <Avatar src={avatar || AVATAR_IMG} alt="avatar" />
             <Button>수정</Button>
           </AvatarBox>
         </InfoContent>
