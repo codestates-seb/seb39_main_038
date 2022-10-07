@@ -29,6 +29,7 @@ const { API_HOST } = process.env;
 function FoodMenusList() {
   const { id } = useParams();
   const { data } = useDetailFoodList(id);
+  console.log(id);
 
   const [menuId, setMenuId] = useState(null);
   const [inputs, setInputs] = useState({
