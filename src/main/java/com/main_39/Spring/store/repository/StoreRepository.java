@@ -18,7 +18,6 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
     @Query(value = "SELECT * FROM store WHERE store_phone = :storePhone", nativeQuery = true)
     Optional<Store> findByPhone(String storePhone);
 
-    // 쿼리 추가 - 1007
-    @Query(value ="SELECT * FROM store WHERE store_type = :storeType", nativeQuery = true)
+
     public Page<Store> findByStoreType(Store.StoreType storeType, PageRequest pageable);
 }
