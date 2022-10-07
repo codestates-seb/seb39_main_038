@@ -10,7 +10,7 @@ import {
   Text,
 } from './styles';
 
-function ReceiptList({ name, price, count, idx }) {
+function ReceiptList({ name, price, count, idx, order }) {
   const [orderList, setOrderList] = useRecoilState(atoms.orderList);
 
   const deleteOrderItem = () => {
@@ -44,18 +44,23 @@ function ReceiptList({ name, price, count, idx }) {
 
       <CartListWrapper>
         <CartListInner>
-          <Button type="button" color="#ccc" onClick={deleteOrderItem}>
+          <Button
+            disabled={order}
+            type="button"
+            color="#ccc"
+            onClick={deleteOrderItem}
+          >
             ×
           </Button>
           <Text color="#666666">{price}원</Text>
         </CartListInner>
 
         <CartListInner>
-          <Button type="button" onClick={plusCount}>
+          <Button disabled={order} type="button" onClick={plusCount}>
             ＋
           </Button>
           <Text color="#666666">{count}</Text>
-          <Button type="button" onClick={minusCount}>
+          <Button disabled={order} type="button" onClick={minusCount}>
             －
           </Button>
         </CartListInner>

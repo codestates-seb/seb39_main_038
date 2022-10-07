@@ -26,8 +26,6 @@ const atoms = {
     default: { food: false, order: false, email: false },
   }),
 
-  orderData: atom({ key: 'orderData', default: {} }),
-
   menuOrder: atom({
     key: 'menuOrder',
     default: [

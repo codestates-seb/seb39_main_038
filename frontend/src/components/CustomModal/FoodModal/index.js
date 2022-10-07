@@ -22,6 +22,7 @@ function FoodModal({ closeModal }) {
   const { name, info, price, menuId, storeId, storeName } = useRecoilValue(
     atoms.menuOrder,
   );
+
   const navigate = useNavigate();
   if (!isMadal.food) return null;
 
@@ -36,6 +37,7 @@ function FoodModal({ closeModal }) {
 
   const goBusket = () => {
     closeModal();
+    setCount(1);
     setOrderList((prev) => {
       const data = { name, price, count, menuId, storeId, storeName };
       if (prev.length === 0) return [...prev, data];
