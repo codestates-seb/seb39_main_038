@@ -109,6 +109,7 @@ public class Store {
     /**
      * store : menu = 1 : N 양방향
      */
+    // 1007 수정
 //    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
 
     @LazyCollection(LazyCollectionOption.FALSE)
@@ -136,6 +137,7 @@ public class Store {
     /**
      * store : review = 1: N 양방향
      */
+    // 1007 수정
 //    @OneToMany(mappedBy = "store", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "store")
@@ -169,6 +171,7 @@ public class Store {
     /**
      * store : comment = 1 : N 양방향
      */
+    // 1007 수정
 //    @OneToMany(mappedBy = "store", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "store")

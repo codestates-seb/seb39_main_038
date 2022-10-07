@@ -124,7 +124,7 @@ public class StoreService {
     /**
      * 푸드트럭 목록 불러오기
      */
-    // 임시 주석 
+    // 1007 주석
 //    public Page<Store> findStores(int page, int size) {
 //        return storeRepository.findAll(PageRequest.of(page, size,
 //                Sort.by("storeId").descending()));

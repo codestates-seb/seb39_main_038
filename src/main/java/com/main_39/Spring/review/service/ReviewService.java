@@ -101,6 +101,7 @@ public class ReviewService {
     /**
      * 전체 리뷰 불러오기
      */
+    // 1007 수정
 //    public Page<Review> findReviews(int page, int size) {
 //        return reviewRepository.findAll(PageRequest.of(page, size,
 //                Sort.by("reviewId").descending()));
