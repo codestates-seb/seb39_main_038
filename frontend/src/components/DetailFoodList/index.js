@@ -1,9 +1,3 @@
-import axios from 'axios';
-import {
-  useQuery,
-  QueryClient,
-  QueryClientProvider,
-} from '@tanstack/react-query';
 import React from 'react';
 import { useSetRecoilState } from 'recoil';
 import { atoms } from '../../store';
