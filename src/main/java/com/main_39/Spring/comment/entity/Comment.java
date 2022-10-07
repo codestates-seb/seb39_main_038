@@ -6,6 +6,7 @@ import com.main_39.Spring.store.entity.Store;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.mapping.ToOne;
 
 import javax.persistence.*;
 
@@ -29,15 +30,20 @@ public class Comment extends Auditable {
     /**
      * 리뷰 : 댓글 = 1 : 1 양방향
      */
+    // 수정
+//    @OneToOne
     @OneToOne
     @JoinColumn(name = "review_id")
     private Review review;
 
-    public void setReview(Review review) {
+//    public void setReview(Review review) {
+//        this.review = review;
+//        if(review.getComment() !=this) {
+//            review.setComment(this);
+//        }
+//    }
+    public void setReviews(Review review) {
         this.review = review;
-        if(review.getComment() !=this) {
-            review.setComment(this);
-        }
     }
 
     public void addReview(Review review) {

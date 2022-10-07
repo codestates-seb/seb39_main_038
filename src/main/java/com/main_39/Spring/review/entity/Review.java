@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -33,8 +35,13 @@ public class Review extends Auditable {
      * 리뷰 : 댓글 = 1 : 1 양방향
      * 리뷰 삭제시 댓글도 삭제
      */
-    @OneToOne(mappedBy = "review", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+//    @OneToOne(mappedBy = "review", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToOne(mappedBy = "review")
     private Comment comment;
+//    @OneToMany(mappedBy = "review", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+//    private List<Comment> comment = new ArrayList<>();
+
+
 
     /**
      * 카카오 : 리뷰 = 1 : N 단방향
@@ -68,4 +75,7 @@ public class Review extends Auditable {
         if(store.getReviews().contains(this))
             store.getReviews().add(this);
     }
+
+
+
 }
