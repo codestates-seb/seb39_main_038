@@ -152,6 +152,8 @@ public class ReviewController {
     public ResponseEntity patchReview(@PathVariable("store-id") long storeId,
                                       @PathVariable("review-id") @Positive long reviewId,
                                       @Valid @RequestBody ReviewPatchDto reviewPatchDto) {
+
+        System.out.println("#update review");
         reviewPatchDto.setReviewId(reviewId);
 
         Review response =
