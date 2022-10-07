@@ -109,8 +109,10 @@ public class Store {
     /**
      * store : menu = 1 : N 양방향
      */
+//    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
+
     @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "store")
     private List<Menu> menus = new ArrayList<>();
 
     public int getTotalMenu() {

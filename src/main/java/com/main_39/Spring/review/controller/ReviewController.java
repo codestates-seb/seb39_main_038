@@ -133,17 +133,17 @@ public class ReviewController {
     /**
      * 전체 리뷰(답변 포함) 불러오기
      */
-    @GetMapping("/review")
-    public ResponseEntity getReviews(@Positive @RequestParam int page,
-                                     @Positive @RequestParam(required = false, defaultValue = "15") int size){
-        Page<Review> pageReviews = reviewService.findReviews(page -1, size);
-        List<Review> reviews = pageReviews.getContent();
-        List<ReviewResponseDto> responses = mapper.reviewToReviewResponseDtos(reviews);
-
-        return new ResponseEntity<>(
-                new MultiResponseDto<>(responses, pageReviews),
-                HttpStatus.OK);
-    }
+//    @GetMapping("/review")
+//    public ResponseEntity getReviews(@Positive @RequestParam int page,
+//                                     @Positive @RequestParam(required = false, defaultValue = "15") int size){
+//        Page<Review> pageReviews = reviewService.findReviews(page -1, size);
+//        List<Review> reviews = pageReviews.getContent();
+//        List<ReviewResponseDto> responses = mapper.reviewToReviewResponseDtos(reviews);
+//
+//        return new ResponseEntity<>(
+//                new MultiResponseDto<>(responses, pageReviews),
+//                HttpStatus.OK);
+//    }
 
     /**
      * 리뷰 수정
