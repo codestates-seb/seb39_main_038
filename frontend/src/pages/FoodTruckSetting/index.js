@@ -365,7 +365,7 @@ function FoodTruckSetting() {
   };
   // console.log('mento', handleTypeChange());
   const postMenu = async () => {
-    const res = await axios.post(`${API_HOST}store/${id}/menus`, {
+    const res = await axios.post(`${API_HOST}/store/${id}/menus`, {
       name: newMenuName,
       price: newMenuPrice,
       content: newMenuContent,
@@ -375,7 +375,7 @@ function FoodTruckSetting() {
   };
 
   const postInfo = async () => {
-    const res = await axios.post(`${API_HOST}store/ask`, {
+    const res = await axios.post(`${API_HOST}/store/ask`, {
       localId: id,
       storePhone: phone,
       storeNumber: number,
@@ -399,7 +399,7 @@ function FoodTruckSetting() {
   };
 
   const patchInfo = async () => {
-    const res = await axios.patch(`${API_HOST}store/${storeId}`, {
+    const res = await axios.patch(`${API_HOST}/store/${storeId}`, {
       localId: id,
       storePhone: phone,
       storeNumber: number,
@@ -422,7 +422,7 @@ function FoodTruckSetting() {
   };
 
   const deleteInfo = async () => {
-    const res = await axios.delete(`${API_HOST}store/${storeId}`);
+    const res = await axios.delete(`${API_HOST}/store/${storeId}`);
     return res;
   };
 
