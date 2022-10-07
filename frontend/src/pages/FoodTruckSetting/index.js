@@ -155,8 +155,6 @@ function FoodMenusList({ storeId, props }) {
 
 function MenuList({ storeId }) {
   const { data } = useDetailFoodList(storeId);
-  const queryClient = useQueryClient();
-  queryClient.invalidateQueries('detailfoodlist');
   // console.log(data.data.menus);
   return (
     <>
