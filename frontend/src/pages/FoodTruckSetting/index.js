@@ -24,6 +24,8 @@ import { COLOR } from '../../constants';
 
 import { useFoodDetail, useDetailFoodList } from '../../hooks';
 
+const { API_HOST } = process.env;
+
 function FoodMenusList() {
   const { id } = useParams();
   const { data } = useDetailFoodList(id);
@@ -46,22 +48,17 @@ function FoodMenusList() {
   };
 
   const deleteMenu = async () => {
-    const res = await axios.delete(
-      `http://ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/store/${id}/menus/${menuId}`,
-    );
+    const res = await axios.delete(`${API_HOST}/store/${id}/menus/${menuId}`);
     return res;
   };
 
   const patchMenu = async () => {
-    const res = await axios.patch(
-      `http://ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/store/${id}/menus/${menuId}`,
-      {
-        name: menuName,
-        price: menuPrice,
-        content: menuContent,
-        image: menuImg,
-      },
-    );
+    const res = await axios.patch(`${API_HOST}/store/${id}/menus/${menuId}`, {
+      name: menuName,
+      price: menuPrice,
+      content: menuContent,
+      image: menuImg,
+    });
     return res;
   };
 
@@ -343,68 +340,57 @@ function FoodTruckSetting() {
   };
 
   const postMenu = async () => {
-    const res = await axios.post(
-      `http://ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/store/${id}/menus`,
-      {
-        name: newMenuName,
-        price: newMenuPrice,
-        content: newMenuContent,
-        image: newMenuImg,
-      },
-    );
+    const res = await axios.post(`${API_HOST}/store/${id}/menus`, {
+      name: newMenuName,
+      price: newMenuPrice,
+      content: newMenuContent,
+      image: newMenuImg,
+    });
     return res;
   };
 
   const postInfo = async () => {
-    const res = await axios.post(
-      'http://ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/store/ask',
-      {
-        localId: id,
-        storePhone: phone,
-        storeNumber: number,
-        storeStatus: toggleStatus ? 'BRAKE' : 'OPEN',
-        storeName: name,
-        storeContent: ask,
-        // storeImage: img,
-        storeType: dropDown,
-        storeTime: time,
-        storeWaitTime: '15분~30분',
-        storeAddress: address,
-        storePayment: '현금',
-        storeTag: tag,
-      },
-    );
+    const res = await axios.post(`${API_HOST}/store/ask`, {
+      localId: id,
+      storePhone: phone,
+      storeNumber: number,
+      storeStatus: toggleStatus ? 'BRAKE' : 'OPEN',
+      storeName: name,
+      storeContent: ask,
+      // storeImage: img,
+      storeType: dropDown,
+      storeTime: time,
+      storeWaitTime: '15분~30분',
+      storeAddress: address,
+      storePayment: '현금',
+      storeTag: tag,
+    });
     console.log(res.data);
     return res;
   };
   console.log(storeId);
   const patchInfo = async () => {
-    const res = await axios.patch(
-      `http://ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/store/${id}`,
-      {
-        localId: id,
-        storePhone: phone,
-        storeNumber: number,
-        storeStatus: toggleStatus ? 'BRAKE' : 'OPEN',
-        storeName: name,
-        storeContent: ask,
-        storeImage: img,
-        storeType: dropDown,
-        storeTime: time,
-        storeWaittime: '15분~30분',
-        storeAddress: address,
-        storePayment: '현금',
-        storeTag: tag,
-      },
-    );
+    const res = await axios.patch(`${API_HOST}/store/${id}`, {
+      localId: id,
+      storePhone: phone,
+      storeNumber: number,
+      storeStatus: toggleStatus ? 'BRAKE' : 'OPEN',
+      storeName: name,
+      storeContent: ask,
+      storeImage: img,
+      storeType: dropDown,
+      storeTime: time,
+      storeWaittime: '15분~30분',
+      storeAddress: address,
+      storePayment: '현금',
+      storeTag: tag,
+    });
     console.log(res.data);
     return res;
   };
 
   const deleteInfo = async () => {
-    const res = await axios.delete(
-      `http://ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/store/${id}`,
-    );
+    const res = await axios.delete(`${API_HOST}/store/${id}`);
     return res;
   };
 
