@@ -41,7 +41,7 @@ function FoodDetail() {
     totalMenu,
     totalReview,
   } = data.data.data;
-
+  console.log(data.data.data);
   return (
     <Section>
       <MainBody>

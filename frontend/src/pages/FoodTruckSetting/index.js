@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   Section,
   Title,
@@ -23,18 +23,17 @@ import { Spinner, ErrorBoundary } from '../../components';
 import { COLOR } from '../../constants';
 
 import { useFoodDetail, useDetailFoodList } from '../../hooks';
+import { withAuth } from '../../components/Hoc';
 
-function FoodMenusList() {
-  const { id } = useParams();
-  const { data } = useDetailFoodList(id);
-
-  const [menuId, setMenuId] = useState(null);
+function FoodMenusList({ storeId, props }) {
+  const { API_HOST } = process.env;
   const [inputs, setInputs] = useState({
     menuName: '',
     menuPrice: '',
     menuContent: '',
     menuImg: null,
   });
+  const queryClient = useQueryClient();
 
   const { menuName, menuPrice, menuContent, menuImg } = inputs;
 
@@ -45,28 +44,24 @@ function FoodMenusList() {
     });
   };
 
-  const deleteMenu = async () => {
-    const res = await axios.delete(
-      `http://ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/store/${id}/menus/${menuId}`,
-    );
+  const deleteMenu = async (e) => {
+    const res = await axios.delete(`${API_HOST}${storeId}/menus/${e}`);
     return res;
   };
 
-  const patchMenu = async () => {
-    const res = await axios.patch(
-      `http://ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/store/${id}/menus/${menuId}`,
-      {
-        name: menuName,
-        price: menuPrice,
-        content: menuContent,
-        image: menuImg,
-      },
-    );
+  const patchMenu = async (e) => {
+    const res = await axios.patch(`${API_HOST}${storeId}/menus/${e}`, {
+      name: menuName,
+      price: menuPrice,
+      content: menuContent,
+      image: menuImg,
+    });
     return res;
   };
 
   const onSuccess = () => {
-    alert('성공2');
+    // console.log(e);
+    queryClient.invalidateQueries('detailfoodlist');
   };
 
   const onError = () => {
@@ -89,52 +84,57 @@ function FoodMenusList() {
     onSettled,
   });
 
-  return data.data.menus.map((res) => (
-    <UpdateInput key={res.menuId}>
+  const formHandler = (e) => {
+    e.preventDefault();
+    // e.target.reset();
+  };
+
+  return (
+    <UpdateInput>
       <img
-        alt="FoodImg"
-        name={`menuImg${menuId}`}
+        alt="FoodImage"
+        name="menuImg"
         value={menuImg}
         onChange={onChange}
-        src={res.image}
+        src={props.image}
       />
 
-      <TypeInfo>
+      <TypeInfo onSubmit={formHandler}>
         <input
-          placeholder={res.name}
-          name={`menuName${menuId}`}
+          placeholder={props.name}
+          name="menuName"
           value={menuName}
           onChange={onChange}
-          onClick={() => {
-            setMenuId(res.menuId);
-          }}
         />
 
         <input
-          placeholder={res.content}
-          name={`menuContent${menuId}`}
+          placeholder={props.content}
+          name="menuContent"
           value={menuContent}
           onChange={onChange}
-          onClick={() => {
-            setMenuId(res.menuId);
-          }}
         />
 
         <input
-          placeholder={res.price}
-          name={`menuPrice${menuId}`}
+          placeholder={props.price}
+          name="menuPrice"
           value={menuPrice}
           onChange={onChange}
-          onClick={() => {
-            setMenuId(res.menuId);
-          }}
         />
       </TypeInfo>
 
       <button
         type="button"
         onClick={() => {
-          patchMutateMenu();
+          if (
+            menuPrice &&
+            menuContent &&
+            menuName
+            //  && menuImg
+          ) {
+            patchMutateMenu(props.menuId);
+          } else {
+            alert('모든 정보를 입력해 주세요');
+          }
         }}
       >
         수정
@@ -142,21 +142,34 @@ function FoodMenusList() {
       <button
         type="button"
         onClick={() => {
-          deleteMutateMenu();
+          alert('음식 제거 완료');
+          // console.log(props.menuId);
+          deleteMutateMenu(props.menuId);
         }}
       >
         제거
       </button>
     </UpdateInput>
-  ));
+  );
+}
+
+function MenuList({ storeId }) {
+  const { data } = useDetailFoodList(storeId);
+  const queryClient = useQueryClient();
+  queryClient.invalidateQueries('detailfoodlist');
+  // console.log(data.data.menus);
+  return (
+    <>
+      {data.data.menus.map((props) => (
+        <FoodMenusList key={props.menuId} props={props} storeId={storeId} />
+      ))}
+    </>
+  );
 }
 
 function UpdateForm({
   img,
   onChange,
-  handleTypeChange,
-  dropDown,
-  type,
   name,
   time,
   address,
@@ -164,9 +177,13 @@ function UpdateForm({
   number,
   tag,
   ask,
+  categories,
+  dropDown,
+  handleTypeChange,
 }) {
   const { id } = useParams();
   const { data } = useFoodDetail(id);
+  // console.log(data);
 
   const {
     storeName,
@@ -177,7 +194,6 @@ function UpdateForm({
     storePhone,
     storeAddress,
     storeNumber,
-    // storeType,
   } = data.data.data;
 
   return (
@@ -195,8 +211,12 @@ function UpdateForm({
 
         <Dropdown>
           <select type="button" onChange={handleTypeChange} value={dropDown}>
-            {type.map((e) => {
-              return <option key={e.id}>{e.value}</option>;
+            {categories.map((res, index) => {
+              return (
+                <option key={res.type} id={`${index}`} value={res.value}>
+                  {res.type}
+                </option>
+              );
             })}
           </select>
         </Dropdown>
@@ -287,14 +307,17 @@ function UpdateForm({
 }
 
 function FoodTruckSetting() {
-  const [dropDown, setDropDown] = useState('종류를 선택하세요');
+  const { API_HOST } = process.env;
+  const [dropDown, setDropDown] = useState('한식');
   const [toggleStatus, setToggleStatus] = useState(false);
   const [storeId, setStoreId] = useState(false);
 
   const { id } = useParams();
   const { data } = useFoodDetail(id);
+  const queryClient = useQueryClient();
+  // console.log(data.data.data.storeId);
   useEffect(() => {
-    if (data.data.message === '해당 가게를 찾을 수 없습니다.') {
+    if (data.data.data.storeId === undefined) {
       setStoreId(false);
     } else {
       setStoreId(data.data.data.storeId);
@@ -340,76 +363,73 @@ function FoodTruckSetting() {
 
   const handleTypeChange = (e) => {
     setDropDown(e.target.value);
+    // console.log('hehe', dropDown);
   };
-
+  // console.log('mento', handleTypeChange());
   const postMenu = async () => {
-    const res = await axios.post(
-      `http://ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/store/${id}/menus`,
-      {
-        name: newMenuName,
-        price: newMenuPrice,
-        content: newMenuContent,
-        image: newMenuImg,
-      },
-    );
+    const res = await axios.post(`${API_HOST}store/${id}/menus`, {
+      name: newMenuName,
+      price: newMenuPrice,
+      content: newMenuContent,
+      image: newMenuImg,
+    });
     return res;
   };
 
   const postInfo = async () => {
-    const res = await axios.post(
-      'http://ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/store/ask',
-      {
-        localId: id,
-        storePhone: phone,
-        storeNumber: number,
-        storeStatus: toggleStatus ? 'BRAKE' : 'OPEN',
-        storeName: name,
-        storeContent: ask,
-        // storeImage: img,
-        storeType: dropDown,
-        storeTime: time,
-        storeWaitTime: '15분~30분',
-        storeAddress: address,
-        storePayment: '현금',
-        storeTag: tag,
-      },
-    );
-    console.log(res.data);
+    const res = await axios.post(`${API_HOST}store/ask`, {
+      localId: id,
+      storePhone: phone,
+      storeNumber: number,
+      storeStatus: toggleStatus ? 'BRAKE' : 'OPEN',
+      storeName: name,
+      storeContent: ask,
+      storeImage: img,
+      storeType: dropDown,
+      storeTime: time,
+      storeWaitTime: '15분~30분',
+      storeAddress: address,
+      storePayment: '현금',
+      storeTag: tag,
+    });
+    console.log(res.data.message);
+    if (res.data.message) {
+      alert(res.data.message);
+    }
+
     return res;
   };
-  console.log(storeId);
+
   const patchInfo = async () => {
-    const res = await axios.patch(
-      `http://ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/store/${id}`,
-      {
-        localId: id,
-        storePhone: phone,
-        storeNumber: number,
-        storeStatus: toggleStatus ? 'BRAKE' : 'OPEN',
-        storeName: name,
-        storeContent: ask,
-        storeImage: img,
-        storeType: dropDown,
-        storeTime: time,
-        storeWaittime: '15분~30분',
-        storeAddress: address,
-        storePayment: '현금',
-        storeTag: tag,
-      },
-    );
-    console.log(res.data);
+    const res = await axios.patch(`${API_HOST}store/${storeId}`, {
+      localId: id,
+      storePhone: phone,
+      storeNumber: number,
+      storeStatus: toggleStatus ? 'BRAKE' : 'OPEN',
+      storeName: name,
+      storeContent: ask,
+      storeImage: img,
+      storeType: dropDown,
+      storeTime: time,
+      storeWaittime: '15분~30분',
+      storeAddress: address,
+      storePayment: '현금',
+      storeTag: tag,
+    });
+    console.log(res.data.message);
+    if (res.data.message) {
+      alert(res.data.message);
+    }
     return res;
   };
 
   const deleteInfo = async () => {
-    const res = await axios.delete(
-      `http://ec2-13-124-94-129.ap-northeast-2.compute.amazonaws.com:8080/store/${id}`,
-    );
+    const res = await axios.delete(`${API_HOST}store/${storeId}`);
     return res;
   };
 
   const onSuccess = () => {
-    alert('성공2');
+    queryClient.invalidateQueries(['detailfoodlist']);
   };
 
   const onError = () => {
@@ -444,15 +464,14 @@ function FoodTruckSetting() {
     onSettled,
   });
 
-  const type = [
-    { id: null, value: '종류를 선택하세요' },
-    { id: 1, value: 'korean' },
-    { id: 2, value: 'chinese' },
-    { id: 3, value: 'western' },
-    { id: 4, value: 'japanese' },
-    { id: 5, value: 'snackbar' },
-    { id: 6, value: 'cafe' },
-    { id: 7, value: 'nightsnack' },
+  const categories = [
+    { value: 'korean', type: '한식' },
+    { value: 'chinese', type: '중식' },
+    { value: 'western', type: '양식' },
+    { value: 'japanese', type: '일식' },
+    { value: 'snackbar', type: '분식' },
+    { value: 'cafe', type: '디저트' },
+    { value: 'nightsnack', type: '야식' },
   ];
 
   return (
@@ -462,13 +481,13 @@ function FoodTruckSetting() {
           <button
             type="button"
             onClick={() => {
-              if (window.confirm('정말 본인 푸드트럭을 해체 하시겠습니까?')) {
-                alert('푸드트럭을 해체 하였습니다.');
+              if (window.confirm('정말 본인 푸드트럭을 폐업 하시겠습니까?')) {
+                alert('푸드트럭을 폐업 하였습니다.');
                 deleteMutateInfo();
               }
             }}
           >
-            가게 해체
+            가게 폐업
           </button>
           <Title>가게 설정</Title>
 
@@ -478,7 +497,6 @@ function FoodTruckSetting() {
               onChange={onChange}
               handleTypeChange={handleTypeChange}
               dropDown={dropDown}
-              type={type}
               name={name}
               time={time}
               address={address}
@@ -486,6 +504,7 @@ function FoodTruckSetting() {
               number={number}
               tag={tag}
               ask={ask}
+              categories={categories}
             />
           ) : (
             <CreateFoodTruck>
@@ -505,8 +524,16 @@ function FoodTruckSetting() {
                     onChange={handleTypeChange}
                     value={dropDown}
                   >
-                    {type.map((e) => {
-                      return <option key={e.id}>{e.value}</option>;
+                    {categories.map((res, index) => {
+                      return (
+                        <option
+                          key={res.type}
+                          id={`${index}`}
+                          value={res.value}
+                        >
+                          {res.type}
+                        </option>
+                      );
                     })}
                   </select>
                 </Dropdown>
@@ -602,17 +629,22 @@ function FoodTruckSetting() {
                 onClick={() => {
                   if (toggleStatus === false) {
                     if (
-                      window.confirm('정말로 영업을 임시중단 하시겠습니까?') ===
-                      true
+                      window.confirm('정말로 영업을 임시중단 하시겠습니까?')
                     ) {
                       setToggleStatus(true);
+                      // console.log('f', toggleStatus);
+                    } else {
+                      setToggleStatus(false);
+                      // console.log('s', toggleStatus);
                     }
                   }
+
                   if (toggleStatus === true) {
                     setToggleStatus(!toggleStatus);
+                    // console.log('t', toggleStatus);
                   }
                 }}
-                checked={toggleStatus}
+                defaultChecked={false}
                 id="toggle"
                 hidden
               />
@@ -658,7 +690,16 @@ function FoodTruckSetting() {
               <button
                 type="button"
                 onClick={() => {
-                  postMutateMenu();
+                  if (
+                    // newMenuImg &&
+                    newMenuName &&
+                    newMenuContent &&
+                    newMenuPrice
+                  ) {
+                    postMutateMenu();
+                  } else {
+                    alert('모든 정보를 입력해 주세요');
+                  }
                 }}
               >
                 추가
@@ -668,14 +709,26 @@ function FoodTruckSetting() {
             <UpdateFood>
               <Title>가게 메뉴 편집</Title>
 
-              {storeId ? <FoodMenusList /> : null}
+              {storeId ? <MenuList storeId={storeId} /> : null}
 
               <SettingDoneBtn>
                 <button
                   type="button"
                   onClick={() => {
                     if (!storeId) {
-                      postMutateInfo();
+                      if (
+                        phone &&
+                        number &&
+                        name &&
+                        ask &&
+                        dropDown &&
+                        time &&
+                        address
+                      ) {
+                        postMutateInfo();
+                      } else {
+                        alert('태그를 제외한 모두 입력 하셔야 합니다');
+                      }
                     } else {
                       alert('이미 가게가 있습니다');
                     }
@@ -687,7 +740,19 @@ function FoodTruckSetting() {
                   type="button"
                   onClick={() => {
                     if (storeId) {
-                      patchMutateInfo();
+                      if (
+                        phone &&
+                        number &&
+                        name &&
+                        ask &&
+                        dropDown &&
+                        time &&
+                        address
+                      ) {
+                        patchMutateInfo();
+                      } else {
+                        alert('태그를 제외한 모두 입력 하셔야 합니다');
+                      }
                     } else {
                       alert('가게를 먼저 만드셔야 합니다');
                     }
@@ -704,4 +769,4 @@ function FoodTruckSetting() {
   );
 }
 
-export default FoodTruckSetting;
+export default withAuth(FoodTruckSetting);
