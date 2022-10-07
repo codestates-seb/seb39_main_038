@@ -45,7 +45,7 @@ function GlobalNav() {
           <NavButton onClick={goBasKet} color={COLOR.WHITE}>
             {ROUTE.BASKET.NAME}
           </NavButton>
-          <NavButton onClick={goMyPage} color={COLOR.WHITE}>
+          <NavButton onClick={goMyPage} color="Lightgray">
             마이페이지
           </NavButton>
         </ButtonInner>
