@@ -88,24 +88,25 @@ public class StoreController {
     /**
      * 푸드트럭 목록 불러오기
      */
-    @GetMapping
-    public ResponseEntity getStores(@Positive @RequestParam int page,
-                                    @Positive @RequestParam(required = false, defaultValue = "15") int size,
-                                    @RequestParam Store.StoreType type){
-        Page<Store> pageStores;
-
-        if(type!= Store.StoreType.all) {
-            pageStores = storeService.findByStoreType(type, page -1, size);
-        } else {
-            pageStores = storeService.findStores(page -1, size);
-        }
-        List<Store> stores = pageStores.getContent();
-
-        return new ResponseEntity<>(
-                new MultiResponseDto<>(mapper.storesToStoreResponseDtos(stores),
-                        pageStores),
-                HttpStatus.OK);
-    }
+    // 임시주석
+//    @GetMapping
+//    public ResponseEntity getStores(@Positive @RequestParam int page,
+//                                    @Positive @RequestParam(required = false, defaultValue = "15") int size,
+//                                    @RequestParam Store.StoreType type){
+//        Page<Store> pageStores;
+//
+//        if(type!= Store.StoreType.all) {
+//            pageStores = storeService.findByStoreType(type, page -1, size);
+//        } else {
+//            pageStores = storeService.findStores(page -1, size);
+//        }
+//        List<Store> stores = pageStores.getContent();
+//
+//        return new ResponseEntity<>(
+//                new MultiResponseDto<>(mapper.storesToStoreResponseDtos(stores),
+//                        pageStores),
+//                HttpStatus.OK);
+//    }
 
     /**
      * 푸드트럭 삭제
