@@ -22,7 +22,7 @@ const atoms = {
 
   isLogin: atom({
     key: 'isLogin',
-    default: { state: false, type: null },
+    default: { state: true, type: 'local' },
     effects: [sessionStorageEffect('isLogin')],
   }),
 
@@ -30,6 +30,8 @@ const atoms = {
     key: 'modal',
     default: { food: false, order: false, email: false },
   }),
+
+  orderData: atom({ key: 'orderData', default: {} }),
 
   menuOrder: atom({
     key: 'menuOrder',
