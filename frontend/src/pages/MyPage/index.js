@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { useNavigate } from 'react-router-dom';
 import { atoms } from '../../store';
@@ -26,20 +26,33 @@ const { AVATAR_IMG } = process.env;
 function MyPage() {
   const navigate = useNavigate();
   const setOrderData = useSetRecoilState(atoms.orderData);
-  const { type } = useRecoilValue(atoms.isLogin);
+  const { type, state } = useRecoilValue(atoms.isLogin);
   const { data: orderListData } = useOrderList();
   const { data: userData } = useMyPage();
   const [openOrder, closeOrder] = useModal('order');
 
-  const { avatar, email, name, phone, store } = userData.data.data;
+  useEffect(() => {
+    if (!state) {
+      alert('접근할 수 없는 페이지입니다.');
+      navigate('/');
+    }
+  }, [navigate, state]);
+
+  if (!state) return <div />;
+
+  const { avatar, email, name, phone } = userData.data.data;
   const goModal = (item) => () => setOrderData(item);
-  const goAsk = () =>
+
+  const goAsk = (id) => () => {
+    console.log(ROUTE.REVIEW.PATH);
     navigate(`/${ROUTE.REVIEW.PATH}`, {
-      state: { storeId: store.storeId, type: 'post' },
+      state: { storeId: id, type: 'post' },
     });
+  };
 
   const createOrderContent = () => {
     return orderListData.data.orders?.map((item) => {
+      console.log(orderListData.data.orders);
       return (
         <OrderContent key={item.orderId} onClick={goModal(item)}>
           <TextBox>
@@ -49,7 +62,7 @@ function MyPage() {
             </Text>
           </TextBox>
           <ButtonBox>
-            <Button onClick={goAsk}>리뷰쓰기</Button>
+            <Button onClick={goAsk(item.orderMenu[0].storeId)}>리뷰쓰기</Button>
             <Button onClick={openOrder}>주문상세</Button>
           </ButtonBox>
         </OrderContent>

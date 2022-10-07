@@ -46,6 +46,7 @@ function Home() {
 
   const hanldeOnClick = (e) => {
     const $container = e.target.closest('div');
+    if (!$container.dataset.query) return;
     setMenuQuery($container.dataset.query);
     navigate(`/${ROUTE.FOODLIST.PATH}`);
   };

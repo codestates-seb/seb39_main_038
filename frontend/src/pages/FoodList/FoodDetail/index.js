@@ -41,13 +41,15 @@ function FoodDetail() {
     totalMenu,
     totalReview,
   } = data.data.data;
-  console.log(data.data.data);
+
+  const { FOODTRUCK_IMG } = process.env;
+  
   return (
     <Section>
       <MainBody>
         <FoodTruckName>{storeName}</FoodTruckName>
         <FoodTruckCapsulizedInfo>
-          <FoodTruckImg src={storeImage} />
+          <FoodTruckImg src={storeImage || FOODTRUCK_IMG} />
           <CapsulizedInfo>
             <InfoItem>
               <Text color="#999999" size={13}>

@@ -21,7 +21,7 @@ import { Receipt } from '../../components';
 
 function Order() {
   const [request, setRequest] = useState('');
-  const [radio, setRadio] = useState({ value: 'card', togle: true });
+  const [radio, setRadio] = useState({ value: 'CARD', togle: true });
 
   const handleOnChangeRadio = (e) =>
     setRadio({ value: e.target.value, togle: !radio.togle });
@@ -57,7 +57,7 @@ function Order() {
                 <RadioBox
                   name="selector"
                   type="radio"
-                  value="card"
+                  value="CARD"
                   onChange={handleOnChangeRadio}
                 />
                 <Icon width={22} height={24} position="-36px -46px" />
@@ -70,7 +70,7 @@ function Order() {
                 <RadioBox
                   name="selector"
                   type="radio"
-                  value="cash"
+                  value="CASH"
                   onChange={handleOnChangeRadio}
                 />
                 <Icon width={24} height={24} position="-39px -7px" />

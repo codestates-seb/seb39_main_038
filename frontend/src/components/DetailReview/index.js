@@ -16,27 +16,7 @@ import {
 import { useReview } from '../../hooks';
 import { ROUTE } from '../../constants';
 import { dateFormat } from '../../utils';
-
-/* 답장 기능 주석 처리
-<EditorWrapper>
-  <Editor placeholder="클린리뷰 특성상 재생성도 불가능하며 수정도 불가능합니다. 신중하게 작성해주세요." />
-  <Button>전송</Button>
-</EditorWrap
-<Answer>
-  <Header>
-    <TextWrapper>
-      <Text as="h1">사장님</Text>
-      <Text size={12} color="#999999">
-        2022-09-21
-      </Text>
-    </TextWrapper>
-    <Button>삭제</Button>
-  </Header>
-  <Text size={14} color="#666666">
-    안녕하세용~~~~ 감사합니다.
-  </Text>
-</Answer>
-*/
+import { Answer } from '../Answer';
 
 function DetailReview({ storeId }) {
   const navigate = useNavigate();
@@ -61,6 +41,7 @@ function DetailReview({ storeId }) {
 
   const createComment = () => {
     return data?.data.reviews.map((item) => {
+      console.log(data.data.reviews);
       return (
         <Comment key={item.reviewId}>
           <Header>
@@ -72,10 +53,12 @@ function DetailReview({ storeId }) {
                 {dateFormat(new Date(item.createdAt), '-')}
               </Text>
             </TextWrapper>
-            <ButtonWrapper>
-              <Button onClick={goUpdate(storeId, item.reviewId)}>수정</Button>
-              <Button onClick={goDelete(storeId, item.reviewId)}>삭제</Button>
-            </ButtonWrapper>
+            {item.auth ? (
+              <ButtonWrapper>
+                <Button onClick={goUpdate(storeId, item.reviewId)}>수정</Button>
+                <Button onClick={goDelete(storeId, item.reviewId)}>삭제</Button>
+              </ButtonWrapper>
+            ) : null}
           </Header>
           <TextWrapper>
             <Text as="h1" size={14} color="#ffa400">
@@ -91,6 +74,8 @@ function DetailReview({ storeId }) {
           <Text size={14} color="#666666">
             {item.reviewContent}
           </Text>
+
+          <Answer item={item} storeId={storeId} />
         </Comment>
       );
     });
@@ -99,8 +84,8 @@ function DetailReview({ storeId }) {
   return (
     <ReviewContainer>
       <Rating>
-        <TotalRate>5.0</TotalRate>
-        <Star header>★★★★★</Star>
+        <TotalRate>{data?.data.totalGrade}</TotalRate>
+        <Star header>{createStar(data?.data.totalGrade)}</Star>
       </Rating>
       {createComment()}
     </ReviewContainer>
