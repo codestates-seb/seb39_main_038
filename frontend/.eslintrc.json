@@ -39,9 +39,16 @@
     "react/jsx-props-no-spreading": ["warn"],
     "comma-dangle": ["error"],
     "no-console": ["warn"],
+    "no-alert": ["off"],
     "import/no-extraneous-dependencies": [
       "off",
       { "packageDir": "node_modules" }
+    ],
+    "jsx-a11y/label-has-associated-control": [
+      2,
+      {
+        "labelAttributes": ["htmlFor"]
+      }
     ]
   }
 }

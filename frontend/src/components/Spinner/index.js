@@ -6,16 +6,16 @@ import {
   SpinnerItem,
 } from './styles';
 
-function Spinner({ color }) {
+function Spinner({ color, size, scroll, lastItemRef = null }) {
   return (
-    <Container>
-      <SpinnerContainer>
+    <Container scroll={scroll}>
+      <SpinnerContainer size={size}>
         <SpinnerWrpper>
-          <SpinnerItem color={color} />
+          <SpinnerItem color={color} size={size} ref={lastItemRef} />
         </SpinnerWrpper>
       </SpinnerContainer>
     </Container>
   );
 }
 
-export default Spinner;
+export { Spinner };
