@@ -13,22 +13,17 @@ import {
   Text,
   AvatarBox,
   OrderInner,
-  OrderContent,
-  ButtonBox,
   Button,
 } from './styles';
-import { ROUTE } from '../../constants';
 import { CustomModal } from '../../components';
 
 // const { AVATAR_IMG } = process.env;
 
 function MyPage() {
   const navigate = useNavigate();
-  const setOrderData = useSetRecoilState(atoms.orderData);
   const { type, state } = useRecoilValue(atoms.isLogin);
-  const { data: orderListData } = useOrderList();
   const { data: userData } = useMyPage();
-  const [openOrder, closeOrder] = useModal('order');
+  const [closeOrder] = useModal('order');
 
   useEffect(() => {
     if (!state) {
@@ -39,38 +34,7 @@ function MyPage() {
 
   if (!state) return <div />;
 
-  console.log(userData.data.data);
-
   const { email = 1, name = 1, phone = 1 } = userData.data.data;
-  const goModal = (item) => () => setOrderData(item);
-
-  const goAsk = (id) => () => {
-    console.log(ROUTE.REVIEW.PATH);
-    navigate(`/${ROUTE.REVIEW.PATH}`, {
-      state: { storeId: id, type: 'post' },
-    });
-  };
-
-  // eslint-disable-next-line no-unused-vars
-  const createOrderContent = () => {
-    return orderListData.data.orders?.map((item) => {
-      console.log(orderListData.data.orders);
-      return (
-        <OrderContent key={item.orderId} onClick={goModal(item)}>
-          <TextBox>
-            <Text size={14}>{item.orderMenu[0].storeName}</Text>
-            <Text size={12} color="#999999">
-              주문날짜: {dateFormat(new Date(item.createdAt), '.')}
-            </Text>
-          </TextBox>
-          <ButtonBox>
-            <Button onClick={goAsk(item.orderMenu[0].storeId)}>리뷰쓰기</Button>
-            <Button onClick={openOrder}>주문상세</Button>
-          </ButtonBox>
-        </OrderContent>
-      );
-    });
-  };
 
   return (
     <MyPageContainer>
