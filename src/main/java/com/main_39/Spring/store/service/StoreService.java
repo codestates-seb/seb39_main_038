@@ -124,10 +124,11 @@ public class StoreService {
     /**
      * 푸드트럭 목록 불러오기
      */
-    public Page<Store> findStores(int page, int size) {
-        return storeRepository.findAll(PageRequest.of(page, size,
-                Sort.by("storeId").descending()));
-    }
+    // 임시 주석
+//    public Page<Store> findStores(int page, int size) {
+//        return storeRepository.findAll(PageRequest.of(page, size,
+//                Sort.by("storeId").descending()));
+//    }
 
     /**
      * 푸드트럭 타입별 푸드트럭 목록 불러오기
@@ -178,4 +179,5 @@ public class StoreService {
             throw new BusinessLogicException(ExceptionCode.STORE_PHONE_DUPLICATE);
         }
     }
+
 }
