@@ -88,7 +88,7 @@ public class StoreController {
     /**
      * 푸드트럭 목록 불러오기
      */
-    // 임시 주석
+    // 임시주석
 //    @GetMapping
 //    public ResponseEntity getStores(@Positive @RequestParam int page,
 //                                    @Positive @RequestParam(required = false, defaultValue = "15") int size,
