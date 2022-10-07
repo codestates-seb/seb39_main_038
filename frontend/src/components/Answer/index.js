@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useRecoilValue } from 'recoil';
 import {
   Header,
   Text,
@@ -10,15 +11,18 @@ import {
   ButtonWrapper,
 } from './styles';
 import { useAnswer } from '../../hooks';
+import { atoms } from '../../store';
 import { dateFormat } from '../../utils';
 
 function Answer({ item, storeId }) {
   const [toggle, isToggle] = useState(false);
   const [text, setText] = useState('');
   const { createMutate, updateMutate, deleteMutate } = useAnswer(storeId);
+  const loginInfo = useRecoilValue(atoms.loginInfo);
 
   const handleOnClick = () => isToggle(!toggle);
   const handleOnChange = (e) => setText(e.target.value);
+  const authCheck = loginInfo.storeId === storeId;
 
   const postData = () => {
     createMutate({
@@ -56,7 +60,11 @@ function Answer({ item, storeId }) {
 
   return (
     <>
-      {!item.comment ? <Button onClick={handleOnClick}> 답변 </Button> : null}
+      {!item.comment && authCheck ? (
+        <Button onClick={handleOnClick} style={{ alignSelf: 'flex-end' }}>
+          답변
+        </Button>
+      ) : null}
 
       {toggle ? (
         <EditorWrapper>
@@ -77,11 +85,12 @@ function Answer({ item, storeId }) {
                 {dateFormat(new Date(item?.comment.createdAt), '-')}
               </Text>
             </TextWrapper>
-
-            <ButtonWrapper>
-              <Button onClick={handleOnClick}>수정</Button>
-              <Button onClick={deleteData}>삭제</Button>
-            </ButtonWrapper>
+            {authCheck ? (
+              <ButtonWrapper>
+                <Button onClick={handleOnClick}>수정</Button>
+                <Button onClick={deleteData}>삭제</Button>
+              </ButtonWrapper>
+            ) : null}
           </Header>
           <Text size={14} color="#666666">
             {item?.comment.commentContent}

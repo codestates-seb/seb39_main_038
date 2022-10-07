@@ -53,10 +53,12 @@ function DetailReview({ storeId }) {
                 {dateFormat(new Date(item.createdAt), '-')}
               </Text>
             </TextWrapper>
-            <ButtonWrapper>
-              <Button onClick={goUpdate(storeId, item.reviewId)}>수정</Button>
-              <Button onClick={goDelete(storeId, item.reviewId)}>삭제</Button>
-            </ButtonWrapper>
+            {item.auth ? (
+              <ButtonWrapper>
+                <Button onClick={goUpdate(storeId, item.reviewId)}>수정</Button>
+                <Button onClick={goDelete(storeId, item.reviewId)}>삭제</Button>
+              </ButtonWrapper>
+            ) : null}
           </Header>
           <TextWrapper>
             <Text as="h1" size={14} color="#ffa400">
