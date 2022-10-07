@@ -130,7 +130,8 @@ public class ReviewService {
 
         if(store.hasReview()) {
             store.getReviews().removeIf(reviews -> reviews.getReviewId().equals(reviewId));
-            reviewRepository.deleteById(reviewId);
+            //reviewRepository.deleteById(reviewId);
+             reviewRepository.delete(findReview);
         }
 
         if(findReview.getReviewImage() != null){
