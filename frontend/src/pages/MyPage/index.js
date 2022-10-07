@@ -40,7 +40,9 @@ function MyPage() {
 
   if (!state) return <div />;
 
-  const { avatar, email, name, phone } = userData.data.data;
+  console.log(userData);
+
+  const { avatar = 1, email = 1, name = 1, phone = 1 } = userData.data.data;
   const goModal = (item) => () => setOrderData(item);
 
   const goAsk = (id) => () => {
