@@ -45,12 +45,12 @@ function FoodMenusList({ storeId, props }) {
   };
 
   const deleteMenu = async (e) => {
-    const res = await axios.delete(`${API_HOST}${storeId}/menus/${e}`);
+    const res = await axios.delete(`${API_HOST}/${storeId}/menus/${e}`);
     return res;
   };
 
   const patchMenu = async (e) => {
-    const res = await axios.patch(`${API_HOST}${storeId}/menus/${e}`, {
+    const res = await axios.patch(`${API_HOST}/${storeId}/menus/${e}`, {
       name: menuName,
       price: menuPrice,
       content: menuContent,
