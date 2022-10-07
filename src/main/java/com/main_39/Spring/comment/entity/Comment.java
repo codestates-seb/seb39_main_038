@@ -33,12 +33,12 @@ public class Comment extends Auditable {
     @JoinColumn(name = "review_id")
     private Review review;
 
-    public void setReview(Review review) {
-        this.review = review;
-        if(review.getComment() !=this) {
-            review.setComment(this);
-        }
-    }
+//    public void setReview(Review review) {
+//        this.review = review;
+//        if(review.getComment() !=this) {
+//            review.setComment(this);
+//        }
+//    }
 
     public void addReview(Review review) {
         this.review = review;
