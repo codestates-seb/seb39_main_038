@@ -36,6 +36,7 @@ public class Review extends Auditable {
      * 리뷰 삭제시 댓글도 삭제
      */
 //    @OneToOne(mappedBy = "review", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+
     @OneToOne(mappedBy = "review")
     private Comment comment;
 //    @OneToMany(mappedBy = "review", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
