@@ -28,7 +28,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Entity
-public class Local{
+public class Local {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long localId;
@@ -67,26 +67,23 @@ public class Local{
 
     public void addOrders(Order order) {
         this.orders.add(order);
-        if(order.getLocal() == null)
+        if (order.getLocal() == null)
             order.addLocal(this);
     }
 
     public int getTotalOrder() {
         return orders.size();
     }
-    public enum Role{
+
+    public enum Role {
         SELLER("ROLE_SELLER"),
         ADMIN("ROLE_ADMIN");
 
         @Getter
         private String status;
 
-        Role(String status){
+        Role(String status) {
             this.status = status;
         }
     }
-    // 1008 김나율 추가
-    @OneToMany(mappedBy = "local")
-    private List<Review> reviews = new ArrayList<>();
-
 }
