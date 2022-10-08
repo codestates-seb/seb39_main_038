@@ -114,7 +114,7 @@ public class CommentController {
         Comment comment = mapper.commentPatchDtoToComment(commentPatchDto);
         if(local.getStore() == null || commentPatchDto.getStoreId() != local.getStore().getStoreId()) throw new BusinessLogicException(ExceptionCode.REVIEW_PATCH_WRONG_ACCESS);
 
-        Comment response = commentService.updateComment(comment);
+        Comment response = commentService.updateComment(mapper.commentPatchDtoToComment(commentPatchDto)); // 1009 수정
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(mapper.commentToCommentResponseDto(response)),
