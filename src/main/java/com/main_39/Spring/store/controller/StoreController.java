@@ -21,7 +21,6 @@ import javax.validation.constraints.Positive;
 import java.util.List;
 
 @RestController
-@RequestMapping("/store")
 @Validated
 public class StoreController {
     private final StoreService storeService;
@@ -40,7 +39,7 @@ public class StoreController {
     /**
      * 푸드트럭 등록
      */
-    @PostMapping("/ask")
+    @PostMapping("/store/ask")
     public ResponseEntity postStore(@Valid @RequestBody StorePostDto storePostDto) {
 
         Store store = mapper.storePostDtoToStore(storePostDto);
@@ -59,7 +58,7 @@ public class StoreController {
     /**
      * 푸드트럭 수정
      */
-    @PatchMapping("/{store-id}")
+    @PatchMapping("/store/{store-id}")
     public ResponseEntity patchStore(
             @PathVariable("store-id") @Positive long storeId,
             @Valid @RequestBody StorePatchDto storePatchDto) {
@@ -77,7 +76,7 @@ public class StoreController {
     /**
      * 특정 푸드트럭 불러오기
      */
-    @GetMapping("/{store-id}")
+    @GetMapping("/{local-id}/store/{store-id}") // 1008 수정
     public ResponseEntity getStore(@PathVariable("store-id") @Positive long storeId) {
 
         Store store = storeService.findStore(storeId);
@@ -88,7 +87,7 @@ public class StoreController {
     /**
      * 푸드트럭 목록 불러오기
      */
-    @GetMapping
+    @GetMapping("/store")
     public ResponseEntity getStores(@Positive @RequestParam int page,
                                     @Positive @RequestParam(required = false, defaultValue = "15") int size,
                                     @RequestParam Store.StoreType type){
@@ -110,7 +109,7 @@ public class StoreController {
     /**
      * 푸드트럭 삭제
      */
-    @DeleteMapping("/{store-id}")
+    @DeleteMapping("/store/{store-id}")
     public ResponseEntity deleteStore(
             @PathVariable("store-id") @Positive long storeId) {
         System.out.println("#delete Store");
