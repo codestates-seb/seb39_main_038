@@ -34,7 +34,7 @@ public class CommentService {
      */
     public Comment createdComment(long reviewId, Comment comment) {
         Review review = reviewService.findReview(reviewId);
-        comment.addReview(review);
+//        comment.addReview(review);    // 수정
 
         return commentRepository.save(comment);
     }
