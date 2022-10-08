@@ -78,19 +78,18 @@ public class CommentController {
     /**
      * 헤당 리뷰의 답변 불러오기
      */
-    // 1009 수정
-//    @GetMapping("/review/{review-id}/comment")
-//    public ResponseEntity getComment(@PathVariable("review-id") @Positive long reviewId,
-//                                     @Positive @RequestParam int page,
-//                                     @Positive @RequestParam(required = false, defaultValue = "15") int size) {
-//        Page<Comment> pageComments = commentService.findComment(reviewId,page-1, size);
-//        List<Comment> comments = pageComments.getContent();
-//
-//        return new ResponseEntity<>(
-//                new MultiResponseDto<>(mapper.commentToCommentResponseDtos(comments),
-//                        pageComments),
-//                HttpStatus.OK);
-//    }
+    @GetMapping("/review/{review-id}/comment")
+    public ResponseEntity getComment(@PathVariable("review-id") @Positive long reviewId,
+                                     @Positive @RequestParam int page,
+                                     @Positive @RequestParam(required = false, defaultValue = "15") int size) {
+        Page<Comment> pageComments = commentService.findComment(reviewId,page-1, size);
+        List<Comment> comments = pageComments.getContent();
+
+        return new ResponseEntity<>(
+                new MultiResponseDto<>(mapper.commentToCommentResponseDtos(comments),
+                        pageComments),
+                HttpStatus.OK);
+    }
 
     /**
      * 답변 수정
@@ -114,7 +113,7 @@ public class CommentController {
         Comment comment = mapper.commentPatchDtoToComment(commentPatchDto);
         if(local.getStore() == null || commentPatchDto.getStoreId() != local.getStore().getStoreId()) throw new BusinessLogicException(ExceptionCode.REVIEW_PATCH_WRONG_ACCESS);
 
-        Comment response = commentService.updateComment(mapper.commentPatchDtoToComment(commentPatchDto)); // 1009 수정
+        Comment response = commentService.updateComment(comment);
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(mapper.commentToCommentResponseDto(response)),

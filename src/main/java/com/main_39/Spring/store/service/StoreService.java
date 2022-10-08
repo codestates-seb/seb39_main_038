@@ -67,7 +67,7 @@ public class StoreService {
                 .ifPresent(content -> findStore.setStoreContent(content));
         Optional.ofNullable(store.getStoreImage())
                 .ifPresent(image -> {findStore.setStoreImage(image);
-                                    saveImageToS3(findStore);});
+                    saveImageToS3(findStore);});
         Optional.ofNullable(store.getStoreType())
                 .ifPresent(type -> findStore.setStoreType(type));
         Optional.ofNullable(store.getStoreTime())
