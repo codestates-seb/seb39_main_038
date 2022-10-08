@@ -152,11 +152,24 @@ public class ReviewController {
     @PatchMapping("/store/{store-id}/review/{review-id}")
     public ResponseEntity patchReview(@PathVariable("store-id") long storeId,
                                       @PathVariable("review-id") @Positive long reviewId,
-                                      @Valid @RequestBody ReviewPatchDto reviewPatchDto) {
+                                      @Valid @RequestBody ReviewPatchDto reviewPatchDto,
+                                      Authentication authentication) {
+        // 1009 추가
         reviewPatchDto.setReviewId(reviewId);
 
-        Review response =
-                reviewService.updateReview(mapper.reviewPatchDtoToReview(reviewPatchDto));
+        LocalDetails localDetails;
+        Local local = null;
+        if(authentication != null){
+            localDetails = (LocalDetails) authentication.getPrincipal();
+            local = localDetails.getLocal();
+        }
+
+        if(local == null) throw new BusinessLogicException(ExceptionCode.AUTH_REQUIRED_LOGIN);
+
+        Review review = mapper.reviewPatchDtoToReview(reviewPatchDto);
+        if(local.getStore() == null || reviewPatchDto.getStoreId() != local.getStore().getStoreId()) throw new BusinessLogicException(ExceptionCode.REVIEW_PATCH_WRONG_ACCESS);
+
+        Review response = reviewService.updateReview(review);
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(mapper.reviewToReviewResponseDto(response)),
