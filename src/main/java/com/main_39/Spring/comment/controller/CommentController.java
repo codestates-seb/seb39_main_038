@@ -99,7 +99,7 @@ public class CommentController {
                                        @PathVariable("comment-id") @Positive long commentId,
                                        @Valid @RequestBody CommentPatchDto commentPatchDto,
                                        Authentication authentication) {
-            commentPatchDto.setCommentId(commentId);
+        commentPatchDto.setCommentId(commentId);
 
         LocalDetails localDetails;
         Local local = null;
