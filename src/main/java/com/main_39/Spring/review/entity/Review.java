@@ -41,13 +41,11 @@ public class Review extends Auditable {
      * 카카오 : 리뷰 = 1 : N 단방향
      * 카카오 삭제시 리뷰도 삭제
      */
-    @ManyToOne(fetch = FetchType.EAGER)
+    // 1008 수정
+//    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "kakao_id")
     private Kakao kakao;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "local_id")
-    private Local local;
 
     public void setKakao(Kakao kakao) {
         this.kakao = kakao;
@@ -56,6 +54,19 @@ public class Review extends Auditable {
     public void getKakao(Kakao kakao) {
         this.kakao = kakao;
     }
+
+
+    /**
+     * 로컬(사업자) : 리뷰 = 1 : N 단방향
+     * 로컬 삭제시 리뷰도 삭제
+     */
+    // 1008 수정
+//    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
+    @JoinColumn(name = "local_id")
+    private Local local;
+
+
 
     /**
      * 스토어 : 리뷰 = 1 : N 양방향 
