@@ -5,7 +5,6 @@ import com.main_39.Spring.store.entity.Store;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -58,11 +57,11 @@ public class Local{
     private Role role = Role.SELLER;
 
     //외래키 수정
-    @OneToOne(mappedBy = "local", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "local")
     private Store store;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "local", cascade = CascadeType.ALL)
-    @BatchSize(size = 20)
     private List<Order> orders = new ArrayList<>();
 
     public void addOrders(Order order) {

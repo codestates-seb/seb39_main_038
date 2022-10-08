@@ -29,7 +29,7 @@ public class Comment extends Auditable {
     /**
      * 리뷰 : 댓글 = 1 : 1 양방향
      */
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "review_id")
     private Review review;
 
@@ -47,7 +47,7 @@ public class Comment extends Auditable {
     /**
      * 스토어 : 댓글 = 1: N 양방향
      */
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name="store_id")
     private Store store;
 
