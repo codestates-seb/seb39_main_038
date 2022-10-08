@@ -149,61 +149,32 @@ public class ReviewController {
     /**
      * 리뷰 수정
      */
-//    @PatchMapping("/store/{store-id}/review/{review-id}")
-//    public ResponseEntity patchReview(@PathVariable("store-id") long storeId,
-//                                      @PathVariable("review-id") @Positive long reviewId,
-//                                      @Valid @RequestBody ReviewPatchDto reviewPatchDto) {
-//        reviewPatchDto.setReviewId(reviewId);
-//
-//        Review response =
-//                reviewService.updateReview(mapper.reviewPatchDtoToReview(reviewPatchDto));
-//
-//        return new ResponseEntity<>(
-//                new SingleResponseDto<>(mapper.reviewToReviewResponseDto(response)),
-//                HttpStatus.OK);
-//    }
-
-
     @PatchMapping("/store/{store-id}/review/{review-id}")
     public ResponseEntity patchReview(@PathVariable("store-id") long storeId,
                                       @PathVariable("review-id") @Positive long reviewId,
-                                      @RequestHeader(value = "login") String login,
                                       @Valid @RequestBody ReviewPatchDto reviewPatchDto,
                                       Authentication authentication) {
-
         // 1009 추가
-        KakaoDetails kakaoDetails;
+        reviewPatchDto.setReviewId(reviewId);
+
         LocalDetails localDetails;
-        Kakao kakao = null;
         Local local = null;
-        long Id = -1;
-        if(login.equals("kakao")){
-            if(authentication != null) {
-                kakaoDetails = (KakaoDetails) authentication.getPrincipal();
-                kakao = kakaoDetails.getKakao();
-            }
-            if(kakao != null)
-                Id = kakao.getKakaoId();
-        }else if(login.equals("local")){
-            if(authentication != null){
-                localDetails = (LocalDetails) authentication.getPrincipal();
-                local = localDetails.getLocal();
-            }
-            if(local != null)
-                Id = local.getLocalId();
+        if(authentication != null){
+            localDetails = (LocalDetails) authentication.getPrincipal();
+            local = localDetails.getLocal();
         }
 
-        Store store = storeService.findStore(storeId);
+        if(local == null) throw new BusinessLogicException(ExceptionCode.AUTH_REQUIRED_LOGIN);
+
         Review review = mapper.reviewPatchDtoToReview(reviewPatchDto);
+        if(local.getStore() == null || reviewPatchDto.getStoreId() != local.getStore().getStoreId()) throw new BusinessLogicException(ExceptionCode.REVIEW_PATCH_WRONG_ACCESS);
 
-        Review response =
-                reviewService.updateReview(review);
+        Review response = reviewService.updateReview(review);
 
-        System.out.println("로그인한 아이디: " + Id);
-        return new ResponseEntity<>(mapper.reviewToReviewResponseDto(response), HttpStatus.OK);
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(mapper.reviewToReviewResponseDto(response)),
+                HttpStatus.OK);
     }
-
-
 
     /**
      * 리뷰 삭제
