@@ -78,18 +78,19 @@ public class CommentController {
     /**
      * 헤당 리뷰의 답변 불러오기
      */
-    @GetMapping("/review/{review-id}/comment")
-    public ResponseEntity getComment(@PathVariable("review-id") @Positive long reviewId,
-                                     @Positive @RequestParam int page,
-                                     @Positive @RequestParam(required = false, defaultValue = "15") int size) {
-        Page<Comment> pageComments = commentService.findComment(reviewId,page-1, size);
-        List<Comment> comments = pageComments.getContent();
-
-        return new ResponseEntity<>(
-                new MultiResponseDto<>(mapper.commentToCommentResponseDtos(comments),
-                        pageComments),
-                HttpStatus.OK);
-    }
+    // 1009 수정
+//    @GetMapping("/review/{review-id}/comment")
+//    public ResponseEntity getComment(@PathVariable("review-id") @Positive long reviewId,
+//                                     @Positive @RequestParam int page,
+//                                     @Positive @RequestParam(required = false, defaultValue = "15") int size) {
+//        Page<Comment> pageComments = commentService.findComment(reviewId,page-1, size);
+//        List<Comment> comments = pageComments.getContent();
+//
+//        return new ResponseEntity<>(
+//                new MultiResponseDto<>(mapper.commentToCommentResponseDtos(comments),
+//                        pageComments),
+//                HttpStatus.OK);
+//    }
 
     /**
      * 답변 수정
