@@ -7,6 +7,7 @@ import com.main_39.Spring.review.entity.Review;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -109,8 +110,8 @@ public class Store {
     /**
      * store : menu = 1 : N 양방향
      */
-    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
+    @BatchSize(size = 20)
     private List<Menu> menus = new ArrayList<>();
 
     public int getTotalMenu() {
@@ -120,7 +121,7 @@ public class Store {
     /**
      * local : store = 1 : 1 양방향
      */
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "local_id")
     private Local local;
 
@@ -137,8 +138,8 @@ public class Store {
     // 1007 수정
 //    @OneToMany(mappedBy = "store", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
 
-    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "store")
+    @BatchSize(size = 20)
     private List<Review> reviews = new ArrayList<>();
 
     public int getTotalReview() {
@@ -171,7 +172,8 @@ public class Store {
      */
     // 1007 수정
 //    @OneToMany(mappedBy = "store", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    @LazyCollection(LazyCollectionOption.FALSE)
+
     @OneToMany(mappedBy = "store")
+    @BatchSize(size = 20)
     private List<Comment> comments = new ArrayList<>();
 }

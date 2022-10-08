@@ -34,7 +34,7 @@ public class Review extends Auditable {
      * 리뷰 삭제시 댓글도 삭제
      * casecade 설정시 댓글 삭제 불가
      */
-    @OneToOne(mappedBy = "review")
+    @OneToOne(mappedBy = "review", fetch = FetchType.LAZY)
     private Comment comment;
 
     /**
@@ -43,7 +43,7 @@ public class Review extends Auditable {
      */
     // 1008 수정
 //    @ManyToOne(fetch = FetchType.EAGER)
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "kakao_id")
     private Kakao kakao;
 
@@ -62,7 +62,7 @@ public class Review extends Auditable {
      */
     // 1008 수정
 //    @ManyToOne(fetch = FetchType.EAGER)
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "local_id")
     private Local local;
 
@@ -74,7 +74,7 @@ public class Review extends Auditable {
     /**
      * 스토어 : 리뷰 = 1 : N 양방향 
      */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id")
     private Store store;
 
