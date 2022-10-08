@@ -1,6 +1,7 @@
 package com.main_39.Spring.member.entity;
 
 import com.main_39.Spring.order.entity.Order;
+import com.main_39.Spring.review.entity.Review;
 import com.main_39.Spring.store.entity.Store;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -84,5 +85,8 @@ public class Local{
             this.status = status;
         }
     }
+    // 1008 김나율 추가
+    @OneToMany(mappedBy = "local")
+    private List<Review> reviews = new ArrayList<>();
 
 }

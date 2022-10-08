@@ -66,6 +66,10 @@ public class Review extends Auditable {
     @JoinColumn(name = "local_id")
     private Local local;
 
+    // 1008 김나율 추가
+    public void setLocal(Local local) {
+        this.local = local;
+    }
 
 
     /**
