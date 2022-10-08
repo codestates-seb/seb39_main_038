@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class StoreResponseDto<T> {
+public class StoreResponseDto {
         private long storeId;
         private String storePhone;
         private String storeNumber;

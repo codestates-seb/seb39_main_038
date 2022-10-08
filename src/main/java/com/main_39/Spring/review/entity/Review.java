@@ -69,8 +69,6 @@ public class Review extends Auditable {
     // 1008 김나율 추가
     public void setLocal(Local local) {
         this.local = local;
-        if(local.getReviews().contains(this))
-            local.getReviews().add(this);
     }
 
     /**
