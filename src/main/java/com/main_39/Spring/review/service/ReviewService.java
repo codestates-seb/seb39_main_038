@@ -125,9 +125,7 @@ public class ReviewService {
     /**
      * 리뷰 삭제
      */
-    // 1009 수정
-//    public void deleteReview(Store store, long reviewId) {
-    public void deleteReview(long storeId, long reviewId) {
+    public void deleteReview(Store store, long reviewId) {
         Review findReview = findVerifiedReview(reviewId);
 
         // 1009 수정
