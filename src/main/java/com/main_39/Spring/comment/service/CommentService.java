@@ -34,7 +34,7 @@ public class CommentService {
      */
     public Comment createdComment(long reviewId, Comment comment) {
         Review review = reviewService.findReview(reviewId);
-//        comment.addReview(review);    // 수정
+        comment.addReview(review);
 
         return commentRepository.save(comment);
     }
@@ -42,11 +42,10 @@ public class CommentService {
     /**
      * 전체 답변(리뷰 포함) 조회
      */
-    // 1009 수정
-//    public Page<Comment> findComment(long reviewId, int page, int size) {
-//        return commentRepository.findByReview_ReviewId(reviewId, PageRequest.of(page, size,
-//                Sort.by("commentId").descending()));
-//    }
+    public Page<Comment> findComment(long reviewId, int page, int size) {
+        return commentRepository.findByReview_ReviewId(reviewId, PageRequest.of(page, size,
+                Sort.by("commentId").descending()));
+    }
 
     /**
      * 답변 삭제
@@ -56,7 +55,7 @@ public class CommentService {
 //        Review review = reviewService.findVerifiedReview(reviewId);
         Comment findComment = findVerifiedComment(commentId);
 
-        commentRepository.delete(findComment);
+        commentRepository.deleteById(commentId);
     }
 
     /**

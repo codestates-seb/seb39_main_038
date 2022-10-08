@@ -29,21 +29,20 @@ public class Comment extends Auditable {
     /**
      * 리뷰 : 댓글 = 1 : 1 양방향
      */
-    // 1009 수정
-//    @OneToOne
-//    @JoinColumn(name = "review_id")
-//    private Review review;
-//
-//    public void setReview(Review review) {
-//        this.review = review;
-//        if(review.getComment() !=this) {
-//            review.setComment(this);
-//        }
-//    }
+    @OneToOne
+    @JoinColumn(name = "review_id")
+    private Review review;
 
-//    public void addReview(Review review) {
-//        this.review = review;
-//    }
+    public void setReview(Review review) {
+        this.review = review;
+        if(review.getComment() !=this) {
+            review.setComment(this);
+        }
+    }
+
+    public void addReview(Review review) {
+        this.review = review;
+    }
 
     /**
      * 스토어 : 댓글 = 1: N 양방향

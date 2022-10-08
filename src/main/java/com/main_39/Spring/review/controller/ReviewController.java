@@ -1,5 +1,6 @@
 package com.main_39.Spring.review.controller;
 
+import com.main_39.Spring.comment.entity.Comment;
 import com.main_39.Spring.config.oauth.KakaoDetails;
 import com.main_39.Spring.config.oauth.LocalDetails;
 import com.main_39.Spring.dto.MultiResponseDto;
@@ -167,11 +168,25 @@ public class ReviewController {
      */
     @DeleteMapping("/store/{store-id}/review/{review-id}")
     public ResponseEntity deleteReview(@PathVariable("store-id") long storeId,
-                                       @PathVariable("review-id") @Positive long reviewId) {
+                                       @PathVariable("review-id") @Positive long reviewId,
+                                       Authentication authentication) {
+        // 1009 추가
+        LocalDetails localDetails;
+        Local local = null;
+        if(authentication != null){
+            localDetails = (LocalDetails) authentication.getPrincipal();
+            local = localDetails.getLocal();
+        }
+        if(local == null) throw new BusinessLogicException(ExceptionCode.STORE_PATCH_WRONG_ACCESS);
+
+        Review review = reviewService.findVerifiedReview(reviewId);
+        if(local.getStore() == null || review.getStore().getStoreId() != local.getStore().getStoreId()) throw new BusinessLogicException(ExceptionCode.REVIEW_DELETE_NO_AUTHORITY);
+
         System.out.println("#delete Review");
 //        Store store = storeService.findStore(storeId);
 //        reviewService.deleteReview(store, reviewId);  // 1009 수정
         reviewService.deleteReview(storeId, reviewId);
+        System.out.println("삭제된 리뷰 : " + reviewId);
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
