@@ -34,10 +34,7 @@ public class Review extends Auditable {
      * 리뷰 삭제시 댓글도 삭제
      * casecade 설정시 댓글 삭제 불가
      */
-//    @OneToOne(mappedBy = "review")
-    // 1009 수정
-    @OneToOne
-    @JoinColumn(name = "review_id")
+    @OneToOne(mappedBy = "review")
     private Comment comment;
 
     /**
