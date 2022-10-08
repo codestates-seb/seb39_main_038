@@ -6,7 +6,6 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class ReviewPatchDto {
-    private long storeId;
     private long reviewId;
     private String reviewContent;
     private String reviewImage;
