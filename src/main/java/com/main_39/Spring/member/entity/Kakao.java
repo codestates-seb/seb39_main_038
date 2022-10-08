@@ -4,7 +4,6 @@ import com.main_39.Spring.order.entity.Order;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -52,8 +51,7 @@ public class Kakao{
     @Column(length = 20, nullable = false)
     private Role role = Role.CUSTOMER;
 
-    @OneToMany(mappedBy = "kakao", cascade = CascadeType.ALL)
-    @BatchSize(size = 20)
+    @OneToMany(mappedBy = "kakao", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private List<Order> orders = new ArrayList<>();
 
     public void addOrders(Order order){
