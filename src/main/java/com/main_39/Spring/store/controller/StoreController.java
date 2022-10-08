@@ -76,7 +76,7 @@ public class StoreController {
     /**
      * 특정 푸드트럭 불러오기
      */
-    @GetMapping("/{local-id}/store/{store-id}") // 1008 수정
+    @GetMapping("/store/{store-id}")
     public ResponseEntity getStore(@PathVariable("store-id") @Positive long storeId) {
 
         Store store = storeService.findStore(storeId);
