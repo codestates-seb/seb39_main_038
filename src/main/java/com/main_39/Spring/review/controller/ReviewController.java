@@ -1,6 +1,5 @@
 package com.main_39.Spring.review.controller;
 
-import com.main_39.Spring.comment.entity.Comment;
 import com.main_39.Spring.config.oauth.KakaoDetails;
 import com.main_39.Spring.config.oauth.LocalDetails;
 import com.main_39.Spring.dto.MultiResponseDto;
@@ -149,58 +148,18 @@ public class ReviewController {
     /**
      * 리뷰 수정
      */
-//    @PatchMapping("/store/{store-id}/review/{review-id}")
-//    public ResponseEntity patchReview(@PathVariable("store-id") long storeId,
-//                                      @PathVariable("review-id") @Positive long reviewId,
-//                                      @Valid @RequestBody ReviewPatchDto reviewPatchDto) {
-//        reviewPatchDto.setReviewId(reviewId);
-//
-//        Review response =
-//                reviewService.updateReview(mapper.reviewPatchDtoToReview(reviewPatchDto));
-//
-//        return new ResponseEntity<>(
-//                new SingleResponseDto<>(mapper.reviewToReviewResponseDto(response)),
-//                HttpStatus.OK);
-//    }
-
-
     @PatchMapping("/store/{store-id}/review/{review-id}")
     public ResponseEntity patchReview(@PathVariable("store-id") long storeId,
                                       @PathVariable("review-id") @Positive long reviewId,
-                                      @RequestHeader(value = "login") String login,
-                                      @Valid @RequestBody ReviewPatchDto reviewPatchDto,
-                                      Authentication authentication) {
-
-        // 1009 추가
-        KakaoDetails kakaoDetails;
-        LocalDetails localDetails;
-        Kakao kakao = null;
-        Local local = null;
-        long Id = -1;
-        if(login.equals("kakao")){
-            if(authentication != null) {
-                kakaoDetails = (KakaoDetails) authentication.getPrincipal();
-                kakao = kakaoDetails.getKakao();
-            }
-            if(kakao != null)
-                Id = kakao.getKakaoId();
-        }else if(login.equals("local")){
-            if(authentication != null){
-                localDetails = (LocalDetails) authentication.getPrincipal();
-                local = localDetails.getLocal();
-            }
-            if(local != null)
-                Id = local.getLocalId();
-        }
-
-        Store store = storeService.findStore(storeId);
-        Review review = mapper.reviewPatchDtoToReview(reviewPatchDto);
+                                      @Valid @RequestBody ReviewPatchDto reviewPatchDto) {
+        reviewPatchDto.setReviewId(reviewId);
 
         Review response =
-                reviewService.updateReview(review);
+                reviewService.updateReview(mapper.reviewPatchDtoToReview(reviewPatchDto));
 
-        System.out.println("로그인한 아이디: " + Id);
-        return new ResponseEntity<>(mapper.reviewToReviewResponseDto(response), HttpStatus.OK);
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(mapper.reviewToReviewResponseDto(response)),
+                HttpStatus.OK);
     }
 
     /**
@@ -208,25 +167,11 @@ public class ReviewController {
      */
     @DeleteMapping("/store/{store-id}/review/{review-id}")
     public ResponseEntity deleteReview(@PathVariable("store-id") long storeId,
-                                       @PathVariable("review-id") @Positive long reviewId,
-                                       Authentication authentication) {
-        // 1009 추가
-        LocalDetails localDetails;
-        Local local = null;
-        if(authentication != null){
-            localDetails = (LocalDetails) authentication.getPrincipal();
-            local = localDetails.getLocal();
-        }
-        if(local == null) throw new BusinessLogicException(ExceptionCode.STORE_PATCH_WRONG_ACCESS);
-
-        Review review = reviewService.findVerifiedReview(reviewId);
-        if(local.getStore() == null || review.getStore().getStoreId() != local.getStore().getStoreId()) throw new BusinessLogicException(ExceptionCode.REVIEW_DELETE_NO_AUTHORITY);
-
+                                       @PathVariable("review-id") @Positive long reviewId) {
         System.out.println("#delete Review");
 //        Store store = storeService.findStore(storeId);
 //        reviewService.deleteReview(store, reviewId);  // 1009 수정
         reviewService.deleteReview(storeId, reviewId);
-        System.out.println("삭제된 리뷰 : " + reviewId);
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
