@@ -78,24 +78,6 @@ function FoodTruckSetting() {
       ...inputs,
       [e.target.name]: e.target.value,
     });
-    console.log(res.data.message);
-    if (res.data.message) {
-      alert(res.data.message);
-    }
-    return res;
-  };
-
-  const deleteInfo = async () => {
-    const res = await axios.delete(`${API_HOST}store/${storeId}`);
-    return res;
-  };
-
-  const onSuccess = () => {
-    queryClient.invalidateQueries(['detailfoodlist']);
-  };
-
-  const onError = () => {
-    alert('실패2');
   };
 
   const handleTypeChange = (e) => {

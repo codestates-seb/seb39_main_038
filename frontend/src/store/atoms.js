@@ -26,14 +26,6 @@ const atoms = {
     effects: [sessionStorageEffect('isLogin')],
   }),
 
-  menuQuery: atom({ key: 'menu', default: MENU[0].query }),
-
-  loginInfo: atom({
-    key: 'loginInfo',
-    default: { storeId: null, localId: null },
-    effects: [sessionStorageEffect('storeId')],
-  }),
-
   modal: atom({
     key: 'modal',
     default: { food: false, order: false, email: false },
