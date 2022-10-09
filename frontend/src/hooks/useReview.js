@@ -31,7 +31,10 @@ function useReview(id) {
   });
 
   const { mutate: updateMutate } = useMutation(fetchUpdateReview, {
-    onSuccess: () => queryClient.invalidateQueries(['review', id]),
+    onSuccess: () => {
+      console.log(id);
+      queryClient.invalidateQueries(['review', id]);
+    },
   });
 
   const { mutate: createMutate } = useMutation(fetchCreateReview, {
