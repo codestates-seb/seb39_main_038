@@ -33,9 +33,10 @@ public class MenuService {
     /**
      * 메뉴 등록하기
      */
-    public Menu createMenu(Store store, Menu menu) {
+    public void createMenu(Store store, Menu menu) {
         menu.addStore(store);
-        return menuRepository.save(menu);
+        if(menu.getImage() != null) saveImageToS3(menu);
+        menuRepository.save(menu);
     }
 
     /**
@@ -57,7 +58,7 @@ public class MenuService {
         menuRepository.save(updateMenu);
     }
 
-    public void saveImageToS3(Menu menu){
+    private void saveImageToS3(Menu menu){
         String data;
         try{
             data = menu.getImage().split(",")[1];
@@ -65,7 +66,7 @@ public class MenuService {
             System.out.println("메뉴 이미지 수정 실패");
             throw new BusinessLogicException(ExceptionCode.MENU_PATCH_WRONG_ACCESS);
         }
-        String s3FileName = "menus/" + menu.getMenuId();
+        String s3FileName = "menu/" + menu.getStore().getStoreId() + "/" + menu.getName();
         byte[] decodeByte = Base64.getDecoder().decode(data);
         InputStream inputStream = new ByteArrayInputStream(decodeByte);
         ObjectMetadata objectMetadata = new ObjectMetadata();
@@ -79,7 +80,6 @@ public class MenuService {
 
         amazonS3.putObject(bucket,s3FileName,inputStream,objectMetadata);
         menu.addImage(amazonS3.getUrl(bucket,s3FileName).toString());
-        menuRepository.save(menu);
     }
 
     /**

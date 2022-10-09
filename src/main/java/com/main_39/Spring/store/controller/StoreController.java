@@ -49,7 +49,7 @@ public class StoreController {
         store.setLocal(local);
 
         Store posted = storeService.createdStore(store);
-        if(posted.getStoreImage() != null) storeService.saveImageToS3(posted);
+
         StoreResponseDto response = mapper.storeToStoreResponseDto(posted);
 
         return new ResponseEntity<>(
