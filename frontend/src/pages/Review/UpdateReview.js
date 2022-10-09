@@ -1,6 +1,6 @@
-import React, { useState, useRef, useCallback, useEffect } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useQueryClient } from '@tanstack/react-query';
+// import { useQueryClient } from '@tanstack/react-query';
 import { useReview } from '../../hooks';
 import { ROUTE } from '../../constants';
 import {
@@ -19,21 +19,23 @@ import {
 function UpdateReview({ storeId, reviewId }) {
   const [imgSrc, setImgSrc] = useState(null);
   const [text, setText] = useState(null);
-
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { updateMutate } = useReview(storeId);
 
   // eslint-disable-next-line consistent-return
+  /*
   useEffect(() => {
     const data = queryClient.getQueryData(['review', storeId]);
     if (!data) return alert('예외처리');
 
-    const { reviewContent } = data.data.reviews[reviewId];
+    const { reviewContent, reviewImage } = data.data.reviews[reviewId];
     if (data.data.reviews[reviewId]) {
       setText(reviewContent);
+      setImgSrc(reviewImage);
     }
   }, [queryClient, reviewId, storeId]);
+  */
 
   const fileLoderRef = useRef(null);
   const handleOnClick = () => fileLoderRef.current.click();
