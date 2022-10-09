@@ -22,11 +22,11 @@ public class OrderMenu extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderMenuId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "menu_id")
     private Menu menu;
 
