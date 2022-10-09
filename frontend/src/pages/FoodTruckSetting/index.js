@@ -28,7 +28,7 @@ function FoodTruckSetting() {
   const [toggleStatus, setToggleStatus] = useState(false);
   const [storeId, setStoreId] = useState(null);
   const { postMutateMenu, postMutateInfo, patchMutateInfo, deleteMutateInfo } =
-    useSetting;
+    useSetting();
   const navigate = useNavigate();
 
   const { id } = useParams();
@@ -318,7 +318,7 @@ function FoodTruckSetting() {
                       content: newMenuContent,
                       image: newMenuImg,
                     };
-                    postMutateMenu(storeId, value);
+                    postMutateMenu({ storeId, value });
                   } else {
                     alert('모든 정보를 입력해 주세요');
                   }
