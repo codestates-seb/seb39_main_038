@@ -1,7 +1,5 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useParams, useNavigate } from 'react-router-dom';
 import {
   Section,
   Title,
@@ -14,313 +12,34 @@ import {
   AddFood,
   CreateFood,
   UpdateFood,
-  UpdateInput,
   SettingDoneBtn,
   Toggle,
   OpenOrClose,
 } from './styles';
 import { Spinner, ErrorBoundary } from '../../components';
-import { COLOR } from '../../constants';
-
-import { useFoodDetail, useDetailFoodList } from '../../hooks';
+import { COLOR, ROUTE } from '../../constants';
+import MenuList from './MenuList';
+import UpdateForm from './UpdateForm';
 import { withAuth } from '../../components/Hoc';
-
-function FoodMenusList({ storeId, props }) {
-  const { API_HOST } = process.env;
-  const [inputs, setInputs] = useState({
-    menuName: '',
-    menuPrice: '',
-    menuContent: '',
-    menuImg: null,
-  });
-  const queryClient = useQueryClient();
-
-  const { menuName, menuPrice, menuContent, menuImg } = inputs;
-
-  const onChange = (e) => {
-    setInputs({
-      ...inputs,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const deleteMenu = async (e) => {
-    const res = await axios.delete(`${API_HOST}${storeId}/menus/${e}`);
-    return res;
-  };
-
-  const patchMenu = async (e) => {
-    const res = await axios.patch(`${API_HOST}${storeId}/menus/${e}`, {
-      name: menuName,
-      price: menuPrice,
-      content: menuContent,
-      image: menuImg,
-    });
-    return res;
-  };
-
-  const onSuccess = () => {
-    // console.log(e);
-    queryClient.invalidateQueries('detailfoodlist');
-  };
-
-  const onError = () => {
-    alert('실패2');
-  };
-
-  const onSettled = () => {
-    alert('처리종료2');
-  };
-
-  const { mutate: deleteMutateMenu } = useMutation(deleteMenu, {
-    onSuccess,
-    onError,
-    onSettled,
-  });
-
-  const { mutate: patchMutateMenu } = useMutation(patchMenu, {
-    onSuccess,
-    onError,
-    onSettled,
-  });
-
-  const formHandler = (e) => {
-    e.preventDefault();
-    // e.target.reset();
-  };
-
-  return (
-    <UpdateInput>
-      <img
-        alt="FoodImage"
-        name="menuImg"
-        value={menuImg}
-        onChange={onChange}
-        src={props.image}
-      />
-
-      <TypeInfo onSubmit={formHandler}>
-        <input
-          placeholder={props.name}
-          name="menuName"
-          value={menuName}
-          onChange={onChange}
-        />
-
-        <input
-          placeholder={props.content}
-          name="menuContent"
-          value={menuContent}
-          onChange={onChange}
-        />
-
-        <input
-          placeholder={props.price}
-          name="menuPrice"
-          value={menuPrice}
-          onChange={onChange}
-        />
-      </TypeInfo>
-
-      <button
-        type="button"
-        onClick={() => {
-          if (
-            menuPrice &&
-            menuContent &&
-            menuName
-            //  && menuImg
-          ) {
-            patchMutateMenu(props.menuId);
-          } else {
-            alert('모든 정보를 입력해 주세요');
-          }
-        }}
-      >
-        수정
-      </button>
-      <button
-        type="button"
-        onClick={() => {
-          alert('음식 제거 완료');
-          // console.log(props.menuId);
-          deleteMutateMenu(props.menuId);
-        }}
-      >
-        제거
-      </button>
-    </UpdateInput>
-  );
-}
-
-function MenuList({ storeId }) {
-  const { data } = useDetailFoodList(storeId);
-  const queryClient = useQueryClient();
-  queryClient.invalidateQueries('detailfoodlist');
-  // console.log(data.data.menus);
-  return (
-    <>
-      {data.data.menus.map((props) => (
-        <FoodMenusList key={props.menuId} props={props} storeId={storeId} />
-      ))}
-    </>
-  );
-}
-
-function UpdateForm({
-  img,
-  onChange,
-  name,
-  time,
-  address,
-  phone,
-  number,
-  tag,
-  ask,
-  categories,
-  dropDown,
-  handleTypeChange,
-}) {
-  const { id } = useParams();
-  const { data } = useFoodDetail(id);
-  // console.log(data);
-
-  const {
-    storeName,
-    storeImage,
-    storeContent,
-    storeTag,
-    storeTime,
-    storePhone,
-    storeAddress,
-    storeNumber,
-  } = data.data.data;
-
-  return (
-    <CreateFoodTruck>
-      <MainImg>
-        <div>
-          <img
-            alt="FoodTruckImg"
-            name="img"
-            src={storeImage}
-            value={img}
-            onChange={onChange}
-          />
-        </div>
-
-        <Dropdown>
-          <select type="button" onChange={handleTypeChange} value={dropDown}>
-            {categories.map((res, index) => {
-              return (
-                <option key={res.type} id={`${index}`} value={res.value}>
-                  {res.type}
-                </option>
-              );
-            })}
-          </select>
-        </Dropdown>
-      </MainImg>
-
-      <ul>
-        <li>
-          <TypeInfo>
-            <input
-              placeholder={storeName}
-              name="name"
-              value={name}
-              onChange={onChange}
-            />
-          </TypeInfo>
-        </li>
-
-        <li>
-          <TypeInfo>
-            <input
-              placeholder={storeTime}
-              name="time"
-              value={time}
-              onChange={onChange}
-            />
-          </TypeInfo>
-        </li>
-
-        <li>
-          <TypeInfo>
-            <input
-              placeholder={storeAddress}
-              name="address"
-              value={address}
-              onChange={onChange}
-            />
-          </TypeInfo>
-        </li>
-
-        <li>
-          <TypeInfo>
-            <input
-              placeholder={storePhone}
-              name="phone"
-              value={phone}
-              onChange={onChange}
-            />
-          </TypeInfo>
-        </li>
-
-        <li>
-          <TypeInfo>
-            <input
-              placeholder={storeNumber}
-              name="number"
-              value={number}
-              onChange={onChange}
-            />
-          </TypeInfo>
-        </li>
-      </ul>
-
-      <DeleteTag>
-        <input
-          placeholder={storeTag}
-          value={tag}
-          name="tag"
-          onChange={onChange}
-        />
-
-        <HashTagBtn
-          onClick={() => {
-            alert('적용 완료');
-          }}
-        >
-          해시태그 변경
-        </HashTagBtn>
-      </DeleteTag>
-
-      <textarea
-        placeholder={storeContent}
-        name="ask"
-        value={ask}
-        onChange={onChange}
-      />
-    </CreateFoodTruck>
-  );
-}
+import { useSetting } from '../../hooks/useSetting';
 
 function FoodTruckSetting() {
-  const { API_HOST } = process.env;
   const [dropDown, setDropDown] = useState('한식');
   const [toggleStatus, setToggleStatus] = useState(false);
-  const [storeId, setStoreId] = useState(false);
+  const [storeId, setStoreId] = useState(null);
+  const { postMutateMenu, postMutateInfo, patchMutateInfo, deleteMutateInfo } =
+    useSetting;
+  const navigate = useNavigate();
 
   const { id } = useParams();
-  const { data } = useFoodDetail(id);
-  const queryClient = useQueryClient();
-  // console.log(data.data.data.storeId);
+
+  const userStoreId = JSON.parse(sessionStorage.getItem('storeId')).storeId;
+
   useEffect(() => {
-    if (data.data.data.storeId === undefined) {
+    if (userStoreId === null) {
       setStoreId(false);
     } else {
-      setStoreId(data.data.data.storeId);
+      setStoreId(userStoreId.storeId);
     }
   }, []);
 
@@ -366,103 +85,6 @@ function FoodTruckSetting() {
     // console.log('hehe', dropDown);
   };
   // console.log('mento', handleTypeChange());
-  const postMenu = async () => {
-    const res = await axios.post(`${API_HOST}store/${id}/menus`, {
-      name: newMenuName,
-      price: newMenuPrice,
-      content: newMenuContent,
-      image: newMenuImg,
-    });
-    return res;
-  };
-
-  const postInfo = async () => {
-    const res = await axios.post(`${API_HOST}store/ask`, {
-      localId: id,
-      storePhone: phone,
-      storeNumber: number,
-      storeStatus: toggleStatus ? 'BRAKE' : 'OPEN',
-      storeName: name,
-      storeContent: ask,
-      storeImage: img,
-      storeType: dropDown,
-      storeTime: time,
-      storeWaitTime: '15분~30분',
-      storeAddress: address,
-      storePayment: '현금',
-      storeTag: tag,
-    });
-    console.log(res.data.message);
-    if (res.data.message) {
-      alert(res.data.message);
-    }
-
-    return res;
-  };
-
-  const patchInfo = async () => {
-    const res = await axios.patch(`${API_HOST}store/${storeId}`, {
-      localId: id,
-      storePhone: phone,
-      storeNumber: number,
-      storeStatus: toggleStatus ? 'BRAKE' : 'OPEN',
-      storeName: name,
-      storeContent: ask,
-      storeImage: img,
-      storeType: dropDown,
-      storeTime: time,
-      storeWaittime: '15분~30분',
-      storeAddress: address,
-      storePayment: '현금',
-      storeTag: tag,
-    });
-    console.log(res.data.message);
-    if (res.data.message) {
-      alert(res.data.message);
-    }
-    return res;
-  };
-
-  const deleteInfo = async () => {
-    const res = await axios.delete(`${API_HOST}store/${storeId}`);
-    return res;
-  };
-
-  const onSuccess = () => {
-    queryClient.invalidateQueries(['detailfoodlist']);
-  };
-
-  const onError = () => {
-    alert('실패2');
-  };
-
-  const onSettled = () => {
-    alert('처리종료2');
-  };
-
-  const { mutate: postMutateMenu } = useMutation(postMenu, {
-    onSuccess,
-    onError,
-    onSettled,
-  });
-
-  const { mutate: postMutateInfo } = useMutation(postInfo, {
-    onSuccess,
-    onError,
-    onSettled,
-  });
-
-  const { mutate: patchMutateInfo } = useMutation(patchInfo, {
-    onSuccess,
-    onError,
-    onSettled,
-  });
-
-  const { mutate: deleteMutateInfo } = useMutation(deleteInfo, {
-    onSuccess,
-    onError,
-    onSettled,
-  });
 
   const categories = [
     { value: 'korean', type: '한식' },
@@ -483,7 +105,8 @@ function FoodTruckSetting() {
             onClick={() => {
               if (window.confirm('정말 본인 푸드트럭을 폐업 하시겠습니까?')) {
                 alert('푸드트럭을 폐업 하였습니다.');
-                deleteMutateInfo();
+                deleteMutateInfo({ storeId });
+                setStoreId(false);
               }
             }}
           >
@@ -505,6 +128,7 @@ function FoodTruckSetting() {
               tag={tag}
               ask={ask}
               categories={categories}
+              storeId={storeId}
             />
           ) : (
             <CreateFoodTruck>
@@ -606,7 +230,7 @@ function FoodTruckSetting() {
 
                 <HashTagBtn
                   onClick={() => {
-                    alert('하단 가게설정 완료를 눌러주세요');
+                    alert('변경 완료');
                   }}
                 >
                   해시태그 변경
@@ -628,23 +252,14 @@ function FoodTruckSetting() {
                 type="checkbox"
                 onClick={() => {
                   if (toggleStatus === false) {
-                    if (
-                      window.confirm('정말로 영업을 임시중단 하시겠습니까?')
-                    ) {
-                      setToggleStatus(true);
-                      // console.log('f', toggleStatus);
-                    } else {
-                      setToggleStatus(false);
-                      // console.log('s', toggleStatus);
-                    }
+                    alert('영업을 임시로 중단하였습니다');
+                    setToggleStatus(true);
                   }
 
                   if (toggleStatus === true) {
-                    setToggleStatus(!toggleStatus);
-                    // console.log('t', toggleStatus);
+                    setToggleStatus(false);
                   }
                 }}
-                defaultChecked={false}
                 id="toggle"
                 hidden
               />
@@ -696,7 +311,14 @@ function FoodTruckSetting() {
                     newMenuContent &&
                     newMenuPrice
                   ) {
-                    postMutateMenu();
+                    alert('메뉴를 성공적으로 추가했습니다');
+                    const value = {
+                      name: newMenuName,
+                      price: newMenuPrice,
+                      content: newMenuContent,
+                      image: newMenuImg,
+                    };
+                    postMutateMenu(storeId, value);
                   } else {
                     alert('모든 정보를 입력해 주세요');
                   }
@@ -725,7 +347,26 @@ function FoodTruckSetting() {
                         time &&
                         address
                       ) {
-                        postMutateInfo();
+                        alert('가게를 성공적으로 등록했습니다');
+                        alert('로그아웃하여 다시 로그인 해주세요');
+                        sessionStorage.removeItem('storeId');
+                        const value = {
+                          localId: id,
+                          storePhone: phone,
+                          storeNumber: number,
+                          storeStatus: toggleStatus ? 'BRAKE' : 'OPEN',
+                          storeName: name,
+                          storeContent: ask,
+                          storeImage: img,
+                          storeType: dropDown,
+                          storeTime: time,
+                          storeWaitTime: '15분~30분',
+                          storeAddress: address,
+                          storePayment: '현금',
+                          storeTag: tag,
+                        };
+                        postMutateInfo({ value });
+                        navigate(ROUTE.HOME.PATH);
                       } else {
                         alert('태그를 제외한 모두 입력 하셔야 합니다');
                       }
@@ -749,7 +390,25 @@ function FoodTruckSetting() {
                         time &&
                         address
                       ) {
-                        patchMutateInfo();
+                        alert(
+                          '성공적으로 가게를 수정하였습니다. 새로고침 해주세요',
+                        );
+                        const value = {
+                          localId: id,
+                          storePhone: phone,
+                          storeNumber: number,
+                          storeStatus: toggleStatus ? 'BRAKE' : 'OPEN',
+                          storeName: name,
+                          storeContent: ask,
+                          storeImage: img,
+                          storeType: dropDown,
+                          storeTime: time,
+                          storeWaittime: '15분~30분',
+                          storeAddress: address,
+                          storePayment: '현금',
+                          storeTag: tag,
+                        };
+                        patchMutateInfo({ storeId, value });
                       } else {
                         alert('태그를 제외한 모두 입력 하셔야 합니다');
                       }
