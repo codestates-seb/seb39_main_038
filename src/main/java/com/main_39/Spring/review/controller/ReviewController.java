@@ -152,11 +152,34 @@ public class ReviewController {
     @PatchMapping("/store/{store-id}/review/{review-id}")
     public ResponseEntity patchReview(@PathVariable("store-id") long storeId,
                                       @PathVariable("review-id") @Positive long reviewId,
-                                      @Valid @RequestBody ReviewPatchDto reviewPatchDto) {
+                                      @Valid @RequestBody ReviewPatchDto reviewPatchDto,
+                                      @RequestHeader(value="login") String login,
+                                      Authentication authentication) {
+        KakaoDetails kakaoDetails;
+        LocalDetails localDetails;
+        Kakao kakao = null;
+        Local local = null;
+        long Id = -1;
+        if(login.equals("kakao")){
+            if(authentication != null) {
+                kakaoDetails = (KakaoDetails) authentication.getPrincipal();
+                kakao = kakaoDetails.getKakao();
+            }
+            if(kakao != null)
+                Id = kakao.getKakaoId();
+        }else if(login.equals("local")){
+            if(authentication != null){
+                localDetails = (LocalDetails) authentication.getPrincipal();
+                local = localDetails.getLocal();
+            }
+            if(local != null)
+                Id = local.getLocalId();
+        }
+
         reviewPatchDto.setReviewId(reviewId);
 
         Review response =
-                reviewService.updateReview(mapper.reviewPatchDtoToReview(reviewPatchDto));
+                reviewService.updateReview(mapper.reviewPatchDtoToReview(reviewPatchDto),Id,login);
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(mapper.reviewToReviewResponseDto(response)),
@@ -169,12 +192,34 @@ public class ReviewController {
     @DeleteMapping("/store/{store-id}/review/{review-id}")
     public ResponseEntity deleteReview(@PathVariable("store-id") long storeId,
                                        @PathVariable("review-id") @Positive long reviewId,
+                                       @RequestHeader(value="login") String login,
                                        Authentication authentication) {
+
+        KakaoDetails kakaoDetails;
+        LocalDetails localDetails;
+        Kakao kakao = null;
+        Local local = null;
+        long Id = -1;
+        if(login.equals("kakao")){
+            if(authentication != null) {
+                kakaoDetails = (KakaoDetails) authentication.getPrincipal();
+                kakao = kakaoDetails.getKakao();
+            }
+            if(kakao != null)
+                Id = kakao.getKakaoId();
+        }else if(login.equals("local")){
+            if(authentication != null){
+                localDetails = (LocalDetails) authentication.getPrincipal();
+                local = localDetails.getLocal();
+            }
+            if(local != null)
+                Id = local.getLocalId();
+        }
 
         System.out.println("#delete Review");
 //        Store store = storeService.findStore(storeId);
 //        reviewService.deleteReview(store, reviewId);  // 1009 수정
-        reviewService.deleteReview(storeId, reviewId);
+        reviewService.deleteReview(storeId, reviewId, Id,login);
         System.out.println("삭제된 리뷰 : " + reviewId);
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
