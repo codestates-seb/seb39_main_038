@@ -28,6 +28,7 @@ function ProviderLogin() {
       storeId: 1,
       localId: 1,
     });
+    console.log(response.data.localId, response.data.storeId);
     return navigate(ROUTE.HOME.PATH);
   };
 
