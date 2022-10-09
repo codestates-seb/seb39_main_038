@@ -14,7 +14,7 @@ function DetailFoodList({ storeId, storeName }) {
     openFood();
     setMenuOrder({ storeId: id, storeName: name, ...value });
   };
-  console.log(data);
+
   const createFoodMenuList = () => {
     return data?.data.menus.map((menu) => (
       <Menu key={menu.name} onClick={handleOnClick(storeId, storeName, menu)}>

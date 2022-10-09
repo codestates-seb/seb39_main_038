@@ -22,7 +22,7 @@ function Answer({ item, storeId }) {
 
   const handleOnClick = () => isToggle(!toggle);
   const handleOnChange = (e) => setText(e.target.value);
-  const authCheck = loginInfo.storeId === storeId;
+  const authCheck = loginInfo.storeId === Number(storeId);
 
   const postData = () => {
     createMutate({
