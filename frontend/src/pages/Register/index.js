@@ -17,6 +17,7 @@ function Register() {
     };
     const response = await axios.post(API_URI.REGISTER, userInfo);
     if (response.status === 226) return alert(response.data?.message);
+    alert('회원가입 성공하셨습니다!!');
     return navigate(`/${ROUTE.LOGIN.PATH}`, { state: ROUTE.REGISTER.PATH });
   };
 

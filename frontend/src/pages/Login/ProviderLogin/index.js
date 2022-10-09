@@ -22,7 +22,7 @@ function ProviderLogin() {
     if (response.status === 226) return alert(response.data?.message);
     setIsLogin({ state: true, type: 'local' });
     setLoginInfo({
-      storeId: response.data.store,
+      storeId: response.data.store.storeId,
       localId: response.data.localId,
     });
     return navigate(ROUTE.HOME.PATH);
