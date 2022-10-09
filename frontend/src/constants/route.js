@@ -7,7 +7,7 @@ const ROUTE = {
   },
   MYPAGE: {
     PATH: 'mypage',
-    FOODTRUCKSETTING: { PATH: 'trucksetting/:id' },
+    FOODTRUCKSETTING: { PATH: `trucksetting/:id` },
   },
   LOGIN: { PATH: 'login', NAME: '로그인' },
   LOGOUT: { PATH: 'logout', NAME: '로그아웃' },

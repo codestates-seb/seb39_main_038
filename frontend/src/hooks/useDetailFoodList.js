@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { API_URI } from '../constants';
 
 const fetchDetailFoodList = (id) => async () => {
-  const response = axios.get(`${API_URI.FOODLIST}/${id}/menus`);
+  const response = await axios.get(`${API_URI.FOODLIST}/${id}/menus`);
   return response;
 };
 
