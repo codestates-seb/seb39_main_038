@@ -30,7 +30,7 @@ function MyPage() {
   const { data: orderListData } = useOrderList();
   const { data: userData } = useMyPage();
   const [openOrder, closeOrder] = useModal('order');
-  // const { localId } = JSON.parse(sessionStorage.getItem('storeId'));
+  const { localId } = JSON.parse(sessionStorage.getItem('storeId'));
 
   useEffect(() => {
     if (!state) {
@@ -94,7 +94,7 @@ function MyPage() {
       {type === 'local' ? (
         <Button
           onClick={() => {
-            // navigate(`/trucksetting/${localId}`);
+            navigate(`/trucksetting/${localId}`);
           }}
         >
           가게 설정
