@@ -26,7 +26,7 @@ function ProviderLogin() {
     console.log(loginInfo);
     setLoginInfo({
       storeId: 1,
-      localId: 1,
+      localId: response.data.localId,
     });
     console.log(response.data.localId, response.data.storeId);
     return navigate(ROUTE.HOME.PATH);
