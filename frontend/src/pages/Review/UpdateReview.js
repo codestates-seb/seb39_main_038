@@ -30,8 +30,12 @@ function UpdateReview({ storeId, reviewId }) {
 
       if (!data) return alert('예외처리');
 
-      const { reviewContent, reviewImage } = data.data.reviews[reviewId];
-      if (data.data.reviews[reviewId]) {
+      const target = data.data.reviews.filter(
+        (item) => item.reviewId === reviewId,
+      );
+      const { reviewContent, reviewImage } = target;
+      console.log(target, reviewId);
+      if (target) {
         setText(reviewContent);
         setImgSrc(reviewImage);
       }
