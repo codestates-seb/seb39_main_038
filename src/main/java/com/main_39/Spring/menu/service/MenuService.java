@@ -33,11 +33,9 @@ public class MenuService {
     /**
      * 메뉴 등록하기
      */
-    public void createMenu(Store store, Menu menu) {
-
+    public Menu createMenu(Store store, Menu menu) {
         menu.addStore(store);
-        if(menu.getImage() != null) saveImageToS3(menu);
-        menuRepository.save(menu);
+        return menuRepository.save(menu);
     }
 
     /**
@@ -59,7 +57,7 @@ public class MenuService {
         menuRepository.save(updateMenu);
     }
 
-    private void saveImageToS3(Menu menu){
+    public void saveImageToS3(Menu menu){
         String data;
         try{
             data = menu.getImage().split(",")[1];

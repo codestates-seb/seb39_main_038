@@ -45,7 +45,6 @@ public class StoreService {
      */
     public Store createdStore(Store store) {
         verifyExistsInfo(store.getStoreName(), store.getStoreNumber(), store.getStorePhone());
-        if(store.getStoreImage() != null) saveImageToS3(store);
         return storeRepository.save(store);
     }
 
@@ -87,7 +86,7 @@ public class StoreService {
     /**
      * 푸드트럭 이미지
      */
-    private void saveImageToS3(Store store){
+    public void saveImageToS3(Store store){
         String data;
         try{
             data = store.getStoreImage().split(",")[1];

@@ -46,8 +46,8 @@ public class MenuController {
         // storeService 수정으로 인한 수정
         Store store = storeService.verifyExistsStore(storeId);
 
-        menuService.createMenu(store, mapper.menuRequestToMenu(menuRequest));
-
+        Menu posted = menuService.createMenu(store, mapper.menuRequestToMenu(menuRequest));
+        if(posted.getImage() != null) menuService.saveImageToS3(posted);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
