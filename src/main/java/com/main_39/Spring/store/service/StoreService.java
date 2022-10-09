@@ -108,6 +108,7 @@ public class StoreService {
 
         amazonS3.putObject(bucket,s3FileName,inputStream,objectMetadata);
         store.setStoreImage(amazonS3.getUrl(bucket,s3FileName).toString());
+        storeRepository.save(store);
     }
 
     /**

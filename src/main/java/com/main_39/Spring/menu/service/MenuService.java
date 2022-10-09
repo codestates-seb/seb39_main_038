@@ -79,6 +79,7 @@ public class MenuService {
 
         amazonS3.putObject(bucket,s3FileName,inputStream,objectMetadata);
         menu.addImage(amazonS3.getUrl(bucket,s3FileName).toString());
+        menuRepository.save(menu);
     }
 
     /**
