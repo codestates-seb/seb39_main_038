@@ -24,7 +24,7 @@ function ProviderLogin() {
     console.log('로그인', response.data);
     console.log('데이터', response.data.store?.storeId, response.data.localId);
     setLoginInfo({
-      storeId: response.data.store?.storeId,
+      storeId: response.data.store.storeId || null,
       localId: response.data.localId,
     });
     return navigate(ROUTE.HOME.PATH);
