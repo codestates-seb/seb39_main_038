@@ -32,9 +32,9 @@ function UpdateReview({ storeId, reviewId }) {
 
       const target = data.data.reviews.filter(
         (item) => item.reviewId === reviewId,
-      );
+      )[0];
       const { reviewContent, reviewImage } = target;
-      console.log(target, reviewId);
+      console.log(target, reviewId, reviewContent, reviewImage);
       if (target) {
         setText(reviewContent);
         setImgSrc(reviewImage);
