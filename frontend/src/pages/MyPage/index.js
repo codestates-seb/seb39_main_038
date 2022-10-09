@@ -30,6 +30,7 @@ function MyPage() {
   const { data: orderListData } = useOrderList();
   const { data: userData } = useMyPage();
   const [openOrder, closeOrder] = useModal('order');
+  const { localId } = JSON.parse(sessionStorage.getItem('storeId'));
 
   useEffect(() => {
     if (!state) {
@@ -90,7 +91,15 @@ function MyPage() {
         <Header>주문조회</Header>
         {createOrderContent()}
       </OrderInner>
-      {type === 'local' ? <Button onClick={() => {}}>가게 설정</Button> : null}
+      {type === 'local' ? (
+        <Button
+          onClick={() => {
+            navigate(`/trucksetting/${localId}`);
+          }}
+        >
+          가게 설정
+        </Button>
+      ) : null}
       <CustomModal.Order closeModal={closeOrder} />
     </MyPageContainer>
   );
