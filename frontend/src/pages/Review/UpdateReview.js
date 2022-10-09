@@ -35,8 +35,8 @@ function UpdateReview({ storeId, reviewId }) {
         setText(reviewContent);
         setImgSrc(reviewImage);
       }
-    } catch {
-      console.log('error');
+    } catch (err) {
+      console.log(err);
     }
   }, [queryClient, reviewId, storeId]);
 
