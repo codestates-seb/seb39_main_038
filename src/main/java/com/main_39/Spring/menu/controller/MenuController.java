@@ -47,7 +47,6 @@ public class MenuController {
         Store store = storeService.verifyExistsStore(storeId);
 
         menuService.createMenu(store, mapper.menuRequestToMenu(menuRequest));
-
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

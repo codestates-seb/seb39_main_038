@@ -49,6 +49,7 @@ public class StoreController {
         store.setLocal(local);
 
         Store posted = storeService.createdStore(store);
+
         StoreResponseDto response = mapper.storeToStoreResponseDto(posted);
 
         return new ResponseEntity<>(

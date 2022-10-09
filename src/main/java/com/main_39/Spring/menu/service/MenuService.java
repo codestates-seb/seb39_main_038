@@ -34,7 +34,6 @@ public class MenuService {
      * 메뉴 등록하기
      */
     public void createMenu(Store store, Menu menu) {
-
         menu.addStore(store);
         if(menu.getImage() != null) saveImageToS3(menu);
         menuRepository.save(menu);
@@ -67,7 +66,7 @@ public class MenuService {
             System.out.println("메뉴 이미지 수정 실패");
             throw new BusinessLogicException(ExceptionCode.MENU_PATCH_WRONG_ACCESS);
         }
-        String s3FileName = "menus/" + menu.getMenuId();
+        String s3FileName = "menu/" + menu.getStore().getStoreId() + "/" + menu.getName();
         byte[] decodeByte = Base64.getDecoder().decode(data);
         InputStream inputStream = new ByteArrayInputStream(decodeByte);
         ObjectMetadata objectMetadata = new ObjectMetadata();

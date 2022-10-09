@@ -21,6 +21,7 @@ import javax.transaction.Transactional;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.Optional;
 
@@ -55,7 +56,6 @@ public class ReviewService {
         Store store = storeService.findStore(storeId);
         review.addStore(store);
         if(review.getReviewImage() != null) saveImageToS3(review);
-
         if(login.equals("local")){
             Local local = memberService.findVerifiedLocal(Id);
             review.setLocal(local);
@@ -78,7 +78,7 @@ public class ReviewService {
             System.out.println("리뷰 이미지 삽입 실패");
             throw new BusinessLogicException(ExceptionCode.REVIEW_NOT_EXISTS);
         }
-        String s3FileName = "reviews/"+ review.getReviewId();
+        String s3FileName = "review/"+ review.getStore().getStoreId() + "/" + LocalDateTime.now();
         byte[] decodeByte = Base64.getDecoder().decode(data);
         InputStream inputStream = new ByteArrayInputStream(decodeByte);
         ObjectMetadata objectMetadata = new ObjectMetadata();
@@ -122,7 +122,8 @@ public class ReviewService {
         Optional.ofNullable(review.getReviewContent())
                 .ifPresent(content -> findReview.setReviewContent(content));
         Optional.ofNullable(review.getReviewImage())
-                .ifPresent(image -> findReview.setReviewImage(image));
+                .ifPresent(image -> {findReview.setReviewImage(image);
+                saveImageToS3(findReview);});
         Optional.ofNullable(review.getReviewGrade())
                 .ifPresent(grade -> findReview.setReviewGrade(grade));
 

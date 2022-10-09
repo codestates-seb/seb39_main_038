@@ -95,7 +95,7 @@ public class StoreService {
             System.out.println("가게 이미지 변경 실패");
             throw new BusinessLogicException(ExceptionCode.STORE_PATCH_WRONG_ACCESS);
         }
-        String s3FileName = "stores/" + store.getStoreId();
+        String s3FileName = "store/" + store.getStoreNumber();
         byte[] decodeByte = Base64.getDecoder().decode(data);
         InputStream inputStream = new ByteArrayInputStream(decodeByte);
         ObjectMetadata objectMetadata = new ObjectMetadata();
