@@ -1,6 +1,9 @@
 package com.main_39.Spring.member.controller;
 
+import com.main_39.Spring.config.oauth.KakaoDetails;
 import com.main_39.Spring.dto.SingleResponseDto;
+import com.main_39.Spring.exception.BusinessLogicException;
+import com.main_39.Spring.exception.ExceptionCode;
 import com.main_39.Spring.member.dto.KakaoDto;
 import com.main_39.Spring.member.dto.KakaoProfile;
 import com.main_39.Spring.member.dto.LocalDto;
@@ -337,9 +340,18 @@ public class MemberController {
      * 마일리지 확인
      * */
     @GetMapping("/kakao/mileage/{kakao-id}")
-    public ResponseEntity<SingleResponseDto<KakaoDto.mileageDto>> kakaoMileage(@PathVariable @Positive Long kakaoId){
-        Kakao kakao = memberService.findVerifiedKakao(kakaoId);
-        KakaoDto.mileageDto response = memberMapper.kakaoToKakaoDtoMileage(kakao);
+    public ResponseEntity<SingleResponseDto<KakaoDto.mileageDto>> kakaoMileage(@PathVariable @Positive Long kakaoId,
+                                                                               Authentication authentication){
+        KakaoDetails kakaoDetails;
+        Kakao kakao = null;
+        if(authentication != null){
+            kakaoDetails = (KakaoDetails) authentication.getPrincipal();
+            kakao = kakaoDetails.getKakao();
+        }
+        if(kakao == null || kakao.getKakaoId() != kakaoId) throw new BusinessLogicException(ExceptionCode.NOT_MATCH_USER_INFO);
+
+        Kakao findKakao = memberService.findVerifiedKakao(kakaoId);
+        KakaoDto.mileageDto response = memberMapper.kakaoToKakaoDtoMileage(findKakao);
 
         return new ResponseEntity<SingleResponseDto<KakaoDto.mileageDto>>(
                 new SingleResponseDto<KakaoDto.mileageDto>(response),HttpStatus.OK
