@@ -34,13 +34,12 @@ function UpdateReview({ storeId, reviewId }) {
         (item) => item.reviewId === reviewId,
       )[0];
       const { reviewContent, reviewImage } = target;
-      console.log(target, reviewId, reviewContent, reviewImage);
       if (target) {
         setText(reviewContent);
         setImgSrc(reviewImage);
       }
-    } catch (err) {
-      console.log(err);
+    } catch {
+      return null;
     }
   }, [queryClient, reviewId, storeId]);
 
@@ -63,7 +62,7 @@ function UpdateReview({ storeId, reviewId }) {
       rid: reviewId,
       value: { reviewContent: text, reviewImage: imgSrc },
     });
-    navigate(`${ROUTE.FOODLIST.PATH}/${storeId}`);
+    navigate(`/${ROUTE.FOODLIST.PATH}/${storeId}`);
   };
 
   return (
