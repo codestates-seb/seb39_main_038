@@ -1,5 +1,5 @@
 import React, { useState, useRef, useCallback } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import {
   Container,
   EditorWrapper,
@@ -13,11 +13,13 @@ import {
   FileInput,
 } from './styles';
 import { useReview } from '../../hooks';
+import { ROUTE } from '../../constants';
 
 function AskReview() {
   const [imgSrc, setImgSrc] = useState(null);
   const [text, setText] = useState(null);
   const [star, setStar] = useState(1);
+  const navigate = useNavigate();
   const location = useLocation();
   const { createMutate } = useReview(location.state.storeId);
 
@@ -31,6 +33,9 @@ function AskReview() {
     createMutate({
       sid: location.state.storeId,
       value: { reviewContent: text, reviewImage: imgSrc, reviewGrade: star },
+    });
+    navigate(`/${ROUTE.FOODLIST.PATH}/${location.state.storeId}`, {
+      replace: true,
     });
   };
 

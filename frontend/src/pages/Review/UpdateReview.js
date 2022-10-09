@@ -1,7 +1,8 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { useReview } from '../../hooks';
-
+import { ROUTE } from '../../constants';
 import {
   Container,
   EditorWrapper,
@@ -20,6 +21,7 @@ function UpdateReview({ storeId, reviewId }) {
   const [text, setText] = useState(null);
 
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const { updateMutate } = useReview(storeId);
 
   // eslint-disable-next-line consistent-return
@@ -53,6 +55,7 @@ function UpdateReview({ storeId, reviewId }) {
       rid: reviewId,
       value: { reviewContent: text, reviewImage: imgSrc },
     });
+    navigate(`${ROUTE.FOODLIST.PATH}/${storeId}`);
   };
 
   return (
