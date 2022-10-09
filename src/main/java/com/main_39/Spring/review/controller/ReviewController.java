@@ -85,6 +85,7 @@ public class ReviewController {
         Review review = mapper.reviewPostDtoToReview(reviewPostDto);
 
         Review posted = reviewService.createdReview(storeId, review, Id, login);
+        if(posted.getReviewImage() != null) reviewService.saveImageToS3(posted);
         ReviewResponseDto response = mapper.reviewToReviewResponseDto(posted);
 
 

@@ -54,7 +54,6 @@ public class ReviewService {
     public Review createdReview(long storeId, Review review, long Id, String login) {
         Store store = storeService.findStore(storeId);
         review.addStore(store);
-        if(review.getReviewImage() != null) saveImageToS3(review);
 
         if(login.equals("local")){
             Local local = memberService.findVerifiedLocal(Id);
@@ -70,7 +69,7 @@ public class ReviewService {
     /**
      * 리뷰 이미지 저장
      */
-    private void saveImageToS3(Review review){
+    public void saveImageToS3(Review review){
         String data;
         try{
             data = review.getReviewImage().split(",")[1];
@@ -122,7 +121,8 @@ public class ReviewService {
         Optional.ofNullable(review.getReviewContent())
                 .ifPresent(content -> findReview.setReviewContent(content));
         Optional.ofNullable(review.getReviewImage())
-                .ifPresent(image -> findReview.setReviewImage(image));
+                .ifPresent(image -> {findReview.setReviewImage(image);
+                saveImageToS3(findReview);});
         Optional.ofNullable(review.getReviewGrade())
                 .ifPresent(grade -> findReview.setReviewGrade(grade));
 

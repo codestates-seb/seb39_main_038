@@ -20,7 +20,8 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Menu {
+public class
+Menu {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long menuId;
