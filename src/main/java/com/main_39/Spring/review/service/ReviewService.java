@@ -109,8 +109,15 @@ public class ReviewService {
     /**
      * 리뷰 수정
      */
-    public Review updateReview(Review review) {
+    public Review updateReview(Review review,long Id, String login) {
         Review findReview = findVerifiedReview(review.getReviewId());
+        if(login.equals("kakao")){
+            if(findReview.getKakao() == null || Id != findReview.getKakao().getKakaoId()) throw new BusinessLogicException(ExceptionCode.REVIEW_PATCH_WRONG_ACCESS);
+        }else if(login.equals("local")){
+            if(findReview.getLocal() == null || Id != findReview.getLocal().getLocalId()) throw new BusinessLogicException(ExceptionCode.REVIEW_PATCH_WRONG_ACCESS);
+        }else{
+            throw new BusinessLogicException(ExceptionCode.REVIEW_PATCH_WRONG_ACCESS);
+        }
 
         Optional.ofNullable(review.getReviewContent())
                 .ifPresent(content -> findReview.setReviewContent(content));
@@ -125,9 +132,15 @@ public class ReviewService {
     /**
      * 리뷰 삭제
      */
-    public void deleteReview(long storeId, long reviewId) {
+    public void deleteReview(long storeId, long reviewId, long Id, String login) {
         Review findReview = findVerifiedReview(reviewId);
-
+        if(login.equals("kakao")){
+            if(findReview.getKakao() == null || Id != findReview.getKakao().getKakaoId()) throw new BusinessLogicException(ExceptionCode.REVIEW_DELETE_NO_AUTHORITY);
+        }else if(login.equals("local")){
+            if(findReview.getLocal() == null || Id != findReview.getLocal().getLocalId()) throw new BusinessLogicException(ExceptionCode.REVIEW_DELETE_NO_AUTHORITY);
+        }else{
+            throw new BusinessLogicException(ExceptionCode.REVIEW_DELETE_NO_AUTHORITY);
+        }
         // 1009 수정
 //        if(store.hasReview()) {
 //            store.getReviews().removeIf(reviews -> reviews.getReviewId().equals(reviewId));
