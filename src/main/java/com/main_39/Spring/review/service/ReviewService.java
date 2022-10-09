@@ -90,6 +90,7 @@ public class ReviewService {
         }
         amazonS3.putObject(bucket,s3FileName,inputStream,objectMetadata);
         review.setReviewImage(amazonS3.getUrl(bucket,s3FileName).toString());
+        reviewRepository.save(review);
     }
 
     /**
