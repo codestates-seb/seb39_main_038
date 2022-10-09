@@ -29,10 +29,9 @@ function UpdateReview({ storeId, reviewId }) {
     const data = queryClient.getQueryData(['review', storeId]);
     if (!data) return alert('예외처리');
 
-    const { reviewContent, reviewImage } = data.data.reviews[reviewId];
+    const { reviewContent } = data.data.reviews[reviewId];
     if (data.data.reviews[reviewId]) {
       setText(reviewContent);
-      setImgSrc(reviewImage);
     }
   }, [queryClient, reviewId, storeId]);
 
