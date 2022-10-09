@@ -1,9 +1,3 @@
-import axios from 'axios';
-import {
-  useQuery,
-  QueryClient,
-  QueryClientProvider,
-} from '@tanstack/react-query';
 import React from 'react';
 import { useSetRecoilState } from 'recoil';
 import { atoms } from '../../store';
@@ -20,7 +14,7 @@ function DetailFoodList({ storeId, storeName }) {
     openFood();
     setMenuOrder({ storeId: id, storeName: name, ...value });
   };
-  console.log(data);
+  // console.log(data);
   const createFoodMenuList = () => {
     return data?.data.menus.map((menu) => (
       <Menu key={menu.name} onClick={handleOnClick(storeId, storeName, menu)}>
