@@ -45,6 +45,7 @@ public class StoreService {
      */
     public Store createdStore(Store store) {
         verifyExistsInfo(store.getStoreName(), store.getStoreNumber(), store.getStorePhone());
+        if(store.getStoreImage() != null) saveImageToS3(store);
         return storeRepository.save(store);
     }
 
@@ -86,7 +87,7 @@ public class StoreService {
     /**
      * 푸드트럭 이미지
      */
-    public void saveImageToS3(Store store){
+    private void saveImageToS3(Store store){
         String data;
         try{
             data = store.getStoreImage().split(",")[1];
@@ -94,7 +95,7 @@ public class StoreService {
             System.out.println("가게 이미지 변경 실패");
             throw new BusinessLogicException(ExceptionCode.STORE_PATCH_WRONG_ACCESS);
         }
-        String s3FileName = "stores/" + store.getStoreId();
+        String s3FileName = "store/" + store.getStoreNumber();
         byte[] decodeByte = Base64.getDecoder().decode(data);
         InputStream inputStream = new ByteArrayInputStream(decodeByte);
         ObjectMetadata objectMetadata = new ObjectMetadata();
@@ -108,7 +109,6 @@ public class StoreService {
 
         amazonS3.putObject(bucket,s3FileName,inputStream,objectMetadata);
         store.setStoreImage(amazonS3.getUrl(bucket,s3FileName).toString());
-        storeRepository.save(store);
     }
 
     /**

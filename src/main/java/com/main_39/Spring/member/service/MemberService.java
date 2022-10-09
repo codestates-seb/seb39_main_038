@@ -239,7 +239,7 @@ public class MemberService {
             System.out.println("S3에 회원 프로필 입력 실패");
             throw new BusinessLogicException(ExceptionCode.OAUTH_USERINFO_REQUEST_FAILED);
         }
-        String s3FileName =  "avatars/" + local.getEmail();
+        String s3FileName =  "avatar/" + local.getEmail();
 
         byte[] decodeByte = Base64.getDecoder().decode(data);
         InputStream inputStream = new ByteArrayInputStream(decodeByte);
