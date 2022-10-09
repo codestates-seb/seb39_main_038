@@ -170,17 +170,6 @@ public class ReviewController {
     public ResponseEntity deleteReview(@PathVariable("store-id") long storeId,
                                        @PathVariable("review-id") @Positive long reviewId,
                                        Authentication authentication) {
-        // 1009 추가
-        LocalDetails localDetails;
-        Local local = null;
-        if(authentication != null){
-            localDetails = (LocalDetails) authentication.getPrincipal();
-            local = localDetails.getLocal();
-        }
-        if(local == null) throw new BusinessLogicException(ExceptionCode.STORE_PATCH_WRONG_ACCESS);
-
-        Review review = reviewService.findVerifiedReview(reviewId);
-        if(local.getStore() == null || review.getStore().getStoreId() != local.getStore().getStoreId()) throw new BusinessLogicException(ExceptionCode.REVIEW_DELETE_NO_AUTHORITY);
 
         System.out.println("#delete Review");
 //        Store store = storeService.findStore(storeId);
