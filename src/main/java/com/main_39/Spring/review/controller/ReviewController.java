@@ -56,7 +56,7 @@ public class ReviewController {
     /**
      * 리뷰 등록
      */
-    @PostMapping("/store/{store-id}/reviews/ask")
+    @PostMapping("/store/{store-id}/review/ask")
     public ResponseEntity postReview(@PathVariable("store-id") long storeId,
                                      @Valid @RequestBody ReviewPostDto reviewPostDto,
                                      @RequestHeader(value = "login") String login,
@@ -102,7 +102,7 @@ public class ReviewController {
 //        return new ResponseEntity<>(mapper.reviewToStoreResponseDto(store), HttpStatus.OK);
 //    }
 
-    @GetMapping("/store/{store-id}/reviews")
+    @GetMapping("/store/{store-id}/review")
     public ResponseEntity<ReviewsResponseDto> getReviewByStore(@PathVariable("store-id") long storeId,
                                                                @RequestHeader(value = "login") String login,
                                                                Authentication authentication) {
