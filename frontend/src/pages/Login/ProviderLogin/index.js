@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useSetRecoilState, useRecoilValue } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import { atoms } from '../../../store';
 import { Form } from '../../../components';
 import { Logo, LoginInner, FindInner, FindText } from './styles';
@@ -11,7 +11,6 @@ import { sha256 } from '../../../utils';
 function ProviderLogin() {
   const setIsLogin = useSetRecoilState(atoms.isLogin);
   const setLoginInfo = useSetRecoilState(atoms.loginInfo);
-  const loginInfo = useRecoilValue(atoms.loginInfo);
   const navigate = useNavigate();
 
   const postUserData = async (email, password) => {
@@ -22,13 +21,12 @@ function ProviderLogin() {
     const response = await axios.post(API_URI.LOGIN, userInfo);
     if (response.status === 226) return alert(response.data?.message);
     setIsLogin({ state: true, type: 'local' });
-    console.log('로그인', response.data.localId);
-    console.log(loginInfo);
+    console.log('로그인', response.data);
+    console.log('데이터', response.data.store?.storeId, response.data.localId);
     setLoginInfo({
-      storeId: 1,
+      storeId: response.data.store?.storeId,
       localId: response.data.localId,
     });
-    console.log(response.data.localId, response.data.storeId);
     return navigate(ROUTE.HOME.PATH);
   };
 
