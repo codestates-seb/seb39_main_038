@@ -21,8 +21,6 @@ function ProviderLogin() {
     const response = await axios.post(API_URI.LOGIN, userInfo);
     if (response.status === 226) return alert(response.data?.message);
     setIsLogin({ state: true, type: 'local' });
-    console.log('로그인', response.data);
-    console.log('데이터', response.data.store?.storeId, response.data.localId);
     setLoginInfo({
       storeId: response.data.store?.storeId || null,
       localId: response.data.localId,

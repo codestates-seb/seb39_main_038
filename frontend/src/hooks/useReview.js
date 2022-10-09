@@ -24,7 +24,6 @@ const fetchCreateReview = async (data) => {
 
 function useReview(id) {
   const queryClient = useQueryClient();
-  console.log('review', id);
   const { data } = useQuery(['review', id], fetchReview(id));
 
   const { mutate: deleteMutate } = useMutation(fetchDeleteReview, {

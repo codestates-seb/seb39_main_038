@@ -41,7 +41,7 @@ function FoodTruckSetting() {
     } else {
       setStoreId(userStoreId.storeId);
     }
-  }, []);
+  }, [userStoreId]);
 
   const [inputs, setInputs] = useState({
     img: null,
@@ -82,9 +82,7 @@ function FoodTruckSetting() {
 
   const handleTypeChange = (e) => {
     setDropDown(e.target.value);
-    // console.log('hehe', dropDown);
   };
-  // console.log('mento', handleTypeChange());
 
   const categories = [
     { value: 'korean', type: '한식' },
@@ -305,12 +303,7 @@ function FoodTruckSetting() {
               <button
                 type="button"
                 onClick={() => {
-                  if (
-                    // newMenuImg &&
-                    newMenuName &&
-                    newMenuContent &&
-                    newMenuPrice
-                  ) {
+                  if (newMenuName && newMenuContent && newMenuPrice) {
                     alert('메뉴를 성공적으로 추가했습니다');
                     const value = {
                       name: newMenuName,

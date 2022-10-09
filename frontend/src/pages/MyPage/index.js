@@ -45,7 +45,6 @@ function MyPage() {
   const goModal = (item) => () => setOrderData(item);
 
   const goAsk = (id) => () => {
-    console.log(ROUTE.REVIEW.PATH);
     navigate(`/${ROUTE.REVIEW.PATH}`, {
       state: { storeId: id, type: 'post' },
     });
@@ -53,7 +52,6 @@ function MyPage() {
 
   const createOrderContent = () => {
     return orderListData.data.orders?.map((item) => {
-      console.log(orderListData.data.orders);
       return (
         <OrderContent key={item.orderId} onClick={goModal(item)}>
           <TextBox>
