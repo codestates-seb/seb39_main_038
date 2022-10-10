@@ -30,7 +30,7 @@ function MyPage() {
   const { data: orderListData } = useOrderList();
   const { data: userData } = useMyPage();
   const [openOrder, closeOrder] = useModal('order');
-  const { localId } = JSON.parse(sessionStorage.getItem('storeId'));
+  const loginInfo = useRecoilValue(atoms.loginInfo);
 
   useEffect(() => {
     if (!state) {
@@ -49,6 +49,8 @@ function MyPage() {
       state: { storeId: id, type: 'post' },
     });
   };
+
+  const goSetting = () => navigate(`/trucksetting/${loginInfo.localId}`);
 
   const createOrderContent = () => {
     return orderListData.data.orders?.map((item) => {
@@ -89,15 +91,7 @@ function MyPage() {
         <Header>주문조회</Header>
         {createOrderContent()}
       </OrderInner>
-      {type === 'local' ? (
-        <Button
-          onClick={() => {
-            navigate(`/trucksetting/${localId}`);
-          }}
-        >
-          가게 설정
-        </Button>
-      ) : null}
+      {type === 'local' ? <Button onClick={goSetting}>가게 설정</Button> : null}
       <CustomModal.Order closeModal={closeOrder} />
     </MyPageContainer>
   );
