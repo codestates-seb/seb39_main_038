@@ -29,7 +29,7 @@ function useReview(id) {
   const { mutate: deleteMutate } = useMutation(fetchDeleteReview, {
     onSuccess: () => {
       queryClient.invalidateQueries(['review', id.toString()]);
-      queryClient.invalidateQueries(['foodDetail', id.toString()]);
+      return queryClient.invalidateQueries(['foodDetail', id.toString()]);
     },
   });
 
@@ -40,7 +40,7 @@ function useReview(id) {
   const { mutateAsync: createMutate } = useMutation(fetchCreateReview, {
     onSuccess: () => {
       queryClient.invalidateQueries(['review', id.toString()]);
-      queryClient.invalidateQueries(['foodDetail', id.toString()]);
+      return queryClient.invalidateQueries(['foodDetail', id.toString()]);
     },
   });
 
