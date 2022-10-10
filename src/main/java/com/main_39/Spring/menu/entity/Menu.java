@@ -6,14 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +26,7 @@ public class Menu {
 
     private String image;
 
-    @OneToMany(mappedBy = "menu", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL, fetch = FetchType.EAGER) // 1010 추가
     private List<OrderMenu> orderMenus = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
