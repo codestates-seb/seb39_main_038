@@ -123,12 +123,12 @@ app.get("/order/orders", (req, res) => {
   return res.status(200).json(orders);
 });
 
-app.get("/store/:id/reviews", (req, res) => {
+app.get("/store/:id/review", (req, res) => {
   const { id } = req.params;
   return res.status(200).json(foodReviewData[id]);
 });
 
-app.post("/store/:id/reviews/ask", (req, res) => {
+app.post("/store/:id/review/ask", (req, res) => {
   const { id } = req.params;
   const { reviewImage, reviewContent, reviewGrade } = req.body;
   console.log(
@@ -145,13 +145,13 @@ app.post("/store/:id/reviews/ask", (req, res) => {
   return res.status(200).end();
 });
 
-app.delete("/store/:id/reviews/:reviewId", (req, res) => {
+app.delete("/store/:id/review/:reviewId", (req, res) => {
   const { id, reviewId } = req.params;
   foodReviewData[id].reviews.splice(reviewId, 1);
   return res.status(200).end();
 });
 
-app.patch("/store/:id/reviews/:reviewId", (req, res) => {
+app.patch("/store/:id/review/:reviewId", (req, res) => {
   const { id, reviewId } = req.params;
   for (const key in req.body) {
     foodReviewData[id].reviews[reviewId][key] = req.body[key];

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useRecoilValue, useResetRecoilState } from 'recoil';
 import { useNavigate } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 import {
   StickyBody,
   CartListBody,
@@ -21,6 +22,7 @@ function Receipt({ order, request, type }) {
   const orderList = useRecoilValue(atoms.orderList);
   const resetReceipt = useResetRecoilState(atoms.orderList);
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const { payWithCard, payWithCash } = usePay(orderList[0]?.storeId);
 
   const totalPrice = () => {
@@ -48,6 +50,7 @@ function Receipt({ order, request, type }) {
     if (type === 'CARD') payWithCard(request, type);
     else payWithCash(request, type);
     resetReceipt();
+    queryClient.invalidateQueries(['orderList']);
     navigate(`/${ROUTE.FOODLIST.PATH}`);
   };
 

@@ -30,7 +30,7 @@ function MyPage() {
   const { data: orderListData } = useOrderList();
   const { data: userData } = useMyPage();
   const [openOrder, closeOrder] = useModal('order');
-  const { localId } = JSON.parse(sessionStorage.getItem('storeId'));
+  const loginInfo = useRecoilValue(atoms.loginInfo);
 
   useEffect(() => {
     if (!state) {
@@ -45,15 +45,16 @@ function MyPage() {
   const goModal = (item) => () => setOrderData(item);
 
   const goAsk = (id) => () => {
-    console.log(ROUTE.REVIEW.PATH);
     navigate(`/${ROUTE.REVIEW.PATH}`, {
       state: { storeId: id, type: 'post' },
     });
   };
 
+  const goSetting = () =>
+    navigate(`/trucksetting/${loginInfo.localId}`, { replace: true });
+
   const createOrderContent = () => {
-    return orderListData.data.orders?.map((item) => {
-      console.log(orderListData.data.orders);
+    return orderListData.data.orders?.reverse().map((item) => {
       return (
         <OrderContent key={item.orderId} onClick={goModal(item)}>
           <TextBox>
@@ -91,15 +92,7 @@ function MyPage() {
         <Header>주문조회</Header>
         {createOrderContent()}
       </OrderInner>
-      {type === 'local' ? (
-        <Button
-          onClick={() => {
-            navigate(`/trucksetting/${localId}`);
-          }}
-        >
-          가게 설정
-        </Button>
-      ) : null}
+      {type === 'local' ? <Button onClick={goSetting}>가게 설정</Button> : null}
       <CustomModal.Order closeModal={closeOrder} />
     </MyPageContainer>
   );
