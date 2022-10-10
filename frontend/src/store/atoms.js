@@ -13,18 +13,18 @@ const sessionStorageEffect =
   };
 
 const atoms = {
-  isLogin: atom({
-    key: 'isLogin',
-    default: { state: false, type: null },
-    effects: [sessionStorageEffect('isLogin')],
-  }),
-
   menuQuery: atom({ key: 'menu', default: MENU[0].query }),
 
   loginInfo: atom({
     key: 'loginInfo',
     default: { storeId: null, localId: null },
     effects: [sessionStorageEffect('storeId')],
+  }),
+
+  isLogin: atom({
+    key: 'isLogin',
+    default: { state: false, type: null },
+    effects: [sessionStorageEffect('isLogin')],
   }),
 
   modal: atom({

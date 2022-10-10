@@ -115,7 +115,7 @@ function FoodMenusList({ storeId, props }) {
 
 function MenuList({ storeId }) {
   const { data } = useDetailFoodList(storeId);
-  console.log(data.data.menus);
+
   return (
     <>
       {data.data.menus.map((props) => (

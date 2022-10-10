@@ -13,7 +13,6 @@ function Review() {
       navigate('/');
     }
   }, [navigate, location.state]);
-  console.log(location);
 
   if (!location.state) return <div />;
 

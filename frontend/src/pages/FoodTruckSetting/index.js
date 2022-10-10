@@ -47,7 +47,7 @@ function FoodTruckSetting() {
     } else {
       setStoreId(loginInfo.storeId.storeId);
     }
-  }, []);
+  }, [loginInfo]);
 
   const [inputs, setInputs] = useState({
     name: '',
@@ -106,7 +106,6 @@ function FoodTruckSetting() {
 
   const handleTypeChange = (e) => {
     setDropDown(e.target.value);
-    // console.log('hehe', dropDown);
   };
   // console.log('mento', handleTypeChange());
 

@@ -25,7 +25,7 @@ const withAuth = (Component) => (props) => {
       alert('로그인을 먼저 하셔야 합니다.');
       navigate(ROUTE.HOME.PATH);
     }
-  }, [navigate]);
+  }, [id, navigate]);
 
   // eslint-disable-next-line react/jsx-props-no-spreading
   return <Component {...props} />;

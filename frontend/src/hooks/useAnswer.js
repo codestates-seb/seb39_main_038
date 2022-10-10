@@ -27,7 +27,6 @@ const fetchDeleteAnswer = async ({ id, value }) => {
 };
 
 function useAnswer(id) {
-  console.log('answer', id);
   const queryClient = useQueryClient();
   const { mutate: createMutate } = useMutation(fetchCreateAnswer, {
     onSuccess: () => queryClient.invalidateQueries(['review', id]),
