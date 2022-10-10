@@ -120,7 +120,7 @@ public class Store {
      * store : menu = 1 : N 양방향
      */
     @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
     private List<Menu> menus = new ArrayList<>();
 
     public int getTotalMenu() {
@@ -148,7 +148,7 @@ public class Store {
 //    @OneToMany(mappedBy = "store", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
 
     @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(mappedBy = "store", orphanRemoval = true)
+    @OneToMany(mappedBy = "store")
     private List<Review> reviews = new ArrayList<>();
 
     public int getTotalReview() {
@@ -182,6 +182,6 @@ public class Store {
     // 1007 수정
 //    @OneToMany(mappedBy = "store", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(mappedBy = "store", orphanRemoval = true)
+    @OneToMany(mappedBy = "store")
     private List<Comment> comments = new ArrayList<>();
 }
