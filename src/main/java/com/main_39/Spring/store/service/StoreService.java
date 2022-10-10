@@ -30,19 +30,16 @@ public class StoreService {
     private final StoreRepository storeRepository;
     private final AmazonS3 amazonS3;
     private final ReviewRepository reviewRepository;
-    private final LocalRepository localRepository;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
     public StoreService(StoreRepository storeRepository,
                         AmazonS3 amazonS3,
-                        ReviewRepository reviewRepository,
-                        LocalRepository localRepository) {
+                        ReviewRepository reviewRepository) {
         this.storeRepository = storeRepository;
         this.amazonS3 = amazonS3;
         this.reviewRepository = reviewRepository;
-        this.localRepository = localRepository;
     }
 
     /**
@@ -174,7 +171,7 @@ public class StoreService {
         Optional<Store> name = storeRepository.findByName(storeName);
         Optional<Store> number = storeRepository.findByNumber(storeNumber);
         Optional<Store> phone = storeRepository.findByPhone(storePhone);
-        Optional<Local> local = localRepository.findById(localId);
+        Optional<Store> local = storeRepository.findByLocal_LocalId(localId);
 
         if(name.isPresent()) {
             throw new BusinessLogicException(ExceptionCode.STORE_NAME_DUPLICATE);

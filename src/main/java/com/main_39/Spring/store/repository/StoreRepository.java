@@ -19,4 +19,6 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
     Optional<Store> findByPhone(String storePhone);
 
     public Page<Store> findByStoreType(Store.StoreType storeType, PageRequest pageable);
+
+    Optional<Store> findByLocal_LocalId(long localId);
 }
