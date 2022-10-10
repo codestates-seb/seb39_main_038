@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDetailFoodList } from '../../../hooks';
-import { UpdateInput, TypeInfo } from '../styles';
+import { UpdateInput, TypeInfo, Avatar } from '../styles';
 import { useSetting } from '../../../hooks/useSetting';
 
 function FoodMenusList({ storeId, props }) {
@@ -8,10 +8,9 @@ function FoodMenusList({ storeId, props }) {
     menuName: '',
     menuPrice: '',
     menuContent: '',
-    menuImg: null,
   });
-
-  const { menuName, menuPrice, menuContent, menuImg } = inputs;
+  const [menuImg, setMenuImg] = useState(false);
+  const { menuName, menuPrice, menuContent } = inputs;
   const { patchMutateMenu, deleteMutateMenu } = useSetting();
 
   const onChange = (e) => {
@@ -21,6 +20,17 @@ function FoodMenusList({ storeId, props }) {
     });
   };
 
+  const onChangeImg = (e) => {
+    const reader = new FileReader();
+    if (e.target.files[0]) {
+      reader.readAsDataURL(e.target.files[0]);
+    }
+    reader.onloadend = () => {
+      const resultImg = reader.result;
+      setMenuImg(resultImg);
+    };
+  };
+
   const formHandler = (e) => {
     e.preventDefault();
     e.target.reset();
@@ -28,13 +38,18 @@ function FoodMenusList({ storeId, props }) {
 
   return (
     <UpdateInput>
-      <img
-        alt="FoodImage"
-        name="menuImg"
-        value={menuImg}
-        onChange={onChange}
-        src={props.image}
-      />
+      <Avatar>
+        <div>
+          <img alt="새로운 메뉴 이미지" src={menuImg || props.image} />
+          <label htmlFor={props.menuId}>수정</label>
+          <input
+            type="file"
+            id={props.menuId}
+            onChange={onChangeImg}
+            accept="image/*"
+          />
+        </div>
+      </Avatar>
 
       <TypeInfo onSubmit={formHandler}>
         <input
@@ -100,7 +115,7 @@ function FoodMenusList({ storeId, props }) {
 
 function MenuList({ storeId }) {
   const { data } = useDetailFoodList(storeId);
-  // console.log(data.data.menus);
+  console.log(data.data.menus);
   return (
     <>
       {data.data.menus.map((props) => (

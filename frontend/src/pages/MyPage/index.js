@@ -30,7 +30,7 @@ function MyPage() {
   const { data: orderListData } = useOrderList();
   const { data: userData } = useMyPage();
   const [openOrder, closeOrder] = useModal('order');
-  const { localId } = JSON.parse(sessionStorage.getItem('storeId'));
+  const { localId } = useRecoilValue(atoms.loginInfo);
 
   useEffect(() => {
     if (!state) {
