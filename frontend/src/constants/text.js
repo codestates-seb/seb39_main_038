@@ -26,6 +26,16 @@ const TEXT = {
     WRONG_PATH: '잘못된 경로를 사용하셨어요 :)',
     GO_HOME: '홈으로 이동',
   },
+
+  FOODDETAIL: {
+    STAR: '별점',
+    WAIT_TIME: '대기시간',
+    TAG: '태그',
+    NOTICE: '사장님알림',
+    INFO: '정보',
+    MENU: (text = '') => `메뉴 ${text}`,
+    CLEAN_REVIWE: (text = '') => `클린리뷰 ${text}`,
+  },
 };
 
 export { TEXT };
