@@ -29,8 +29,8 @@ function AskReview() {
   const handleOnChangeEditer = (e) => setText(e.target.value);
   const handleOnchange = (e) => setStar(e.target.value);
 
-  const hanldeOnPost = () => {
-    createMutate({
+  const hanldeOnPost = async () => {
+    await createMutate({
       sid: location.state.storeId,
       value: { reviewContent: text, reviewImage: imgSrc, reviewGrade: star },
     });
