@@ -16,7 +16,7 @@ import {
 import { ReceiptList } from '../ReceiptList';
 import { atoms } from '../../store';
 import { ROUTE } from '../../constants';
-import { usePay, useOrderList } from '../../hooks';
+import { usePay } from '../../hooks';
 
 function Receipt({ order, request, type }) {
   const isLogin = useRecoilValue(atoms.isLogin);
@@ -25,7 +25,6 @@ function Receipt({ order, request, type }) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { payWithCard, payWithCash } = usePay(orderList[0]?.storeId);
-  useOrderList();
 
   const totalPrice = () => {
     let sum = 0;
