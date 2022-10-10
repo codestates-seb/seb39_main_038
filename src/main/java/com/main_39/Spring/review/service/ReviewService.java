@@ -150,6 +150,7 @@ public class ReviewService {
 
         if(findReview.getReviewImage() != null){
             int index = findReview.getReviewImage().indexOf("/",8);
+            System.out.println("삭제 이미지 : ");
             String key = findReview.getReviewImage().substring(index+1);
             amazonS3.deleteObject(bucket,key);
         }
