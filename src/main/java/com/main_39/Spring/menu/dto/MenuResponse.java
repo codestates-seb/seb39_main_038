@@ -1,9 +1,10 @@
 package com.main_39.Spring.menu.dto;
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
+@AllArgsConstructor
 public class MenuResponse {
 
     private long menuId;
@@ -15,13 +16,4 @@ public class MenuResponse {
     private String content;
 
     private String image;
-
-    @Builder
-    public MenuResponse(long menuId, String name, int price, String content, String image) {
-        this.menuId = menuId;
-        this.name = name;
-        this.price = price;
-        this.content = content;
-        this.image = image;
-    }
 }

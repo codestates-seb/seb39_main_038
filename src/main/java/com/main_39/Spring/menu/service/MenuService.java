@@ -33,8 +33,7 @@ public class MenuService {
     /**
      * 메뉴 등록하기
      */
-    public void createMenu(Store store, Menu menu) {
-        menu.addStore(store);
+    public void createMenu(Menu menu) {
         if(menu.getImage() != null) saveImageToS3(menu);
         menuRepository.save(menu);
     }
@@ -108,9 +107,7 @@ public class MenuService {
      */
     public Menu findVerifiedMenu(long menuId) {
 
-        Menu verifiedMenu = menuRepository.findById(menuId).orElseThrow(
+        return menuRepository.findById(menuId).orElseThrow(
                 () -> new BusinessLogicException(ExceptionCode.MENU_NOT_EXISTS));
-
-        return verifiedMenu;
     }
 }
