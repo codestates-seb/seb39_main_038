@@ -6,10 +6,12 @@ import com.main_39.Spring.menu.dto.MenuResponse;
 import com.main_39.Spring.menu.dto.MenusResponse;
 import com.main_39.Spring.menu.entity.Menu;
 import com.main_39.Spring.store.entity.Store;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
 public class MenuMapper {
     public Menu menuRequestToMenu(Store store, MenuRequest menuRequest) {
 
