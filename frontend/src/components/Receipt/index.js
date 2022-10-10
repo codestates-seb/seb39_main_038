@@ -16,14 +16,16 @@ import {
 import { ReceiptList } from '../ReceiptList';
 import { atoms } from '../../store';
 import { ROUTE } from '../../constants';
-import { usePay } from '../../hooks';
+import { usePay, useOrderList } from '../../hooks';
 
 function Receipt({ order, request, type }) {
+  const isLogin = useRecoilValue(atoms.isLogin);
   const orderList = useRecoilValue(atoms.orderList);
   const resetReceipt = useResetRecoilState(atoms.orderList);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { payWithCard, payWithCash } = usePay(orderList[0]?.storeId);
+  useOrderList();
 
   const totalPrice = () => {
     let sum = 0;
@@ -45,7 +47,12 @@ function Receipt({ order, request, type }) {
     ));
   };
 
-  const goOrder = () => navigate(`/${ROUTE.ORDER.PATH}`);
+  const goOrder = () => {
+    if (isLogin.state) return navigate(`/${ROUTE.ORDER.PATH}`);
+    alert('로그인을 먼저해주세요.');
+    return navigate(`/${ROUTE.LOGIN.PATH}`);
+  };
+
   const goPay = () => {
     if (type === 'CARD') payWithCard(request, type);
     else payWithCash(request, type);
