@@ -92,4 +92,8 @@ public class Review extends Auditable {
         if(store.getReviews().contains(this))
             store.getReviews().add(this);
     }
+
+    public void addComment(Comment comment) {
+        this.comment = comment;
+    }
 }
