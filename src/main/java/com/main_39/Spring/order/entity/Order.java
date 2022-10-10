@@ -36,7 +36,7 @@ public class Order extends Auditable {
     @JoinColumn(name = "local_id")
     private Local local;
 
-    @OneToMany(mappedBy = "order", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<OrderMenu> orderMenus = new ArrayList<>();
 
     private PaymentType paymentType;

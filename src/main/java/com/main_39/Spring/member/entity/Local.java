@@ -57,7 +57,7 @@ public class Local{
     private Role role = Role.SELLER;
 
     //외래키 수정
-    @OneToOne(mappedBy = "local")
+    @OneToOne(mappedBy = "local", cascade = CascadeType.ALL)
     private Store store;
 
     @LazyCollection(LazyCollectionOption.FALSE)
