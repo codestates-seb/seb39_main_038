@@ -12,7 +12,7 @@ import {
   View,
   FileInput,
 } from './styles';
-import { useReview } from '../../hooks';
+import { useReview, useFoodDetail } from '../../hooks';
 import { ROUTE } from '../../constants';
 
 function AskReview() {
@@ -22,6 +22,7 @@ function AskReview() {
   const navigate = useNavigate();
   const location = useLocation();
   const { createMutate } = useReview(location.state.storeId);
+  useFoodDetail(location.state.storeId.toString());
 
   const fileLoderRef = useRef(null);
 
