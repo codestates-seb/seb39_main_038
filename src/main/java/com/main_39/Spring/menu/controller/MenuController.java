@@ -1,10 +1,8 @@
 package com.main_39.Spring.menu.controller;
 
-import com.amazonaws.services.s3.AmazonS3;
-import com.main_39.Spring.menu.MenuMapper;
+import com.main_39.Spring.menu.mapper.MenuMapper;
 import com.main_39.Spring.menu.dto.MenuDetailResponse;
 import com.main_39.Spring.menu.dto.MenuRequest;
-import com.main_39.Spring.menu.dto.MenuResponse;
 import com.main_39.Spring.menu.dto.MenusResponse;
 import com.main_39.Spring.menu.entity.Menu;
 import com.main_39.Spring.menu.service.MenuService;
@@ -20,10 +18,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -46,7 +41,8 @@ public class MenuController {
         // storeService 수정으로 인한 수정
         Store store = storeService.verifyExistsStore(storeId);
 
-        menuService.createMenu(store, mapper.menuRequestToMenu(menuRequest));
+        menuService.createMenu(mapper.menuRequestToMenu(store, menuRequest));
+
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
