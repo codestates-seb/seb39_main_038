@@ -68,11 +68,13 @@ function Register() {
         <Form.Input
           type="password"
           name="password"
+          autoComplete="off"
           placeholder="비밀번호 입력"
         />
         <Form.Input
           type="password"
           name="passwordCheck"
+          autoComplete="off"
           placeholder="비밀번호 확인"
         />
         <Form.Button type="submit" color={COLOR.NAVY} fontColor={COLOR.WHITE}>
