@@ -4,6 +4,8 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.main_39.Spring.exception.BusinessLogicException;
 import com.main_39.Spring.exception.ExceptionCode;
+import com.main_39.Spring.member.entity.Local;
+import com.main_39.Spring.member.repository.LocalRepository;
 import com.main_39.Spring.review.entity.Review;
 import com.main_39.Spring.review.repository.ReviewRepository;
 import com.main_39.Spring.store.entity.Store;
@@ -28,23 +30,26 @@ public class StoreService {
     private final StoreRepository storeRepository;
     private final AmazonS3 amazonS3;
     private final ReviewRepository reviewRepository;
+    private final LocalRepository localRepository;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
     public StoreService(StoreRepository storeRepository,
                         AmazonS3 amazonS3,
-                        ReviewRepository reviewRepository) {
+                        ReviewRepository reviewRepository,
+                        LocalRepository localRepository) {
         this.storeRepository = storeRepository;
         this.amazonS3 = amazonS3;
         this.reviewRepository = reviewRepository;
+        this.localRepository = localRepository;
     }
 
     /**
      * 푸드트럭 등록
      */
     public Store createdStore(Store store) {
-        verifyExistsInfo(store.getStoreName(), store.getStoreNumber(), store.getStorePhone());
+        verifyExistsInfo(store.getStoreName(), store.getStoreNumber(), store.getStorePhone(),store.getLocal().getLocalId());
         if(store.getStoreImage() != null) saveImageToS3(store);
         return storeRepository.save(store);
     }
@@ -165,10 +170,11 @@ public class StoreService {
     /**
      * 푸드트럭명, 사업자번호, 전화번호 중복 확인
      */
-    private void verifyExistsInfo(String storeName, String storeNumber, String storePhone) {
+    private void verifyExistsInfo(String storeName, String storeNumber, String storePhone, long localId) {
         Optional<Store> name = storeRepository.findByName(storeName);
         Optional<Store> number = storeRepository.findByNumber(storeNumber);
         Optional<Store> phone = storeRepository.findByPhone(storePhone);
+        Optional<Local> local = localRepository.findById(localId);
 
         if(name.isPresent()) {
             throw new BusinessLogicException(ExceptionCode.STORE_NAME_DUPLICATE);
@@ -176,6 +182,8 @@ public class StoreService {
             throw new BusinessLogicException(ExceptionCode.STORE_NUMBER_DUPLICATE);
         } else if(phone.isPresent()) {
             throw new BusinessLogicException(ExceptionCode.STORE_PHONE_DUPLICATE);
+        } else if(local.isPresent()){
+            throw new BusinessLogicException(ExceptionCode.SIGNUP_EMAIL_DUPLICATE);
         }
     }
 }
