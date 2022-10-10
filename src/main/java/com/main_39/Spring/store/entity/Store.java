@@ -148,7 +148,7 @@ public class Store {
 //    @OneToMany(mappedBy = "store", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
 
     @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "store")
     private List<Review> reviews = new ArrayList<>();
 
     public int getTotalReview() {
