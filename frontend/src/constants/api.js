@@ -14,7 +14,7 @@ const KAKAO_API = {
 };
 
 const API_URI = {
-  KAKAO_LOGIN: `${API_HOST}login/oauth2/code/kakao`,
+  KAKAO_LOGIN: `${API_HOST}/login/oauth2/code/kakao`,
   KAKAO_LOGOUT: `${API_HOST}/kakao/logout`,
   LOGIN: `${API_HOST}/login`,
   REGISTER: `${API_HOST}/signup`,
@@ -30,10 +30,10 @@ const API_URI = {
   FOODLIST: `${API_HOST}/store`,
   ORDER: `${API_HOST}/order/orders`,
   PAYMENT: `${API_HOST}/payment/verify`,
-  FOODREVIEW: (id) => `${API_HOST}/store/${id}/reviews`,
+  FOODREVIEW: (id) => `${API_HOST}/store/${id}/review`,
   ANSWER: (id) => `${API_HOST}/review/${id}`,
   POSTINFO: `${API_HOST}/store/ask`,
-  POSTMENU: (storeId) => `${API_URI.POSTINFO}/store/${storeId}/menus`,
+  POSTMENU: (storeId) => `${API_HOST}/store/${storeId}/menus`,
   PATCHDELETEINFO: (storeId) => `${API_HOST}/store/${storeId}`,
   PATCHDELETEMENU: (storeId, e) => `${API_HOST}/store/${storeId}/menus/${e}`,
 };

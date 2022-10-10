@@ -41,13 +41,12 @@ function DetailReview({ storeId }) {
 
   const createComment = () => {
     return data?.data.reviews.map((item) => {
-      console.log(data.data.reviews);
       return (
         <Comment key={item.reviewId}>
           <Header>
             <TextWrapper>
               <Text as="h1" size={16} color="#333333">
-                {item.reviewName}님
+                {item.nickname}님
               </Text>
               <Text size={12} color="#999999">
                 {dateFormat(new Date(item.createdAt), '-')}

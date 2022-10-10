@@ -1,5 +1,6 @@
 import React from 'react';
 import { LoginNavContainer, ButtonWrapper, Button } from './styles';
+import { TEXT } from '../../../constants';
 
 function LoginNav({ isChecked, setIsChecked }) {
   const handleOnClick = (bool) => () => setIsChecked(bool);
@@ -7,10 +8,10 @@ function LoginNav({ isChecked, setIsChecked }) {
     <LoginNavContainer>
       <ButtonWrapper>
         <Button active={!!isChecked} onClick={handleOnClick(true)}>
-          일반 회원
+          {TEXT.LOGINNAV.CONSUMER_LOGIN}
         </Button>
         <Button active={!isChecked} onClick={handleOnClick(false)}>
-          사업자 회원
+          {TEXT.LOGINNAV.PROVIDER_LOGIN}
         </Button>
       </ButtonWrapper>
     </LoginNavContainer>

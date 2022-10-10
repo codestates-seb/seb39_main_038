@@ -15,7 +15,7 @@ const withAuth = (Component) => (props) => {
 
       navigate(ROUTE.HOME.PATH);
     }
-  }, [navigate]);
+  }, [id, navigate]);
 
   // eslint-disable-next-line react/jsx-props-no-spreading
   return <Component {...props} />;
