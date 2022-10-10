@@ -9,7 +9,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+
 
 @Getter
 @Setter
@@ -34,7 +43,7 @@ public class Review extends Auditable {
      * 리뷰 삭제시 댓글도 삭제
      * casecade 설정시 댓글 삭제 불가
      */
-    @OneToOne(mappedBy = "review")
+    @OneToOne(mappedBy = "review", cascade = CascadeType.ALL)   // 1010 추가
     private Comment comment;
 
     /**
