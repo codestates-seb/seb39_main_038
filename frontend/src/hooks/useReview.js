@@ -27,7 +27,10 @@ function useReview(id) {
   const { data } = useQuery(['review', id.toString()], fetchReview(id));
 
   const { mutate: deleteMutate } = useMutation(fetchDeleteReview, {
-    onSuccess: () => queryClient.invalidateQueries(['review', id.toString()]),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['review', id.toString()]);
+      queryClient.invalidateQueries(['foodDetail', id.toString()]);
+    },
   });
 
   const { mutateAsync: updateMutate } = useMutation(fetchUpdateReview, {
@@ -35,7 +38,10 @@ function useReview(id) {
   });
 
   const { mutateAsync: createMutate } = useMutation(fetchCreateReview, {
-    onSuccess: () => queryClient.invalidateQueries(['review', id.toString()]),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['review', id.toString()]);
+      queryClient.invalidateQueries(['foodDetail', id.toString()]);
+    },
   });
 
   return { data, deleteMutate, updateMutate, createMutate };
