@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { COLOR } from '../../constants';
 
 const Section = styled.div`
   margin: 0 auto;
@@ -22,13 +23,48 @@ const MainImg = styled.div`
   padding: 0px 0px 20px 0px;
   display: flex;
   div {
-    background-image: url(${(props) => props.url});
     width: 50%;
     justify-content: end;
     display: flex;
     img {
-      border: 1px solid #ccc;
-      line-height: 110px;
+      width: 150px;
+      height: 150px;
+    }
+  }
+`;
+
+const Avatar = styled.div`
+  div {
+    gap: 5px;
+    width: 100px;
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    input {
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      border: 0;
+    }
+    label {
+      display: inline-block;
+      padding: 0.5em 2em;
+      border-radius: 2em;
+      box-sizing: border-box;
+      text-decoration: none;
+      font-family: 'Roboto', sans-serif;
+      font-weight: 300;
+      color: ${COLOR.YELLOW};
+      background-color: ${COLOR.NAVY};
+      text-align: center;
+      transition: all 0.2s;
+      font-weight: 600;
+      font-size: 14px;
+      :hover {
+        background-color: ${COLOR.LIGHTNAVY};
+      }
     }
   }
 `;
@@ -107,8 +143,8 @@ const CreateFood = styled.div`
   img {
     border: 1px solid #ccc;
     object-fit: contain;
-    width: 120px;
-    height: 120px;
+    width: 100px;
+    height: 90px;
   }
   button {
     padding: 10px 30px;
@@ -128,8 +164,8 @@ const UpdateInput = styled.div`
   img {
     border: 1px solid #ccc;
     object-fit: contain;
-    width: 120px;
-    height: 120px;
+    width: 100px;
+    height: 90px;
   }
   button {
     padding: 5px 10px;
@@ -211,4 +247,5 @@ export {
   SettingDoneBtn,
   Toggle,
   OpenOrClose,
+  Avatar,
 };
