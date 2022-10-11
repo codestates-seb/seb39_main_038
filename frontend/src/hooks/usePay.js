@@ -28,7 +28,7 @@ function usePay(id) {
   };
 
   const payWithCard = async (orderRequest, paymentType) => {
-    IMP.request_pay(
+    return IMP.request_pay(
       {
         pg: 'html5_inicis',
         pay_method: 'card',
