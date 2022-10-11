@@ -47,7 +47,6 @@ function FoodTruckSetting() {
   const [loginInfo, setLoginInfo] = useRecoilState(atoms.loginInfo);
 
   const { id } = useParams();
-  console.log(loginInfo.storeId, storeId, loginInfo);
 
   useEffect(() => {
     if (loginInfo.storeId === null) {
