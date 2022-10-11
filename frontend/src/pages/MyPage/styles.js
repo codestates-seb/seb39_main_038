@@ -1,4 +1,5 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+import { COLOR } from '../../constants';
 
 const MyPageContainer = styled.div`
   max-width: 1020px;
@@ -52,6 +53,17 @@ const Button = styled.button`
   width: 100%;
   padding: 6px 12px;
   font-size: 12px;
+  background-color: transparent;
+  border: 1px solid ${({ color }) => color};
+  color: ${({ color }) => color};
+  ${({ primary }) =>
+    primary &&
+    css`
+      background-color: ${COLOR.NAVY};
+      border: 1px solid ${COLOR.NAVY};
+      color: ${COLOR.WHITE};
+      padding: 10px 15px;
+    `}
 `;
 
 const OrderInner = styled.div`
