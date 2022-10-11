@@ -54,7 +54,7 @@ function MyPage() {
     navigate(`/trucksetting/${loginInfo.localId}`, { replace: true });
 
   const createOrderContent = () => {
-    return orderListData.data.orders?.reverse().map((item) => {
+    return orderListData.data.orders?.map((item) => {
       return (
         <OrderContent key={item.orderId} onClick={goModal(item)}>
           <TextBox>
