@@ -6,6 +6,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { atoms } from '../store';
 import { randomRange, dateFormat } from '../utils';
 import { API_URI } from '../constants';
+import { useOrderList } from './useOrderList';
 
 const { IMP_KEY } = process.env;
 
@@ -14,6 +15,7 @@ IMP.init(IMP_KEY);
 function usePay(id) {
   const queryClinet = useQueryClient();
   const orderList = useRecoilValue(atoms.orderList);
+  const { updateMutate } = useOrderList();
   const orderMenus = orderList.map((item) => ({
     menuId: item.menuId,
     count: item.count,
@@ -22,11 +24,7 @@ function usePay(id) {
   const data = queryClinet.getQueryData(['foodDetail', id]);
 
   const payWithCash = async (orderRequest, paymentType) => {
-    await axios.post(`${API_URI.ORDER}`, {
-      orderMenus,
-      orderRequest,
-      paymentType,
-    });
+    await updateMutate({ orderMenus, orderRequest, paymentType });
   };
 
   const payWithCard = (orderRequest, paymentType) => {
