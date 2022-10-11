@@ -3,9 +3,10 @@
 import axios from 'axios';
 import { useRecoilValue } from 'recoil';
 import { useQueryClient } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 import { atoms } from '../store';
 import { randomRange, dateFormat } from '../utils';
-import { API_URI } from '../constants';
+import { API_URI, ROUTE } from '../constants';
 import { useOrderList } from './useOrderList';
 
 const { IMP_KEY } = process.env;
@@ -14,6 +15,7 @@ IMP.init(IMP_KEY);
 
 function usePay(id) {
   const queryClinet = useQueryClient();
+  const navigate = useNavigate();
   const orderList = useRecoilValue(atoms.orderList);
   const { updateMutate } = useOrderList();
   const orderMenus = orderList.map((item) => ({
@@ -49,7 +51,7 @@ function usePay(id) {
           await axios.post(`${API_URI.PAYMENT}/${impUid}`);
           await payWithCash(orderRequest, paymentType);
         } else {
-          alert('결제 모듈을 사용할 수 없습니다.');
+          navigate(`/${ROUTE.FOODLIST.PATH}`);
         }
       },
     );
