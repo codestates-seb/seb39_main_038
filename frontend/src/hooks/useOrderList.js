@@ -15,12 +15,7 @@ const fetchUpdateOrderList = async (data) => {
 
 function useOrderList() {
   const queryClient = useQueryClient();
-  const { data } = useQuery(['orderList'], fetchOrderList, {
-    select: (value) => {
-      value.data.orders = value.data.orders.reverse();
-      return value;
-    },
-  });
+  const { data } = useQuery(['orderList'], fetchOrderList);
   const { mutateAsync: updateMutate } = useMutation(fetchUpdateOrderList, {
     onSuccess: () => queryClient.invalidateQueries(['orderList']),
   });
