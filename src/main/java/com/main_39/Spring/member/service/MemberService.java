@@ -31,7 +31,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-
 import javax.mail.internet.MimeMessage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -83,8 +82,6 @@ public class MemberService {
         params.add("grant_type","authorization_code");
         params.add("client_id","704ec763b63cc0eb75e0f897b8f91ed0");
         params.add("client_secret","uJ06mEQStcdLrcUyuzdyt4YN2oO1X4NO");
-//        params.add("redirect_uri","http://localhost:8080/login/oauth2/code/kakao"); //로컬 확인용
-//        params.add("redirect_uri","http://127.0.0.1:3000");
         params.add("redirect_uri","https://yapick.netlify.app");
         params.add("code",code);
 
@@ -210,7 +207,7 @@ public class MemberService {
         }
 
         kaKaoRepository.findById(logoutDto.getId()).orElseThrow(
-                () -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+                () -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND)); //404, Member not found
 
     }
 
@@ -232,15 +229,17 @@ public class MemberService {
      * */
 
     private void saveAvatarToS3(Local local){
+        //BASE64에서 데이터부분만
         String data;
         try{
             data = local.getAvatar().split(",")[1];
         }catch(ArrayIndexOutOfBoundsException e){
             System.out.println("S3에 회원 프로필 입력 실패");
-            throw new BusinessLogicException(ExceptionCode.OAUTH_USERINFO_REQUEST_FAILED);
+            throw new BusinessLogicException(ExceptionCode.OAUTH_USERINFO_REQUEST_FAILED); //3002, 서버로의 회원정보 요청이 실패했습니다.
         }
+        //S3내 파일 명
         String s3FileName =  "avatar/" + local.getEmail();
-
+        //Base64 디코딩
         byte[] decodeByte = Base64.getDecoder().decode(data);
         InputStream inputStream = new ByteArrayInputStream(decodeByte);
         ObjectMetadata objectMetadata = new ObjectMetadata();
@@ -248,9 +247,8 @@ public class MemberService {
             objectMetadata.setContentLength(inputStream.available());
         } catch (IOException e) {
             System.out.println("S3에 회원 프로필 입력 실패");
-            throw new BusinessLogicException(ExceptionCode.OAUTH_USERINFO_REQUEST_FAILED);
+            throw new BusinessLogicException(ExceptionCode.OAUTH_USERINFO_REQUEST_FAILED); //3002, 서버로의 회원정보 요청이 실패했습니다.
         }
-
 
         //S3에 저장
         amazonS3.putObject(bucket,s3FileName,inputStream,objectMetadata);
@@ -277,10 +275,10 @@ public class MemberService {
             localId = JWT.require(Algorithm.HMAC512(SECRET_KEY)).build().verify(refresh_token).getClaim("local_id").asLong();
             accountEmail = JWT.require(Algorithm.HMAC512(SECRET_KEY)).build().verify(refresh_token).getClaim("email").asString();
         }catch(Exception e){
-            throw new BusinessLogicException(ExceptionCode.AUTH_EXPIRED_TOKEN);
+            throw new BusinessLogicException(ExceptionCode.AUTH_EXPIRED_TOKEN); //2001, 유효기간이 만료된 토큰입니다.
         }
         Local local = findVerifiedLocalByEmail(accountEmail);
-        if(localId != local.getLocalId()) throw new BusinessLogicException(ExceptionCode.AUTH_INVALID_TOKEN);
+        if(localId != local.getLocalId()) throw new BusinessLogicException(ExceptionCode.AUTH_INVALID_TOKEN); //2002, 유효하지 않은 토큰입니다.
 
         //DB에 존재하는 로컬의 refresh_token 초기화
         local.setRefreshToken("");
@@ -295,7 +293,7 @@ public class MemberService {
         Optional<Local> optionalLocal = localRepository.findById(localId);
         Local findLocal =
                 optionalLocal.orElseThrow(() ->
-                        new BusinessLogicException(ExceptionCode.NOT_MATCH_USER_INFO));
+                        new BusinessLogicException(ExceptionCode.NOT_MATCH_USER_INFO)); //4003, 유저 정보가 일치하지 않습니다.
         return findLocal;
     }
 
@@ -307,22 +305,10 @@ public class MemberService {
         Optional<Kakao> optionalKakao = kaKaoRepository.findById(kakao_id);
         Kakao findKakao =
                 optionalKakao.orElseThrow(() ->
-                        new BusinessLogicException(ExceptionCode.AUTH_NOT_MATCH_TOKEN));
+                        new BusinessLogicException(ExceptionCode.AUTH_NOT_MATCH_TOKEN)); //2003, 일치하지 않는 토큰입니다.
         return findKakao;
     }
 
-    /**
-     * 닉네임으로 회원 찾기
-     */
-    @Transactional(readOnly = true)
-    public Kakao findKakaoNickname(String nickname) {
-        Optional<Kakao> optionalKakao = kaKaoRepository.findByNickname(nickname);
-
-        Kakao findKakao =
-                optionalKakao.orElseThrow(() ->
-                        new BusinessLogicException(ExceptionCode.NOT_EXITS_NICKNAME));
-        return findKakao;
-    }
 
     /**
      * 로컬 이메일로 회원 찾기
@@ -332,7 +318,7 @@ public class MemberService {
         Optional<Local> optionalLocal = localRepository.findByEmail(email);
         Local findLocal =
                 optionalLocal.orElseThrow(() ->
-                        new BusinessLogicException(ExceptionCode.NOT_MATCH_USER_INFO));
+                        new BusinessLogicException(ExceptionCode.NOT_MATCH_USER_INFO)); //4003, 유저 정보가 일치하지 않습니다.
         return findLocal;
     }
 
@@ -342,7 +328,7 @@ public class MemberService {
     private void verifyExistsLocal(String email){
         Optional<Local> local = localRepository.findByEmail(email);
         if(local.isPresent())
-            throw new BusinessLogicException(ExceptionCode.SIGNUP_EMAIL_DUPLICATE);
+            throw new BusinessLogicException(ExceptionCode.SIGNUP_EMAIL_DUPLICATE); //1003, 이미 사용중인 이메일 입니다.
     }
 
     /**
@@ -351,7 +337,7 @@ public class MemberService {
     @Transactional
     public Local verifyEmail(String name, String phone){
         Local findLocal = localRepository.findByNameAndPhone(name,phone).orElseThrow(
-                () -> new BusinessLogicException(ExceptionCode.NOT_EXISTS_USER_INFO)
+                () -> new BusinessLogicException(ExceptionCode.NOT_EXISTS_USER_INFO) //4004, 해당 유저 정보가 존재하지 않습니다.
         );
         return findLocal;
     }
@@ -387,7 +373,7 @@ public class MemberService {
             mailSender.send(message);
         } catch (Exception e) {
             System.out.println("이메일 인증 요청 실패");
-            throw new BusinessLogicException(ExceptionCode.NOT_EXISTS_USER_INFO);
+            throw new BusinessLogicException(ExceptionCode.NOT_EXISTS_USER_INFO); //4004, 해당 유저 정보가 존재하지 않습니다.
         }
 
         //인증번호를 refresh_token에 저장 -> 로그인 전까지 필요 없음 but 이메일 인증은 로그인 하면 할 수 없는 작업 -> refresh_token 필드 사용 가능
@@ -403,7 +389,7 @@ public class MemberService {
     @Transactional
     public Local verifyExistLocalToStatus(String email,String authCode){
         Local findLocal = localRepository.findByEmailAndRefreshToken(email,authCode).orElseThrow(
-                () -> new BusinessLogicException(ExceptionCode.NOT_EXISTS_USER_INFO));
+                () -> new BusinessLogicException(ExceptionCode.NOT_EXISTS_USER_INFO)); //4004, 해당 유저 정보가 존재하지 않습니다.
 
         return findLocal;
     }
@@ -465,17 +451,18 @@ public class MemberService {
             localId = JWT.require(Algorithm.HMAC512(SECRET_KEY)).build().verify(refresh_token).getClaim("local_id").asLong();
             accountEmail = JWT.require(Algorithm.HMAC512(SECRET_KEY)).build().verify(refresh_token).getClaim("email").asString();
         }catch(Exception e){
-            throw new BusinessLogicException(ExceptionCode.AUTH_EXPIRED_TOKEN);
+            throw new BusinessLogicException(ExceptionCode.AUTH_EXPIRED_TOKEN); //2001, 유효기간이 만료된 토큰입니다.
         }
 
         Local localByEmail = findVerifiedLocalByEmail(accountEmail); //이메일로 찾은 회원
-
-        if(localId != localByEmail.getLocalId()) throw new BusinessLogicException(ExceptionCode.AUTH_NOT_MATCH_TOKEN);
+        if(localId != localByEmail.getLocalId()) throw new BusinessLogicException(ExceptionCode.AUTH_NOT_MATCH_TOKEN); //2003, 일치하지 않는 토큰입니다.
 
         return localByEmail;
     }
 
-
+    /**
+     * 비밀번호 변경
+     * */
     @Transactional
     public void changePassword(String email, String password){
         try{
@@ -485,7 +472,7 @@ public class MemberService {
             System.out.println("이메일 변경 : " + findLocal.getPassword()); //바뀐 비밀번호
         }catch(Exception e){ //에러 발생 시
             System.out.println("회원이 존재하지 않습니다!");
-            throw new BusinessLogicException(ExceptionCode.NOT_MATCH_USER_INFO);
+            throw new BusinessLogicException(ExceptionCode.NOT_MATCH_USER_INFO); //4003, 유저 정보가 일치하지 않습니다.
         }
     }
 }

@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -209,7 +208,7 @@ public class MemberController {
         Kakao kakao = memberMapper.kakaoProfileToKakao(kakaoProfile,oauthToken);
 
         //데이터 베이스에 회원 정보 저장
-        Kakao posted = memberService.createKakao(kakao);
+        memberService.createKakao(kakao);
 
         //헤더에 access토큰,refresh토큰,id토큰(혹시 모름),만료시간 넣어 리턴
 
@@ -348,7 +347,7 @@ public class MemberController {
             kakaoDetails = (KakaoDetails) authentication.getPrincipal();
             kakao = kakaoDetails.getKakao();
         }
-        if(kakao == null || kakao.getKakaoId() != kakaoId) throw new BusinessLogicException(ExceptionCode.NOT_MATCH_USER_INFO);
+        if(kakao == null || kakao.getKakaoId() != kakaoId) throw new BusinessLogicException(ExceptionCode.NOT_MATCH_USER_INFO); //4003, 유저 정보가 일치하지 않습니다.
 
         Kakao findKakao = memberService.findVerifiedKakao(kakaoId);
         KakaoDto.mileageDto response = memberMapper.kakaoToKakaoDtoMileage(findKakao);
