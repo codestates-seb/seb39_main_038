@@ -24,10 +24,10 @@ function usePay(id) {
   const data = queryClinet.getQueryData(['foodDetail', id]);
 
   const payWithCash = async (orderRequest, paymentType) => {
-    await updateMutate({ orderMenus, orderRequest, paymentType });
+    return updateMutate({ orderMenus, orderRequest, paymentType });
   };
 
-  const payWithCard = (orderRequest, paymentType) => {
+  const payWithCard = async (orderRequest, paymentType) => {
     IMP.request_pay(
       {
         pg: 'html5_inicis',

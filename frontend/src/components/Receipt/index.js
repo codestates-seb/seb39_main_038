@@ -1,7 +1,6 @@
 import React from 'react';
 import { useRecoilValue, useResetRecoilState } from 'recoil';
 import { useNavigate } from 'react-router-dom';
-import { useQueryClient } from '@tanstack/react-query';
 import {
   StickyBody,
   CartListBody,
@@ -23,7 +22,6 @@ function Receipt({ order, request, type }) {
   const orderList = useRecoilValue(atoms.orderList);
   const resetReceipt = useResetRecoilState(atoms.orderList);
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
   const { payWithCard, payWithCash } = usePay(orderList[0]?.storeId);
 
   const totalPrice = () => {
@@ -52,11 +50,10 @@ function Receipt({ order, request, type }) {
     return navigate(`/${ROUTE.LOGIN.PATH}`);
   };
 
-  const goPay = () => {
-    if (type === 'CARD') payWithCard(request, type);
-    else payWithCash(request, type);
+  const goPay = async () => {
+    if (type === 'CARD') await payWithCard(request, type);
+    else await payWithCash(request, type);
     resetReceipt();
-    queryClient.invalidateQueries(['orderList']);
     navigate(`/${ROUTE.FOODLIST.PATH}`);
   };
 
@@ -64,7 +61,7 @@ function Receipt({ order, request, type }) {
     <StickyBody>
       <Cart>
         <CartTab>
-          <CartTitle>{order ? orderList[0].storeName : '장바구니'}</CartTitle>
+          <CartTitle>{order ? orderList[0]?.storeName : '장바구니'}</CartTitle>
           <Button disabled={order} type="button" onClick={resetReceipt}>
             리셋
           </Button>
