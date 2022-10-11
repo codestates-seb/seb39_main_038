@@ -4,7 +4,6 @@ import com.main_39.Spring.member.entity.Local;
 import com.main_39.Spring.store.dto.StoreResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
@@ -72,7 +71,7 @@ public class LocalDto {
     }
 
     @Getter
-    @NoArgsConstructor
+    @AllArgsConstructor
     public static class mailDto{
         @Email
         private String email;
@@ -89,12 +88,6 @@ public class LocalDto {
     @AllArgsConstructor
     public static class changePwDto{
         private String email;
-        private String password;
-    }
-
-    @Getter
-    @AllArgsConstructor
-    public static class searchPwResponse{
         private String password;
     }
 }
