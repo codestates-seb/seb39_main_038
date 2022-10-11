@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
 import {
   Section,
   Title,
@@ -15,36 +16,40 @@ import {
   SettingDoneBtn,
   Toggle,
   OpenOrClose,
+  Avatar,
 } from './styles';
 import { Spinner, ErrorBoundary } from '../../components';
-import { COLOR, ROUTE } from '../../constants';
+import { COLOR } from '../../constants';
 import MenuList from './MenuList';
 import UpdateForm from './UpdateForm';
 import { withAuth } from '../../components/Hoc';
 import { useSetting } from '../../hooks/useSetting';
+import { atoms } from '../../store';
 
 function FoodTruckSetting() {
-  const [dropDown, setDropDown] = useState('한식');
+  const [dropDown, setDropDown] = useState('korean');
   const [toggleStatus, setToggleStatus] = useState(false);
-  const [storeId, setStoreId] = useState(null);
+  const [img, setImg] = useState('');
+  const [newMenuImg, setNewMenuImg] = useState('');
+  const [storeId, setStoreId] = useState(false);
   const { postMutateMenu, postMutateInfo, patchMutateInfo, deleteMutateInfo } =
     useSetting();
+
+  const [loginInfo, setLoginInfo] = useRecoilState(atoms.loginInfo);
+
   const navigate = useNavigate();
 
   const { id } = useParams();
 
-  const userStoreId = JSON.parse(sessionStorage.getItem('storeId')).storeId;
-
   useEffect(() => {
-    if (userStoreId === null) {
-      setStoreId(false);
+    if (loginInfo.storeId === null) {
+      setLoginInfo({ storeId: false, localId: Number(id) });
     } else {
-      setStoreId(userStoreId.storeId);
+      setStoreId(loginInfo.storeId);
     }
-  }, [userStoreId]);
+  }, [loginInfo]);
 
   const [inputs, setInputs] = useState({
-    img: null,
     name: '',
     time: '',
     address: '',
@@ -54,12 +59,10 @@ function FoodTruckSetting() {
     newMenuName: '',
     newMenuPrice: '',
     newMenuContent: '',
-    newMenuImg: null,
     tag: '',
   });
 
   const {
-    img,
     name,
     time,
     address,
@@ -69,7 +72,6 @@ function FoodTruckSetting() {
     newMenuName,
     newMenuPrice,
     newMenuContent,
-    newMenuImg,
     tag,
   } = inputs;
 
@@ -80,9 +82,32 @@ function FoodTruckSetting() {
     });
   };
 
+  const onChangeNewImg = (e) => {
+    const reader = new FileReader();
+    if (e.target.files[0]) {
+      reader.readAsDataURL(e.target.files[0]);
+    }
+    reader.onloadend = () => {
+      const resultImg = reader.result;
+      setNewMenuImg(resultImg);
+    };
+  };
+
+  const onChangeImg = (e) => {
+    const reader = new FileReader();
+    if (e.target.files[0]) {
+      reader.readAsDataURL(e.target.files[0]);
+    }
+    reader.onloadend = () => {
+      const resultImg = reader.result;
+      setImg(resultImg);
+    };
+  };
+
   const handleTypeChange = (e) => {
     setDropDown(e.target.value);
   };
+  // console.log('mento', handleTypeChange());
 
   const categories = [
     { value: 'korean', type: '한식' },
@@ -102,9 +127,9 @@ function FoodTruckSetting() {
             type="button"
             onClick={() => {
               if (window.confirm('정말 본인 푸드트럭을 폐업 하시겠습니까?')) {
-                alert('푸드트럭을 폐업 하였습니다.');
                 deleteMutateInfo({ storeId });
-                setStoreId(false);
+                alert('푸드트럭을 폐업 하였습니다.');
+                setLoginInfo({ storeId: null, localId: Number(id) });
               }
             }}
           >
@@ -131,14 +156,18 @@ function FoodTruckSetting() {
           ) : (
             <CreateFoodTruck>
               <MainImg>
-                <div>
-                  <img
-                    alt="FoodTruckImg"
-                    name="img"
-                    value={img}
-                    onChange={onChange}
-                  />
-                </div>
+                <Avatar>
+                  <div>
+                    <img src={img} alt="푸드트럭 이미지 입니다" />
+                    <label htmlFor="file">수정</label>
+                    <input
+                      type="file"
+                      id="file"
+                      onChange={onChangeImg}
+                      accept="image/*"
+                    />
+                  </div>
+                </Avatar>
 
                 <Dropdown>
                   <select
@@ -272,12 +301,18 @@ function FoodTruckSetting() {
             <Title>가게 메뉴 추가</Title>
 
             <CreateFood>
-              <img
-                alt="FoodImg"
-                name="newMenuImg"
-                value={newMenuImg}
-                onChange={onChange}
-              />
+              <Avatar>
+                <div>
+                  <img alt="새로운 메뉴 이미지" src={newMenuImg} />
+                  <label htmlFor="file1">수정</label>
+                  <input
+                    type="file"
+                    id="file1"
+                    onChange={onChangeNewImg}
+                    accept="image/*"
+                  />
+                </div>
+              </Avatar>
               <TypeInfo>
                 <input
                   placeholder="메뉴 이름"
@@ -303,7 +338,12 @@ function FoodTruckSetting() {
               <button
                 type="button"
                 onClick={() => {
-                  if (newMenuName && newMenuContent && newMenuPrice) {
+                  if (
+                    newMenuImg &&
+                    newMenuName &&
+                    newMenuContent &&
+                    newMenuPrice
+                  ) {
                     alert('메뉴를 성공적으로 추가했습니다');
                     const value = {
                       name: newMenuName,
@@ -341,8 +381,7 @@ function FoodTruckSetting() {
                         address
                       ) {
                         alert('가게를 성공적으로 등록했습니다');
-                        alert('로그아웃하여 다시 로그인 해주세요');
-                        sessionStorage.removeItem('storeId');
+                        alert('로그아웃 후 로그인하시면 이용 가능하십니다');
                         const value = {
                           localId: id,
                           storePhone: phone,
@@ -359,7 +398,7 @@ function FoodTruckSetting() {
                           storeTag: tag,
                         };
                         postMutateInfo({ value });
-                        navigate(ROUTE.HOME.PATH);
+                        navigate('/');
                       } else {
                         alert('태그를 제외한 모두 입력 하셔야 합니다');
                       }
