@@ -27,7 +27,9 @@ function usePay(id) {
   const data = queryClinet.getQueryData(['foodDetail', id]);
 
   const payWithCash = async (orderRequest, paymentType) => {
-    return updateMutate({ orderMenus, orderRequest, paymentType });
+    await updateMutate({ orderMenus, orderRequest, paymentType });
+    resetReceipt();
+    navigate(`/${ROUTE.FOODLIST.PATH}`);
   };
 
   const payWithCard = async (orderRequest, paymentType) => {
@@ -51,8 +53,6 @@ function usePay(id) {
         if (rsp.success) {
           await axios.post(`${API_URI.PAYMENT}/${impUid}`);
           await payWithCash(orderRequest, paymentType);
-          resetReceipt();
-          navigate(`/${ROUTE.FOODLIST.PATH}`);
         } else {
           alert('결제를 취소하였습니다.');
           navigate(`/${ROUTE.FOODLIST.PATH}`);
