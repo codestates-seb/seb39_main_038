@@ -1,7 +1,7 @@
 /* global IMP */
 
 import axios from 'axios';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useResetRecoilState } from 'recoil';
 import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { atoms } from '../store';
@@ -15,6 +15,7 @@ IMP.init(IMP_KEY);
 
 function usePay(id) {
   const queryClinet = useQueryClient();
+  const resetReceipt = useResetRecoilState(atoms.orderList);
   const navigate = useNavigate();
   const orderList = useRecoilValue(atoms.orderList);
   const { updateMutate } = useOrderList();
@@ -26,7 +27,9 @@ function usePay(id) {
   const data = queryClinet.getQueryData(['foodDetail', id]);
 
   const payWithCash = async (orderRequest, paymentType) => {
-    return updateMutate({ orderMenus, orderRequest, paymentType });
+    await updateMutate({ orderMenus, orderRequest, paymentType });
+    resetReceipt();
+    navigate(`/${ROUTE.FOODLIST.PATH}`);
   };
 
   const payWithCard = async (orderRequest, paymentType) => {
@@ -51,6 +54,7 @@ function usePay(id) {
           await axios.post(`${API_URI.PAYMENT}/${impUid}`);
           await payWithCash(orderRequest, paymentType);
         } else {
+          alert('결제를 취소하였습니다.');
           navigate(`/${ROUTE.FOODLIST.PATH}`);
         }
       },
