@@ -45,7 +45,7 @@ function FoodTruckSetting() {
     if (loginInfo.storeId === null) {
       setLoginInfo({ storeId: false, localId: Number(id) });
     } else {
-      setStoreId(loginInfo.storeId.storeId);
+      setStoreId(loginInfo.storeId);
     }
   }, [loginInfo]);
 
