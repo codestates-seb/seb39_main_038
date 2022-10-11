@@ -53,7 +53,6 @@ function Receipt({ order, request, type }) {
   const goPay = async () => {
     if (type === 'CARD') await payWithCard(request, type);
     else await payWithCash(request, type);
-    resetReceipt();
   };
 
   return (
