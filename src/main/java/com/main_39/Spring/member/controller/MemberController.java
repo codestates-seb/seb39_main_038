@@ -347,7 +347,7 @@ public class MemberController {
             kakaoDetails = (KakaoDetails) authentication.getPrincipal();
             kakao = kakaoDetails.getKakao();
         }
-        if(kakao == null || kakao.getKakaoId() != kakaoId) throw new BusinessLogicException(ExceptionCode.NOT_MATCH_USER_INFO);
+        if(kakao == null || kakao.getKakaoId() != kakaoId) throw new BusinessLogicException(ExceptionCode.NOT_MATCH_USER_INFO); //4003, 유저 정보가 일치하지 않습니다.
 
         Kakao findKakao = memberService.findVerifiedKakao(kakaoId);
         KakaoDto.mileageDto response = memberMapper.kakaoToKakaoDtoMileage(findKakao);
