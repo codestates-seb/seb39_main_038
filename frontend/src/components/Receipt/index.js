@@ -54,7 +54,6 @@ function Receipt({ order, request, type }) {
     if (type === 'CARD') await payWithCard(request, type);
     else await payWithCash(request, type);
     resetReceipt();
-    navigate(`/${ROUTE.FOODLIST.PATH}`);
   };
 
   return (
