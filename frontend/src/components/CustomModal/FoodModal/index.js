@@ -20,9 +20,8 @@ function FoodModal({ closeModal }) {
   const isMadal = useRecoilValue(atoms.modal);
   const setOrderList = useSetRecoilState(atoms.orderList);
   const isLogin = useRecoilValue(atoms.isLogin);
-  const { name, info, price, menuId, storeId, storeName } = useRecoilValue(
-    atoms.menuOrder,
-  );
+  const { name, info, price, menuId, storeId, storeName, image } =
+    useRecoilValue(atoms.menuOrder);
 
   console.log(useRecoilValue(atoms.menuOrder));
 
@@ -77,7 +76,7 @@ function FoodModal({ closeModal }) {
   return (
     <Modal title="메뉴상세" width={450} height={600} closeModal={closeModal}>
       <FoodModalBody>
-        <FoodModalImage />
+        <FoodModalImage url={image} />
         <FoodModalBox description>
           <FoodModalTitle>{name}</FoodModalTitle>
           <ModalText>{info}</ModalText>
