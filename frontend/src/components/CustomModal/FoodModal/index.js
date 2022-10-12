@@ -66,9 +66,10 @@ function FoodModal({ closeModal }) {
 
   const goOrder = () => {
     goBusket();
-    if (isLogin.state) navigate(`/${ROUTE.ORDER.PATH}`, { state: storeId });
+    if (isLogin.state)
+      return navigate(`/${ROUTE.ORDER.PATH}`, { state: storeId });
     alert('로그인을 먼저해주세요.');
-    navigate(`/${ROUTE.LOGIN.PATH}`);
+    return navigate(`/${ROUTE.LOGIN.PATH}`);
   };
 
   return (
