@@ -22,7 +22,6 @@ function Receipt({ order, request, type }) {
   const orderList = useRecoilValue(atoms.orderList);
   const resetReceipt = useResetRecoilState(atoms.orderList);
   const navigate = useNavigate();
-  const { payWithCard, payWithCash } = usePay(orderList[0]?.storeId);
 
   const totalPrice = () => {
     let sum = 0;
@@ -51,6 +50,8 @@ function Receipt({ order, request, type }) {
   };
 
   const goPay = async () => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const { payWithCard, payWithCash } = usePay(orderList[0]?.storeId);
     if (type === 'CARD') await payWithCard(request, type);
     else await payWithCash(request, type);
   };
