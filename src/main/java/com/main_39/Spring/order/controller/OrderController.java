@@ -55,7 +55,8 @@ public class OrderController {
             // 인증 객체가 없다면 로그인 안내
             if(local == null) throw new BusinessLogicException(ExceptionCode.AUTH_REQUIRED_LOGIN);
             orderService.createOrder(mapper.orderRequestToOrderByLocal(orderRequest, local));
-        }
+
+        } else throw new BusinessLogicException(ExceptionCode.AUTH_REQUIRED_LOGIN);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -79,13 +80,14 @@ public class OrderController {
 
             return ResponseEntity.ok(mapper.orderToOrdersResponseByLocal(local));
 
-        } else {
+        } else if(login.equals("kakao")) {
 
             KakaoDetails kakaoDetails = (KakaoDetails)authentication.getPrincipal();
             Kakao kakao = kakaoDetails.getKakao();
 
             return ResponseEntity.ok(mapper.orderToOrdersResponseByKakao(kakao));
-        }
+
+        } else throw new BusinessLogicException(ExceptionCode.AUTH_REQUIRED_LOGIN);
     }
 }
 
