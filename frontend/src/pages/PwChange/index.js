@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Form } from '../../components';
-import { COLOR, ROUTE, ALERT, API_URI } from '../../constants';
+import { COLOR, ROUTE, ALERT, API_URI, TEXT } from '../../constants';
 import { sha256 } from '../../utils';
 
 function PwChange() {
@@ -50,7 +50,7 @@ function PwChange() {
           placeholder="비밀번호 확인"
         />
         <Form.Button type="submit" color={COLOR.NAVY} fontColor={COLOR.WHITE}>
-          비밀번호 변경 완료
+          {TEXT.PWCHANGE.PASSWORD_FINDING_COMPLETE}
         </Form.Button>
       </Form.Wrapper>
     </Form.Container>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ROUTE } from '../../constants';
+import { ROUTE, TEXT } from '../../constants';
 import { NotFoundContainer, Title, Content, Text, Button } from './styles';
 
 function NotFound() {
@@ -10,10 +10,10 @@ function NotFound() {
     <NotFoundContainer>
       <Title>{ROUTE.NOTFOUND.NAME}</Title>
       <Content>
-        <Text>찾을 수 없는 페이지 입니다.</Text>
-        <Text>잘못된 경로를 사용하셨어요 :)</Text>
+        <Text>{TEXT.NOTFOUND.PAGE_NOTFOUND}</Text>
+        <Text>{TEXT.NOTFOUND.WRONG_PATH}</Text>
       </Content>
-      <Button onClick={handleOnClick}>홈으로 이동</Button>
+      <Button onClick={handleOnClick}>{TEXT.NOTFOUND.GO_HOME}</Button>
     </NotFoundContainer>
   );
 }

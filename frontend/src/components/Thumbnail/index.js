@@ -6,7 +6,7 @@ import {
   ThumbnailImage,
 } from './styles';
 
-function Thumbnail({ title, src, query }) {
+function ThumbnailIndex({ title, src, query }) {
   const containerRef = useRef(null);
 
   useEffect(() => {
@@ -22,5 +22,7 @@ function Thumbnail({ title, src, query }) {
     </ThumbnailContainer>
   );
 }
+
+const Thumbnail = React.memo(ThumbnailIndex);
 
 export { Thumbnail };

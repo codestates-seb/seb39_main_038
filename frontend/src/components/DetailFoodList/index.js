@@ -23,9 +23,9 @@ function DetailFoodList({ storeId, storeName }) {
           <Info>{menu.content}</Info>
           <Price>{menu.price}</Price>
         </MenuInfo>
-        {menu.img ? (
+        {menu.image ? (
           <MenuImg>
-            <img alt="menuImg" src={menu.img} />
+            <img alt="menuImg" src={menu.image} />
           </MenuImg>
         ) : null}
       </Menu>

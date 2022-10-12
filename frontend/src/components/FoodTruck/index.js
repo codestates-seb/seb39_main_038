@@ -16,7 +16,7 @@ import {
 
 const { FOODTRUCK_IMG } = process.env;
 
-function FoodTruck({
+function FoodTruckIndex({
   data: {
     storeId,
     storeName,
@@ -51,5 +51,7 @@ function FoodTruck({
     </FoodTruckContainer>
   );
 }
+
+const FoodTruck = React.memo(FoodTruckIndex);
 
 export { FoodTruck };

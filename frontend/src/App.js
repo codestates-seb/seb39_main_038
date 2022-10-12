@@ -12,7 +12,6 @@ const Register = React.lazy(() => import('./pages/Register'));
 const IdInquiry = React.lazy(() => import('./pages/IdInquiry'));
 const PwInquiry = React.lazy(() => import('./pages/PwInquiry'));
 const FoodList = React.lazy(() => import('./pages/FoodList'));
-const Basket = React.lazy(() => import('./pages/Basket'));
 const Order = React.lazy(() => import('./pages/Order'));
 const MyPage = React.lazy(() => import('./pages/MyPage'));
 const NotFound = React.lazy(() => import('./pages/NotFound'));
@@ -37,7 +36,6 @@ function App() {
             <Route path={ROUTE.REGISTER.PATH} element={<Register />} />
             <Route path={ROUTE.IDINQUIRY.PATH} element={<IdInquiry />} />
             <Route path={ROUTE.PWINQUIRY.PATH} element={<PwInquiry />} />
-            <Route path={ROUTE.BASKET.PATH} element={<Basket />} />
             <Route path={ROUTE.ORDER.PATH} element={<Order />} />
             <Route path={ROUTE.MYPAGE.PATH} element={<MyPage />} />
             <Route path={ROUTE.PWCHANGE.PATH} element={<PwChange />} />
