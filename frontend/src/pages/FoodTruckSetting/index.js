@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import {
   Section,
@@ -32,12 +32,19 @@ function FoodTruckSetting() {
   const [img, setImg] = useState('');
   const [newMenuImg, setNewMenuImg] = useState('');
   const [storeId, setStoreId] = useState(false);
+  const [storeName, setStoreName] = useState('');
+  const [storeImage, setStoreImage] = useState('');
+  const [storeContent, setStoreContent] = useState('');
+  const [storeTag, setStoreTag] = useState('');
+  const [storeTime, setStoreTime] = useState('');
+  const [storePhone, setStorePhone] = useState('');
+  const [storeAddress, setStoreAddress] = useState('');
+  const [storeNumber, setStoreNumber] = useState('');
+
   const { postMutateMenu, postMutateInfo, patchMutateInfo, deleteMutateInfo } =
     useSetting();
 
   const [loginInfo, setLoginInfo] = useRecoilState(atoms.loginInfo);
-
-  const navigate = useNavigate();
 
   const { id } = useParams();
 
@@ -107,7 +114,6 @@ function FoodTruckSetting() {
   const handleTypeChange = (e) => {
     setDropDown(e.target.value);
   };
-  // console.log('mento', handleTypeChange());
 
   const categories = [
     { value: 'korean', type: '한식' },
@@ -152,6 +158,15 @@ function FoodTruckSetting() {
               ask={ask}
               categories={categories}
               storeId={storeId}
+              onChangeImg={onChangeImg}
+              setStoreName={setStoreName}
+              setStoreImage={setStoreImage}
+              setStoreContent={setStoreContent}
+              setStoreTag={setStoreTag}
+              setStoreTime={setStoreTime}
+              setStorePhone={setStorePhone}
+              setStoreAddress={setStoreAddress}
+              setStoreNumber={setStoreNumber}
             />
           ) : (
             <CreateFoodTruck>
@@ -338,22 +353,26 @@ function FoodTruckSetting() {
               <button
                 type="button"
                 onClick={() => {
-                  if (
-                    newMenuImg &&
-                    newMenuName &&
-                    newMenuContent &&
-                    newMenuPrice
-                  ) {
-                    alert('메뉴를 성공적으로 추가했습니다');
-                    const value = {
-                      name: newMenuName,
-                      price: newMenuPrice,
-                      content: newMenuContent,
-                      image: newMenuImg,
-                    };
-                    postMutateMenu({ storeId, value });
+                  if (storeId) {
+                    if (
+                      newMenuImg &&
+                      newMenuName &&
+                      newMenuContent &&
+                      newMenuPrice
+                    ) {
+                      alert('메뉴를 성공적으로 추가했습니다');
+                      const value = {
+                        name: newMenuName,
+                        price: newMenuPrice,
+                        content: newMenuContent,
+                        image: newMenuImg,
+                      };
+                      postMutateMenu({ storeId, value });
+                    } else {
+                      alert('모든 정보를 입력해 주세요');
+                    }
                   } else {
-                    alert('모든 정보를 입력해 주세요');
+                    alert('가게를 먼저 등록해 주세요');
                   }
                 }}
               >
@@ -375,10 +394,10 @@ function FoodTruckSetting() {
                         phone &&
                         number &&
                         name &&
-                        ask &&
                         dropDown &&
                         time &&
-                        address
+                        address &&
+                        img
                       ) {
                         alert('가게를 성공적으로 등록했습니다');
                         alert('로그아웃 후 로그인하시면 이용 가능하십니다');
@@ -398,9 +417,8 @@ function FoodTruckSetting() {
                           storeTag: tag,
                         };
                         postMutateInfo({ value });
-                        navigate('/');
                       } else {
-                        alert('태그를 제외한 모두 입력 하셔야 합니다');
+                        alert('소개내용 제외 모두 입력 하셔야 합니다');
                       }
                     } else {
                       alert('이미 가게가 있습니다');
@@ -413,36 +431,30 @@ function FoodTruckSetting() {
                   type="button"
                   onClick={() => {
                     if (storeId) {
-                      if (
-                        phone &&
-                        number &&
-                        name &&
-                        ask &&
-                        dropDown &&
-                        time &&
-                        address
-                      ) {
+                      if (img) {
                         alert(
                           '성공적으로 가게를 수정하였습니다. 새로고침 해주세요',
                         );
                         const value = {
                           localId: id,
-                          storePhone: phone,
-                          storeNumber: number,
+                          storePhone: phone || storePhone,
+                          storeNumber: number || storeNumber,
                           storeStatus: toggleStatus ? 'BRAKE' : 'OPEN',
-                          storeName: name,
-                          storeContent: ask,
-                          storeImage: img,
+                          storeName: name || storeName,
+                          storeContent: ask || storeContent,
+                          storeImage: img || storeImage,
                           storeType: dropDown,
-                          storeTime: time,
+                          storeTime: time || storeTime,
                           storeWaittime: '15분~30분',
-                          storeAddress: address,
+                          storeAddress: address || storeAddress,
                           storePayment: '현금',
-                          storeTag: tag,
+                          storeTag: tag || storeTag,
                         };
                         patchMutateInfo({ storeId, value });
                       } else {
-                        alert('태그를 제외한 모두 입력 하셔야 합니다');
+                        alert(
+                          '업데이트 서비스상 이미지는 한번더 넣으셔야 합니다',
+                        );
                       }
                     } else {
                       alert('가게를 먼저 만드셔야 합니다');

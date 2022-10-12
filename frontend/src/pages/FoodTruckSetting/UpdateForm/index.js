@@ -6,6 +6,7 @@ import {
   TypeInfo,
   HashTagBtn,
   DeleteTag,
+  Avatar,
 } from '../styles';
 import { useFoodDetail } from '../../../hooks';
 
@@ -23,9 +24,17 @@ function UpdateForm({
   dropDown,
   handleTypeChange,
   storeId,
+  onChangeImg,
+  setStoreName,
+  setStoreImage,
+  setStoreContent,
+  setStoreTag,
+  setStoreTime,
+  setStorePhone,
+  setStoreAddress,
+  setStoreNumber,
 }) {
   const { data } = useFoodDetail(storeId);
-  // console.log(data);
 
   const {
     storeName,
@@ -38,18 +47,36 @@ function UpdateForm({
     storeNumber,
   } = data.data.data;
 
+  if (storeId) {
+    setStoreName(storeName);
+    setStoreImage(storeImage);
+    setStoreContent(storeContent);
+    setStoreTag(storeTag);
+    setStoreTime(storeTime);
+    setStorePhone(storePhone);
+    setStoreAddress(storeAddress);
+    setStoreNumber(storeNumber);
+  }
+
   return (
     <CreateFoodTruck>
       <MainImg>
-        <div>
-          <img
-            alt="FoodTruckImg"
-            name="img"
-            src={storeImage}
-            value={img}
-            onChange={onChange}
-          />
-        </div>
+        <Avatar>
+          <div>
+            {img ? (
+              <img src={img} alt="푸드트럭 이미지 입니다" />
+            ) : (
+              <img src={storeImage} alt="푸드트럭 이미지 입니다" />
+            )}
+            <label htmlFor="file">수정</label>
+            <input
+              type="file"
+              id="file"
+              onChange={onChangeImg}
+              accept="image/*"
+            />
+          </div>
+        </Avatar>
 
         <Dropdown>
           <select type="button" onChange={handleTypeChange} value={dropDown}>
