@@ -86,10 +86,10 @@ function FoodMenusList({ storeId, props }) {
             alert('음식 수정 완료');
             const e = props.menuId;
             const value = {
-              name: menuName,
-              price: menuPrice,
-              content: menuContent,
-              image: menuImg,
+              name: menuName || props.name,
+              price: menuPrice || props.price,
+              content: menuContent || props.content,
+              image: menuImg || props.image,
             };
             patchMutateMenu({ storeId, e, value });
           } else {
