@@ -12,6 +12,9 @@ const FoodModalBody = styled.div`
 const FoodModalImage = styled.div`
   background-color: gold;
   height: 220px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
   background-image: ${({ url }) =>
     url
       ? `url(${url})`
