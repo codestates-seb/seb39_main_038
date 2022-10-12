@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useFoodDetail } from '../../../hooks';
-import { TEXT } from '../../../constants';
+import { COLOR, TEXT } from '../../../constants';
 import {
   Section,
   MainBody,
@@ -62,7 +62,7 @@ function FoodDetail() {
               <Text color="#999999" size={13}>
                 {TEXT.FOODDETAIL.STAR}
               </Text>
-              <Text color="#333333" size={13}>
+              <Text color="#333333" size={13} style={{ color: COLOR.YELLOW }}>
                 {totalGrade}
               </Text>
             </InfoItem>
