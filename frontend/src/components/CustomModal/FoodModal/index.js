@@ -23,8 +23,6 @@ function FoodModal({ closeModal }) {
   const { name, info, price, menuId, storeId, storeName, image } =
     useRecoilValue(atoms.menuOrder);
 
-  console.log(useRecoilValue(atoms.menuOrder));
-
   const navigate = useNavigate();
   if (!isMadal.food) return null;
 
