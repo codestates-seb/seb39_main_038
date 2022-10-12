@@ -24,6 +24,8 @@ function FoodModal({ closeModal }) {
     atoms.menuOrder,
   );
 
+  console.log(useRecoilValue(atoms.menuOrder));
+
   const navigate = useNavigate();
   if (!isMadal.food) return null;
 
