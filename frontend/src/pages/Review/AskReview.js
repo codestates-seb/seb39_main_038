@@ -93,7 +93,9 @@ function AskReview() {
             {text}
           </Text>
         </View>
-        <Button onClick={hanldeOnPost}>전송</Button>
+        <Button primary onClick={hanldeOnPost}>
+          전송
+        </Button>
       </ViewWrapper>
 
       <FileInput

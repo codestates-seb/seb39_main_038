@@ -15,10 +15,11 @@ const fetchUpdateOrderList = async (data) => {
 
 function useOrderList() {
   const queryClient = useQueryClient();
-  const { data } = useQuery(['orderList'], fetchOrderList);
+  const { data, isError } = useQuery(['orderList'], fetchOrderList);
   const { mutateAsync: updateMutate } = useMutation(fetchUpdateOrderList, {
     onSuccess: () => queryClient.invalidateQueries(['orderList']),
   });
+  if (isError) return { updateMutate };
   return { data, updateMutate };
 }
 
