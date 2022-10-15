@@ -77,15 +77,19 @@ function FoodMenusList({ storeId, props }) {
       <button
         type="button"
         onClick={() => {
-          alert('음식 수정 완료');
-          const e = props.menuId;
-          const value = {
-            name: menuName || props.name,
-            price: menuPrice || props.price,
-            content: menuContent || props.content,
-            image: menuImg || props.image,
-          };
-          patchMutateMenu({ storeId, e, value });
+          if (menuImg) {
+            const e = props.menuId;
+            const value = {
+              name: menuName || props.name,
+              price: menuPrice || props.price,
+              content: menuContent || props.content,
+              image: menuImg || props.image,
+            };
+            patchMutateMenu({ storeId, e, value });
+            alert('음식 수정 완료');
+          } else {
+            alert('메뉴 이미지를 넣어주세요');
+          }
         }}
       >
         수정
