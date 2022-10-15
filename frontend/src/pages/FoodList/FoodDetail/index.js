@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useFoodDetail } from '../../../hooks';
+import { COLOR, TEXT } from '../../../constants';
 import {
   Section,
   MainBody,
@@ -28,8 +29,8 @@ import {
 function FoodDetail() {
   const { id } = useParams();
   const { data } = useFoodDetail(id);
-  const [menu, setMenu] = useState('메뉴');
-  const handleOnClick = (tabItem) => () => setMenu(tabItem);
+  const [tabType, setTabType] = useState('menu');
+  const handleOnClick = (tabItem) => () => setTabType(tabItem);
 
   const {
     storeName,
@@ -44,6 +45,12 @@ function FoodDetail() {
 
   const { FOODTRUCK_IMG } = process.env;
 
+  const tabMenu = {
+    menu: <DetailFoodList storeId={id} storeName={storeName} />,
+    review: <DetailReview storeId={id} />,
+    info: <DetailInfo storeId={id} />,
+  };
+
   return (
     <Section>
       <MainBody>
@@ -53,15 +60,15 @@ function FoodDetail() {
           <CapsulizedInfo>
             <InfoItem>
               <Text color="#999999" size={13}>
-                별점
+                {TEXT.FOODDETAIL.STAR}
               </Text>
-              <Text color="#333333" size={13}>
+              <Text color="#333333" size={13} style={{ color: COLOR.YELLOW }}>
                 {totalGrade}
               </Text>
             </InfoItem>
             <InfoItem>
               <Text color="#999999" size={13}>
-                대기시간
+                {TEXT.FOODDETAIL.WAIT_TIME}
               </Text>
               <Text color="#333333" size={13}>
                 {storeWaitTime}
@@ -69,7 +76,7 @@ function FoodDetail() {
             </InfoItem>
             <InfoItem>
               <Text color="#999999" size={13}>
-                태그
+                {TEXT.FOODDETAIL.TAG}
               </Text>
               <FoodTruckTag>{storeTag}</FoodTruckTag>
             </InfoItem>
@@ -77,7 +84,7 @@ function FoodDetail() {
         </FoodTruckCapsulizedInfo>
         <Notice className="Notice">
           <Text as="strong" color="#333333" size={12}>
-            사장님알림
+            {TEXT.FOODDETAIL.NOTICE}
           </Text>
           <Text color="#666666" size={12}>
             {storeContent}
@@ -87,32 +94,28 @@ function FoodDetail() {
         <MenuSection>
           <MenuBar>
             <MenuTabBtn
-              menu={menu}
+              menu={tabType}
               type="button"
-              onClick={handleOnClick('메뉴')}
+              onClick={handleOnClick('menu')}
             >
-              메뉴 {totalMenu}
+              {TEXT.FOODDETAIL.MENU(totalMenu)}
             </MenuTabBtn>
             <ReviewTabBtn
-              menu={menu}
+              menu={tabType}
               type="button"
-              onClick={handleOnClick('리뷰')}
+              onClick={handleOnClick('review')}
             >
-              클린리뷰 {totalReview}
+              {TEXT.FOODDETAIL.CLEAN_REVIWE(totalReview)}
             </ReviewTabBtn>
             <InfoTabBtn
-              menu={menu}
+              menu={tabType}
               type="button"
-              onClick={handleOnClick('정보')}
+              onClick={handleOnClick('info')}
             >
-              정보
+              {TEXT.FOODDETAIL.INFO}
             </InfoTabBtn>
           </MenuBar>
-          {menu === '메뉴' ? (
-            <DetailFoodList storeId={id} storeName={storeName} />
-          ) : null}
-          {menu === '리뷰' ? <DetailReview storeId={id} /> : null}
-          {menu === '정보' ? <DetailInfo storeId={id} /> : null}
+          {tabMenu[tabType]}
         </MenuSection>
       </MainBody>
       <Receipt />

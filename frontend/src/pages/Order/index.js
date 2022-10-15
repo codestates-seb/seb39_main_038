@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { Receipt } from '../../components';
+import { TEXT } from '../../constants';
 import {
   OrderContainer,
   OrderWrapper,
@@ -17,7 +19,6 @@ import {
   DiscountButton,
   RadioBox,
 } from './styles';
-import { Receipt } from '../../components';
 
 function Order() {
   const [request, setRequest] = useState('');
@@ -31,26 +32,25 @@ function Order() {
   return (
     <OrderContainer>
       <OrderWrapper>
-        <OrderTitle>결제하기</OrderTitle>
+        <OrderTitle>{TEXT.ORDER.PAYMENT}</OrderTitle>
         <OrderBox>
-          <OrderHeader>주문시 요청사항</OrderHeader>
+          <OrderHeader>{TEXT.ORDER.REQUEST}</OrderHeader>
           <OrderContent>
             <TextEditor
               placeholder="주문시 요청사항을 입력해주세요."
               onChange={hanldeOnChangeAreaText}
             />
             <LimitBox>
-              <Text>최대 100자까지 입력 가능합니다.</Text>
-              <Text>100 / 100</Text>
+              <Text>{TEXT.ORDER.MAX_LENGTH}</Text>
+              <Text>{TEXT.ORDER.LENGHT_CHECK()}</Text>
             </LimitBox>
           </OrderContent>
         </OrderBox>
         <OrderBox>
-          <OrderHeader>결제수단 선택</OrderHeader>
+          <OrderHeader>{TEXT.ORDER.METHOD_OF_PAYMENT}</OrderHeader>
           <OrderContent>
             <Text size={12} color="#999999">
-              현금결제를 원하시는 경우 직접 푸드트럭 앞에서 현금을 지불할 수
-              있어요!
+              {TEXT.ORDER.CASH_PAYMENT_TOOLTIP}
             </Text>
             <ButtonBox>
               <Button as="label" active={radio.togle}>
@@ -62,7 +62,7 @@ function Order() {
                 />
                 <Icon width={22} height={24} position="-36px -46px" />
                 <Text size={12} color="#999999">
-                  신용카드
+                  {TEXT.ORDER.CARD_PAYMENT}
                 </Text>
               </Button>
 
@@ -75,7 +75,7 @@ function Order() {
                 />
                 <Icon width={24} height={24} position="-39px -7px" />
                 <Text size={12} color="#999999">
-                  현금
+                  {TEXT.ORDER.CASH_PAYMENT}
                 </Text>
               </Button>
             </ButtonBox>
@@ -83,15 +83,15 @@ function Order() {
         </OrderBox>
 
         <OrderBox>
-          <OrderHeader>할인방법 선택</OrderHeader>
+          <OrderHeader>{TEXT.ORDER.METHOD_OF_DISCOUNT}</OrderHeader>
           <OrderContent>
             <DiscountBox>
               <Input placeholder="사용할 마일리지를 입력해주세요." />
               <DiscountButton>
-                <Text>적용</Text>
+                <Text>{TEXT.ORDER.APPLY}</Text>
               </DiscountButton>
             </DiscountBox>
-            <Text>마일리지: 0 원</Text>
+            <Text>{TEXT.ORDER.MILEAGE()}</Text>
           </OrderContent>
         </OrderBox>
       </OrderWrapper>

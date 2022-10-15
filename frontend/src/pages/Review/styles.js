@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import { COLOR } from '../../constants';
 
 const Container = styled.div`
   max-width: 660px;
@@ -13,7 +14,17 @@ const EditorWrapper = styled.div`
   gap: 10px;
 `;
 
-const Button = styled.button``;
+const Button = styled.button`
+  padding: 5px 10px;
+  ${({ primary }) =>
+    primary &&
+    css`
+      padding: 10px 15px;
+      border: 1px solid ${COLOR.NAVY};
+      background-color: ${COLOR.NAVY};
+      color: ${COLOR.WHITE};
+    `}
+`;
 
 const FileInput = styled.input`
   display: none;

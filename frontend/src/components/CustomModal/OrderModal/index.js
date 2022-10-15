@@ -65,7 +65,7 @@ function OrderModal({ closeModal }) {
         </OrderModalBox>
         <OrderModalBox none>
           <ModalText>결제방식</ModalText>
-          <ModalText>카드결제</ModalText>
+          <ModalText>현금결제</ModalText>
         </OrderModalBox>
       </OrderModalBody>
     </Modal>

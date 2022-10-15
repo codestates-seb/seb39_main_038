@@ -12,6 +12,13 @@ const FoodModalBody = styled.div`
 const FoodModalImage = styled.div`
   background-color: gold;
   height: 220px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-image: ${({ url }) =>
+    url
+      ? `url(${url})`
+      : `url("https://www.yogiyo.co.kr/mobile/image/ic_photomenu_default.png")`};
 `;
 
 const FoodModalBox = styled.div`
