@@ -1,7 +1,6 @@
 import React from 'react';
 import { useRecoilValue, useResetRecoilState } from 'recoil';
 import { useNavigate } from 'react-router-dom';
-import { useQueryClient } from '@tanstack/react-query';
 import {
   StickyBody,
   CartListBody,
@@ -19,10 +18,10 @@ import { ROUTE } from '../../constants';
 import { usePay } from '../../hooks';
 
 function Receipt({ order, request, type }) {
+  const isLogin = useRecoilValue(atoms.isLogin);
   const orderList = useRecoilValue(atoms.orderList);
   const resetReceipt = useResetRecoilState(atoms.orderList);
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
   const { payWithCard, payWithCash } = usePay(orderList[0]?.storeId);
 
   const totalPrice = () => {
@@ -45,20 +44,22 @@ function Receipt({ order, request, type }) {
     ));
   };
 
-  const goOrder = () => navigate(`/${ROUTE.ORDER.PATH}`);
-  const goPay = () => {
-    if (type === 'CARD') payWithCard(request, type);
-    else payWithCash(request, type);
-    resetReceipt();
-    queryClient.invalidateQueries(['orderList']);
-    navigate(`/${ROUTE.FOODLIST.PATH}`);
+  const goOrder = () => {
+    if (isLogin.state) return navigate(`/${ROUTE.ORDER.PATH}`);
+    alert('로그인을 먼저해주세요.');
+    return navigate(`/${ROUTE.LOGIN.PATH}`);
+  };
+
+  const goPay = async () => {
+    if (type === 'CARD') await payWithCard(request, type);
+    else await payWithCash(request, type);
   };
 
   return (
     <StickyBody>
       <Cart>
         <CartTab>
-          <CartTitle>{order ? orderList[0].storeName : '장바구니'}</CartTitle>
+          <CartTitle>{order ? orderList[0]?.storeName : '장바구니'}</CartTitle>
           <Button disabled={order} type="button" onClick={resetReceipt}>
             리셋
           </Button>

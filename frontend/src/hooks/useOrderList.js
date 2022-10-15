@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import axios from 'axios';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { API_URI } from '../constants';
 
 const fetchOrderList = async () => {
@@ -8,13 +8,19 @@ const fetchOrderList = async () => {
   return response;
 };
 
+const fetchUpdateOrderList = async (data) => {
+  const { orderMenus, orderRequest, paymentType } = data;
+  await axios.post(API_URI.ORDER, { orderMenus, orderRequest, paymentType });
+};
+
 function useOrderList() {
-  return useQuery(['orderList'], fetchOrderList, {
-    select: (data) => {
-      data.data.orders = data.data.orders.reverse();
-      return data;
-    },
+  const queryClient = useQueryClient();
+  const { data, isError } = useQuery(['orderList'], fetchOrderList);
+  const { mutateAsync: updateMutate } = useMutation(fetchUpdateOrderList, {
+    onSuccess: () => queryClient.invalidateQueries(['orderList']),
   });
+  if (isError) return { updateMutate };
+  return { data, updateMutate };
 }
 
 export { useOrderList };

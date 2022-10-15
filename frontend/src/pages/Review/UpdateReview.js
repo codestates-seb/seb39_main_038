@@ -104,7 +104,9 @@ function UpdateReview({ storeId, reviewId }) {
             {content.text}
           </Text>
         </View>
-        <Button onClick={handleOnClickUpdate}>전송</Button>
+        <Button primary onClick={handleOnClickUpdate}>
+          전송
+        </Button>
       </ViewWrapper>
 
       <FileInput

@@ -52,16 +52,19 @@ function AskReview() {
   const createSelect = () => {
     const stars = [1, 2, 3, 4, 5];
     return (
-      <label style={{ marginRight: 2 }}>
-        별점을 선택해주세요.
-        <select value={undefined} onChange={handleOnchange}>
-          {stars.map((item) => (
-            <option key={item} value={item}>
-              {item}
-            </option>
-          ))}
-        </select>
-      </label>
+      <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+        <Button onClick={handleOnClick}>사진 업로드</Button>
+        <label style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          별점을 선택해주세요.
+          <select value={undefined} onChange={handleOnchange}>
+            {stars.map((item) => (
+              <option key={item} value={item}>
+                {item}
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
     );
   };
 
@@ -72,7 +75,6 @@ function AskReview() {
           <Text as="h1" size={18}>
             리뷰작성
           </Text>
-          <Button onClick={handleOnClick}>사진 업로드</Button>
           {createSelect()}
         </Header>
         <Editor
@@ -91,7 +93,9 @@ function AskReview() {
             {text}
           </Text>
         </View>
-        <Button onClick={hanldeOnPost}>전송</Button>
+        <Button primary onClick={hanldeOnPost}>
+          전송
+        </Button>
       </ViewWrapper>
 
       <FileInput

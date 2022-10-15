@@ -19,9 +19,9 @@ function FoodModal({ closeModal }) {
   const [count, setCount] = useState(1);
   const isMadal = useRecoilValue(atoms.modal);
   const setOrderList = useSetRecoilState(atoms.orderList);
-  const { name, info, price, menuId, storeId, storeName } = useRecoilValue(
-    atoms.menuOrder,
-  );
+  const isLogin = useRecoilValue(atoms.isLogin);
+  const { name, info, price, menuId, storeId, storeName, image } =
+    useRecoilValue(atoms.menuOrder);
 
   const navigate = useNavigate();
   if (!isMadal.food) return null;
@@ -66,13 +66,16 @@ function FoodModal({ closeModal }) {
 
   const goOrder = () => {
     goBusket();
-    navigate(`/${ROUTE.ORDER.PATH}`, { state: storeId });
+    if (isLogin.state)
+      return navigate(`/${ROUTE.ORDER.PATH}`, { state: storeId });
+    alert('로그인을 먼저해주세요.');
+    return navigate(`/${ROUTE.LOGIN.PATH}`);
   };
 
   return (
     <Modal title="메뉴상세" width={450} height={600} closeModal={closeModal}>
       <FoodModalBody>
-        <FoodModalImage />
+        <FoodModalImage url={image} />
         <FoodModalBox description>
           <FoodModalTitle>{name}</FoodModalTitle>
           <ModalText>{info}</ModalText>

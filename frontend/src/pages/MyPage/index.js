@@ -18,7 +18,7 @@ import {
   ButtonBox,
   Button,
 } from './styles';
-import { ROUTE } from '../../constants';
+import { ROUTE, COLOR } from '../../constants';
 import { CustomModal } from '../../components';
 
 const { AVATAR_IMG } = process.env;
@@ -54,7 +54,7 @@ function MyPage() {
     navigate(`/trucksetting/${loginInfo.localId}`, { replace: true });
 
   const createOrderContent = () => {
-    return orderListData.data.orders?.reverse().map((item) => {
+    return orderListData.data.orders?.map((item) => {
       return (
         <OrderContent key={item.orderId} onClick={goModal(item)}>
           <TextBox>
@@ -64,8 +64,15 @@ function MyPage() {
             </Text>
           </TextBox>
           <ButtonBox>
-            <Button onClick={goAsk(item.orderMenu[0].storeId)}>리뷰쓰기</Button>
-            <Button onClick={openOrder}>주문상세</Button>
+            <Button
+              color={COLOR.NAVY}
+              onClick={goAsk(item.orderMenu[0].storeId)}
+            >
+              리뷰쓰기
+            </Button>
+            <Button color={COLOR.LIGHTNAVY} onClick={openOrder}>
+              주문상세
+            </Button>
           </ButtonBox>
         </OrderContent>
       );
@@ -84,7 +91,9 @@ function MyPage() {
           </TextBox>
           <AvatarBox>
             <Avatar src={avatar || AVATAR_IMG} alt="avatar" />
+            {/*
             <Button>수정</Button>
+            */}
           </AvatarBox>
         </InfoContent>
       </InfoInner>
@@ -92,7 +101,11 @@ function MyPage() {
         <Header>주문조회</Header>
         {createOrderContent()}
       </OrderInner>
-      {type === 'local' ? <Button onClick={goSetting}>가게 설정</Button> : null}
+      {type === 'local' ? (
+        <Button primary onClick={goSetting}>
+          가게 설정
+        </Button>
+      ) : null}
       <CustomModal.Order closeModal={closeOrder} />
     </MyPageContainer>
   );

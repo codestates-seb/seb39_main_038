@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { useModal } from '../../hooks';
 import { Form, CustomModal } from '../../components';
-import { COLOR, API_URI, ALERT } from '../../constants';
+import { COLOR, API_URI, ALERT, TEXT } from '../../constants';
 import { TextBox } from './styles';
 
 function PwInquiry() {
@@ -28,12 +28,8 @@ function PwInquiry() {
       <Form.Wrapper onSubmit={onSubmit}>
         <Form.Input name="email" placeholder="가입에 사용된 이메일 주소 입력" />
         <TextBox>
-          <Form.Text>
-            입력하신 이메일 주소로 비밀번호 재설정 메일이 발송됩니다.
-          </Form.Text>
-          <Form.Text>
-            카카오 소셜 회원은 비밀번호 찾기가 불가능합니다.
-          </Form.Text>
+          <Form.Text>{TEXT.PWINQUIRY.POST_EMAIL}</Form.Text>
+          <Form.Text>{TEXT.PWINQUIRY.IMPOSSIBLE}</Form.Text>
         </TextBox>
         <Form.Button
           type="submit"
@@ -49,7 +45,7 @@ function PwInquiry() {
             color={COLOR.NAVY}
             fontColor={COLOR.WHITE}
           >
-            모달창 열기
+            {TEXT.PWINQUIRY.OPEN_MODAL}
           </Form.Button>
         ) : null}
       </Form.Wrapper>
