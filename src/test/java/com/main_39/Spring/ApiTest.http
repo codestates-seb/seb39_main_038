@@ -1,0 +1,50 @@
+### menu get
+GET http://localhost:8080/menu/2
+Content-Type: application/json
+
+### menu post 1
+POST http://localhost:8080/menu
+Content-Type: application/json
+
+{
+  "name" : "아메리카노",
+  "price" : 4500
+}
+
+### menu post 2
+POST http://localhost:8080/menu
+Content-Type: application/json
+
+{
+  "name" : "카페라떼",
+  "price" : 5000
+}
+
+### order post 1
+POST http://localhost:8080/order
+Content-Type: application/json
+
+{
+  "orderMenus" : [
+    {
+    "menuId" : 1,
+    "count" : 2
+    },
+    {
+    "menuId" : 2,
+    "count" : 1
+    },
+    {
+      "menuId" : 3,
+      "count" : 2
+    },
+    {
+      "menuId" : 4,
+      "count" : 1
+    }
+  ]
+}
+
+### order get
+GET http://localhost:8080/order/2
+Content-Type: application/json

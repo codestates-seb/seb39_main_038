@@ -1,0 +1,20 @@
+# 빌드 파일 배포 및 실행 튜토리얼
+
+version: 0.0
+os: linux
+files:
+  - source:  /
+    destination: /home/ubuntu/seb39_main_038_new
+    overwrite: yes
+
+permissions:
+  - object: /
+    pattern: "**"
+    owner: ubuntu
+    group: ubuntu
+
+hooks:
+  ApplicationStart:
+    - location: scripts/deploy.sh
+      timeout: 300
+      runas: ubuntu
